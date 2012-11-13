@@ -8,7 +8,7 @@ class TestProjectsController < TestCase
   end
 
   def test_single_project
-    project = ''
+    project = 'test_project'
     get "/projects/#{project}"
     assert last_response.ok?
     assert_equal '', last_response.body
