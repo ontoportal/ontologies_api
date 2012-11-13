@@ -46,5 +46,9 @@ class OntologiesController < ApplicationController
       submission = params[:ontology_submission_id]
     end
 
+    # Properties for given ontology
+    get '/:ontology/properties' do
+    end
+
   end
 end

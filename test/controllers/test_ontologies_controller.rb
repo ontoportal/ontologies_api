@@ -37,4 +37,7 @@ class TestOntologiesController < TestCase
 
   def test_download_ontology
   end
+
+  def test_ontology_properties
+  end
 end
