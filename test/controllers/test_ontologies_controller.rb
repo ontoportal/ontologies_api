@@ -14,6 +14,9 @@ class TestOntologiesController < TestCase
     assert_equal '', last_response.body
   end
 
+  def test_submissions_for_given_ontology
+  end
+
   def test_create_new_ontology
   end
 

@@ -7,8 +7,13 @@ class OntologiesController < ApplicationController
     get do
     end
 
-    # Display a single ontology
+    # Display the most recent submission of the ontology
     get '/:ontology' do
+      submission = params[:ontology_submission_id]
+    end
+
+    # Display all submissions of an ontology
+    get '/:ontology/submissions' do
       submission = params[:ontology_submission_id]
     end
 
