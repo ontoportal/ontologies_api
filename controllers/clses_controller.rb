@@ -20,5 +20,21 @@ class ClsesController < ApplicationController
     get '/:cls/tree' do
     end
 
+    # Get all ancestors for given class
+    get '/:cls/ancestors' do
+    end
+
+    # Get all descendants for given class
+    get '/:cls/descendants' do
+    end
+
+    # Get all children of given class
+    get '/:cls/children' do
+    end
+
+    # Get all parents of given class
+    get '/:cls/parents' do
+    end
+
   end
 end

@@ -15,4 +15,23 @@ class TestClsesController < TestCase
     assert last_response.ok?
     assert_equal '', last_response.body
   end
+
+  def test_roots_for_cls
+  end
+
+  def test_tree_for_cls
+  end
+
+  def test_ancestors_for_cls
+  end
+
+  def test_descendants_for_cls
+  end
+
+  def test_children_for_cls
+  end
+
+  def test_parents_for_cls
+  end
+
 end
