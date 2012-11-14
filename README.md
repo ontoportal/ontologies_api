@@ -58,7 +58,7 @@ Sinatra routes can be defined in controller files, found in the /controllers fol
 Re-usable code can be included in helpers in files located in the /helpers folder. Helper methods should be created in their own module namespace, under the Sinatra::Helpers module (see MessageHelper for an example).
 
 ### Libraries
-The /lib folder can be used for organizing complex code that doesn't fit well in the /helpers or /models space. For example, a small DSL for defining relationships between resources or a data access layer.
+The /lib folder can be used for organizing complex code or Rack middleware that doesn't fit well in the /helpers or /models space. For example, a small DSL for defining relationships between resources or a data access layer.
 
 ### Config
 Environment-specific settings can be placed in the appropriate /config/environments/{environment}.rb file. These will get included automatically on a per-environment basis.
