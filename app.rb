@@ -23,6 +23,13 @@ require_relative "config/environments/#{environment}.rb"
 # Initialize the app
 require_relative 'init'
 
+# Require middleware
+require 'rack/accept'
+
+# Use middleware
+use Rack::Accept
+use LinkedData::Serializer
+
 # Enter console mode
 if settings.environment == :console
   require 'rack/test'
