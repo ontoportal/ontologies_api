@@ -5,6 +5,7 @@ module LinkedData
     JSONP = :jsonp
     XML = :xml
     TURTLE = :turtle
+    DEFAULT = JSON
 
     def self.all
       TYPE_MAP.keys

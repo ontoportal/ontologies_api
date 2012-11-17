@@ -9,13 +9,17 @@ module LinkedData
 
     def call(env)
       status, headers, response = @app.call(env)
-      params = env["rack.request.query_hash"]
+      params = env["rack.request.query_hash"] || Rack::Utils.parse_query(env["QUERY_STRING"])
       # Client accept header
       accept = env['rack-accept.request']
       # Out of the media types we offer, which would be best?
-      best = LinkedData::MediaTypes.base_type(accept.best_media_type(LinkedData::MediaTypes.all))
+      best = LinkedData::MediaTypes.base_type(accept.best_media_type(LinkedData::MediaTypes.all)) unless accept.nil?
+      # Try one other method to get the media type
+      best = LinkedData::MediaTypes.base_type(env["HTTP_ACCEPT"]) if best.nil?
       # If user provided a format via query string, override the accept header
       best = params["format"].to_sym if params["format"]
+      # Default format if none is provided
+      best = LinkedData::MediaTypes::DEFAULT if best.nil?
       # Error out if we don't support the foramt
       unless LinkedData::MediaTypes.supported_base_type?(best)
         return response(:status => 415)
@@ -27,7 +31,7 @@ module LinkedData
           :body => serialize(best, response, params)
         )
       rescue Exception => e
-        message = e.message + "\n\n" + e.backtrace.join("\n") if development?
+        message = e.message + "\n\n" + e.backtrace.join("\n") if env["rack.test"] || (respond_to?("development?") && development?)
         response(:status => 500, :body => message)
       end
     end
@@ -50,7 +54,6 @@ module LinkedData
       only = only.split(",") unless only.kind_of?(Array)
       only, all = [], true if only[0].eql?("all")
       options = {:only => only, :all => all}
-      LOGGER.debug options
       LinkedData::Serializers.serialize(obj, type, options)
     end
 
