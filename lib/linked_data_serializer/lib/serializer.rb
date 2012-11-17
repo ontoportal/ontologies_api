@@ -57,21 +57,5 @@ module LinkedData
       LinkedData::Serializers.serialize(obj, type, options)
     end
 
-    def serialize_json(obj, options = {})
-      obj.to_flex_hash(options).to_json
-    end
-
-    def serialize_html(obj, options = {})
-      "html"
-    end
-
-    def serialize_xml(obj, options = {})
-      "xml"
-    end
-
-    def serialize_turtle(obj, options = {})
-      "turtle"
-    end
-
   end
 end
