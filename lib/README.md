@@ -1,2 +1,2 @@
-= lib folder
+# lib folder
 The /lib folder can be used for organizing complex code or Rack middleware that doesn't fit well in the /helpers or /models space. For example, a small DSL for defining relationships between resources or a data access layer.
