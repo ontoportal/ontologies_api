@@ -1,4 +1,4 @@
-$BASE_REST_URL = "http://localhost:2000"
-$RDF_ID_BASE = "http://data.bioontology.org"
-$GRAPH_ID_BASE = "http://bioportal.bioontology.org"
+# Config Goo connection for LinkedData (repo connection and namespaces)
+# LinkedData.config
 
+require_relative "local/development.rb" if File.exist?("local/development.rb")

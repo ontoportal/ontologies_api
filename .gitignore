@@ -20,3 +20,9 @@ doc/
 
 # Mac artifacts
 **.DS_Store
+
+# Support local configs
+Gemfile.local
+Gemfile.lock
+config/environments/local/*.rb
+lib/ontologies_linked_data/config/custom.rb

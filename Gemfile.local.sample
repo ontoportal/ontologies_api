@@ -1,0 +1,6 @@
+# Local gemfile
+# This gets included by a back-door in bundler if it exists
+
+source 'https://rubygems.org'
+
+gem 'goo', :path => '~/Development/goo'
