@@ -12,9 +12,6 @@ class MappingsController < ApplicationController
   end
 
   namespace "/mappings" do
-    # Default content type (this will need to support all of our content types eventually)
-    before { content_type :json }
-
     # Display all mappings
     get do
     end

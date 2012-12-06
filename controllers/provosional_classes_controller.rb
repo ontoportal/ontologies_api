@@ -1,8 +1,5 @@
 class ProvisionalClassController < ApplicationController
   namespace "/provisional_classes" do
-    # Default content type (this will need to support all of our content types eventually)
-    before { content_type :json }
-
     # Display all provisional_classes
     get do
     end

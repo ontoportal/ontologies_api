@@ -1,8 +1,5 @@
 class ClsesController < ApplicationController
   namespace "/ontologies/:ontology/classes" do
-    # Default content type (this will need to support all of our content types eventually)
-    before { content_type :json }
-
     # Display all classes
     get do
     end

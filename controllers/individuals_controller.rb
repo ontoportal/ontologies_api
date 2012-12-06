@@ -1,7 +1,4 @@
 class IndividualsController < ApplicationController
-  # Default content type (this will need to support all of our content types eventually)
-  before { content_type :json }
-
   # Display invididuals for an ontology
   get '/ontologies/:ontology/individuals' do
     submission = params[:ontology_submission_id]

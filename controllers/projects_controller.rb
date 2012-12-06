@@ -1,8 +1,5 @@
 class ProjectsController < ApplicationController
   namespace "/projects" do
-    # Default content type (this will need to support all of our content types eventually)
-    before { content_type :json }
-
     # Display all projects
     get do
     end
