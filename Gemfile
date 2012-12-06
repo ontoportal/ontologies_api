@@ -22,5 +22,6 @@ if File.exists?(gemfile_local)
 else
   gem 'goo', :git => 'https://github.com/ncbo/goo.git'
   gem 'sparql_http', :git => 'https://github.com/ncbo/sparql_http.git'
+  gem 'ontologies_linked_data', :git => 'https://github.com/ncbo/ontologies_linked_data.git'
 end
 

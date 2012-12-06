@@ -25,6 +25,7 @@ require_relative 'init'
 
 # Require middleware
 require 'rack/accept'
+require 'ontologies_linked_data'
 
 # Use middleware
 use Rack::Accept
