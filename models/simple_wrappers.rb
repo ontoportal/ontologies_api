@@ -4,14 +4,14 @@ require "ontologies_linked_data"
 # Wrapping them here allows access to them without using the full namespace.
 # If additional functionality is needed for ontologies_api only, the class should be moved to its own model file.
 
-class Category < LinkedData::Models::Category; end
+Category = LinkedData::Models::Category
 
-class Group < LinkedData::Models::Group; end
+Group = LinkedData::Models::Group
 
-class Ontology < LinkedData::Models::Ontology; end
+Ontology = LinkedData::Models::Ontology
 
-class Project < LinkedData::Models::Project; end
+Project = LinkedData::Models::Project
 
-class Review < LinkedData::Models::Review; end
+Review = LinkedData::Models::Review
 
-class User < LinkedData::Models::User; end
+User = LinkedData::Models::User
