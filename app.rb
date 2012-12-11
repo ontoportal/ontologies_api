@@ -20,16 +20,15 @@ end
 environment = [:production, :development, :test].include?(settings.environment) ? settings.environment : :development
 require_relative "config/environments/#{environment}.rb"
 
-# Initialize the app
-require_relative 'init'
-
 # Require middleware
 require 'rack/accept'
 require 'ontologies_linked_data'
 
-# Use middleware
-use Rack::Accept
+# Use middleware (ORDER IS IMPORTANT)
 use LinkedData::Serializer
+use Rack::Accept
+# Initialize the app
+require_relative 'init'
 
 # Enter console mode
 if settings.environment == :console
