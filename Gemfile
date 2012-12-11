@@ -5,6 +5,7 @@ gem 'sinatra-contrib'
 gem 'json'
 gem 'rake'
 gem 'rack-accept'
+gem 'rack-post-body-to-params'
 
 # HTTP server
 gem 'thin'

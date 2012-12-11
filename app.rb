@@ -23,10 +23,13 @@ require_relative "config/environments/#{environment}.rb"
 # Require middleware
 require 'rack/accept'
 require 'ontologies_linked_data'
+require 'rack/post-body-to-params'
 
 # Use middleware (ORDER IS IMPORTANT)
 use LinkedData::Serializer
 use Rack::Accept
+use Rack::PostBodyToParams
+
 # Initialize the app
 require_relative 'init'
 
