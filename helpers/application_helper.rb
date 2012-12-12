@@ -41,6 +41,8 @@ module Sinatra
       # * +obj+: object to be serialized
       # * +status+: http status code
       def s(obj, status = 200)
+        halt 404 if obj.nil? || obj.length == 0
+
         if obj.respond_to?("each")
           obj.each do |sub_obj|
             sub_obj.load unless !sub_obj.respond_to?("loaded?") || sub_obj.loaded?
