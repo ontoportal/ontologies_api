@@ -1,4 +1,4 @@
-class IndividualsController < ApplicationController
+class IndividualsController
   # Display invididuals for an ontology
   get '/ontologies/:ontology/individuals' do
     submission = params[:ontology_submission_id]

@@ -1,4 +1,4 @@
-class ProvisionalClassesController < ApplicationController
+class ProvisionalClassesController
   namespace "/provisional_classes" do
     # Display all provisional_classes
     get do

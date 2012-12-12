@@ -1,4 +1,4 @@
-class ReviewsController < ApplicationController
+class ReviewsController
   namespace "/reviews" do
     # Display all reviews
     get do

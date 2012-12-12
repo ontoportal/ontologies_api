@@ -1,4 +1,4 @@
-class ProjectsController < ApplicationController
+class ProjectsController
   namespace "/projects" do
     # Display all projects
     get do
