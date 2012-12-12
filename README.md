@@ -26,7 +26,7 @@ A full range of options are available at the command line, common ones being:
 
 ### REPL / Console Access
 MC Sinatra provides a basic REPL environment using Pry, an alternative to ruby's irb. To enter the console:
-`rackup -e console`
+`rackup -E console`
 
 `quit` will exit the console. No code reloading is available once you are in the console (future versions may support this).
 
