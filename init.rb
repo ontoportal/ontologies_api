@@ -13,14 +13,5 @@ require_dir("helpers")
 require_dir("models")
 require_dir("controllers")
 
-
-# Get an array of constants that are subclasses for a given class
-def subclasses_for(klass)
-  ObjectSpace.enum_for(:each_object, class << klass; self; end).to_a
-end
-
-# Load controllers. This is so we can define routes in multiple files.
-subclasses_for(ApplicationController).each do |sub|
-  use sub
-end
-
+# Setup ontologies_linked_data connection to triplestore
+LinkedData.config
