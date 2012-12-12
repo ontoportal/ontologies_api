@@ -1,4 +1,4 @@
-class NotesController < ApplicationController
+class NotesController
   namespace "/notes" do
     # Display all notes
     get do

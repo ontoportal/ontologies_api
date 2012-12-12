@@ -1,4 +1,4 @@
-class OntologiesController < ApplicationController
+class OntologiesController
   namespace "/ontologies" do
     # Display all ontologies
     get do

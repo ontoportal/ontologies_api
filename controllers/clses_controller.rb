@@ -1,4 +1,4 @@
-class ClsesController < ApplicationController
+class ClsesController
   namespace "/ontologies/:ontology/classes" do
     # Display all classes
     get do

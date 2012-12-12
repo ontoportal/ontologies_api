@@ -1,4 +1,4 @@
-class GroupsController < ApplicationController
+class GroupsController
   namespace "/groups" do
     # Display all groups
     get do

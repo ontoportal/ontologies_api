@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+class UsersController
   namespace "/users" do
     # Display all users
     get do

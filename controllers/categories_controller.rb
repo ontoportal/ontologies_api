@@ -1,4 +1,4 @@
-class CategoriesController < ApplicationController
+class CategoriesController
   namespace "/categories" do
     # Display all categories
     get do

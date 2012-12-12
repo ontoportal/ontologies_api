@@ -1,4 +1,4 @@
-class MetricsController < ApplicationController
+class MetricsController
   namespace "/metrics" do
     # Display all metrics
     get do
