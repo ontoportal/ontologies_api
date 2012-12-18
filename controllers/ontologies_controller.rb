@@ -16,6 +16,7 @@ class OntologiesController
 
     # Ontologies get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:ontology' do
+      filename, tmpfile = file_from_request
     end
 
     # Create a new submission for an existing ontology
@@ -45,6 +46,19 @@ class OntologiesController
 
     # Properties for given ontology
     get '/:ontology/properties' do
+    end
+
+    private
+
+    ##
+    # Looks for a file that was included as a multipart in a request
+    def file_from_request
+      @params.each do |param, value|
+        if value.instance_of?(Hash) && value.has_key?(:tempfile) && value[:tempfile].instance_of?(Tempfile)
+          return value[:filename], value[:tempfile]
+        end
+      end
+      nil, nil
     end
 
   end
