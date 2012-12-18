@@ -14,12 +14,12 @@ class OntologiesController
       submission = params[:ontology_submission_id]
     end
 
-    # Create a new ontology
-    post do
+    # Ontologies get created via put because clients can assign an id (POST is only used where servers assign ids)
+    put '/:ontology' do
     end
 
-    # Create a new submission of an existing ontology
-    put '/:ontology' do
+    # Create a new submission for an existing ontology
+    post '/:ontology/submission' do
     end
 
     # Update via delete/create for an existing submission of an ontology
