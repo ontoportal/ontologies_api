@@ -18,12 +18,14 @@ module Sinatra
       # users to overwrite any attribute, including things like passwords.
       # TODO: We should only mass-assign attributes that are declared (if obj.respond_to?...)
       def populate_from_params(obj, params)
+        allowed_attributes = Set.new(obj.class.goop_settings[:attributes].keys)
         params.each do |attribute, value|
           attr_cls = obj.class.range_class(attribute)
           if attr_cls
             value = attr_cls.find(value)
           end
-          obj.send("#{attribute}=", value) # if obj.respond_to?("#{attribute}=")
+          obj.send("#{attribute}=", value) if allowed_attributes.include?(attribute.to_sym)
+          # obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
         end
         obj
       end
