@@ -81,7 +81,7 @@ module Sinatra
           message.unshift status
           status = 500
         end
-        { :errors => message, :status => status }
+        halt status, { :errors => message, :status => status }
       end
 
     end
