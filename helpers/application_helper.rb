@@ -52,6 +52,22 @@ module Sinatra
         end
         SERIALIZER.build_response(@env, status: status, ld_object: obj)
       end
+
+      ##
+      # Override the halt method provided by Sinatra to set the response appropriately
+      def halt(*response)
+        status, headers, obj = nil
+        obj = response.first if response.length == 1
+        if obj.instance_of?(Fixnum)
+          # This is a status-only response
+          status = obj
+          obj = nil
+        end
+        status, obj = response.first, response.last if response.length == 2
+        status, headers, obj = response.first, response[1], response.last if response.length == 3
+        super(SERIALIZER.build_response(@env, status: status, headers: headers, ld_object: obj))
+      end
+
     end
 
     helpers ApplicationHelper
