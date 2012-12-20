@@ -18,12 +18,14 @@ module Sinatra
       # users to overwrite any attribute, including things like passwords.
       # TODO: We should only mass-assign attributes that are declared (if obj.respond_to?...)
       def populate_from_params(obj, params)
+        allowed_attributes = Set.new(obj.class.goop_settings[:attributes].keys)
         params.each do |attribute, value|
           attr_cls = obj.class.range_class(attribute)
           if attr_cls
             value = attr_cls.find(value)
           end
-          obj.send("#{attribute}=", value) # if obj.respond_to?("#{attribute}=")
+          obj.send("#{attribute}=", value) if allowed_attributes.include?(attribute.to_sym)
+          # obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
         end
         obj
       end
@@ -52,6 +54,36 @@ module Sinatra
         end
         SERIALIZER.build_response(@env, status: status, ld_object: obj)
       end
+
+      ##
+      # Override the halt method provided by Sinatra to set the response appropriately
+      def halt(*response)
+        status, headers, obj = nil
+        obj = response.first if response.length == 1
+        if obj.instance_of?(Fixnum)
+          # This is a status-only response
+          status = obj
+          obj = nil
+        end
+        status, obj = response.first, response.last if response.length == 2
+        status, headers, obj = response.first, response[1], response.last if response.length == 3
+        super(SERIALIZER.build_response(@env, status: status, headers: headers, ld_object: obj))
+      end
+
+      ##
+      # Create an error response body by wrapping a message in a common hash structure
+      # Call by providing an error code and then message or just a message:
+      #   +error "Error message"+
+      #   +error 400, "Error message"+
+      def error(*message)
+        status = message.shift
+        if !status.instance_of?(Fixnum)
+          message.unshift status
+          status = 500
+        end
+        { :errors => message, :status => status }
+      end
+
     end
 
     helpers ApplicationHelper
