@@ -70,6 +70,20 @@ module Sinatra
         super(SERIALIZER.build_response(@env, status: status, headers: headers, ld_object: obj))
       end
 
+      ##
+      # Create an error response body by wrapping a message in a common hash structure
+      # Call by providing an error code and then message or just a message:
+      #   +error "Error message"+
+      #   +error 400, "Error message"+
+      def error(*message)
+        status = message.shift
+        if !status.instance_of?(Fixnum)
+          message.unshift status
+          status = 500
+        end
+        { :errors => message, :status => status }
+      end
+
     end
 
     helpers ApplicationHelper
