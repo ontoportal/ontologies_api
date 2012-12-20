@@ -49,6 +49,29 @@ class OntologiesController
     private
 
     ##
+    # Create a new OntologySubmission object based on the request data
+      params = @params
+
+      filename, tmpfile = file_from_request
+        file_location = OntologySubmission.copy_file_repository(params["acronym"], submission_id, tmpfile, filename)
+
+      ont_submission = instance_from_params(OntologySubmission, params)
+      ont_submission.ontology = ont
+      ont_submission.submissionId = submission_id
+      ont_submission.pullLocation = params["pullLocation"].nil? ? nil : RDF::IRI.new(params["pullLocation"])
+      ont_submission.uploadFilePath = file_location
+
+      # Add new format if it doesn't exist
+      if ont_submission.ontologyFormat.nil?
+        ont_submission.ontologyFormat = OntologyFormat.new(acronym: params["ontologyFormat"])
+      end
+
+        ont_submission.save
+        error 400, ont_submission.errors
+      end
+    end
+
+    ##
     # Looks for a file that was included as a multipart in a request
     def file_from_request
       @params.each do |param, value|
@@ -56,7 +79,7 @@ class OntologiesController
           return value[:filename], value[:tempfile]
         end
       end
-      nil, nil
+      return nil, nil
     end
 
   end
