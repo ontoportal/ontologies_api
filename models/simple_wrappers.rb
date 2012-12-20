@@ -10,6 +10,12 @@ Group = LinkedData::Models::Group
 
 Ontology = LinkedData::Models::Ontology
 
+OntologySubmission = LinkedData::Models::OntologySubmission
+
+SubmissionStatus = LinkedData::Models::SubmissionStatus
+
+OntologyFormat = LinkedData::Models::OntologyFormat
+
 Project = LinkedData::Models::Project
 
 Review = LinkedData::Models::Review
