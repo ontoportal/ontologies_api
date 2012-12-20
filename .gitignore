@@ -26,3 +26,6 @@ Gemfile.local
 Gemfile.lock
 config/environments/local/*.rb
 lib/ontologies_linked_data/config/custom.rb
+
+# Ignore generated test data
+test/data/uploaded_ontologies/**/*
