@@ -15,6 +15,23 @@ class OntologiesController
     end
 
     # Ontologies get created via put because clients can assign an id (POST is only used where servers assign ids)
+    put '/:acronym' do
+      ont = Ontology.find(params["acronym"])
+      if ont.nil?
+        ont = instance_from_params(Ontology, params)
+      else
+        error 400, "Ontology already exists, to add a new submission, please POST to: /ontologies/#{params["acronym"]}/submission"
+      end
+
+      if ont.valid?
+        ont.save
+      else
+        error 400, ont.errors
+      end
+
+      ont_submission = create_submission(ont)
+
+      s(ont_submission, 201)
     end
 
     # Create a new submission for an existing ontology
@@ -50,13 +67,21 @@ class OntologiesController
 
     ##
     # Create a new OntologySubmission object based on the request data
+    def create_submission(ont)
       params = @params
 
+      # Get file info
       filename, tmpfile = file_from_request
+      submission_id = ont.next_submission_id
+      if tmpfile
+        # Copy tmpfile to appropriate location
         file_location = OntologySubmission.copy_file_repository(params["acronym"], submission_id, tmpfile, filename)
+      end
 
+      # Create OntologySubmission
       ont_submission = instance_from_params(OntologySubmission, params)
       ont_submission.ontology = ont
+      ont_submission.status = SubmissionStatus.new(:code => "UPLOADED")
       ont_submission.submissionId = submission_id
       ont_submission.pullLocation = params["pullLocation"].nil? ? nil : RDF::IRI.new(params["pullLocation"])
       ont_submission.uploadFilePath = file_location
@@ -66,7 +91,9 @@ class OntologiesController
         ont_submission.ontologyFormat = OntologyFormat.new(acronym: params["ontologyFormat"])
       end
 
+      if ont_submission.valid?
         ont_submission.save
+      else
         error 400, ont_submission.errors
       end
     end
