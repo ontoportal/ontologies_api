@@ -2,12 +2,12 @@ class UsersController
   namespace "/users" do
     # Display all users
     get do
-      s(User.all)
+      reply User.all
     end
 
     # Display a single user
     get '/:username' do
-      s(User.find(params[:username]))
+      reply User.find(params[:username])
     end
 
     # Users get created via put because clients can assign an id (POST is only used where servers assign ids)
@@ -16,9 +16,9 @@ class UsersController
       if user.valid?
         user.save
       else
-        halt 400, {:errors => user.errors}
+        error 400, user.errors
       end
-      s(user, 201)
+      reply 201, user
     end
 
     # Update an existing submission of an user
@@ -28,7 +28,7 @@ class UsersController
       if user.valid?
         user.save
       else
-        halt 400, {:errors => user.errors}
+        error 400, user.errors
       end
       halt 204
     end
