@@ -31,7 +31,7 @@ class OntologiesController
 
       ont_submission = create_submission(ont)
 
-      s(ont_submission, 201)
+      reply 201, ont_submission
     end
 
     # Create a new submission for an existing ontology
@@ -96,6 +96,8 @@ class OntologiesController
       else
         error 400, ont_submission.errors
       end
+
+      ont_submission
     end
 
     ##
