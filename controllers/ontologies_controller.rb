@@ -7,6 +7,8 @@ class OntologiesController
     # Display the most recent submission of the ontology
     get '/:acronym' do
       submission = params[:ontology_submission_id]
+      ont = Ontology.find(params["acronym"].upcase)
+      reply ont
     end
 
     # Display all submissions of an ontology
@@ -35,7 +37,10 @@ class OntologiesController
     end
 
     # Create a new submission for an existing ontology
-    post '/:acronym/submission' do
+    post '/:acronym/submissions' do
+      ont = Ontology.find(params["acronym"])
+      error 400, "You must provide a valid `acronym` to create a new submission" if ont.nil?
+      reply 201, create_submission(ont)
     end
 
     # Update via delete/create for an existing submission of an ontology
