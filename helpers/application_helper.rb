@@ -42,7 +42,7 @@ module Sinatra
       # using the Accept header and "format" query string parameter
       # * +obj+: object to be serialized
       # * +status+: http status code
-      def s(obj, status = 200)
+      def response(status = 200, obj = nil)
         halt 404 if obj.nil? || obj.length == 0
 
         if obj.respond_to?("each")
