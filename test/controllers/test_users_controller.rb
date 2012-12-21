@@ -7,7 +7,7 @@ class TestUsersController < TestCase
     @usernames = %w(fred goerge henry ben mark matt charlie)
 
     # Make sure these don't exist
-    delete_users
+    _delete_users
 
     # Create them again
     @usernames.each do |username|
@@ -20,14 +20,14 @@ class TestUsersController < TestCase
 
   def teardown
     # Delete users
-    delete_users
+    _delete_users
 
     # Remove test user if exists
     test_user = User.find(@username)
     test_user.delete unless test_user.nil?
   end
 
-  def delete_users
+  def _delete_users
     @usernames.each do |username|
       user = User.find(username)
       user.delete unless user.nil?
