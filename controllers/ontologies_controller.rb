@@ -104,10 +104,12 @@ class OntologiesController
     # Download an ontology
     get '/:acronym/download' do
       submission = params[:ontology_submission_id]
+      error 500, "Not implemented"
     end
 
     # Properties for given ontology
     get '/:acronym/properties' do
+      error 500, "Not implemented"
     end
 
     private
