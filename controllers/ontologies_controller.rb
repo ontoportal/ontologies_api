@@ -1,5 +1,6 @@
 class OntologiesController
   namespace "/ontologies" do
+    ##
     # Display all ontologies
     get do
       if params["include"].nil? || params["include"].empty?
@@ -14,6 +15,7 @@ class OntologiesController
       reply onts
     end
 
+    ##
     # Display the most recent submission of the ontology
     get '/:acronym' do
       submission = params[:ontology_submission_id]
@@ -25,12 +27,14 @@ class OntologiesController
       reply ont
     end
 
+    ##
     # Display all submissions of an ontology
     get '/:acronym/submissions' do
       ont = Ontology.find(params["acronym"])
       reply ont.submissions
     end
 
+    ##
     # Ontologies get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:acronym' do
       ont = Ontology.find(params["acronym"])
@@ -51,6 +55,7 @@ class OntologiesController
       reply 201, ont_submission
     end
 
+    ##
     # Create a new submission for an existing ontology
     post '/:acronym/submissions' do
       ont = Ontology.find(params["acronym"])
@@ -58,6 +63,7 @@ class OntologiesController
       reply 201, create_submission(ont)
     end
 
+    ##
     # Update an existing submission of an ontology
     patch '/:acronym/:ontology_submission_id' do
       ont = Ontology.find(params["acronym"])
@@ -77,6 +83,7 @@ class OntologiesController
       halt 204
     end
 
+    ##
     # Update an existing submission of an ontology
     patch '/:acronym' do
       ont = Ontology.find(params["acronym"])
@@ -93,6 +100,7 @@ class OntologiesController
       halt 204
     end
 
+    ##
     # Delete an ontology and all its versions
     delete '/:acronym' do
       ont = Ontology.find(params["acronym"])
@@ -101,6 +109,7 @@ class OntologiesController
       halt 204
     end
 
+    ##
     # Delete a specific ontology submission
     delete '/:acronym/:ontology_submission_id' do
       ont = Ontology.find(params["acronym"])
@@ -113,12 +122,14 @@ class OntologiesController
       halt 204
     end
 
+    ##
     # Download an ontology
     get '/:acronym/download' do
       submission = params[:ontology_submission_id]
       error 500, "Not implemented"
     end
 
+    ##
     # Properties for given ontology
     get '/:acronym/properties' do
       error 500, "Not implemented"
