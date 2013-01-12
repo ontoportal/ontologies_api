@@ -95,10 +95,22 @@ class OntologiesController
 
     # Delete an ontology and all its versions
     delete '/:acronym' do
+      ont = Ontology.find(params["acronym"])
+      error 400, "You must provide an existing `acronym` to delete" if ont.nil?
+      ont.delete
+      halt 204
     end
 
     # Delete a specific ontology submission
     delete '/:acronym/:ontology_submission_id' do
+      ont = Ontology.find(params["acronym"])
+      error 400, "You must provide an existing `acronym` to delete" if ont.nil?
+
+      submission = ont.submission(params[:ontology_submission_id])
+      error 400, "You must provide an existing `submissionId` to delete" if submission.nil?
+
+      submission.delete
+      halt 204
     end
 
     # Download an ontology
