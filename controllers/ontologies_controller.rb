@@ -2,6 +2,16 @@ class OntologiesController
   namespace "/ontologies" do
     # Display all ontologies
     get do
+      if params["include"].nil? || params["include"].empty?
+        onts = Ontology.all
+      else
+        onts = []
+        containers = Ontology.all
+        containers.each do |ont|
+          onts << ont.latest_submission
+        end
+      end
+      reply onts
     end
 
     # Display the most recent submission of the ontology
