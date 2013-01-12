@@ -17,13 +17,18 @@ class OntologiesController
     # Display the most recent submission of the ontology
     get '/:acronym' do
       submission = params[:ontology_submission_id]
-      ont = Ontology.find(params["acronym"].upcase)
+      ont = Ontology.find(params["acronym"])
+      if submission
+        ont = ont.submission(submission)
+        error 404 if ont.nil?
+      end
       reply ont
     end
 
     # Display all submissions of an ontology
     get '/:acronym/submissions' do
-      submission = params[:ontology_submission_id]
+      ont = Ontology.find(params["acronym"])
+      reply ont.submissions
     end
 
     # Ontologies get created via put because clients can assign an id (POST is only used where servers assign ids)
