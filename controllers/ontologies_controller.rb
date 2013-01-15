@@ -4,10 +4,10 @@ class OntologiesController
     # Display all ontologies
     get do
       if params["include"].nil? || params["include"].empty?
-        onts = Ontology.all
+        onts = Ontology.all(:load_attrs => [:acronym])
       else
         onts = []
-        containers = Ontology.all
+        containers = Ontology.all(:load_attrs => [:acronym])
         containers.each do |ont|
           onts << ont.latest_submission
         end
