@@ -41,19 +41,50 @@ class TestOntologiesController < TestCase
   end
 
   def test_all_ontologies
-    # get '/ontologies'
-    # assert last_response.ok?
-    # assert_equal '', last_response.body
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions()
+
+    get '/ontologies'
+    assert last_response.ok?
+
+    onts = JSON.parse(last_response.body)
+    assert onts.length >= num_onts_created
+
+    all_ont_acronyms = []
+    onts.each do |ont|
+      all_ont_acronyms << ont["acronym"]
+    end
+
+    created_ont_acronyms.each do |acronym|
+      assert all_ont_acronyms.include?(acronym)
+    end
+
+    delete_ontologies_and_submissions()
   end
 
   def test_single_ontology
-    # ontology = 'ncit'
-    # get "/ontologies/#{ontology}"
-    # assert last_response.ok?
-    # assert_equal '', last_response.body
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1)
+    ontology = created_ont_acronyms.first
+    get "/ontologies/#{ontology}"
+    assert last_response.ok?
+
+    ont = JSON.parse(last_response.body)
+    assert ont["acronym"] = ontology
+
+    delete_ontologies_and_submissions()
   end
 
   def test_submissions_for_given_ontology
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1)
+    ontology = created_ont_acronyms.first
+    get "/ontologies/#{ontology}/submissions"
+    assert last_response.ok?
+
+    submissions_goo = OntologySubmission.where(acronym: ontology)
+
+    submissions = JSON.parse(last_response.body)
+    assert submissions.length == submissions_goo.length
+
+    delete_ontologies_and_submissions()
   end
 
   def test_create_new_ontology_same_acronym
@@ -79,7 +110,8 @@ class TestOntologiesController < TestCase
     assert last_response.status == 201
 
     get "/ontologies/#{@acronym}"
-    # ont = JSON.parse(last_response.body)
+    ont = JSON.parse(last_response.body)
+    assert ont["acronym"].eql?(@acronym.upcase)
   end
 
   def test_create_new_ontology_submission
@@ -88,21 +120,57 @@ class TestOntologiesController < TestCase
     assert last_response.status == 201
   end
 
-  def test_update_replace_ontology
+  def test_patch_ontology
+    _create_onts
+    name = "Test new name"
+    new_name = {name: name}
+    patch "/ontologies/#{@acronym}", new_name.to_json, "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 204
+
+    get "/ontologies/#{@acronym}"
+    ont = JSON.parse(last_response.body)
+    assert ont["name"].eql?(name)
   end
 
-  def test_update_patch_ontology
+  def test_patch_ontology_submission
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1)
+    submission = Ontology.find(created_ont_acronyms.first).submissions[0]
+    submission.load
+
+    new_values = {summaryOnly: false}
+    patch "/ontologies/#{submission.acronym}/#{submission.submissionId}", new_values.to_json, "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 204
+
+    get "/ontologies/#{submission.acronym}?ontology_submission_id=#{submission.submissionId}"
+    submission = JSON.parse(last_response.body)
+    assert submission["summaryOnly"] == false
   end
 
   def test_delete_ontology
+    _create_onts
+    delete "/ontologies/#{@acronym}"
+    assert last_response.status == 204
+
+    get "/ontologies/#{@acronym}"
+    assert last_response.status == 404
   end
 
   def test_delete_ontology_submission
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, random_submission_count: false, submission_count: 5)
+    acronym = created_ont_acronyms.first
+    submission_to_delete = (1..5).to_a.shuffle.first
+    delete "/ontologies/#{acronym}/#{submission_to_delete}"
+    assert last_response.status == 204
+
+    get "/ontologies/#{acronym}?ontology_submission_id=#{submission_to_delete}"
+    assert last_response.status == 404
   end
 
   def test_download_ontology
+    # not implemented yet
   end
 
   def test_ontology_properties
+    # not implemented yet
   end
 end
