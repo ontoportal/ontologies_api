@@ -72,6 +72,9 @@ class OntologiesController
       submission = ont.submission(params[:ontology_submission_id])
       error 400, "You must provide an existing `submissionId` to patch" if submission.nil?
 
+      # TODO: Not sure why this one needs to be loaded individually
+      submission.load unless submission.loaded?
+
       populate_from_params(submission, params)
 
       if submission.valid?
