@@ -106,7 +106,7 @@ class TestOntologiesController < TestCase
   end
 
   def test_create_new_ontology_file
-    put "/ontologies/#{@acronym}", name: @name, ontologyFormat: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
+    put "/ontologies/#{@acronym}", name: @name, hasOntologyLanguage: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
     assert last_response.status == 201
 
     get "/ontologies/#{@acronym}"
@@ -116,7 +116,7 @@ class TestOntologiesController < TestCase
 
   def test_create_new_ontology_submission
     _create_onts
-    post "/ontologies/#{@acronym}/submissions", name: @name, ontologyFormat: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
+    post "/ontologies/#{@acronym}/submissions", name: @name, hasOntologyLanguage: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
     assert last_response.status == 201
   end
 

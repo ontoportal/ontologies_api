@@ -42,7 +42,7 @@ class TestCase < Test::Unit::TestCase
         os = LinkedData::Models::OntologySubmission.new({
           acronym: "TST-ONT-#{count}",
           ontology: o,
-          ontologyFormat: of,
+          hasOntologyLanguage: of,
           administeredBy: u,
           pullLocation: RDF::IRI.new("http://example.com"),
           status: LinkedData::Models::SubmissionStatus.new(:code => "UPLOADED"),

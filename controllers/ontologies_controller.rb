@@ -162,8 +162,8 @@ class OntologiesController
       ont_submission.uploadFilePath = file_location
 
       # Add new format if it doesn't exist
-      if ont_submission.ontologyFormat.nil?
-        ont_submission.ontologyFormat = OntologyFormat.new(acronym: params["ontologyFormat"])
+      if ont_submission.hasOntologyLanguage.nil?
+        ont_submission.hasOntologyLanguage = OntologyFormat.new(acronym: params["hasOntologyLanguage"])
       end
 
       if ont_submission.valid?
