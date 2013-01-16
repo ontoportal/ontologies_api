@@ -43,7 +43,7 @@ module Sinatra
       # The method has two options parameters:
       #   +status (Fixnum)+: Status code to use in response
       #   +obj (Object)+: The object to serialize
-      # Usage: +response object+, +response 201, object+
+      # Usage: +reply object+, +reply 201, object+
       def reply(*response)
         status = response.shift
         if !status.instance_of?(Fixnum)

@@ -13,5 +13,3 @@ require_dir("helpers")
 require_dir("models")
 require_dir("controllers")
 
-# Setup ontologies_linked_data connection to triplestore
-LinkedData.config
