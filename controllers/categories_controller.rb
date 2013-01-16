@@ -8,11 +8,7 @@ class CategoriesController
     get '/:category' do
     end
 
-    # Create a new category
-    post do
-    end
-
-    # Update via delete/create for an existing submission of an category
+    # Create a category with the given acronym
     put '/:category' do
     end
 

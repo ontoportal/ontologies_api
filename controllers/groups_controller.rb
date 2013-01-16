@@ -8,11 +8,7 @@ class GroupsController
     get '/:group' do
     end
 
-    # Create a new group
-    post do
-    end
-
-    # Update via delete/create for an existing submission of an group
+    # Create a group with the given acronym
     put '/:group' do
     end
 

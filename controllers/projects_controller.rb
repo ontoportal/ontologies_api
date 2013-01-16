@@ -8,11 +8,7 @@ class ProjectsController
     get '/:project' do
     end
 
-    # Create a new project
-    post do
-    end
-
-    # Update via delete/create for an existing submission of an project
+    # Create a project with the given acronym
     put '/:project' do
     end
 

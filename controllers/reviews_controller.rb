@@ -12,11 +12,7 @@ class ReviewsController
     post do
     end
 
-    # Update via delete/create for an existing submission of an review
-    put '/:review' do
-    end
-
-    # Update an existing submission of an review
+    # Update an existing submission of a review
     patch '/:review' do
     end
 
