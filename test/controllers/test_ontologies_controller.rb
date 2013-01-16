@@ -20,8 +20,15 @@ class TestOntologiesController < TestCase
   end
 
   def _create_models
-    test_user = User.new(username: "tim")
-    test_user.save
+    _create_user
+  end
+
+  def _create_user
+    username = "tim"
+    test_user = User.new(username: username)
+    test_user.save if test_user.valid?
+    user = test_user.valid? ? test_user : User.find(username)
+    user
   end
 
   def _delete
@@ -31,7 +38,7 @@ class TestOntologiesController < TestCase
   end
 
   def _create_onts
-    ont = Ontology.new(acronym: @acronym, name: @name)
+    ont = Ontology.new(acronym: @acronym, name: @name, administeredBy: _create_user)
     ont.save
   end
 

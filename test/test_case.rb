@@ -33,6 +33,7 @@ class TestCase < Test::Unit::TestCase
       o = LinkedData::Models::Ontology.new({
         acronym: acronym,
         name: "Test Ontology ##{count}",
+        administeredBy: u
       })
       o.save if o.valid?
 
@@ -43,9 +44,8 @@ class TestCase < Test::Unit::TestCase
           acronym: "TST-ONT-#{count}",
           ontology: o,
           hasOntologyLanguage: of,
-          administeredBy: u,
           pullLocation: RDF::IRI.new("http://example.com"),
-          status: LinkedData::Models::SubmissionStatus.new(:code => "UPLOADED"),
+          submissionStatus: LinkedData::Models::SubmissionStatus.new(:code => "UPLOADED"),
           submissionId: o.next_submission_id
         })
         os.save if os.valid?
