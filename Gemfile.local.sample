@@ -3,4 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'goo', :path => '~/Development/goo'
+# Use :path instead of :git to point to a local code repository
+gem 'goo', :git => 'https://github.com/ncbo/goo.git'
+gem 'sparql_http', :git => 'https://github.com/ncbo/sparql_http.git'
+gem 'ontologies_linked_data', :git => 'https://github.com/ncbo/ontologies_linked_data.git'
