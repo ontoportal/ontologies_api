@@ -52,7 +52,7 @@ module Sinatra
         end
 
         obj = response.shift
-        halt 404 if obj.nil? || obj.length == 0
+        halt 404 if obj.nil?
 
         if obj.respond_to?("each")
           obj.each do |sub_obj|
