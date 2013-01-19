@@ -6,6 +6,7 @@ gem 'json'
 gem 'rake'
 gem 'rack-accept'
 gem 'rack-post-body-to-params'
+gem 'simplecov', :require => false, :group => :test
 
 # HTTP server
 gem 'thin'
