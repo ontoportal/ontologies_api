@@ -60,8 +60,19 @@ class TestUsersController < TestCase
     assert JSON.parse(last_response.body)["username"].eql?(@username)
   end
 
+  def test_create_new_invalid_user
+    put "/users/fred"
+    assert last_response.status == 400
+  end
+
   def test_update_patch_user
-    # There is only a username at this point, will test when other attr are available
+    add_first_name = {firstName: "Fred"}
+    patch "/users/fred", add_first_name.to_json, "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 204
+
+    get "/users/fred"
+    fred = JSON.parse(last_response.body)
+    assert fred["firstName"].eql?("Fred")
   end
 
   def test_delete_user
