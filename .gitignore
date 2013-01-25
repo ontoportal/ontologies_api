@@ -28,3 +28,7 @@ config/environments/local/*.rb
 
 # Ignore generated test data
 test/data/uploaded_ontologies/**/*
+
+# Ignore RubyMine editor files
+.idea
+
