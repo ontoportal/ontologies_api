@@ -143,12 +143,13 @@ class TestOntologiesController < TestCase
     num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1)
     submission = Ontology.find(created_ont_acronyms.first).submissions[0]
     submission.load
+    submission.ontology.load
 
     new_values = {summaryOnly: false}
-    patch "/ontologies/#{submission.acronym}/#{submission.submissionId}", new_values.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/ontologies/#{submission.ontology.acronym}/#{submission.submissionId}", new_values.to_json, "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
-    get "/ontologies/#{submission.acronym}?ontology_submission_id=#{submission.submissionId}"
+    get "/ontologies/#{submission.ontology.acronym}?ontology_submission_id=#{submission.submissionId}"
     submission = JSON.parse(last_response.body)
     assert submission["summaryOnly"] == false
   end
