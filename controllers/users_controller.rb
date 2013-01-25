@@ -23,7 +23,7 @@ class UsersController
 
     # Update an existing submission of an user
     patch '/:username' do
-      user = User.find([params[:username]])
+      user = User.find(params[:username])
       populate_from_params(user, params)
       if user.valid?
         user.save
