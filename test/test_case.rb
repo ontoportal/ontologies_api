@@ -25,6 +25,16 @@ class TestCase < Test::Unit::TestCase
     Sinatra::Application
   end
 
+  def teardown
+    delete_ontologies_and_submissions
+  end
+
+  ##
+  # Creates a set of Ontology and OntologySubmission objects and stores them in the triplestore
+  # @param [Hash] options the options to create ontologies with
+  # @option options [Fixnum] :ont_count Number of ontologies to create
+  # @option options [Fixnum] :submission_count How many submissions each ontology should have (acts as max number when random submission count is used)
+  # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   def create_ontologies_and_submissions(options = {})
     ont_count = options[:ont_count] || 5
     submission_count = options[:submission_count] || 5
@@ -37,6 +47,7 @@ class TestCase < Test::Unit::TestCase
     of.save unless u.exist? || !u.valid?
 
     ont_acronyms = []
+    ontologies = []
     ont_count.to_i.times do |count|
       acronym = "TST-ONT-#{count}"
       ont_acronyms << acronym
@@ -46,7 +57,11 @@ class TestCase < Test::Unit::TestCase
         name: "Test Ontology ##{count}",
         administeredBy: u
       })
-      o.save if o.valid?
+
+      if o.valid?
+        o.save
+        ontologies << o
+      end
 
       # Random submissions (between 1 and max)
       max = random_submission_count ? (1..submission_count.to_i).to_a.shuffle.first : submission_count
@@ -62,9 +77,19 @@ class TestCase < Test::Unit::TestCase
         os.save if os.valid?
       end
     end
-    return ont_count, ont_acronyms
+
+    # Get ontology objects if empty
+    if ontologies.empty?
+      ont_acronyms.each do |ont_id|
+        ontologies << LinkedData::Models::Ontology.find(ont_id)
+      end
+    end
+
+    return ont_count, ont_acronyms, ontologies
   end
 
+  ##
+  # Delete all ontologies and their submissions. This will look for all ontologies starting with TST-ONT- and ending in a Fixnum
   def delete_ontologies_and_submissions
     ont = LinkedData::Models::Ontology.find("TST-ONT-0")
     count = 0
