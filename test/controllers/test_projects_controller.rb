@@ -20,7 +20,7 @@ class TestProjectsController < TestCase
   def setup
     super
     teardown
-    @user = LinkedData::Models::User.new(username: "DLW")
+    @user = LinkedData::Models::User.new(username: "DLW", email: "DLW@example.org")
     @user.save
     @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST", administeredBy: @user)
     @ont.save

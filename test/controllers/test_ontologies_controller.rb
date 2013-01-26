@@ -25,7 +25,7 @@ class TestOntologiesController < TestCase
 
   def _create_user
     username = "tim"
-    test_user = User.new(username: username)
+    test_user = User.new(username: username, email: "#{username}@example.org")
     test_user.save if test_user.valid?
     user = test_user.valid? ? test_user : User.find(username)
     user
