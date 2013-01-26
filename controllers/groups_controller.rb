@@ -2,6 +2,8 @@ class GroupsController
   namespace "/groups" do
     # Display all groups
     get do
+      groups = Group.all
+      reply groups
     end
 
     # Display a single group
