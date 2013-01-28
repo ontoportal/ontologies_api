@@ -4,16 +4,15 @@ class TestgroupsController < TestCase
 
   def setup
     # Create some test groups
-    @acronyms = %w(CTSA-HOM caBIG CTSA CGIAR OBOF PSI UMLS WHO-FIC)
-    @names_descriptions = {
-      "CTSA Health Ontology Mapper Cancer" => "CTSA Health Ontology Mapper Cancer Description",
-      "Biomedical Informatics Grid" => "Biomedical Info Grid Description",
-      "Clinical and Translational Science Awards" => "CTSA Description",
-      "Consultative Group on International Agricultural Research" => "Consultative Group Description",
-      "OBO Foundry" => "OBO Foundry Description",
-      "Proteomics Standards Initiative" => "Proteomics Group Description",
-      "Unified Medical Language System" => "UMLS Group Description",
-      "WHO Family of International Classifications" => "WHO Description"
+    @groups = {
+      "CTSA-HOM" => ["CTSA Health Ontology Mapper Cancer", "CTSA Health Ontology Mapper Cancer Description"],
+      "caBIG" => ["Biomedical Informatics Grid", "Biomedical Info Grid Description"],
+      "CTSA" => ["Clinical and Translational Science Awards", "CTSA Description"],
+      "CGIAR" => ["Consultative Group on International Agricultural Research", "Consultative Group Description"],
+      "OBOF" => ["OBO Foundry", "OBO Foundry Description"],
+      "PSI" => ["Proteomics Standards Initiative", "Proteomics Group Description"],
+      "UMLS" => ["Unified Medical Language System",  "UMLS Group Description"],
+      "WHO-FIC" => ["WHO Family of International Classifications", "WHO Description"]
     }
 
     # Make sure these don't exist
@@ -21,8 +20,8 @@ class TestgroupsController < TestCase
 
     i = 0
     # Create them again
-    @names_descriptions.each do |name, desc|
-      Group.new(acronym: @acronyms[i], name: name, description: desc).save
+    @groups.each do |acronym, name_desc|
+      Group.new(acronym: acronym, name: name_desc[0], description: name_desc[1]).save
       i += 1
     end
  end
@@ -33,7 +32,7 @@ class TestgroupsController < TestCase
   end
 
   def _delete_groups
-    @acronyms.each do |acronym|
+    @groups.each do |acronym, name_desc|
       group = Group.find(acronym)
       group.delete unless group.nil?
     end
@@ -43,7 +42,8 @@ class TestgroupsController < TestCase
   def test_all_groups
     get '/groups'
     assert last_response.ok?
-    assert_equal '', last_response.body
+    groups = JSON.parse(last_response.body)
+    assert groups.length >= @groups.length
   end
 
   def test_single_group
