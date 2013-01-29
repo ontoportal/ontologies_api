@@ -73,7 +73,7 @@ class TestProjectsController < TestCase
     @ont.save
     @p = LinkedData::Models::Project.new
     @p.creator = @user
-    #@p.created = DateTime.new
+    @p.created = DateTime.new
     @p.name = "TestProject" # must be a valid URI
     @p.homePage = "http://www.example.org"
     @p.description = "A test project"
@@ -84,7 +84,7 @@ class TestProjectsController < TestCase
         description: @p.description,
         homePage: @p.homePage,
         creator: @p.creator.username,
-        #created: @p.created,
+        created: @p.created,
         ontologyUsed: @p.ontologyUsed.first.acronym
     }
   end
