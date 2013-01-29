@@ -36,6 +36,7 @@ class TestCase < Test::Unit::TestCase
   # @option options [Fixnum] :submission_count How many submissions each ontology should have (acts as max number when random submission count is used)
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   def create_ontologies_and_submissions(options = {})
+    delete_ontologies_and_submissions
     ont_count = options[:ont_count] || 5
     submission_count = options[:submission_count] || 5
     random_submission_count = options[:random_submission_count].nil? ? true : options[:random_submission_count]
@@ -67,13 +68,18 @@ class TestCase < Test::Unit::TestCase
       max = random_submission_count ? (1..submission_count.to_i).to_a.shuffle.first : submission_count
       max.times do
         os = LinkedData::Models::OntologySubmission.new({
-          acronym: "TST-ONT-#{count}",
           ontology: o,
           hasOntologyLanguage: of,
-          pullLocation: RDF::IRI.new("http://example.com"),
           submissionStatus: LinkedData::Models::SubmissionStatus.new(:code => "UPLOADED"),
           submissionId: o.next_submission_id
         })
+        if (options.include? :process_submission)
+          file_path = "test/data/ontology_files/BRO_v3.1.owl"
+          uploadFilePath = LinkedData::Models::OntologySubmission.copy_file_repository(o.acronym, os.submissionId, file_path)
+          os.uploadFilePath = uploadFilePath
+        else
+          os.pullLocation = RDF::IRI.new("http://example.com")
+        end
         os.save if os.valid?
       end
     end
@@ -85,23 +91,38 @@ class TestCase < Test::Unit::TestCase
       end
     end
 
+    if options.include? :process_submission
+      ontologies.each do |o|
+        o.load unless o.loaded?
+        latest = o.latest_submission
+        latest.load unless latest.loaded?
+        latest.ontology.load unless latest.ontology.loaded?
+        latest.process_submission Logger.new(STDOUT)
+      end
+    end
+
     return ont_count, ont_acronyms, ontologies
   end
 
   ##
   # Delete all ontologies and their submissions. This will look for all ontologies starting with TST-ONT- and ending in a Fixnum
   def delete_ontologies_and_submissions
-    ont = LinkedData::Models::Ontology.find("TST-ONT-0")
-    count = 0
-    while ont
-      ont.delete unless ont.nil?
-      ont = LinkedData::Models::Ontology.find("TST-ONT-#{count+1}")
+    LinkedData::Models::Ontology.all.each do |ont|
+      ont.load unless ont.nil? || ont.loaded
+      subsmissions = ont.submissions
+      subsmissions.each do |ss|
+        ss.load unless ss.loaded?
+        ss.delete
+      end
+      ont.delete
     end
 
     u = LinkedData::Models::User.find("tim")
+    u.load unless u.nil? || u.loaded?
     u.delete unless u.nil?
 
     of = LinkedData::Models::OntologyFormat.find("OWL")
+    of.load unless of.nil? || of.loaded?
     of.delete unless of.nil?
   end
 
