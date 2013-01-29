@@ -18,7 +18,7 @@ module Sinatra
       # users to overwrite any attribute, including things like passwords.
       # TODO: We should only mass-assign attributes that are declared (if obj.respond_to?...)
       def populate_from_params(obj, params)
-        obj.load if obj.respond_to?("valid?") && obj.valid? && !obj.loaded? && obj.exist?
+        obj.load if obj.kind_of?(Goo::Base::Resource) && obj.lazy_loaded?
         params.each do |attribute, value|
           attr_cls = obj.class.range_class(attribute)
           if attr_cls
