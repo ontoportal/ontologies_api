@@ -1,9 +1,9 @@
 class ProjectsController
   namespace "/projects" do
+
     # Display all projects
     get do
-      p = LinkedData::Models::Project.all
-      reply p
+      reply LinkedData::Models::Project.all
     end
 
     # Retrieve a single project, by unique project identifier (name)
@@ -16,42 +16,43 @@ class ProjectsController
         if p.length == 0
           error 404, "Project #{name} was not found."
         else
-          error 505, "Project retrieval error, projects found = #{p}"
+          error 500, "Project retrieval error; projects found = #{p}"
         end
       end
     end
 
-    # Create a project with the given acronym
+    # Projects get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:project' do
+      # TODO: Figure out how to get additional model attribute values into params
       p = instance_from_params(LinkedData::Models::Project, params)
       if p.valid?
-        p.load
-        reply p
+        p.save
+        reply 201, p
       else
-        error 505, "#{p.errors}"
+        error 400, p.errors
       end
     end
 
-    # Update an existing submission of an project
+    # Update an existing submission of a project
     patch '/:project' do
       p = LinkedData::Models::Project.find(params[:project])
+      p = populate_from_params(p, params)
       if p.valid?
-        p.load
-        p = populate_from_params(p, params)
-        reply p
+        p.save
+        halt 204
       else
-        halt 404
+        error 404, p.errors
       end
     end
 
     # Delete a project
     delete '/:project' do
       p = LinkedData::Models::Project.find(params[:project])
-      if p.valid?
-        p.delete
-        reply 201
+      if p.nil?
+        halt 404
       else
-        halt 505
+        p.delete
+        halt 204
       end
     end
 
