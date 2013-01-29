@@ -89,7 +89,7 @@ class TestOntologiesController < TestCase
     get "/ontologies/#{ontology}/submissions"
     assert last_response.ok?
 
-    submissions_goo = OntologySubmission.where(acronym: ontology)
+    submissions_goo = OntologySubmission.where(ontology: { acronym: ontology})
 
     submissions = JSON.parse(last_response.body)
     assert submissions.length == submissions_goo.length

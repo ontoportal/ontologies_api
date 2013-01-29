@@ -67,13 +67,18 @@ class TestCase < Test::Unit::TestCase
       max = random_submission_count ? (1..submission_count.to_i).to_a.shuffle.first : submission_count
       max.times do
         os = LinkedData::Models::OntologySubmission.new({
-          acronym: "TST-ONT-#{count}",
           ontology: o,
           hasOntologyLanguage: of,
-          pullLocation: RDF::IRI.new("http://example.com"),
           submissionStatus: LinkedData::Models::SubmissionStatus.new(:code => "UPLOADED"),
           submissionId: o.next_submission_id
         })
+        if (options.include? :process_submission)
+          file_path = "test/data/ontology_files/BRO_v3.1.owl"
+          uploadFilePath = LinkedData::Models::OntologySubmission.copy_file_repository(o.acronym, os.submissionId, file_path)
+          os.uploadFilePath = uploadFilePath
+        else
+          os.pullLocation = RDF::IRI.new("http://example.com")
+        end
         os.save if os.valid?
       end
     end
@@ -82,6 +87,16 @@ class TestCase < Test::Unit::TestCase
     if ontologies.empty?
       ont_acronyms.each do |ont_id|
         ontologies << LinkedData::Models::Ontology.find(ont_id)
+      end
+    end
+
+    if options.include? :process_submission
+      ontologies.each do |o|
+        o.load unless o.loaded?
+        latest = o.latest_submission
+        latest.load unless latest.loaded?
+        latest.ontology.load unless latest.ontology.loaded?
+        latest.process_submission Logger.new(STDOUT)
       end
     end
 
