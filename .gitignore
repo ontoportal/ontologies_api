@@ -32,3 +32,5 @@ test/data/uploaded_ontologies/**/*
 # Ignore RubyMine editor files
 .idea
 
+
+*.swp

@@ -25,15 +25,17 @@ class TestOntologiesController < TestCase
 
   def _create_user
     username = "tim"
-    test_user = User.new(username: username)
+    test_user = User.new(username: username, email: "#{username}@example.org")
     test_user.save if test_user.valid?
     user = test_user.valid? ? test_user : User.find(username)
+    user.load unless user.loaded?
     user
   end
 
   def _delete
     _delete_onts
     test_user = User.find("tim")
+    test_user.load unless test_user.nil? || test_user.loaded?
     test_user.delete unless test_user.nil?
   end
 
@@ -44,6 +46,7 @@ class TestOntologiesController < TestCase
 
   def _delete_onts
     ont = Ontology.find(@acronym)
+    ont.load unless ont.nil? || ont.loaded?
     ont.delete unless ont.nil?
   end
 
@@ -86,7 +89,7 @@ class TestOntologiesController < TestCase
     get "/ontologies/#{ontology}/submissions"
     assert last_response.ok?
 
-    submissions_goo = OntologySubmission.where(acronym: ontology)
+    submissions_goo = OntologySubmission.where(ontology: { acronym: ontology})
 
     submissions = JSON.parse(last_response.body)
     assert submissions.length == submissions_goo.length
@@ -141,16 +144,25 @@ class TestOntologiesController < TestCase
 
   def test_patch_ontology_submission
     num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1)
-    submission = Ontology.find(created_ont_acronyms.first).submissions[0]
-    submission.load
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+    assert(ont.submissions.length > 0)
+    submission = ont.submissions[0]
+    submission.load unless submission.loaded?
+    submission.ontology.load unless submission.ontology.loaded?
 
     new_values = {summaryOnly: false}
-    patch "/ontologies/#{submission.acronym}/#{submission.submissionId}", new_values.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/ontologies/#{submission.ontology.acronym}/#{submission.submissionId}", new_values.to_json, "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
-    get "/ontologies/#{submission.acronym}?ontology_submission_id=#{submission.submissionId}"
+    get "/ontologies/#{submission.ontology.acronym}?ontology_submission_id=#{submission.submissionId}"
     submission = JSON.parse(last_response.body)
     assert submission["summaryOnly"] == false
+  end
+
+  def test_submission_roots
+    return
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
   end
 
   def test_delete_ontology

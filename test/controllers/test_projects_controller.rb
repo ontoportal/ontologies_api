@@ -1,20 +1,6 @@
 require_relative '../test_case'
 require 'json-schema'
 
-
-=begin
-class Project < LinkedData::Models::Base
-  model :project
-  attribute :creator, :cardinality => { :max => 1, :min => 1 }
-  attribute :created, :date_time_xsd => true, :cardinality => { :max => 1, :min => 1 }
-  attribute :name, :cardinality => { :max => 1, :min => 1 }
-  attribute :homePage, :cardinality => { :max => 1, :min => 1 }
-  attribute :description, :cardinality => { :max => 1, :min => 1 }
-  attribute :contacts, :cardinality => { :max => 1 }
-  attribute :ontologyUsed, :instance_of => { :with => :ontology }, :cardinality => { :min => 1 }
-end
-=end
-
 class TestProjectsController < TestCase
 
   # JSON Schema
@@ -73,21 +59,21 @@ class TestProjectsController < TestCase
   end
 
   def teardown
-    _delete(LinkedData::Models::User.all)
-    _delete(LinkedData::Models::Ontology.all)
     _delete(LinkedData::Models::Project.all)
+    _delete(LinkedData::Models::Ontology.all)
+    _delete(LinkedData::Models::User.all)
   end
 
   def setup
     super
     teardown
-    @user = LinkedData::Models::User.new(username: "test_user")
+    @user = LinkedData::Models::User.new(username: "test_user", email: "test_user@example.org")
     @user.save
     @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: @user)
     @ont.save
     @p = LinkedData::Models::Project.new
     @p.creator = @user
-    @p.created = DateTime.new
+    #@p.created = DateTime.new
     @p.name = "TestProject" # must be a valid URI
     @p.homePage = "http://www.example.org"
     @p.description = "A test project"
@@ -98,7 +84,7 @@ class TestProjectsController < TestCase
         description: @p.description,
         homePage: @p.homePage,
         creator: @p.creator.username,
-        created: @p.created,
+        #created: @p.created,
         ontologyUsed: @p.ontologyUsed.first.acronym
     }
   end
