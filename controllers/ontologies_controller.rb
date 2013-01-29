@@ -124,7 +124,6 @@ class OntologiesController
         error 400, "Ontology #{params["acronym"]} does not have any submissions" if submission.nil?
       end
       roots = submission.roots
-      binding.pry
       reply roots
     end
 

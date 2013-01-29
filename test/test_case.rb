@@ -36,6 +36,7 @@ class TestCase < Test::Unit::TestCase
   # @option options [Fixnum] :submission_count How many submissions each ontology should have (acts as max number when random submission count is used)
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   def create_ontologies_and_submissions(options = {})
+    delete_ontologies_and_submissions
     ont_count = options[:ont_count] || 5
     submission_count = options[:submission_count] || 5
     random_submission_count = options[:random_submission_count].nil? ? true : options[:random_submission_count]
@@ -106,8 +107,7 @@ class TestCase < Test::Unit::TestCase
   ##
   # Delete all ontologies and their submissions. This will look for all ontologies starting with TST-ONT- and ending in a Fixnum
   def delete_ontologies_and_submissions
-    ont = LinkedData::Models::Ontology.find("TST-ONT")
-    if !ont.nil?
+    LinkedData::Models::Ontology.all.each do |ont|
       ont.load unless ont.nil? || ont.loaded
       subsmissions = ont.submissions
       subsmissions.each do |ss|
@@ -122,7 +122,7 @@ class TestCase < Test::Unit::TestCase
     u.delete unless u.nil?
 
     of = LinkedData::Models::OntologyFormat.find("OWL")
-    of.load unless ont.nil? || of.loaded?
+    of.load unless of.nil? || of.loaded?
     of.delete unless of.nil?
   end
 

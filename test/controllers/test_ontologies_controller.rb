@@ -160,6 +160,11 @@ class TestOntologiesController < TestCase
     assert submission["summaryOnly"] == false
   end
 
+  def test_submission_roots
+    return
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+  end
+
   def test_delete_ontology
     _create_onts
     delete "/ontologies/#{@acronym}"
