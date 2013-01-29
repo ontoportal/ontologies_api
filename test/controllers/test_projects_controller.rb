@@ -115,15 +115,14 @@ class TestProjectsController < TestCase
     # Ensure it doesn't exist first (undo the setup creation)
     delete "/projects/#{@p.name}"
     assert_equal(204, last_response.status)
-    #params = [
-    #  #"name='#{@p.name}'",
-    #  "description='#{@p.description}'",
-    #  "homePage='#{@p.homePage}'",
-    #  "creator='#{@user.username}'",
-    #  #"ontologyUsed='#{@p.ontologyUsed.acronym}'"
-    #]
-    #put "/projects/#{@p.name}?#{params.join('&')}"
-    put "/projects/#{@p.name}"
+    params = {
+        name: @p.name,
+        description: @p.description,
+        homePage: @p.homePage,
+        creator: @user.username,
+        ontologyUsed: @p.ontologyUsed.first.acronym
+    }
+    put "/projects/#{@p.name}", params.to_json, "CONTENT_TYPE" => "application/json"
     _valid_response_project(last_response, 201)
     get "/projects/#{@p.name}"
     _valid_response_project(last_response, 200)
