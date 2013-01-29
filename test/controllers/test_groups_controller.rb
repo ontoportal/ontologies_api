@@ -47,10 +47,11 @@ class TestgroupsController < TestCase
   end
 
   def test_single_group
-    group = 'test_group'
-    get "/groups/#{group}"
+    acronym = 'CTSA'
+    get "/groups/#{acronym}"
     assert last_response.ok?
-    assert_equal '', last_response.body
+    group = JSON.parse(last_response.body)
+    assert group["acronym"] = acronym
   end
 
   def test_create_new_group

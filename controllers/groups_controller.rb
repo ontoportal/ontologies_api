@@ -8,6 +8,11 @@ class GroupsController
 
     # Display a single group
     get '/:group' do
+      acronym = params["group"]
+      g = Group.find(acronym)
+
+      error 404, "Group #{acronym} not found" if g.nil?
+      reply 200, g
     end
 
     # Create a group with the given acronym
