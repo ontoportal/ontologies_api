@@ -93,6 +93,14 @@ class TestProjectsController < TestCase
     @p.description = "A test project"
     @p.ontologyUsed = [@ont,]
     @p.save
+    @projectParams = {
+        name: @p.name,
+        description: @p.description,
+        homePage: @p.homePage,
+        creator: @p.creator.username,
+        created: @p.created,
+        ontologyUsed: @p.ontologyUsed.first.acronym
+    }
   end
 
   def test_all_projects
@@ -106,45 +114,43 @@ class TestProjectsController < TestCase
     _validate_json(p)
   end
 
-  def test_single_project
+  def test_valid_project
     get "/projects/#{@p.name}"
     _valid_response_project(last_response, 200)
   end
 
-  def test_create_new_project
+  def test_invalid_project
+    get "/projects/missing_project"
+    assert_equal(404, last_response.status)
+  end
+
+  def test_new_project_success
     # Ensure it doesn't exist first (undo the setup creation)
     delete "/projects/#{@p.name}"
     assert_equal(204, last_response.status)
-    params = {
-        name: @p.name,
-        description: @p.description,
-        homePage: @p.homePage,
-        creator: @user.username,
-        ontologyUsed: @p.ontologyUsed.first.acronym
-    }
-    put "/projects/#{@p.name}", params.to_json, "CONTENT_TYPE" => "application/json"
+    put "/projects/#{@p.name}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
     _valid_response_project(last_response, 201)
-    get "/projects/#{@p.name}"
-    _valid_response_project(last_response, 200)
+    test_valid_project
   end
 
-  def test_update_replace_project
+  def test_new_project_failures
+    # Fail PUT for any project that already exists.
+    put "/projects/#{@p.name}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    assert_equal(409, last_response.status)
+    # Ensure the project doesn't exist.
+    delete "/projects/#{@p.name}"
+    assert_equal(204, last_response.status)
+    # Fail PUT for any project with required missing data.
+    @projectParams["name"] = nil
+    put "/projects/#{@p.name}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    assert_equal(400, last_response.status)
   end
 
-  def test_update_patch_project
-    patch "/projects/#{@p.name}"
-    _valid_response_project(last_response, 201)
-    get "/projects/#{@p.name}"
-    _valid_response_project(last_response, 200)
+  def test_update_project_success
+    patch "/projects/#{@p.name}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    assert_equal(204, last_response.status)
+    test_valid_project
   end
-
-  #test_update_patch_user
-  # add_first_name = {firstName: "Fred"}
-  # patch "/users/fred", add_first_name.to_json, "CONTENT_TYPE" => "application/json"
-  # assert last_response.status == 204
-  # get "/users/fred"
-  # fred = JSON.parse(last_response.body)
-  # assert fred["firstName"].eql?("Fred")
 
   def test_delete_project
     delete "/projects/#{@p.name}"
