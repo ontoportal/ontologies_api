@@ -13,8 +13,8 @@ class TestClsesController < TestCase
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
 
-    clss_ids.each do |cls|
-      escaped_cls= CGI.escape(cls)
+    clss_ids.each do |cls_id|
+      escaped_cls= CGI.escape(cls_id)
       ont = Ontology.find(created_ont_acronyms.first)
       ont.load unless ont.loaded?
       get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}"
@@ -23,6 +23,7 @@ class TestClsesController < TestCase
       assert(!cls["prefLabel"].nil?)
       assert_instance_of(String, cls["prefLabel"])
       assert_instance_of(Array, cls["synonyms"])
+      assert(cls["id"] == cls_id)
       if cls["prefLabel"].include? "Electron"
         assert_equal(1, cls["synonyms"].length)
         assert_instance_of(String, cls["synonyms"][0])
@@ -42,6 +43,7 @@ class TestClsesController < TestCase
     assert_equal 12, roots.length
     roots.each do |r|
       assert_instance_of String, r["prefLabel"]
+      assert_instance_of String, r["id"]
     end
   end
 
