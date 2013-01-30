@@ -21,7 +21,6 @@ class OntologiesController
     get '/:acronym' do
       submission = params[:ontology_submission_id]
       ont = Ontology.find(params["acronym"])
-      ont unless ont.nil? || ont.loaded
       if submission
         ont = ont.submission(submission)
         error 404 if ont.nil?
@@ -33,7 +32,6 @@ class OntologiesController
     # Display all submissions of an ontology
     get '/:acronym/submissions' do
       ont = Ontology.find(params["acronym"])
-      ont.load unless ont.loaded?
       reply ont.submissions
     end
 
@@ -71,13 +69,9 @@ class OntologiesController
     patch '/:acronym/:ontology_submission_id' do
       ont = Ontology.find(params["acronym"])
       error 400, "You must provide an existing `acronym` to patch" if ont.nil?
-      ont.load unless ont.loaded?
 
       submission = ont.submission(params[:ontology_submission_id])
       error 400, "You must provide an existing `submissionId` to patch" if submission.nil?
-
-      # TODO: Not sure why this one needs to be loaded individually
-      submission.load unless submission.loaded?
 
       populate_from_params(submission, params)
 
@@ -95,7 +89,6 @@ class OntologiesController
     patch '/:acronym' do
       ont = Ontology.find(params["acronym"])
       error 400, "You must provide an existing `acronym` to patch" if ont.nil?
-      ont.load unless ont.loaded?
 
       populate_from_params(ont, params)
 
@@ -107,12 +100,12 @@ class OntologiesController
 
       halt 204
     end
+
     ##
     # Delete an ontology and all its versions
     delete '/:acronym' do
       ont = Ontology.find(params["acronym"])
       error 400, "You must provide an existing `acronym` to delete" if ont.nil?
-      ont.load unless ont.loaded?
       ont.delete
       halt 204
     end
@@ -122,11 +115,8 @@ class OntologiesController
     delete '/:acronym/:ontology_submission_id' do
       ont = Ontology.find(params["acronym"])
       error 400, "You must provide an existing `acronym` to delete" if ont.nil?
-      ont.load unless ont.loaded?
       submission = ont.submission(params[:ontology_submission_id])
       error 400, "You must provide an existing `submissionId` to delete" if submission.nil?
-
-      submission.load unless submission.loaded?
       submission.delete
       halt 204
     end
@@ -149,7 +139,6 @@ class OntologiesController
     ##
     # Create a new OntologySubmission object based on the request data
     def create_submission(ont)
-      ont.load unless ont.loaded?
       params = @params
 
       # Get file info

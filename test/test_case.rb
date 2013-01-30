@@ -23,6 +23,9 @@ class TestCase < Test::Unit::TestCase
 
   def app
     Sinatra::Application
+    set :raise_errors, true
+    set :dump_errors, false
+    set :show_exceptions, false
   end
 
   def teardown
@@ -118,11 +121,9 @@ class TestCase < Test::Unit::TestCase
     end
 
     u = LinkedData::Models::User.find("tim")
-    u.load unless u.nil? || u.loaded?
     u.delete unless u.nil?
 
     of = LinkedData::Models::OntologyFormat.find("OWL")
-    of.load unless of.nil? || of.loaded?
     of.delete unless of.nil?
   end
 
