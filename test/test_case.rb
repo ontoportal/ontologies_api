@@ -23,6 +23,9 @@ class TestCase < Test::Unit::TestCase
 
   def app
     Sinatra::Application
+    set :raise_errors, true
+    set :dump_errors, false
+    set :show_exceptions, false
   end
 
   def teardown
