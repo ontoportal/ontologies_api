@@ -9,11 +9,27 @@ class TestClsesController < TestCase
   end
 
   def test_single_cls
-    ontology = 'ncit'
-    cls = 'test_cls'
-    get "/ontologies/#{ontology}/classes/#{cls}"
-    assert last_response.ok?
-    assert_equal '', last_response.body
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
+
+    clss_ids.each do |cls|
+      escaped_cls= CGI.escape(cls)
+      ont = Ontology.find(created_ont_acronyms.first)
+      ont.load unless ont.loaded?
+      get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}"
+      assert last_response.ok?
+      cls = JSON.parse(last_response.body)
+      assert(!cls["prefLabel"].nil?)
+      assert_instance_of(String, cls["prefLabel"])
+      assert_instance_of(Array, cls["synonyms"])
+      if cls["prefLabel"].include? "Electron"
+        assert_equal(1, cls["synonyms"].length)
+        assert_instance_of(String, cls["synonyms"][0])
+      else
+        assert_equal(0, cls["synonyms"].length)
+      end
+    end
   end
 
   def test_roots_for_cls
