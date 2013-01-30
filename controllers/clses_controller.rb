@@ -67,6 +67,10 @@ class ClsesController
       end
       submission.load unless submission.loaded?
       status = submission.submissionStatus
+      status.load unless status.loaded?
+      if !status.parsed?
+        error 400,  "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
+      end
       if submission.nil?
         error 400, "Ontology #{@params["acronym"]} does not have any submissions" if submission.nil?
       end

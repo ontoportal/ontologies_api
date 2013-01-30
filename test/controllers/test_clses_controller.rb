@@ -47,6 +47,16 @@ class TestClsesController < TestCase
     end
   end
 
+  def test_classes_for_not_parsed_ontology
+    #In this test we do not process the submimission
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1)
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+    get "/ontologies/#{ont.acronym}/classes/roots"
+    assert_equal 400, last_response.status
+    assert last_response.body["has not been parsed"]
+  end
+
   def test_tree_for_cls
   end
 
