@@ -1,5 +1,6 @@
 class OntologiesController
   namespace "/ontologies" do
+
     ##
     # Display all ontologies
     get do
@@ -106,27 +107,6 @@ class OntologiesController
 
       halt 204
     end
-
-    ##
-    # Get roots for last submission or from a specific version
-    get '/:acronym/classes/roots' do
-      ont = Ontology.find(params["acronym"])
-      error 400, "You must provide an existing `acronym` to retrieve roots" if ont.nil?
-      ont.load unless ont.loaded?
-      submission = nil
-      if params.include? :ontology_submission_id
-        submission = ont.submission(params[:ontology_submission_id])
-        error 400, "You must provide an existing submission ID for the #{params["acronym"]} ontology" if submission.nil?
-      else
-        submission = ont.latest_submission
-      end
-      if submission.nil?
-        error 400, "Ontology #{params["acronym"]} does not have any submissions" if submission.nil?
-      end
-      roots = submission.roots
-      reply roots
-    end
-
     ##
     # Delete an ontology and all its versions
     delete '/:acronym' do
