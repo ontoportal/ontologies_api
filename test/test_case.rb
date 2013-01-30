@@ -118,11 +118,9 @@ class TestCase < Test::Unit::TestCase
     end
 
     u = LinkedData::Models::User.find("tim")
-    u.load unless u.nil? || u.loaded?
     u.delete unless u.nil?
 
     of = LinkedData::Models::OntologyFormat.find("OWL")
-    of.load unless of.nil? || of.loaded?
     of.delete unless of.nil?
   end
 
