@@ -1,8 +1,18 @@
 class ClsesController
 
   namespace "/ontologies/:ontology/classes" do
-    # Display all classes
+
+    # Display a page for all classes
     get do
+      ont, submission = get_ontology_and_submission
+      page, size = get_page_params
+      clss = submission.classes
+      page_class ={ :classes => clss.page(page, size),
+              :count => clss.length,
+              :page => page,
+              :size => size }
+      page_class[:next] = page + 1 if clss.page(page + 1, size)
+      reply page_class
     end
 
     # Get root classes
@@ -49,6 +59,20 @@ class ClsesController
 
     # Get all parents of given class
     get '/:cls/parents' do
+    end
+
+    #TODO Eventually this needs to be moved to a wider context.
+    def get_page_params
+      page = @params["page"] || 1
+      size = @params["size"] || 50
+      begin
+        page = Integer(page)
+        size = Integer(size)
+      rescue
+        error 400, "Page number and page size must integers. page no. is #{page} and page size is #{size}."
+      end
+      raise error 400, "Limit page size is 200. Page size in request is #{size}" if size > 200
+      return page, size
     end
 
     private

@@ -1,11 +1,49 @@
 require_relative '../test_case'
 
 class TestClsesController < TestCase
-  def test_all_clses
-    ontology = 'ncit'
-    get "/ontologies/#{ontology}/classes"
-    assert last_response.ok?
-    assert_equal '', last_response.body
+
+  def test_first_default_page
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 2, process_submission: true)
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+
+    submission_ids = [nil, 1, 2]
+    submission_ids.each do |submission_id|
+        call = "/ontologies/#{ont.acronym}/classes"
+        call << "?ontology_submission_id=#{submission_id}" if submission_id
+        get call
+        assert last_response.ok?
+        clss = JSON.parse(last_response.body)
+        #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
+        #more testing needs to be done here
+        assert last_response.ok?
+        assert clss["classes"].length == 50 #default size
+    end
+  end
+
+  def test_all_class_pages
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+
+    page_response = nil
+    count_terms = 0
+    begin
+      call = "/ontologies/#{ont.acronym}/classes"
+      if page_response
+        call <<  "?page=#{page_response['next']}&size=#{page_response['size']}"
+      end
+      get call
+      assert last_response.ok?
+      page_response = JSON.parse(last_response.body)
+      #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
+      #more testing needs to be done here
+      assert last_response.ok?
+      count_terms = count_terms + page_response["classes"].length
+    end while page_response["next"]
+    assert count_terms == Integer(page_response["count"])
   end
 
   def test_single_cls
