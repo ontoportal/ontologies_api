@@ -3,7 +3,8 @@ require_relative '../test_case'
 class TestClsesController < TestCase
 
   def test_first_default_page
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 2, process_submission: true)
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
+      ont_count: 1, submission_count: 2, process_submission: true, random_submission_count: false)
 
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
@@ -23,7 +24,8 @@ class TestClsesController < TestCase
   end
 
   def test_all_class_pages
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
+      ont_count: 1, submission_count: 1, process_submission: true, random_submission_count: false)
 
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
@@ -47,7 +49,8 @@ class TestClsesController < TestCase
   end
 
   def test_single_cls
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 2, process_submission: true)
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
+      ont_count: 1, submission_count: 2, process_submission: true, random_submission_count: false)
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
 
@@ -88,7 +91,8 @@ class TestClsesController < TestCase
   end
 
   def test_roots_for_cls
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 2, process_submission: true)
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
+      ont_count: 1, submission_count: 2, process_submission: true, random_submission_count: false)
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
     get "/ontologies/#{ont.acronym}/classes/roots"
@@ -103,7 +107,8 @@ class TestClsesController < TestCase
 
   def test_classes_for_not_parsed_ontology
     #In this test we do not process the submimission
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1)
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
+      ont_count: 1, submission_count: 1, random_submission_count: false)
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
     get "/ontologies/#{ont.acronym}/classes/roots"
