@@ -117,6 +117,20 @@ class TestClsesController < TestCase
   end
 
   def test_tree_for_cls
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
+      ont_count: 1, submission_count: 1, process_submission: true, random_submission_count: false)
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
+    clss_ids.each do |cls_id|
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/tree"
+      get call
+      #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
+      #more testing needs to be done here
+      assert last_response.ok?
+    end
   end
 
   def test_ancestors_for_cls

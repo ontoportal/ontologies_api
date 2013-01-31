@@ -29,20 +29,19 @@ class ClsesController
     # Display a single class
     get '/:cls' do
       ont, submission = get_ontology_and_submission
-      if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
-        error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
-      end
-      clss = LinkedData::Models::Class.where(resource_id: (RDF::IRI.new params[:cls]), submission: submission)
-      if clss.length == 0
-        error 404, "Resource '#{params[:cls]}' not found in ontology #{ont.acronym} submission #{submission.submissionId}"
-      end
-      cls = clss.first
+      cls = get_class(submission)
       cls.load_labels unless cls.loaded_labels?
       reply cls
     end
 
     # Get a tree view
     get '/:cls/tree' do
+      ont, submission = get_ontology_and_submission
+      cls = get_class(submission)
+      paths = [[cls]]
+      cls.load_parents unless cls.loaded_parents?
+      traverse_path_to_root(cls.parents, paths)
+      reply paths
     end
 
     # Get all ancestors for given class
@@ -76,6 +75,38 @@ class ClsesController
     end
 
     private
+    def get_class(submission)
+      if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
+        error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
+      end
+      clss = LinkedData::Models::Class.where(resource_id: (RDF::IRI.new params[:cls]), submission: submission)
+      if clss.length == 0
+        error 404, "Resource '#{params[:cls]}' not found in ontology #{ont.acronym} submission #{submission.submissionId}"
+      end
+      return clss.first
+    end
+
+    #TODO move this ontologies linked data
+    def traverse_path_to_root(parents, paths)
+      if parents.length > 1
+        new_paths = paths * parents.length
+        paths.delete_if {true}
+        paths.concat new_paths
+      end
+      parents.each_index do |i|
+        path_i = i % paths.length
+        path = paths[path_i]
+        path << parents[i]
+      end
+      paths.each do |path|
+        p = path[-1]
+        p.load_parents unless p.loaded_parents?
+        if p.parents and p.parents.length > 1
+          traverse_path_to_root p.parents, paths
+        end
+      end
+    end
+
     def get_ontology_and_submission
       ont = Ontology.find(@params["ontology"])
       error 400, "You must provide an existing `acronym` to retrieve roots" if ont.nil?
