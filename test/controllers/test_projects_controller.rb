@@ -18,14 +18,15 @@ class TestProjectsController < TestCase
     "description":"A BioPortal project, which may refer to multiple ontologies.",
     "additionalProperties":false,
     "properties":{
-      "name":{ "type":"string", "required": true },
-      "acronym":{ "type":"string", "required": true },
       "id":{ "type":"string", "required": true },
+      "acronym":{ "type":"string", "required": true },
+      "name":{ "type":"string", "required": true },
       "creator":{ "type":"string", "required": true },
       "created":{ "type":"string", "format":"datetime", "required": true },
       "homePage":{ "type":"string", "format":"uri", "required": true },
       "description":{ "type":"string", "required": true },
       "contacts":{ "type":"string" },
+      "institution":{ "type":"string" },
       "ontologyUsed":{ "type":"array", "items":{ "type":"string" } }
     }
   }
@@ -82,6 +83,7 @@ class TestProjectsController < TestCase
     @p.acronym = "TP"
     @p.homePage = "http://www.example.org"
     @p.description = "A test project"
+    @p.institution = "A university"
     @p.ontologyUsed = [@ont,]
     @p.save
     @projectParams = {
@@ -91,6 +93,7 @@ class TestProjectsController < TestCase
         homePage: @p.homePage,
         creator: @p.creator.username,
         created: @p.created,
+        institution: @p.institution,
         ontologyUsed: @p.ontologyUsed.first.acronym
     }
   end
