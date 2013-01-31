@@ -1,7 +1,7 @@
 require_relative '../test_case'
 require "json"
 
-class TestcategoriesController < TestCase
+class TestCategoriesController < TestCase
 
   def setup
     @category_ids = ["cat1", "cat2", "cat3"]
