@@ -31,8 +31,6 @@ class ClsesController
       reply cls
     end
 
-
-
     # Get a tree view
     get '/:cls/tree' do
     end
@@ -59,7 +57,7 @@ class ClsesController
       error 400, "You must provide an existing `acronym` to retrieve roots" if ont.nil?
       ont.load unless ont.loaded?
       submission = nil
-      if @params.include? :ontology_submission_id
+      if @params.include? "ontology_submission_id"
         submission = ont.submission(@params[:ontology_submission_id])
         error 400, "You must provide an existing submission ID for the #{@params["acronym"]} ontology" if submission.nil?
       else
