@@ -19,6 +19,7 @@ class GroupsController
     put '/:group' do
       acronym = params["group"]
       group = Group.find(acronym)
+
       if group.nil?
         group = instance_from_params(Group, params)
       else
@@ -40,7 +41,9 @@ class GroupsController
       if group.nil?
         error 400, "Group does not exist, please create using HTTP PUT before modifying"
       else
+        group.load unless group.loaded?
         populate_from_params(group, params)
+
         if group.valid?
           group.save
         else

@@ -78,31 +78,25 @@ class TestgroupsController < TestCase
     group = Group.find(acronym)
     assert_not_nil group
     new_name = "CTSA Health Brand new NAME"
-    group.name = new_name
-
     new_desc = "CTSA Health Brand new DESCRIPTION"
-    group.desc = new_desc
+    new_values = {name: new_name, description: new_desc}
 
-
-
-    patch "/groups/#{acronym}", group.to_json, "CONTENT_TYPE" => "application/json"
-
-
-    binding.pry
-
-
+    patch "/groups/#{acronym}", new_values.to_json, "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
-
-
-    #get "/groups/#{acronym}"
-    #group = JSON.parse(last_response.body)
-    #assert group["name"].eql?(new_name)
-    #assert group["description"].eql?(new_desc)
+    get "/groups/#{acronym}"
+    group = JSON.parse(last_response.body)
+    assert group["name"].eql?(new_name)
+    assert group["description"].eql?(new_desc)
   end
 
-
   def test_delete_group
+    acronym = 'CTSA-HOM'
+    delete "/groups/#{acronym}"
+    assert last_response.status == 204
+
+    get "/groups/#{acronym}"
+    assert last_response.status == 404
   end
 
 end
