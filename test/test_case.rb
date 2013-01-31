@@ -23,6 +23,9 @@ class TestCase < Test::Unit::TestCase
 
   def app
     Sinatra::Application
+    set :raise_errors, true
+    set :dump_errors, false
+    set :show_exceptions, false
   end
 
   def teardown
@@ -36,6 +39,7 @@ class TestCase < Test::Unit::TestCase
   # @option options [Fixnum] :submission_count How many submissions each ontology should have (acts as max number when random submission count is used)
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   def create_ontologies_and_submissions(options = {})
+    LinkedData::Models::SubmissionStatus.init
     delete_ontologies_and_submissions
     ont_count = options[:ont_count] || 5
     submission_count = options[:submission_count] || 5
@@ -118,11 +122,9 @@ class TestCase < Test::Unit::TestCase
     end
 
     u = LinkedData::Models::User.find("tim")
-    u.load unless u.nil? || u.loaded?
     u.delete unless u.nil?
 
     of = LinkedData::Models::OntologyFormat.find("OWL")
-    of.load unless of.nil? || of.loaded?
     of.delete unless of.nil?
   end
 

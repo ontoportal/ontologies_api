@@ -24,7 +24,6 @@ class UsersController
     # Update an existing submission of an user
     patch '/:username' do
       user = User.find(params[:username])
-      user.load unless user.loaded?
       populate_from_params(user, params)
       if user.valid?
         user.save
@@ -36,9 +35,7 @@ class UsersController
 
     # Delete a user
     delete '/:username' do
-      u = User.find(params[:username])
-      u.load unless u.loaded?
-      u.delete
+      User.find(params[:username]).delete
       halt 204
     end
 

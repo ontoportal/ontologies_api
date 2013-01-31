@@ -28,14 +28,12 @@ class TestOntologiesController < TestCase
     test_user = User.new(username: username, email: "#{username}@example.org")
     test_user.save if test_user.valid?
     user = test_user.valid? ? test_user : User.find(username)
-    user.load unless user.loaded?
     user
   end
 
   def _delete
     _delete_onts
     test_user = User.find("tim")
-    test_user.load unless test_user.nil? || test_user.loaded?
     test_user.delete unless test_user.nil?
   end
 
@@ -46,7 +44,6 @@ class TestOntologiesController < TestCase
 
   def _delete_onts
     ont = Ontology.find(@acronym)
-    ont.load unless ont.nil? || ont.loaded?
     ont.delete unless ont.nil?
   end
 
@@ -145,7 +142,6 @@ class TestOntologiesController < TestCase
   def test_patch_ontology_submission
     num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1)
     ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
     assert(ont.submissions.length > 0)
     submission = ont.submissions[0]
     submission.load unless submission.loaded?
@@ -158,11 +154,6 @@ class TestOntologiesController < TestCase
     get "/ontologies/#{submission.ontology.acronym}?ontology_submission_id=#{submission.submissionId}"
     submission = JSON.parse(last_response.body)
     assert submission["summaryOnly"] == false
-  end
-
-  def test_submission_roots
-    return
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
   end
 
   def test_delete_ontology

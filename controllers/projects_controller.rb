@@ -1,57 +1,66 @@
 class ProjectsController
   namespace "/projects" do
+
     # Display all projects
     get do
-      p = LinkedData::Models::Project.all
-      reply p
+      reply LinkedData::Models::Project.all
     end
 
     # Retrieve a single project, by unique project identifier (name)
     get '/:project' do
       name = params[:project]
-      p = LinkedData::Models::Project.where(:name => name)
-      if p.length == 1
-        reply p[0]
+      p = LinkedData::Models::Project.find(name)
+      if p.nil?
+        error 404, "Project #{name} was not found."
+      end
+      if p.valid?
+        reply 200, p
       else
-        if p.length == 0
-          error 404, "Project #{name} was not found."
-        else
-          error 505, "Project retrieval error, projects found = #{p}"
-        end
+        error 500, "Project retrieval error, #{p.errors}"
       end
     end
 
-    # Create a project with the given acronym
+    # Projects get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:project' do
+      name = params[:project]
+      p = LinkedData::Models::Project.find(name)
+      if not p.nil?
+        error 409, "Project #{name} already exists. Submit project updates using HTTP PATCH instead of PUT."
+      end
       p = instance_from_params(LinkedData::Models::Project, params)
       if p.valid?
-        p.load
-        reply p
+        p.save
+        reply 201, p
       else
-        error 505, "#{p.errors}"
+        error 400, p.errors
       end
     end
 
-    # Update an existing submission of an project
+    # Update an existing submission of a project
     patch '/:project' do
-      p = LinkedData::Models::Project.find(params[:project])
+      name = params[:project]
+      p = LinkedData::Models::Project.find(name)
+      if p.nil?
+        error 404, "Project #{name} was not found. Submit new projects using HTTP PUT instead of PATCH."
+      end
+      p = populate_from_params(p, params)
       if p.valid?
-        p.load
-        p = populate_from_params(p, params)
-        reply p
+        p.save
+        halt 204
       else
-        halt 404
+        error 500, p.errors
       end
     end
 
     # Delete a project
     delete '/:project' do
-      p = LinkedData::Models::Project.find(params[:project])
-      if p.valid?
-        p.delete
-        reply 201
+      name = params[:project]
+      p = LinkedData::Models::Project.find(name)
+      if p.nil?
+        error 404, "Project #{name} was not found."
       else
-        halt 505
+        p.delete
+        halt 204
       end
     end
 
