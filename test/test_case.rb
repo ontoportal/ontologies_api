@@ -75,10 +75,16 @@ class TestCase < Test::Unit::TestCase
           ontology: o,
           hasOntologyLanguage: of,
           submissionStatus: LinkedData::Models::SubmissionStatus.new(:code => "UPLOADED"),
-          submissionId: o.next_submission_id
+          submissionId: o.next_submission_id,
+          definitionProperty: (RDF::IRI.new "http://bioontology.org/ontologies/biositemap.owl#definition")
         })
         if (options.include? :process_submission)
-          file_path = "test/data/ontology_files/BRO_v3.1.owl"
+          file_path = nil
+          if os.submissionId < 3
+            file_path = "test/data/ontology_files/BRO_v3.#{os.submissionId}.owl"
+          else
+            raise ArgumentError, "create_ontologies_and_submissions does not support process submission with more than 2 versions"
+          end
           uploadFilePath = LinkedData::Models::OntologySubmission.copy_file_repository(o.acronym, os.submissionId, file_path)
           os.uploadFilePath = uploadFilePath
         else
@@ -98,10 +104,11 @@ class TestCase < Test::Unit::TestCase
     if options.include? :process_submission
       ontologies.each do |o|
         o.load unless o.loaded?
-        latest = o.latest_submission
-        latest.load unless latest.loaded?
-        latest.ontology.load unless latest.ontology.loaded?
-        latest.process_submission Logger.new(STDOUT)
+        o.submissions.each do |ss|
+          ss.load unless ss.loaded?
+          ss.ontology.load unless ss.ontology.loaded?
+          ss.process_submission Logger.new(STDOUT)
+        end
       end
     end
 
@@ -129,4 +136,3 @@ class TestCase < Test::Unit::TestCase
   end
 
 end
-
