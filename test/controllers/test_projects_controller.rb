@@ -19,6 +19,7 @@ class TestProjectsController < TestCase
     "additionalProperties":false,
     "properties":{
       "name":{ "type":"string", "required": true },
+      "acronym":{ "type":"string", "required": true },
       "id":{ "type":"string", "required": true },
       "creator":{ "type":"string", "required": true },
       "created":{ "type":"string", "format":"datetime", "required": true },
@@ -77,12 +78,14 @@ class TestProjectsController < TestCase
     @p = LinkedData::Models::Project.new
     @p.creator = @user
     @p.created = DateTime.new
-    @p.name = "TestProject" # must be a valid URI
+    @p.name = "Test Project" # must be a valid URI
+    @p.acronym = "TP"
     @p.homePage = "http://www.example.org"
     @p.description = "A test project"
     @p.ontologyUsed = [@ont,]
     @p.save
     @projectParams = {
+        acronym: @p.acronym,
         name: @p.name,
         description: @p.description,
         homePage: @p.homePage,
@@ -105,41 +108,41 @@ class TestProjectsController < TestCase
 
   def test_project_create_success
     # Ensure it doesn't exist first (undo the setup @p.save creation)
-    _project_delete(@p.name)
-    put "/projects/#{@p.name}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    _project_delete(@p.acronym)
+    put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
     _response_status(201, last_response)
-    _project_get_success(@p.name, true)
+    _project_get_success(@p.acronym, true)
   end
 
   def test_project_create_conflict
     # Fail PUT for any project that already exists.
-    put "/projects/#{@p.name}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
     _response_status(409, last_response)
     # The existing project should remain valid
-    _project_get_success(@p.name, true)
+    _project_get_success(@p.acronym, true)
   end
 
   def test_project_create_failure
     # Ensure the project doesn't exist.
-    _project_delete(@p.name)
+    _project_delete(@p.acronym)
     # Fail PUT for any project with required missing data.
-    @projectParams["name"] = nil
-    put "/projects/#{@p.name}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    @projectParams["acronym"] = nil
+    put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
     _response_status(400, last_response)
-    _project_get_failure(@p.name)
+    _project_get_failure(@p.acronym)
   end
 
   def test_project_update_success
-    patch "/projects/#{@p.name}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
     _response_status(204, last_response)
-    _project_get_success(@p.name)
+    _project_get_success(@p.acronym)
     # TODO: validate the data updated
-    #_project_get_success(@p.name, true)
+    #_project_get_success(@p.acronym, true)
   end
 
   def test_project_delete
-    _project_delete(@p.name)
-    _project_get_failure(@p.name)
+    _project_delete(@p.acronym)
+    _project_get_failure(@p.acronym)
   end
 
 
@@ -151,32 +154,32 @@ class TestProjectsController < TestCase
     end
   end
 
-  # Issues DELETE for a project name, tests for a 204 response.
-  # @param [String] name project name
-  def _project_delete(name)
-    delete "/projects/#{name}"
+  # Issues DELETE for a project acronym, tests for a 204 response.
+  # @param [String] acronym project acronym
+  def _project_delete(acronym)
+    delete "/projects/#{acronym}"
     _response_status(204, last_response)
   end
 
-  # Issues GET for a project name, tests for a 200 response, with optional response validation.
-  # @param [String] name project name
+  # Issues GET for a project acronym, tests for a 200 response, with optional response validation.
+  # @param [String] acronym project acronym
   # @param [boolean] validate_data verify response body json content
-  def _project_get_success(name, validate_data=false)
-    get "/projects/#{name}"
+  def _project_get_success(acronym, validate_data=false)
+    get "/projects/#{acronym}"
     _response_status(200, last_response)
     if validate_data
       # Assume we have JSON data in the response body.
       p = JSON.parse(last_response.body)
       assert_instance_of(Hash, p)
-      assert_equal(@p.name, p['name'], p.to_s)
+      assert_equal(@p.acronym, p['acronym'], p.to_s)
       _validate_json(p)
     end
   end
 
-  # Issues GET for a project name, tests for a 404 response.
-  # @param [String] name project name
-  def _project_get_failure(name)
-    get "/projects/#{name}"
+  # Issues GET for a project acronym, tests for a 404 response.
+  # @param [String] acronym project acronym
+  def _project_get_failure(acronym)
+    get "/projects/#{acronym}"
     _response_status(404, last_response)
   end
 
