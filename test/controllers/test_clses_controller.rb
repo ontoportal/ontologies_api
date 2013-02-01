@@ -105,6 +105,12 @@ class TestClsesController < TestCase
     roots.each do |r|
       assert_instance_of String, r["prefLabel"]
       assert_instance_of String, r["id"]
+      #By definition roots have no parents
+      escaped_root_id= CGI.escape(r["id"])
+      get "/ontologies/#{ont.acronym}/classes/#{escaped_root_id}/parents"
+      last_response.ok?
+      parents = JSON.parse(last_response.body)
+      assert parents.length == 0
     end
   end
 
@@ -140,16 +146,173 @@ class TestClsesController < TestCase
   end
 
   def test_ancestors_for_cls
+
+    num_onts_created, created_ont_acronyms = setup_only_once
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+    ancestors_data = {}
+    ancestors_data['http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction'] =[
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Information_Resource",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Resource",
+      ]
+    ancestors_data['http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope'] =[
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Instrument",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Material_Resource",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Microscope",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Resource",
+      ]
+
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
+    clss_ids.each do |cls_id|
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/ancestors"
+      get call
+      assert last_response.ok?
+      ancestors = JSON.parse(last_response.body)
+      ancestors.map! { |a| a["id"] }
+      assert ancestors.sort == ancestors_data[cls_id].sort
+    end
   end
 
   def test_descendants_for_cls
+    num_onts_created, created_ont_acronyms = setup_only_once
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+
+    descendants_data = {}
+    descendants_data['http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research'] =[
+      "http://bioontology.org/ontologies/ResearchArea.owl#Behavioral_Science",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Bioinformatics",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Biostatistics",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Clinical_Studies",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Computational_Biology",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Epidemiology",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Genomics",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Metabolomics",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Nursing",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Outcomes_Research",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Pathology",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Pediatrics",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Pharmacokinetics_Pharmacodynamics",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Physiology",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Preclinical",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Proteomics",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Psychometrics",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Research_IT",
+ "http://bioontology.org/ontologies/ResearchArea.owl#Toxicology"]
+
+    descendants_data['http://bioontology.org/ontologies/Activity.owl#Activity'] =
+      ["http://bioontology.org/ontologies/Activity.owl#Biospecimen_Management",
+ "http://bioontology.org/ontologies/Activity.owl#Community_Engagement",
+ "http://bioontology.org/ontologies/Activity.owl#Gene_Therapy",
+ "http://bioontology.org/ontologies/Activity.owl#Health_Services",
+ "http://bioontology.org/ontologies/Activity.owl#IRB",
+ "http://bioontology.org/ontologies/Activity.owl#Medical_Device_Development",
+ "http://bioontology.org/ontologies/Activity.owl#Regulatory_Compliance",
+ "http://bioontology.org/ontologies/Activity.owl#Research_Funding",
+ "http://bioontology.org/ontologies/Activity.owl#Research_Lab_Management",
+ "http://bioontology.org/ontologies/Activity.owl#Resource_Inventory",
+ "http://bioontology.org/ontologies/Activity.owl#Small_Molecule",
+ "http://bioontology.org/ontologies/Activity.owl#Social_Networking",
+ "http://bioontology.org/ontologies/Activity.owl#Software_Development",
+ "http://bioontology.org/ontologies/Activity.owl#Surgical_Procedure",
+ "http://bioontology.org/ontologies/Activity.owl#Therapeutics",
+ "http://bioontology.org/ontologies/Activity.owl#Training"]
+
+    clss_ids = [ 'http://bioontology.org/ontologies/Activity.owl#Activity',
+            "http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research" ]
+    clss_ids.each do |cls_id|
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/descendants"
+      get call
+      assert last_response.ok?
+      descendants = JSON.parse(last_response.body)
+      descendants.map! { |a| a["id"] }
+      assert descendants.sort == descendants_data[cls_id].sort
+    end
   end
 
-  def test_children_for_cls
+  def test_parents_for_cls_round_trip
+    num_onts_created, created_ont_acronyms = setup_only_once
 
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
+
+    parent_ids = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data",
+    "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Microscope"]
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+
+    clss_ids.each_index do |i|
+      cls_id = clss_ids[i]
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/parents"
+      get call
+      assert last_response.ok?
+      parents = JSON.parse(last_response.body)
+      assert parents[0]["id"] == parent_ids[i]
+
+      #the children of every parent must contain himself.
+      parents.each do |p|
+        escaped_p_id= CGI.escape(p["id"])
+        call = "/ontologies/#{ont.acronym}/classes/#{escaped_p_id}/children"
+        get call
+        last_response.ok?
+        children = JSON.parse(last_response.body)
+        children.map! { |c| c["id"] }
+        assert children.length > 0 and children.include? cls_id
+      end
+    end
   end
 
-  def test_parents_for_cls
+  def test_children_for_cls_round_trip
+    num_onts_created, created_ont_acronyms = setup_only_once
+
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Microscope" ]
+
+    children_arrays = [
+      [
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Gene_Expression",
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction",
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Phenotypic_Measurement",
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Protein_Expression"
+      ] , [
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope",
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Light_Microscope"
+      ] ]
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+
+    clss_ids.each_index do |i|
+      cls_id = clss_ids[i]
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/children"
+      get call
+      assert last_response.ok?
+      children = JSON.parse(last_response.body)
+      #TODO eventually this should test for id and not resource_id
+      children.map! { |c| c["id"] }
+      assert children.sort == children_arrays[i].sort
+
+      #the parent of every children must contain himself.
+      children.each do |c|
+        escaped_c_id= CGI.escape(c)
+        call = "/ontologies/#{ont.acronym}/classes/#{escaped_c_id}/parents"
+        get call
+        last_response.ok?
+        parents = JSON.parse(last_response.body)
+        parents.map! { |p| p["id"] }
+        assert parents.length > 0 and parents.include? cls_id
+      end
+    end
   end
 
 end
