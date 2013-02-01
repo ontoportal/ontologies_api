@@ -1,6 +1,4 @@
 class ProjectsController
-
-
   namespace "/projects" do
 
     MODEL = LinkedData::Models::Project
@@ -34,7 +32,7 @@ class ProjectsController
         m.save
         reply 201, m
       else
-        error 400, m.errors
+        error 422, m.errors
       end
     end
 
