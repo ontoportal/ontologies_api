@@ -115,7 +115,7 @@ class TestProjectsController < TestCase
     # Fail PUT for any project with required missing data.
     @projectParams["acronym"] = nil
     put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
-    _response_status(400, last_response)
+    _response_status(422, last_response)
     _project_get_failure(@p.acronym)
   end
 
