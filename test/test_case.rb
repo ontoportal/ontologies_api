@@ -136,8 +136,7 @@ class TestCase < Test::Unit::TestCase
   def delete_ontologies_and_submissions
     LinkedData::Models::Ontology.all.each do |ont|
       ont.load unless ont.nil? || ont.loaded
-      subsmissions = ont.submissions
-      subsmissions.each do |ss|
+      ont.submissions.each do |ss|
         ss.load unless ss.loaded?
         ss.delete
       end
@@ -152,7 +151,7 @@ class TestCase < Test::Unit::TestCase
   end
 
   # Validate JSON object against a JSON schema.
-  # @note schema may be more restrictive than serializer generating json data.
+  # @note schema is only validated after json data fails to validate.
   # @param [String] jsonData a json string that will be parsed by JSON.parse
   # @param [String] jsonSchemaString a json schema string that will be parsed by JSON.parse
   # @param [boolean] list set it true for jsonObj array of items to validate against jsonSchemaString
