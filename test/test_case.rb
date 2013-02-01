@@ -31,7 +31,6 @@ class TestCase < Test::Unit::TestCase
   end
 
   def teardown
-    return self.instance_of? TestClsesController
     delete_ontologies_and_submissions
   end
 
@@ -42,17 +41,17 @@ class TestCase < Test::Unit::TestCase
   # @option options [Fixnum] :submission_count How many submissions each ontology should have (acts as max number when random submission count is used)
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   def create_ontologies_and_submissions(options = {})
-    if self.instance_of? TestClsesController
-       ont = LinkedData::Models::Ontology.find("TST-ONT-0")
-       if !ont.nil?
-         ont.load unless ont.loaded?
-         if ont.submissions.length == 3
-           ont.submissions.each do |ss|
-             ss.load unless ss.loaded?
-             return 1, ["TST-ONT-0"] if ss.submissionStatus.parsed?
-           end
-         end
-       end
+    if Kernel.const_defined?("TestClsesController") && self.instance_of?(::TestClsesController)
+      ont = LinkedData::Models::Ontology.find("TST-ONT-0")
+      if !ont.nil?
+        ont.load unless ont.loaded?
+        if ont.submissions.length == 3
+          ont.submissions.each do |ss|
+            ss.load unless ss.loaded?
+            return 1, ["TST-ONT-0"] if ss.submissionStatus.parsed?
+          end
+        end
+      end
     end
 
     LinkedData::Models::SubmissionStatus.init
