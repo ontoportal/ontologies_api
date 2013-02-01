@@ -32,22 +32,6 @@ class TestProjectsController < TestCase
   }
   END_JSON_SCHEMA_STR
 
-  def _project_json_schema
-    JSON.parse(JSON_SCHEMA_STR)
-  end
-
-  # Validate JSON object against a JSON schema.
-  # @note schema may be more restrictive than serializer generating json data.
-  # @param [Hash] jsonObj ruby hash created by JSON.parse
-  # @param [boolean] list set it true for jsonObj array of items to validate
-  def _validate_json(jsonObj, list=false)
-    jsonSchema = _project_json_schema
-    assert(
-        JSON::Validator.validate(jsonSchema, jsonObj, :list => list),
-        JSON::Validator.fully_validate(jsonSchema, jsonObj, :validate_schema => true, :list => list).to_s
-    )
-  end
-
   # Clear the triple store models
   # @param [Array] gooModelArray an array of GOO models
   def _delete_models(gooModelArray)
@@ -106,7 +90,7 @@ class TestProjectsController < TestCase
     assert_equal(1, projects.length)
     p = projects[0]
     assert_equal(@p.name, p['name'])
-    _validate_json(p)
+    validate_json(last_response.body, JSON_SCHEMA_STR, true)
   end
 
   def test_project_create_success
@@ -148,7 +132,6 @@ class TestProjectsController < TestCase
     _project_get_failure(@p.acronym)
   end
 
-
   def _response_status(status, response)
     if DEBUG_MESSAGES
       assert_equal(status, response.status, response.body)
@@ -175,7 +158,7 @@ class TestProjectsController < TestCase
       p = JSON.parse(last_response.body)
       assert_instance_of(Hash, p)
       assert_equal(@p.acronym, p['acronym'], p.to_s)
-      _validate_json(p)
+      validate_json(last_response.body, JSON_SCHEMA_STR)
     end
   end
 
