@@ -16,7 +16,7 @@ class UsersController
       if user.valid?
         user.save
       else
-        error 400, user.errors
+        error 422, user.errors
       end
       reply 201, user
     end
@@ -28,7 +28,7 @@ class UsersController
       if user.valid?
         user.save
       else
-        error 400, user.errors
+        error 422, user.errors
       end
       halt 204
     end
