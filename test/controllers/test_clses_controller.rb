@@ -105,6 +105,12 @@ class TestClsesController < TestCase
     roots.each do |r|
       assert_instance_of String, r["prefLabel"]
       assert_instance_of String, r["id"]
+      #By definition roots have no parents
+      escaped_root_id= CGI.escape(r["id"])
+      get "/ontologies/#{ont.acronym}/classes/#{escaped_root_id}/parents"
+      last_response.ok?
+      parents = JSON.parse(last_response.body)
+      assert parents.length == 0
     end
   end
 
