@@ -54,10 +54,20 @@ class ClsesController
 
     # Get all children of given class
     get '/:cls/children' do
+      ont, submission = get_ontology_and_submission
+      cls = get_class(submission)
+      cls.load_labels unless cls.loaded_labels?
+      cls.load_children unless cls.loaded_children?
+      reply cls.children
     end
 
     # Get all parents of given class
     get '/:cls/parents' do
+      ont, submission = get_ontology_and_submission
+      cls = get_class(submission)
+      cls.load_labels unless cls.loaded_labels?
+      cls.load_parents unless cls.loaded_parents?
+      reply cls.parents
     end
 
     #TODO Eventually this needs to be moved to a wider context.

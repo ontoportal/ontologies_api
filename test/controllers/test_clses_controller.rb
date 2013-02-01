@@ -150,6 +150,40 @@ class TestClsesController < TestCase
   end
 
   def test_parents_for_cls
+    num_onts_created, created_ont_acronyms = setup_only_once
+
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
+
+    parent_ids = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data",
+    "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Microscope"]
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+
+    clss_ids.each_index do |i|
+      cls_id = clss_ids[i]
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/parents"
+      get call
+      binding.pry
+      assert last_response.ok?
+      parents = JSON.parse(last_response.body)
+      #TODO eventually this should test for id and not resource_id
+      assert parents[0]["resource_id"] == parent_ids[i]
+
+      #the children of every parent must contain himself.
+      parents.each do |p|
+        escaped_p_id= CGI.escape(p["resource_id"])
+        call = "/ontologies/#{ont.acronym}/classes/#{escaped_p_id}/children"
+        get call
+        last_response.ok?
+        children = JSON.parse(last_response.body)
+        children.map! { |c| c["id"] }
+        binding.pry
+        assert children.include? cls_id
+      end
+    end
   end
 
 end
