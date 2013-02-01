@@ -46,18 +46,46 @@ class ClsesController
 
     # Get all ancestors for given class
     get '/:cls/ancestors' do
+      ont, submission = get_ontology_and_submission
+      cls = get_class(submission)
+      cls.load_parents(transitive=true) unless cls.loaded_parents?
+      cls.parents.each do |c|
+        c.load_labels unless c.loaded_labels?
+      end
+      reply cls.parents
     end
 
     # Get all descendants for given class
     get '/:cls/descendants' do
+      ont, submission = get_ontology_and_submission
+      cls = get_class(submission)
+      cls.load_children(transitive=true) unless cls.loaded_children?
+      cls.children.each do |c|
+        c.load_labels unless c.loaded_labels?
+      end
+      reply cls.children
     end
 
     # Get all children of given class
     get '/:cls/children' do
+      ont, submission = get_ontology_and_submission
+      cls = get_class(submission)
+      cls.load_children unless cls.loaded_children?
+      cls.children.each do |c|
+        c.load_labels unless c.loaded_labels?
+      end
+      reply cls.children
     end
 
     # Get all parents of given class
     get '/:cls/parents' do
+      ont, submission = get_ontology_and_submission
+      cls = get_class(submission)
+      cls.load_parents unless cls.loaded_parents?
+      cls.parents.each do |c|
+        c.load_labels unless c.loaded_labels?
+      end
+      reply cls.parents
     end
 
     #TODO Eventually this needs to be moved to a wider context.
@@ -81,7 +109,8 @@ class ClsesController
       end
       clss = LinkedData::Models::Class.where(resource_id: (RDF::IRI.new params[:cls]), submission: submission)
       if clss.length == 0
-        error 404, "Resource '#{params[:cls]}' not found in ontology #{ont.acronym} submission #{submission.submissionId}"
+        submission.ontology.load unless submission.ontology.loaded?
+        error 404, "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
       end
       return clss.first
     end
@@ -118,6 +147,7 @@ class ClsesController
       else
         submission = ont.latest_submission
       end
+      error 400,  "Ontology #{@params["ontology"]} submission not found." if submission.nil?
       submission.load unless submission.loaded?
       status = submission.submissionStatus
       status.load unless status.loaded?
