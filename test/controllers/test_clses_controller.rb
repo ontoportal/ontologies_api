@@ -2,14 +2,17 @@ require_relative '../test_case'
 
 class TestClsesController < TestCase
 
-  def test_first_default_page
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
-      ont_count: 1, submission_count: 2, process_submission: true, random_submission_count: false)
+  def setup_only_once
+    return create_ontologies_and_submissions(
+     ont_count: 1, submission_count: 3, process_submission: true, random_submission_count: false)
+  end
 
+  def test_first_default_page
+    num_onts_created, created_ont_acronyms = setup_only_once
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
 
-    submission_ids = [nil, 1, 2]
+    submission_ids = [nil, 2,3]
     submission_ids.each do |submission_id|
         call = "/ontologies/#{ont.acronym}/classes"
         call << "?ontology_submission_id=#{submission_id}" if submission_id
@@ -24,8 +27,7 @@ class TestClsesController < TestCase
   end
 
   def test_all_class_pages
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
-      ont_count: 1, submission_count: 1, process_submission: true, random_submission_count: false)
+    num_onts_created, created_ont_acronyms = setup_only_once
 
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
@@ -49,15 +51,15 @@ class TestClsesController < TestCase
   end
 
   def test_single_cls
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
-      ont_count: 1, submission_count: 2, process_submission: true, random_submission_count: false)
+    num_onts_created, created_ont_acronyms = setup_only_once
+
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
 
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
 
-    submission_ids = [nil, 1, 2]
+    submission_ids = [nil, 2,3]
     #last submission is nil
     submission_ids.each do |submission_id|
       clss_ids.each do |cls_id|
@@ -72,7 +74,7 @@ class TestClsesController < TestCase
         assert_instance_of(Array, cls["synonyms"])
         assert(cls["id"] == cls_id)
 
-        if submission_id == nil or submission_id == 2
+        if submission_id == nil or submission_id == 3
           assert(cls["prefLabel"]["In version 3.2"])
           assert(cls["definitions"][0]["In version 3.2"])
         else
@@ -91,8 +93,9 @@ class TestClsesController < TestCase
   end
 
   def test_roots_for_cls
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
-      ont_count: 1, submission_count: 2, process_submission: true, random_submission_count: false)
+
+    num_onts_created, created_ont_acronyms = setup_only_once
+
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
     get "/ontologies/#{ont.acronym}/classes/roots"
@@ -106,19 +109,22 @@ class TestClsesController < TestCase
   end
 
   def test_classes_for_not_parsed_ontology
-    #In this test we do not process the submimission
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
-      ont_count: 1, submission_count: 1, random_submission_count: false)
+
+    num_onts_created, created_ont_acronyms = setup_only_once
+
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
-    get "/ontologies/#{ont.acronym}/classes/roots"
+    #first submission was not parsed
+    get "/ontologies/#{ont.acronym}/classes/roots?ontology_submission_id=1"
+
     assert_equal 400, last_response.status
     assert last_response.body["has not been parsed"]
   end
 
   def test_tree_for_cls
-    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(
-      ont_count: 1, submission_count: 1, process_submission: true, random_submission_count: false)
+
+    num_onts_created, created_ont_acronyms = setup_only_once
+
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
@@ -140,6 +146,7 @@ class TestClsesController < TestCase
   end
 
   def test_children_for_cls
+
   end
 
   def test_parents_for_cls
