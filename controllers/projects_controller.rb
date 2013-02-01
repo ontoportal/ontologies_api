@@ -1,61 +1,66 @@
 class ProjectsController
+
+
   namespace "/projects" do
+
+    MODEL = LinkedData::Models::Project
+    ID_SYMBOL = :project
+    ID_NAME = 'Project'
 
     # Display all projects
     get do
-      reply LinkedData::Models::Project.all
+      reply MODEL.all
     end
 
-    # Retrieve a single project, by unique project identifier (acronym)
+    # Retrieve a single project, by unique project identifier (id)
     get '/:project' do
-      acronym = params[:project]
-      p = LinkedData::Models::Project.find(acronym)
-      if p.nil?
-        error 404, "Project #{acronym} was not found."
+      id = params[ID_SYMBOL]
+      m = MODEL.find(id)
+      if m.nil?
+        error 404, "#{ID_NAME} #{id} was not found."
       end
-      reply 200, p
+      reply 200, m
     end
 
     # Projects get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:project' do
-      acronym = params[:project]
-      p = LinkedData::Models::Project.find(acronym)
-      if not p.nil?
-        error 409, "Project #{acronym} already exists. Submit project updates using HTTP PATCH instead of PUT."
+      id = params[ID_SYMBOL]
+      m = MODEL.find(id)
+      if not m.nil?
+        error 409, "#{ID_NAME} #{id} already exists. Submit updates using HTTP PATCH instead of PUT."
       end
-      p = instance_from_params(LinkedData::Models::Project, params)
-      if p.valid?
-        p.save
-        reply 201, p
+      m = instance_from_params(MODEL, params)
+      if m.valid?
+        m.save
+        reply 201, m
       else
-        error 400, p.errors
+        error 400, m.errors
       end
     end
 
     # Update an existing submission of a project
     patch '/:project' do
-      acronym = params[:project]
-      p = LinkedData::Models::Project.find(acronym)
-      if p.nil?
-        error 404, "Project #{acronym} was not found. Submit new projects using HTTP PUT instead of PATCH."
+      id = params[ID_SYMBOL]
+      m = MODEL.find(id)
+      if m.nil?
+        error 404, "#{ID_NAME} #{id} was not found. Submit new items using HTTP PUT instead of PATCH."
       end
-      p = populate_from_params(p, params)
-      if p.valid?
-        p.save
+      m = populate_from_params(m, params)
+      if m.valid?
+        m.save
         halt 204
       else
-        error 422, p.errors
+        error 422, m.errors
       end
     end
 
-    # Delete a project
     delete '/:project' do
-      acronym = params[:project]
-      p = LinkedData::Models::Project.find(acronym)
-      if p.nil?
-        error 404, "Project #{acronym} was not found."
+      id = params[ID_SYMBOL]
+      m = MODEL.find(id)
+      if m.nil?
+        error 404, "#{ID_NAME} #{id} was not found."
       else
-        p.delete
+        m.delete
         halt 204
       end
     end
