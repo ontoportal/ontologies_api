@@ -12,6 +12,8 @@ end
 require_relative '../app'
 require 'test/unit'
 require 'rack/test'
+require 'json'
+require 'json-schema'
 
 ENV['RACK_ENV'] = 'test'
 
@@ -133,6 +135,20 @@ class TestCase < Test::Unit::TestCase
 
     of = LinkedData::Models::OntologyFormat.find("OWL")
     of.delete unless of.nil?
+  end
+
+  # Validate JSON object against a JSON schema.
+  # @note schema may be more restrictive than serializer generating json data.
+  # @param [String] jsonData a json string that will be parsed by JSON.parse
+  # @param [String] jsonSchemaString a json schema string that will be parsed by JSON.parse
+  # @param [boolean] list set it true for jsonObj array of items to validate against jsonSchemaString
+  def validate_json(jsonData, jsonSchemaString, list=false)
+    jsonObj = JSON.parse(jsonData)
+    jsonSchema = JSON.parse(jsonSchemaString)
+    assert(
+        JSON::Validator.validate(jsonSchema, jsonObj, :list => list),
+        JSON::Validator.fully_validate(jsonSchema, jsonObj, :validate_schema => true, :list => list).to_s
+    )
   end
 
 end
