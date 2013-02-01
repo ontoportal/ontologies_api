@@ -155,7 +155,7 @@ class TestClsesController < TestCase
 
   end
 
-  def test_parents_for_cls
+  def test_parents_for_cls_round_trip
     num_onts_created, created_ont_acronyms = setup_only_once
 
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
@@ -172,7 +172,6 @@ class TestClsesController < TestCase
       escaped_cls= CGI.escape(cls_id)
       call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/parents"
       get call
-      binding.pry
       assert last_response.ok?
       parents = JSON.parse(last_response.body)
       #TODO eventually this should test for id and not resource_id
@@ -185,9 +184,52 @@ class TestClsesController < TestCase
         get call
         last_response.ok?
         children = JSON.parse(last_response.body)
-        children.map! { |c| c["id"] }
-        binding.pry
-        assert children.include? cls_id
+        children.map! { |c| c["resource_id"] }
+        assert children.length > 0 and children.include? cls_id
+      end
+    end
+  end
+
+  def test_children_for_cls_round_trip
+    num_onts_created, created_ont_acronyms = setup_only_once
+
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Microscope" ]
+
+    children_arrays = [
+      [
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Gene_Expression",
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction",
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Phenotypic_Measurement",
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Protein_Expression"
+      ] , [
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope",
+        "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Light_Microscope"
+      ] ]
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+
+    clss_ids.each_index do |i|
+      cls_id = clss_ids[i]
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/children"
+      get call
+      assert last_response.ok?
+      children = JSON.parse(last_response.body)
+      #TODO eventually this should test for id and not resource_id
+      children.map! { |c| c["resource_id"] }
+      assert children.sort == children_arrays[i].sort
+
+      #the parent of every children must contain himself.
+      children.each do |c|
+        escaped_c_id= CGI.escape(c)
+        call = "/ontologies/#{ont.acronym}/classes/#{escaped_c_id}/parents"
+        get call
+        last_response.ok?
+        parents = JSON.parse(last_response.body)
+        parents.map! { |p| p["resource_id"] }
+        assert parents.length > 0 and parents.include? cls_id
       end
     end
   end
