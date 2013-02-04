@@ -31,6 +31,9 @@ class TestCase < Test::Unit::TestCase
   end
 
   def teardown
+    if Kernel.const_defined?("TestClsesController") && self.instance_of?(::TestClsesController)
+      return
+    end
     delete_ontologies_and_submissions
   end
 
