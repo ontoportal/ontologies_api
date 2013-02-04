@@ -66,8 +66,14 @@ class TestCase < Test::Unit::TestCase
     u = LinkedData::Models::User.new(username: "tim", email: "tim@example.org")
     u.save unless u.exist? || !u.valid?
 
+    LinkedData::Models::SubmissionStatus.init
+
     of = LinkedData::Models::OntologyFormat.new(acronym: "OWL")
-    of.save unless of.exist? || !of.valid?
+    if of.exist?
+      of = LinkedData::Models::OntologyFormat.find("OWL")
+    else
+      of.save
+    end
 
     ont_acronyms = []
     ontologies = []
@@ -92,7 +98,7 @@ class TestCase < Test::Unit::TestCase
         os = LinkedData::Models::OntologySubmission.new({
           ontology: o,
           hasOntologyLanguage: of,
-          submissionStatus: LinkedData::Models::SubmissionStatus.new(:code => "UPLOADED"),
+          submissionStatus: LinkedData::Models::SubmissionStatus.find("UPLOADED"),
           submissionId: o.next_submission_id,
           definitionProperty: (RDF::IRI.new "http://bioontology.org/ontologies/biositemap.owl#definition")
         })
