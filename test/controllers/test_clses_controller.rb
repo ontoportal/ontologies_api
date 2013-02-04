@@ -139,8 +139,6 @@ class TestClsesController < TestCase
       escaped_cls= CGI.escape(cls_id)
       call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/tree"
       get call
-      #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
-      #more testing needs to be done here
       assert last_response.ok?
     end
   end

@@ -38,10 +38,7 @@ class ClsesController
     get '/:cls/tree' do
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
-      paths = [[cls]]
-      cls.load_parents unless cls.loaded_parents?
-      traverse_path_to_root(cls.parents, paths)
-      reply paths
+      reply cls.paths_to_root
     end
 
     # Get all ancestors for given class
@@ -113,27 +110,6 @@ class ClsesController
         error 404, "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
       end
       return clss.first
-    end
-
-    #TODO move this ontologies linked data
-    def traverse_path_to_root(parents, paths)
-      if parents.length > 1
-        new_paths = paths * parents.length
-        paths.delete_if {true}
-        paths.concat new_paths
-      end
-      parents.each_index do |i|
-        path_i = i % paths.length
-        path = paths[path_i]
-        path << parents[i]
-      end
-      paths.each do |path|
-        p = path[-1]
-        p.load_parents unless p.loaded_parents?
-        if p.parents and p.parents.length > 1
-          traverse_path_to_root p.parents, paths
-        end
-      end
     end
 
     def get_ontology_and_submission
