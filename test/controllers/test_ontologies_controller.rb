@@ -97,18 +97,18 @@ class TestOntologiesController < TestCase
   def test_create_new_ontology_same_acronym
     _create_onts
     put "/ontologies/#{@acronym}", :name => @name
-    assert last_response.status == 400
+    assert last_response.status == 409
   end
 
   def test_create_new_ontology_invalid
     put "/ontologies/#{@acronym}"
-    assert last_response.status == 400
+    assert last_response.status == 422
     assert JSON.parse(last_response.body)["errors"]
   end
 
   def test_create_new_ontology_missing_file_and_pull_location
     put "/ontologies/#{@acronym}", name: @name
-    assert last_response.status == 400
+    assert last_response.status == 422
     assert JSON.parse(last_response.body)["errors"]
   end
 

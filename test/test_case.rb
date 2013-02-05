@@ -12,6 +12,8 @@ end
 require_relative '../app'
 require 'test/unit'
 require 'rack/test'
+require 'json'
+require 'json-schema'
 
 ENV['RACK_ENV'] = 'test'
 
@@ -29,6 +31,9 @@ class TestCase < Test::Unit::TestCase
   end
 
   def teardown
+    if Kernel.const_defined?("TestClsesController") && self.instance_of?(::TestClsesController)
+      return
+    end
     delete_ontologies_and_submissions
   end
 
@@ -39,6 +44,19 @@ class TestCase < Test::Unit::TestCase
   # @option options [Fixnum] :submission_count How many submissions each ontology should have (acts as max number when random submission count is used)
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   def create_ontologies_and_submissions(options = {})
+    if Kernel.const_defined?("TestClsesController") && self.instance_of?(::TestClsesController)
+      ont = LinkedData::Models::Ontology.find("TST-ONT-0")
+      if !ont.nil?
+        ont.load unless ont.loaded?
+        if ont.submissions.length == 3
+          ont.submissions.each do |ss|
+            ss.load unless ss.loaded?
+            return 1, ["TST-ONT-0"] if ss.submissionStatus.parsed?
+          end
+        end
+      end
+    end
+
     LinkedData::Models::SubmissionStatus.init
     delete_ontologies_and_submissions
     ont_count = options[:ont_count] || 5
@@ -48,8 +66,14 @@ class TestCase < Test::Unit::TestCase
     u = LinkedData::Models::User.new(username: "tim", email: "tim@example.org")
     u.save unless u.exist? || !u.valid?
 
+    LinkedData::Models::SubmissionStatus.init
+
     of = LinkedData::Models::OntologyFormat.new(acronym: "OWL")
-    of.save unless of.exist? || !of.valid?
+    if of.exist?
+      of = LinkedData::Models::OntologyFormat.find("OWL")
+    else
+      of.save
+    end
 
     ont_acronyms = []
     ontologies = []
@@ -74,11 +98,17 @@ class TestCase < Test::Unit::TestCase
         os = LinkedData::Models::OntologySubmission.new({
           ontology: o,
           hasOntologyLanguage: of,
-          submissionStatus: LinkedData::Models::SubmissionStatus.new(:code => "UPLOADED"),
-          submissionId: o.next_submission_id
+          submissionStatus: LinkedData::Models::SubmissionStatus.find("UPLOADED"),
+          submissionId: o.next_submission_id,
+          definitionProperty: (RDF::IRI.new "http://bioontology.org/ontologies/biositemap.owl#definition")
         })
         if (options.include? :process_submission)
-          file_path = "test/data/ontology_files/BRO_v3.1.owl"
+          file_path = nil
+          if os.submissionId < 4
+            file_path = "test/data/ontology_files/BRO_v3.#{os.submissionId-1}.owl"
+          else
+            raise ArgumentError, "create_ontologies_and_submissions does not support process submission with more than 2 versions"
+          end
           uploadFilePath = LinkedData::Models::OntologySubmission.copy_file_repository(o.acronym, os.submissionId, file_path)
           os.uploadFilePath = uploadFilePath
         else
@@ -98,10 +128,12 @@ class TestCase < Test::Unit::TestCase
     if options.include? :process_submission
       ontologies.each do |o|
         o.load unless o.loaded?
-        latest = o.latest_submission
-        latest.load unless latest.loaded?
-        latest.ontology.load unless latest.ontology.loaded?
-        latest.process_submission Logger.new(STDOUT)
+        o.submissions.each do |ss|
+          ss.load unless ss.loaded?
+          next if ss.submissionId == 1
+          ss.ontology.load unless ss.ontology.loaded?
+          ss.process_submission Logger.new(STDOUT)
+        end
       end
     end
 
@@ -113,8 +145,7 @@ class TestCase < Test::Unit::TestCase
   def delete_ontologies_and_submissions
     LinkedData::Models::Ontology.all.each do |ont|
       ont.load unless ont.nil? || ont.loaded
-      subsmissions = ont.submissions
-      subsmissions.each do |ss|
+      ont.submissions.each do |ss|
         ss.load unless ss.loaded?
         ss.delete
       end
@@ -128,5 +159,18 @@ class TestCase < Test::Unit::TestCase
     of.delete unless of.nil?
   end
 
-end
+  # Validate JSON object against a JSON schema.
+  # @note schema is only validated after json data fails to validate.
+  # @param [String] jsonData a json string that will be parsed by JSON.parse
+  # @param [String] jsonSchemaString a json schema string that will be parsed by JSON.parse
+  # @param [boolean] list set it true for jsonObj array of items to validate against jsonSchemaString
+  def validate_json(jsonData, jsonSchemaString, list=false)
+    jsonObj = JSON.parse(jsonData)
+    jsonSchema = JSON.parse(jsonSchemaString)
+    assert(
+        JSON::Validator.validate(jsonSchema, jsonObj, :list => list),
+        JSON::Validator.fully_validate(jsonSchema, jsonObj, :validate_schema => true, :list => list).to_s
+    )
+  end
 
+end

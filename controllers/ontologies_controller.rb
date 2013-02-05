@@ -23,7 +23,7 @@ class OntologiesController
       ont = Ontology.find(params["acronym"])
       if submission
         ont = ont.submission(submission)
-        error 404 if ont.nil?
+        error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       end
       reply ont
     end
@@ -42,13 +42,13 @@ class OntologiesController
       if ont.nil?
         ont = instance_from_params(Ontology, params)
       else
-        error 400, "Ontology already exists, to add a new submission, please POST to: /ontologies/#{params["acronym"]}/submission"
+        error 409, "Ontology already exists, to add a new submission, please POST to: /ontologies/#{params["acronym"]}/submission"
       end
 
       if ont.valid?
         ont.save
       else
-        error 400, ont.errors
+        error 422, ont.errors
       end
 
       ont_submission = create_submission(ont)
@@ -60,7 +60,7 @@ class OntologiesController
     # Create a new submission for an existing ontology
     post '/:acronym/submissions' do
       ont = Ontology.find(params["acronym"])
-      error 400, "You must provide a valid `acronym` to create a new submission" if ont.nil?
+      error 422, "You must provide a valid `acronym` to create a new submission" if ont.nil?
       reply 201, create_submission(ont)
     end
 
@@ -68,17 +68,17 @@ class OntologiesController
     # Update an existing submission of an ontology
     patch '/:acronym/:ontology_submission_id' do
       ont = Ontology.find(params["acronym"])
-      error 400, "You must provide an existing `acronym` to patch" if ont.nil?
+      error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
       submission = ont.submission(params[:ontology_submission_id])
-      error 400, "You must provide an existing `submissionId` to patch" if submission.nil?
+      error 422, "You must provide an existing `submissionId` to patch" if submission.nil?
 
       populate_from_params(submission, params)
 
       if submission.valid?
         submission.save
       else
-        error 400, submission.errors
+        error 422, submission.errors
       end
 
       halt 204
@@ -88,14 +88,14 @@ class OntologiesController
     # Update an existing submission of an ontology
     patch '/:acronym' do
       ont = Ontology.find(params["acronym"])
-      error 400, "You must provide an existing `acronym` to patch" if ont.nil?
+      error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
       populate_from_params(ont, params)
 
       if ont.valid?
         ont.save
       else
-        error 400, ont.errors
+        error 422, ont.errors
       end
 
       halt 204
@@ -105,7 +105,7 @@ class OntologiesController
     # Delete an ontology and all its versions
     delete '/:acronym' do
       ont = Ontology.find(params["acronym"])
-      error 400, "You must provide an existing `acronym` to delete" if ont.nil?
+      error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       ont.delete
       halt 204
     end
@@ -114,9 +114,9 @@ class OntologiesController
     # Delete a specific ontology submission
     delete '/:acronym/:ontology_submission_id' do
       ont = Ontology.find(params["acronym"])
-      error 400, "You must provide an existing `acronym` to delete" if ont.nil?
+      error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       submission = ont.submission(params[:ontology_submission_id])
-      error 400, "You must provide an existing `submissionId` to delete" if submission.nil?
+      error 422, "You must provide an existing `submissionId` to delete" if submission.nil?
       submission.delete
       halt 204
     end
@@ -165,7 +165,7 @@ class OntologiesController
       if ont_submission.valid?
         ont_submission.save
       else
-        error 400, ont_submission.errors
+        error 422, ont_submission.errors
       end
 
       ont_submission

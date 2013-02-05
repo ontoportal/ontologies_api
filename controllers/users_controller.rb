@@ -12,11 +12,13 @@ class UsersController
 
     # Users get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:username' do
+      user = User.find(params["username"])
+      error 409, "User with username `#{params["username"]}` already exists" unless user.nil?
       user = instance_from_params(User, params)
       if user.valid?
         user.save
       else
-        error 400, user.errors
+        error 422, user.errors
       end
       reply 201, user
     end
@@ -28,7 +30,7 @@ class UsersController
       if user.valid?
         user.save
       else
-        error 400, user.errors
+        error 422, user.errors
       end
       halt 204
     end

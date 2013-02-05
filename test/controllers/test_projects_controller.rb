@@ -18,34 +18,19 @@ class TestProjectsController < TestCase
     "description":"A BioPortal project, which may refer to multiple ontologies.",
     "additionalProperties":false,
     "properties":{
-      "name":{ "type":"string", "required": true },
-      "acronym":{ "type":"string", "required": true },
       "id":{ "type":"string", "required": true },
+      "acronym":{ "type":"string", "required": true },
+      "name":{ "type":"string", "required": true },
       "creator":{ "type":"string", "required": true },
       "created":{ "type":"string", "format":"datetime", "required": true },
       "homePage":{ "type":"string", "format":"uri", "required": true },
       "description":{ "type":"string", "required": true },
       "contacts":{ "type":"string" },
+      "institution":{ "type":"string" },
       "ontologyUsed":{ "type":"array", "items":{ "type":"string" } }
     }
   }
   END_JSON_SCHEMA_STR
-
-  def _project_json_schema
-    JSON.parse(JSON_SCHEMA_STR)
-  end
-
-  # Validate JSON object against a JSON schema.
-  # @note schema may be more restrictive than serializer generating json data.
-  # @param [Hash] jsonObj ruby hash created by JSON.parse
-  # @param [boolean] list set it true for jsonObj array of items to validate
-  def _validate_json(jsonObj, list=false)
-    jsonSchema = _project_json_schema
-    assert(
-        JSON::Validator.validate(jsonSchema, jsonObj, :list => list),
-        JSON::Validator.fully_validate(jsonSchema, jsonObj, :validate_schema => true, :list => list).to_s
-    )
-  end
 
   # Clear the triple store models
   # @param [Array] gooModelArray an array of GOO models
@@ -82,6 +67,7 @@ class TestProjectsController < TestCase
     @p.acronym = "TP"
     @p.homePage = "http://www.example.org"
     @p.description = "A test project"
+    @p.institution = "A university"
     @p.ontologyUsed = [@ont,]
     @p.save
     @projectParams = {
@@ -91,6 +77,7 @@ class TestProjectsController < TestCase
         homePage: @p.homePage,
         creator: @p.creator.username,
         created: @p.created,
+        institution: @p.institution,
         ontologyUsed: @p.ontologyUsed.first.acronym
     }
   end
@@ -103,7 +90,7 @@ class TestProjectsController < TestCase
     assert_equal(1, projects.length)
     p = projects[0]
     assert_equal(@p.name, p['name'])
-    _validate_json(p)
+    validate_json(last_response.body, JSON_SCHEMA_STR, true)
   end
 
   def test_project_create_success
@@ -128,7 +115,7 @@ class TestProjectsController < TestCase
     # Fail PUT for any project with required missing data.
     @projectParams["acronym"] = nil
     put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
-    _response_status(400, last_response)
+    _response_status(422, last_response)
     _project_get_failure(@p.acronym)
   end
 
@@ -144,7 +131,6 @@ class TestProjectsController < TestCase
     _project_delete(@p.acronym)
     _project_get_failure(@p.acronym)
   end
-
 
   def _response_status(status, response)
     if DEBUG_MESSAGES
@@ -172,7 +158,7 @@ class TestProjectsController < TestCase
       p = JSON.parse(last_response.body)
       assert_instance_of(Hash, p)
       assert_equal(@p.acronym, p['acronym'], p.to_s)
-      _validate_json(p)
+      validate_json(last_response.body, JSON_SCHEMA_STR)
     end
   end
 

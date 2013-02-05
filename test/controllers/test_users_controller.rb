@@ -61,9 +61,15 @@ class TestUsersController < TestCase
   end
 
   def test_create_new_invalid_user
-    put "/users/fred"
-    assert last_response.status == 400
+    put "/users/totally_new_user"
+    assert last_response.status == 422
   end
+
+  def test_no_duplicate_user
+    put "/users/#{@usernames.shuffle.first}"
+    assert last_response.status == 409
+  end
+
 
   def test_update_patch_user
     add_first_name = {firstName: "Fred"}
