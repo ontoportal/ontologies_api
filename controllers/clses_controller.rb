@@ -55,12 +55,19 @@ class ClsesController
     # Get all descendants for given class
     get '/:cls/descendants' do
       ont, submission = get_ontology_and_submission
+      page, size = get_page_params
       cls = get_class(submission)
       cls.load_children(transitive=true) unless cls.loaded_children?
-      cls.children.each do |c|
+      page_children = cls.children.page(page, size)
+      page_children.each do |c|
         c.load_labels unless c.loaded_labels?
       end
-      reply cls.children
+      page_descendants ={ :classes => page_children,
+              :count => cls.children.length,
+              :page => page,
+              :size => size }
+      page_descendants[:next] = page + 1 if cls.children.page(page + 1, size)
+      reply page_descendants
     end
 
     # Get all children of given class

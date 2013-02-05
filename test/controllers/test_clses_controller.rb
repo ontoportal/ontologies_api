@@ -230,6 +230,27 @@ class TestClsesController < TestCase
       get call
       assert last_response.ok?
       descendants = JSON.parse(last_response.body)
+      assert descendants["page"] == 1
+      descendants = descendants["classes"]
+      descendants.map! { |a| a["id"] }
+      assert descendants.sort == descendants_data[cls_id].sort
+    end
+
+    #Smaller pages
+    clss_ids.each do |cls_id|
+      escaped_cls= CGI.escape(cls_id)
+      descendants = []
+      page_response = nil
+      begin
+        call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/descendants?size=7"
+        if page_response
+          call << "&page=#{page_response["next"]}"
+        end
+        get call
+        assert last_response.ok?
+        page_response = JSON.parse(last_response.body)
+        descendants.concat page_response["classes"]
+      end while page_response["next"]
       descendants.map! { |a| a["id"] }
       assert descendants.sort == descendants_data[cls_id].sort
     end
