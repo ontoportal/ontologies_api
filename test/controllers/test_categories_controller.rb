@@ -4,19 +4,43 @@ require "json"
 class TestcategoriesController < TestCase
 
   def setup
-    @category_ids = ["cat1", "cat2", "cat3"]
-    @category_ids.each do |cat_id|
-      category = Category.new(name: cat_id)
+    # Create some test categories
+    @test_cat = {acronym: "TEST-CAT", name: "Test Category", description: "Description of the Test Category"}
+
+    @cats = {
+        "ANAT" => ["Anatomy", "Anatomy Category Description"],
+        "ANIMAL-DEV" => ["Animal Development", "Animal Development Category Description"],
+        "AGA" => ["Animal Gross Anatomy", "Description for Animal Gross Anatomy"],
+        "ARABADOPSIS" => ["Arabadopsis", "Arabadopsis Category Description"],
+        "BP" => ["Biological Process", "Biological Process Category Description"],
+        "BR" => ["Biomedical Resources", "Description of Biomedical Resources Category"],
+        "CELL" => ["Cell", "Cell Category Description"]
+    }
+
+    # Make sure these don't exist
+    _delete_categories
+
+    i = 0
+    # Create them again
+    @cats.each do |acronym, name_desc|
+      Category.new(acronym: acronym, name: name_desc[0], description: name_desc[1])
       category.save if category.valid?
-      assert !Category.find(cat_id).nil?
+      i += 1
     end
   end
 
   def teardown
-    @category_ids.each do |cat_id|
-      category = Category.find(cat_id)
-      category.delete unless category.nil?
-      assert Category.find(cat_id).nil?
+    # Delete groups
+    _delete_categories
+  end
+
+  def _delete_categories
+    test_cat = Category.find(@test_cat[:acronym])
+    test_cat.delete unless test_cat.nil?
+    @cats.each do |acronym, name_desc|
+      cat = Category.find(acronym)
+      cat.delete unless cat.nil?
+      assert Category.find(acronym).nil?
     end
   end
 
@@ -27,41 +51,58 @@ class TestcategoriesController < TestCase
     categories = JSON.parse(last_response.body)
     all_ids = []
     categories.each do |returned_cat|
-      all_ids << returned_cat["name"]
+      all_ids << returned_cat["acronym"]
     end
 
-    @category_ids.each do |cat_id|
+    @cats.each do |cat_id|
       assert all_ids.include?(cat_id)
     end
   end
 
   def test_single_category
-    @category_ids.each do |cat_id|
-      get "/categories/#{cat_id}"
+    @cats.each do |acronym|
+      get "/categories/#{acronym}"
       assert last_response.ok?
       category = JSON.parse(last_response.body)
-      #puts last_response.body
-      assert_equal cat_id, category["name"]
+      assert_equal acronym, category["acronym"]
     end
   end
 
   def test_create_new_category
-    cat_name = "cat1"
-    put "categories/#{cat_name}"
+    acronym = @test_cat[:acronym]
+    put "/categories/#{acronym}", @test_cat.to_json, "CONTENT_TYPE" => "application/json"
+
     assert last_response.status == 201
+    assert JSON.parse(last_response.body)["acronym"].eql?(acronym)
 
-    category = JSON.parse(last_response.body)
-    assert_equal cat_name, category["name"]
-    category.delete unless category.nil?
-  end
-
-  def test_update_replace_category
+    get "/categories/#{acronym}"
+    assert last_response.ok?
+    assert JSON.parse(last_response.body)["acronym"].eql?(acronym)
   end
 
   def test_update_patch_category
+    acronym = 'ANAT'
+    category = Category.find(acronym)
+    assert_not_nil category
+    new_name = "Anatomyzation new NAME"
+    new_desc = "Anatomyzation new DESCRIPTION"
+    new_values = {name: new_name, description: new_desc}
+
+    patch "/categories/#{acronym}", new_values.to_json, "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 204
+
+    get "/categories/#{acronym}"
+    group = JSON.parse(last_response.body)
+    assert group["name"].eql?(new_name)
+    assert group["description"].eql?(new_desc)
   end
 
-  def test_delete_category
-  end
+  def test_delete_group
+    acronym = 'ANAT'
+    delete "/categories/#{acronym}"
+    assert last_response.status == 204
 
+    get "/categories/#{acronym}"
+    assert last_response.status == 404
+  end
 end

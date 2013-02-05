@@ -10,7 +10,6 @@ class GroupsController
     get '/:group' do
       acronym = params["group"]
       g = Group.find(acronym)
-
       error 404, "Group #{acronym} not found" if g.nil?
       reply 200, g
     end

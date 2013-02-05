@@ -23,10 +23,11 @@ class TestgroupsController < TestCase
     i = 0
     # Create them again
     @groups.each do |acronym, name_desc|
-      Group.new(acronym: acronym, name: name_desc[0], description: name_desc[1]).save
+      group = Group.new(acronym: acronym, name: name_desc[0], description: name_desc[1])
+      group.save if group.valid?
       i += 1
     end
- end
+  end
 
   def teardown
     # Delete groups
@@ -39,9 +40,9 @@ class TestgroupsController < TestCase
     @groups.each do |acronym, name_desc|
       group = Group.find(acronym)
       group.delete unless group.nil?
+      assert Group.find(acronym).nil?
     end
   end
-
 
   def test_all_groups
     get '/groups'
@@ -70,9 +71,6 @@ class TestgroupsController < TestCase
     assert JSON.parse(last_response.body)["acronym"].eql?(acronym)
   end
 
-  def test_update_replace_group
-  end
-
   def test_update_patch_group
     acronym = 'CTSA-HOM'
     group = Group.find(acronym)
@@ -98,5 +96,4 @@ class TestgroupsController < TestCase
     get "/groups/#{acronym}"
     assert last_response.status == 404
   end
-
 end
