@@ -7,16 +7,16 @@ class GroupsController
     end
 
     # Display a single group
-    get '/:group' do
-      acronym = params["group"]
+    get '/:acronym' do
+      acronym = params["acronym"]
       g = Group.find(acronym)
       error 404, "Group #{acronym} not found" if g.nil?
       reply 200, g
     end
 
     # Create a group with the given acronym
-    put '/:group' do
-      acronym = params["group"]
+    put '/:acronym' do
+      acronym = params["acronym"]
       group = Group.find(acronym)
 
       if group.nil?
@@ -34,9 +34,10 @@ class GroupsController
     end
 
     # Update an existing submission of an group
-    patch '/:group' do
-      acronym = params["group"]
+    patch '/:acronym' do
+      acronym = params["acronym"]
       group = Group.find(acronym)
+
       if group.nil?
         error 400, "Group does not exist, please create using HTTP PUT before modifying"
       else
@@ -53,10 +54,10 @@ class GroupsController
     end
 
     # Delete a group
-    delete '/:group' do
-      g = Group.find(params["group"])
-      g.load unless g.loaded?
-      g.delete
+    delete '/:acronym' do
+      group = Group.find(params["acronym"])
+      group.load unless group.loaded?
+      group.delete
       halt 204
     end
   end

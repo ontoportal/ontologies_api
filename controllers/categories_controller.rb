@@ -2,58 +2,63 @@ class CategoriesController
   namespace "/categories" do
     # Display all categories
     get do
-        categories = Category.all
-        reply categories
+      categories = Category.all
+      reply categories
     end
 
     # Display a single category
-    get '/:name' do
-        category_id = params["category"]
-        category = Category.find(name)
-        error 404, "Category #{name} not found" if category.nil?
-        reply 200, category
+    get '/:acronym' do
+      acronym = params["acronym"]
+      category = Category.find(acronym)
+      error 404, "Category #{acronym} not found" if category.nil?
+      reply 200, category
     end
 
     # Create a category with the given acronym
-    put '/:name' do
-        category = Category.find(name: params["name"])
-        if category.nil?
-            category = instance_from_paramas(Category, params)
-        else
-            error 400, "Category exists, please use HTTP PATCH to update"
-        end
+    put '/:acronym' do
+      acronym = params["acronym"]
+      category = Category.find(acronym)
 
-        if category.valid?
-            category.save
-        else
-            error 400, category.errors
-        end
+      if category.nil?
+        category = instance_from_params(Category, params)
+      else
+        error 400, "Category exists, please use HTTP PATCH to update"
+      end
 
-        reply 201, category
+      if category.valid?
+        category.save
+      else
+        error 400, category.errors
+      end
+      reply 201, category
     end
 
-    # Update an existing submission of an category
-    patch '/:name' do
-        category = Category.find(name: params["name"])
-        if !category.nil?
-            category = instance_from_paramas(Category, params)
-        else
-            error 400, "Category does not exist, please create using HTTP PUT before modifying"
-        end
+    # Update an existing submission of a category
+    patch '/:acronym' do
+      acronym = params["acronym"]
+      category = Category.find(acronym)
+
+      if category.nil?
+        error 400, "Category does not exist, please create using HTTP PUT before modifying"
+      else
+        category.load unless category.loaded?
+        populate_from_params(category, params)
 
         if category.valid?
-            category.save
+          category.save
         else
-            error 400, category.errors
+          error 400, category.errors
         end
-
-        halt 204
+      end
+      halt 204
     end
 
     # Delete a category
-    delete '/:name' do
-        
+    delete '/:acronym' do
+      category = Category.find(params["acronym"])
+      category.load unless category.loaded?
+      category.delete
+      halt 204
     end
-
   end
 end

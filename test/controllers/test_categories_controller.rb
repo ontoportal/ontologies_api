@@ -23,7 +23,7 @@ class TestCategoriesController < TestCase
     i = 0
     # Create them again
     @cats.each do |acronym, name_desc|
-      Category.new(acronym: acronym, name: name_desc[0], description: name_desc[1])
+      category = Category.new(acronym: acronym, name: name_desc[0], description: name_desc[1])
       category.save if category.valid?
       i += 1
     end
@@ -37,6 +37,7 @@ class TestCategoriesController < TestCase
   def _delete_categories
     test_cat = Category.find(@test_cat[:acronym])
     test_cat.delete unless test_cat.nil?
+
     @cats.each do |acronym, name_desc|
       cat = Category.find(acronym)
       cat.delete unless cat.nil?
@@ -49,18 +50,18 @@ class TestCategoriesController < TestCase
     assert last_response.ok?
 
     categories = JSON.parse(last_response.body)
-    all_ids = []
+    all_acronyms = []
     categories.each do |returned_cat|
-      all_ids << returned_cat["acronym"]
+      all_acronyms << returned_cat["acronym"]
     end
 
-    @cats.each do |cat_id|
-      assert all_ids.include?(cat_id)
+    @cats.each do |acronym, name_desc|
+      assert all_acronyms.include?(acronym)
     end
   end
 
   def test_single_category
-    @cats.each do |acronym|
+    @cats.each do |acronym, name_desc|
       get "/categories/#{acronym}"
       assert last_response.ok?
       category = JSON.parse(last_response.body)
@@ -97,7 +98,7 @@ class TestCategoriesController < TestCase
     assert group["description"].eql?(new_desc)
   end
 
-  def test_delete_group
+  def test_delete_category
     acronym = 'ANAT'
     delete "/categories/#{acronym}"
     assert last_response.status == 204
