@@ -92,6 +92,8 @@ class TestCase < Test::Unit::TestCase
         ontologies << o
       end
 
+      LinkedData::Models::SubmissionStatus.init
+
       # Random submissions (between 1 and max)
       max = random_submission_count ? (1..submission_count.to_i).to_a.shuffle.first : submission_count
       max.times do

@@ -149,17 +149,20 @@ class OntologiesController
         file_location = OntologySubmission.copy_file_repository(params["acronym"], submission_id, tmpfile, filename)
       end
 
+      SubmissionStatus.init
+      OntologyFormat.init
+
       # Create OntologySubmission
       ont_submission = instance_from_params(OntologySubmission, params)
       ont_submission.ontology = ont
-      ont_submission.submissionStatus = SubmissionStatus.new(:code => "UPLOADED")
+      ont_submission.submissionStatus = SubmissionStatus.find("UPLOADED")
       ont_submission.submissionId = submission_id
       ont_submission.pullLocation = params["pullLocation"].nil? ? nil : RDF::IRI.new(params["pullLocation"])
       ont_submission.uploadFilePath = file_location
 
       # Add new format if it doesn't exist
       if ont_submission.hasOntologyLanguage.nil?
-        ont_submission.hasOntologyLanguage = OntologyFormat.new(acronym: params["hasOntologyLanguage"])
+        ont_submission.hasOntologyLanguage = OntologyFormat.find(params["hasOntologyLanguage"])
       end
 
       if ont_submission.valid?
