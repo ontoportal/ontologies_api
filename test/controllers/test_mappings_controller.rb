@@ -1,6 +1,6 @@
 require_relative '../test_case'
 
-class TestProjectsController < TestCase
+class TestMappingsController < TestCase
 
   def test_mappings_for_class
     ontology = "ncit"
