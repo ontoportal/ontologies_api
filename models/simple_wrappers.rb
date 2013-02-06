@@ -22,4 +22,4 @@ Review = LinkedData::Models::Review
 
 User = LinkedData::Models::User
 
-UserRole = LinkedData::Models::UserRole
+UserRole = LinkedData::Models::Users::Role
