@@ -11,7 +11,7 @@ class TestUsersController < TestCase
 
     # Create them again
     @usernames.each do |username|
-      User.new(username: username, email: "#{username}@example.org").save
+      User.new(username: username, email: "#{username}@example.org", password: "pass_word").save
     end
 
     # Test data
@@ -50,7 +50,7 @@ class TestUsersController < TestCase
   end
 
   def test_create_new_user
-    user = {email: "#{@username}@example.org"}
+    user = {email: "#{@username}@example.org", password: "pass_the_word"}
     put "/users/#{@username}", user.to_json, "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201
     assert JSON.parse(last_response.body)["username"].eql?(@username)
