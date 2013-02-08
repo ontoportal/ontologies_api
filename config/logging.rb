@@ -1,6 +1,10 @@
 require 'logger'
 class CustomLogger < Logger
   alias write <<
+
+  def flush
+    ((self.instance_variable_get :@logdev).instance_variable_get :@dev).flush
+  end
 end
 
 # Setup global logging
