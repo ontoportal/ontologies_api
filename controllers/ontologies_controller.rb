@@ -122,6 +122,42 @@ class OntologiesController
     end
 
     ##
+    # Trigger the parsing of ontology submission ID
+    post '/:acronym/submissions/parse' do
+      ont = Ontology.find(params["acronym"])
+      error 422, "You must provide an existing `acronym` to parse a submission" if ont.nil?
+      error 422, "You must provide a `submissionId`" if params[:ontology_submission_id].nil?
+      submission = ont.submission(params[:ontology_submission_id])
+      error 422, "You must provide an existing `submissionId` to parse" if submission.nil?
+
+      #TODO: @palexander All this can be moved outside of the controller
+      Thread.new do
+        log_file = get_parse_log_file(submission)
+        logger_for_parsing = CustomLogger.new(log_file)
+        logger_for_parsing.level = Logger::DEBUG
+        begin
+          submission.process_submission(logger_for_parsing)
+        rescue => e
+          submission.submissionStatus = SubmissionStatus.find("ERROR_RDF")
+          submission.parseError = e.message
+          if submission.valid?
+            submission.save
+          else
+            mess = "Error saving ERROR status for submission #{submission.resource_id.value}"
+            logger.error(mess)
+            logger_for_parsing.error(mess)
+          end
+          log_file.flush()
+          log_file.close()
+        end
+      end
+      #TODO: end
+
+      message = { "message" => "Parse triggered as background process. Ontology status will tell when it is completed." }
+      reply 200, message
+    end
+
+    ##
     # Download an ontology
     get '/:acronym/download' do
       submission = params[:ontology_submission_id]
@@ -183,6 +219,17 @@ class OntologiesController
         end
       end
       return nil, nil
+    end
+
+    def get_parse_log_file(submission)
+      submission.load unless submission.loaded?
+      ontology = submission.ontology
+      ontology.load unless ontology.loaded?
+
+      parse_log_folder = File.join($REPOSITORY_FOLDER, "parse-logs")
+      Dir.mkdir(parse_log_folder) unless File.exist? parse_log_folder
+      file_log_path = File.join(parse_log_folder, "#{ontology.acronym}-#{submission.submissionId}-#{DateTime.now.strftime("%Y%m%d_%H%M%S")}.log")
+      return File.open(file_log_path,"w")
     end
 
   end

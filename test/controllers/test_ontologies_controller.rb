@@ -121,6 +121,36 @@ class TestOntologiesController < TestCase
     assert ont["acronym"].eql?(@acronym.upcase)
   end
 
+  def test_create_new_ontology_and_parse
+    put "/ontologies/#{@acronym}", name: @name, hasOntologyLanguage: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
+    assert last_response.status == 201
+    sub = JSON.parse(last_response.body)
+
+    get "/ontologies/#{@acronym}?ontology_submission_id=#{sub['submissionId']}"
+    ont = JSON.parse(last_response.body)
+    assert ont["acronym"].eql?(@acronym.upcase)
+    post "/ontologies/#{@acronym}/submissions/parse?ontology_submission_id=#{sub['submissionId']}"
+    assert last_response.status == 200
+
+    max = 25
+    while (ont["submissionStatus"] == "UPLOADED" and max > 0)
+      get "/ontologies/#{@acronym}?ontology_submission_id=#{sub['submissionId']}"
+      ont = JSON.parse(last_response.body)
+      assert last_response.status == 200
+      max = max -1
+      sleep(1.5)
+    end
+    assert max > 0
+    #EVENTUALLY HAS TO ASSERT AGAINST READY
+    assert ont["submissionStatus"] == "RDF"
+
+    #we should be able to get roots
+    get "/ontologies/#{@acronym}/classes/roots"
+    assert last_response.status == 200
+    roots = JSON.parse(last_response.body)
+    assert roots.length > 0
+  end
+
   def test_create_new_ontology_submission
     _create_onts
     post "/ontologies/#{@acronym}/submissions", name: @name, hasOntologyLanguage: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
