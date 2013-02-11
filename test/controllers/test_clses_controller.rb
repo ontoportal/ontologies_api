@@ -101,7 +101,7 @@ class TestClsesController < TestCase
     get "/ontologies/#{ont.acronym}/classes/roots"
     assert last_response.ok?
     roots = JSON.parse(last_response.body)
-    assert_equal 12, roots.length
+    assert_equal 9, roots.length
     roots.each do |r|
       assert_instance_of String, r["prefLabel"]
       assert_instance_of String, r["id"]
