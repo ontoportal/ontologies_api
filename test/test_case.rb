@@ -161,6 +161,16 @@ class TestCase < Test::Unit::TestCase
     of.delete unless of.nil?
   end
 
+  # Delete triple store models
+  # @param [Array] gooModelArray an array of GOO models
+  def delete_goo_models(gooModelArray)
+    gooModelArray.each do |m|
+      next if m.nil?
+      m.load
+      m.delete
+    end
+  end
+
   # Validate JSON object against a JSON schema.
   # @note schema is only validated after json data fails to validate.
   # @param [String] jsonData a json string that will be parsed by JSON.parse
