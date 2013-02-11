@@ -33,20 +33,10 @@ class TestProjectsController < TestCase
   END_JSON_SCHEMA_STR
 
   # Clear the triple store models
-  # @param [Array] gooModelArray an array of GOO models
-  def _delete_models(gooModelArray)
-    gooModelArray.each do |m|
-      next if m.nil?
-      m.load
-      m.delete
-    end
-  end
-
-  # Clear the triple store models
   def teardown
-    _delete_models(LinkedData::Models::Project.all)
-    _delete_models(LinkedData::Models::Ontology.all)
-    _delete_models(LinkedData::Models::User.all)
+    delete_goo_models(LinkedData::Models::Project.all)
+    delete_goo_models(LinkedData::Models::Ontology.all)
+    delete_goo_models(LinkedData::Models::User.all)
     @projectParams = nil
     @user = nil
     @ont = nil
