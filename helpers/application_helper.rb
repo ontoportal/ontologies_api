@@ -21,7 +21,17 @@ module Sinatra
         obj.load if obj.kind_of?(Goo::Base::Resource) && obj.lazy_loaded?
         params.each do |attribute, value|
           attr_cls = obj.class.range_class(attribute)
-          if attr_cls
+          no_unique_attr = !attr_cls.nil? && (attr_cls.goop_settings[:unique][:fields].nil? || attr_cls.goop_settings[:unique][:fields].length != 1)
+          if attr_cls && no_unique_attr
+            # binding.pry if attr_cls == LinkedData::Models::Contact
+            found_objs = attr_cls.where(value)
+            if found_objs.nil? || found_objs.empty?
+              new_obj = attr_cls.new(value)
+              value = new_obj
+            else
+              value = found_objs
+            end
+          elsif attr_cls
             value = attr_cls.find(value)
           end
           obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
