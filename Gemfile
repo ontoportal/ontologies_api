@@ -13,8 +13,8 @@ gem 'simplecov', :require => false, :group => :test
 gem 'thin'
 
 # Debugging
-gem 'pry', :group => 'development'
-gem 'rack-perftools_profiler'
+gem 'pry', :group => :development
+gem 'rack-perftools_profiler', :group => :development
 
 # Code reloading
 gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/shotgun.git', :branch => 'ncbo'
