@@ -76,6 +76,11 @@ class TestCase < Test::Unit::TestCase
       of.save
     end
 
+    contact_name = "Sheila"
+    contact_email = "sheila@example.org"
+    contact = LinkedData::Models::Contact.where(name: contact_name, email: contact_email)
+    contact = LinkedData::Models::Contact.new(name: contact_name, email: contact_email) if contact.empty?
+
     ont_acronyms = []
     ontologies = []
     ont_count.to_i.times do |count|
@@ -88,10 +93,8 @@ class TestCase < Test::Unit::TestCase
         administeredBy: u
       })
 
-      if o.valid?
-        o.save
-        ontologies << o
-      end
+      o.save
+      ontologies << o
 
       LinkedData::Models::SubmissionStatus.init
 
@@ -103,7 +106,10 @@ class TestCase < Test::Unit::TestCase
           hasOntologyLanguage: of,
           submissionStatus: LinkedData::Models::SubmissionStatus.find("UPLOADED"),
           submissionId: o.next_submission_id,
-          definitionProperty: (RDF::IRI.new "http://bioontology.org/ontologies/biositemap.owl#definition")
+          definitionProperty: (RDF::IRI.new "http://bioontology.org/ontologies/biositemap.owl#definition"),
+          summaryOnly: true,
+          contact: contact,
+          released: DateTime.now - 3
         })
         if (options.include? :process_submission)
           file_path = nil
@@ -117,7 +123,7 @@ class TestCase < Test::Unit::TestCase
         else
           os.summaryOnly = true
         end
-        os.save if os.valid?
+        os.save rescue binding.pry
       end
     end
 

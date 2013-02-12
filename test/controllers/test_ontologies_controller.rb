@@ -17,6 +17,14 @@ class TestOntologiesController < TestCase
     @acronym = "TST"
     @name = "Test Ontology"
     @test_file = File.expand_path("../../data/ontology_files/BRO_v3.1.owl", __FILE__)
+    @file_params = {
+      name: @name,
+      hasOntologyLanguage: "OWL",
+      administeredBy: "tim",
+      "file" => Rack::Test::UploadedFile.new(@test_file, ""),
+      released: DateTime.now.to_s,
+      contact: {name: "test_name", email: "test@example.org"}
+    }
   end
 
   def _create_models
@@ -113,7 +121,7 @@ class TestOntologiesController < TestCase
   end
 
   def test_create_new_ontology_file
-    put "/ontologies/#{@acronym}", name: @name, hasOntologyLanguage: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
+    put "/ontologies/#{@acronym}", @file_params
     assert last_response.status == 201
 
     get "/ontologies/#{@acronym}"
@@ -122,7 +130,7 @@ class TestOntologiesController < TestCase
   end
 
   def test_create_new_ontology_and_parse
-    put "/ontologies/#{@acronym}", name: @name, hasOntologyLanguage: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
+    put "/ontologies/#{@acronym}", @file_params
     assert last_response.status == 201
     sub = JSON.parse(last_response.body)
 
@@ -153,7 +161,7 @@ class TestOntologiesController < TestCase
 
   def test_create_new_ontology_submission
     _create_onts
-    post "/ontologies/#{@acronym}/submissions", name: @name, hasOntologyLanguage: "OWL", administeredBy: "tim", "file" => Rack::Test::UploadedFile.new(@test_file, "")
+    post "/ontologies/#{@acronym}/submissions", @file_params
     assert last_response.status == 201
   end
 
@@ -177,13 +185,13 @@ class TestOntologiesController < TestCase
     submission.load unless submission.loaded?
     submission.ontology.load unless submission.ontology.loaded?
 
-    new_values = {summaryOnly: false}
+    new_values = {description: "Testing new description changes"}
     patch "/ontologies/#{submission.ontology.acronym}/#{submission.submissionId}", new_values.to_json, "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
     get "/ontologies/#{submission.ontology.acronym}?ontology_submission_id=#{submission.submissionId}"
     submission = JSON.parse(last_response.body)
-    assert submission["summaryOnly"] == false
+    assert submission["description"].eql?("Testing new description changes")
   end
 
   def test_delete_ontology
