@@ -284,6 +284,7 @@ class TestClsesController < TestCase
         get call
         last_response.ok?
         children = JSON.parse(last_response.body)
+        children = children["classes"]
         children.map! { |c| c["id"] }
         assert children.length > 0 and children.include? cls_id
       end
@@ -316,7 +317,7 @@ class TestClsesController < TestCase
       call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/children"
       get call
       assert last_response.ok?
-      children = JSON.parse(last_response.body)
+      children = JSON.parse(last_response.body)["classes"]
       #TODO eventually this should test for id and not resource_id
       children.map! { |c| c["id"] }
       assert children.sort == children_arrays[i].sort
