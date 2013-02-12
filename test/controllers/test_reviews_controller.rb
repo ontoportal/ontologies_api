@@ -102,8 +102,26 @@ class TestReviewsController < TestCase
     _reviews_get_success(@ont.acronym, @user.username, true)
   end
 
+  def test_review_create_conflict
+    # Fail PUT for any review that already exists.
+    put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
+    _response_status(409, last_response)
+    # The existing project should remain valid
+    _reviews_get_success(@ont.acronym, @user.username, true)
+  end
 
-  def test_update_patch_review
+  def test_review_create_failure
+    # Ensure the review doesn't exist.
+    _reviews_delete(@ont.acronym, @user.username)
+    # Fail PUT for any review with required missing data.
+    username = 'user_name_does_not_exist'
+    @review_params[:creator] = username
+    put "/ontologies/#{@ont.acronym}/reviews/#{username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
+    _response_status(422, last_response)
+    _reviews_get_failure(@ont.acronym, username)
+  end
+
+  def test_review_update_success
     # Use patch for existing reviews (it is created in the setup)
     @review_params[:qualityRating] = @review_params[:qualityRating] + 1
     patch "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
@@ -115,7 +133,6 @@ class TestReviewsController < TestCase
     _reviews_delete(@ont.acronym, @user.username)
     _reviews_get_failure(@ont.acronym, @user.username)
   end
-
 
   def _response_status(status, response)
     if DEBUG_MESSAGES

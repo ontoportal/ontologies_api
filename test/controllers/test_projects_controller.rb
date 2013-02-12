@@ -103,7 +103,8 @@ class TestProjectsController < TestCase
     # Ensure the project doesn't exist.
     _project_delete(@p.acronym)
     # Fail PUT for any project with required missing data.
-    @projectParams["acronym"] = nil
+    username = 'user_does_not_exist'
+    @projectParams['creator'] = username
     put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
     _response_status(422, last_response)
     _project_get_failure(@p.acronym)
