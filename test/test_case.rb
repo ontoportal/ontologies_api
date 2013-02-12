@@ -43,6 +43,7 @@ class TestCase < Test::Unit::TestCase
   # @option options [Fixnum] :ont_count Number of ontologies to create
   # @option options [Fixnum] :submission_count How many submissions each ontology should have (acts as max number when random submission count is used)
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
+  # @option options [TrueClass, FalseClass] :process_submission Parse the test ontology file
   def create_ontologies_and_submissions(options = {})
     if Kernel.const_defined?("TestClsesController") && self.instance_of?(::TestClsesController)
       ont = LinkedData::Models::Ontology.find("TST-ONT-0")
@@ -114,7 +115,7 @@ class TestCase < Test::Unit::TestCase
           uploadFilePath = LinkedData::Models::OntologySubmission.copy_file_repository(o.acronym, os.submissionId, file_path)
           os.uploadFilePath = uploadFilePath
         else
-          os.pullLocation = RDF::IRI.new("http://example.com")
+          os.summaryOnly = true
         end
         os.save if os.valid?
       end
