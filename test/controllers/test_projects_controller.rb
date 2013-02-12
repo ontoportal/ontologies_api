@@ -147,7 +147,7 @@ class TestProjectsController < TestCase
       # Assume we have JSON data in the response body.
       p = JSON.parse(last_response.body)
       assert_instance_of(Hash, p)
-      assert_equal(@p.acronym, p['acronym'], p.to_s)
+      assert_equal(acronym, p['acronym'], p.to_s)
       validate_json(last_response.body, JSON_SCHEMA_STR)
     end
   end

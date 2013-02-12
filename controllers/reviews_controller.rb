@@ -2,12 +2,6 @@ class ReviewsController
 
   MODEL = LinkedData::Models::Review
 
-  def self.find_reviews(params)
-    ont = params[:acronym]
-    user = params[:username]
-    return MODEL.where :ontologyReviewed => { :acronym => ont }, :user => { :username => user }
-  end
-
   namespace "/reviews" do
     # Return an array of all reviews.
     get do
@@ -25,7 +19,7 @@ class ReviewsController
 
     # Return an array of reviews by a user for an ontology.
     get '/:username' do
-      reviews = find_reviews(params) # an array of reviews
+      reviews = MODEL.where :ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}
       if reviews.empty?
         error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}."
       end
@@ -34,7 +28,7 @@ class ReviewsController
 
     # Create a new review for an ontology by a user.
     put '/:username' do
-      reviews = find_reviews(params) # an array of reviews
+      reviews = MODEL.where :ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}
       if not reviews.empty?
         error 409, "Reviews already exist for ontology:#{params[:acronym]}, by user:#{params[:username]}. Update using PATCH instead of PUT."
       end
@@ -49,7 +43,7 @@ class ReviewsController
 
     # Update an existing submission of a review by a user.
     patch '/:username' do
-      reviews = find_reviews(params) # an array of reviews
+      reviews = MODEL.where :ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}
       if reviews.empty?
         error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}.  Use PUT, not PATCH, to submit new reviews."
       end
@@ -67,7 +61,7 @@ class ReviewsController
 
     # Delete a review for an ontology by a user.
     delete '/:username' do
-      reviews = find_reviews(params) # an array of reviews
+      reviews = MODEL.where :ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}
       if reviews.empty?
         error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}."
       else
