@@ -1,6 +1,6 @@
 require_relative '../test_case'
 
-class TestgroupsController < TestCase
+class TestGroupsController < TestCase
 
   def setup
     # Create some test groups
