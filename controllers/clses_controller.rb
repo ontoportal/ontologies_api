@@ -73,12 +73,20 @@ class ClsesController
     # Get all children of given class
     get '/:cls/children' do
       ont, submission = get_ontology_and_submission
+      page, size = get_page_params
       cls = get_class(submission)
       cls.load_children unless cls.loaded_children?
-      cls.children.each do |c|
+      page_children = cls.children.page(page, size)
+      page_children.each do |c|
         c.load_labels unless c.loaded_labels?
       end
-      reply cls.children
+      page_children ={ :classes => page_children,
+              :count => cls.children.length,
+              :page => page,
+              :size => size }
+      page_children[:next] = page + 1 if cls.children.page(page + 1, size)
+
+      reply page_children
     end
 
     # Get all parents of given class
