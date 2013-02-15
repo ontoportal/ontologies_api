@@ -1,2 +1,2 @@
 
-require_relative "local/development.rb" if File.exist?("local/production.rb")
+require_relative "local/production.rb" if File.exist?("local/production.rb")
