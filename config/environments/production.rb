@@ -1,2 +1,6 @@
+# This is the folder where uploaded ontology files are stored
+$REPOSITORY_FOLDER = File.expand_path('../../../test/data/uploaded_ontologies', __FILE__)
 
-require_relative "local/production.rb" if File.exist?("local/production.rb")
+
+local_path = File.expand_path("../local/production.rb", __FILE__)
+require local_path if File.exist?(local_path)
