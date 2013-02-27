@@ -29,8 +29,12 @@ require 'rack/post-body-to-params'
 use Rack::Accept
 use Rack::PostBodyToParams
 if [:development].include?(settings.environment)
-  require 'rack/perftools_profiler'
-  use Rack::PerftoolsProfiler, :default_printer => :pdf, :mode => :cputime, :frequency => 1000
+  begin
+    require 'rack/perftools_profiler'
+    use Rack::PerftoolsProfiler, :default_printer => :pdf, :mode => :cputime, :frequency => 1000
+  rescue LoadError
+    # perftools isn't there
+  end
 end
 
 # Initialize the app
