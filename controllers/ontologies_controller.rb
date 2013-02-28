@@ -5,7 +5,7 @@ class OntologiesController
     # Display all ontologies
     get do
       if params["include"].nil? || params["include"].empty?
-        onts = Ontology.all(:load_attrs => [:acronym])
+        onts = Ontology.all(:load_attrs => :defined)
       else
         onts = []
         containers = Ontology.all(:load_attrs => :defined)

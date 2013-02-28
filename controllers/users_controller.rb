@@ -2,7 +2,7 @@ class UsersController
   namespace "/users" do
     # Display all users
     get do
-      reply User.all
+      reply User.all :load_attrs => :defined
     end
 
     # Display a single user
