@@ -61,14 +61,14 @@ class TestProjectsController < TestCase
     @p.ontologyUsed = [@ont,]
     @p.save
     @projectParams = {
-        acronym: @p.acronym,
-        name: @p.name,
-        description: @p.description,
-        homePage: @p.homePage,
-        creator: @p.creator.username,
-        created: @p.created,
-        institution: @p.institution,
-        ontologyUsed: @p.ontologyUsed.first.acronym
+        acronym: @p.acronym.value,
+        name: @p.name.value,
+        description: @p.description.value,
+        homePage: @p.homePage.value,
+        creator: @p.creator.username.value,
+        created: @p.created.value,
+        institution: @p.institution.value,
+        ontologyUsed: @p.ontologyUsed.first.acronym.value
     }
   end
 
