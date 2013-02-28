@@ -123,7 +123,7 @@ class TestCase < Test::Unit::TestCase
         else
           os.summaryOnly = true
         end
-        os.save rescue binding.pry
+        os.save
       end
     end
 
