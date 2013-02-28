@@ -8,7 +8,7 @@ class OntologiesController
         onts = Ontology.all(:load_attrs => [:acronym])
       else
         onts = []
-        containers = Ontology.all(:load_attrs => [:acronym])
+        containers = Ontology.all(:load_attrs => :defined)
         containers.each do |ont|
           onts << ont.latest_submission
         end
@@ -91,7 +91,6 @@ class OntologiesController
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
       populate_from_params(ont, params)
-
       if ont.valid?
         ont.save
       else
