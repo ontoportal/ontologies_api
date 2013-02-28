@@ -153,7 +153,7 @@ class TestCase < Test::Unit::TestCase
   # Delete all ontologies and their submissions. This will look for all ontologies starting with TST-ONT- and ending in a Fixnum
   def delete_ontologies_and_submissions
     LinkedData::Models::Ontology.all.each do |ont|
-      ont.load unless ont.nil? || ont.loaded
+      ont.load unless ont.nil? || ont.loaded?
       ont.submissions.each do |ss|
         ss.load unless ss.loaded?
         ss.delete
