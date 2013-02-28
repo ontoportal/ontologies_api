@@ -50,10 +50,10 @@ class TestReviewsController < TestCase
     @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: @user)
     @ont.save
     @review_params = {
-        :creator => @user.username,
+        :creator => @user.username.value,
         :created => DateTime.new,
         :body => "This is a test review.",
-        :ontologyReviewed => @ont.acronym,
+        :ontologyReviewed => @ont.acronym.value,
         :usabilityRating => 0,
         :coverageRating => 0,
         :qualityRating => 0,
