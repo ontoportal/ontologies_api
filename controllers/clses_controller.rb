@@ -6,7 +6,7 @@ class ClsesController
     get do
       ont, submission = get_ontology_and_submission
       page, size = get_page_params
-      clss = submission.classes
+      clss = submission.classes :load_attrs => [:prefLabel, :synonym, :definition]
       page_class ={ :classes => clss.page(page, size),
               :count => clss.length,
               :page => page,
@@ -19,9 +19,6 @@ class ClsesController
     get '/roots' do
       ont, submission = get_ontology_and_submission
       roots = submission.roots
-      roots.each do |r|
-        r.load_labels unless r.loaded_labels?
-      end
       reply roots
     end
 
@@ -30,7 +27,6 @@ class ClsesController
     get '/:cls' do
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
-      cls.load_labels unless cls.loaded_labels?
       reply cls
     end
 
@@ -45,11 +41,13 @@ class ClsesController
     get '/:cls/ancestors' do
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
-      cls.load_parents(transitive=true) unless cls.loaded_parents?
-      cls.parents.each do |c|
-        c.load_labels unless c.loaded_labels?
+      ancestors = cls.ancestors
+      ancestors.each do |c|
+        c.prefLabel
+        c.synonym
+        c.definition
       end
-      reply cls.parents
+      reply ancestors
     end
 
     # Get all descendants for given class
@@ -57,17 +55,19 @@ class ClsesController
       ont, submission = get_ontology_and_submission
       page, size = get_page_params
       cls = get_class(submission)
-      cls.load_children(transitive=true) unless cls.loaded_children?
-      page_children = cls.children.page(page, size)
-      page_children.each do |c|
-        c.load_labels unless c.loaded_labels?
+      descendents = cls.descendents
+      page_descendents = descendents.page(page, size)
+      page_descendents.each do |c|
+        c.prefLabel
+        c.synonym
+        c.definition
       end
-      page_descendants ={ :classes => page_children,
+      page_descendents ={ :classes => page_descendents,
               :count => cls.children.length,
               :page => page,
               :size => size }
-      page_descendants[:next] = page + 1 if cls.children.page(page + 1, size)
-      reply page_descendants
+      page_descendents[:next] = page + 1 if descendents.page(page + 1, size)
+      reply page_descendents
     end
 
     # Get all children of given class
@@ -75,10 +75,13 @@ class ClsesController
       ont, submission = get_ontology_and_submission
       page, size = get_page_params
       cls = get_class(submission)
-      cls.load_children unless cls.loaded_children?
-      page_children = cls.children.page(page, size)
+      children = cls.children
+      children = children || []
+      page_children = children.page(page, size)
       page_children.each do |c|
-        c.load_labels unless c.loaded_labels?
+        c.prefLabel
+        c.synonym
+        c.definition
       end
       page_children ={ :classes => page_children,
               :count => cls.children.length,
@@ -93,11 +96,17 @@ class ClsesController
     get '/:cls/parents' do
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
-      cls.load_parents unless cls.loaded_parents?
-      cls.parents.each do |c|
-        c.load_labels unless c.loaded_labels?
+      parents = cls.parents
+      if parents.nil?
+        reply []
+      else
+        parents.each do |c|
+          c.prefLabel
+          c.synonym
+          c.definition
+        end
+        reply parents
       end
-      reply cls.parents
     end
 
     #TODO Eventually this needs to be moved to a wider context.
@@ -119,12 +128,13 @@ class ClsesController
       if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
       end
-      clss = LinkedData::Models::Class.where(resource_id: (RDF::IRI.new params[:cls]), submission: submission)
-      if clss.length == 0
+      cls = LinkedData::Models::Class.find(RDF::IRI.new(params[:cls]), submission: submission,
+                                           :load_attrs => [:prefLabel, :synonym, :definition])
+      if cls.nil?
         submission.ontology.load unless submission.ontology.loaded?
         error 404, "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
       end
-      return clss.first
+      return cls
     end
 
     def get_ontology_and_submission

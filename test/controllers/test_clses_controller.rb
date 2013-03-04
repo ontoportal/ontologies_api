@@ -71,22 +71,22 @@ class TestClsesController < TestCase
         cls = JSON.parse(last_response.body)
         assert(!cls["prefLabel"].nil?)
         assert_instance_of(String, cls["prefLabel"])
-        assert_instance_of(Array, cls["synonyms"])
+        assert_instance_of(Array, cls["synonym"])
         assert(cls["id"] == cls_id)
 
         if submission_id == nil or submission_id == 3
           assert(cls["prefLabel"]["In version 3.2"])
-          assert(cls["definitions"][0]["In version 3.2"])
+          assert(cls["definition"][0]["In version 3.2"])
         else
           assert(!cls["prefLabel"]["In version 3.2"])
-          assert(!cls["definitions"][0]["In version 3.2"])
+          assert(!cls["definition"][0]["In version 3.2"])
         end
 
         if cls["prefLabel"].include? "Electron"
-          assert_equal(1, cls["synonyms"].length)
-          assert_instance_of(String, cls["synonyms"][0])
+          assert_equal(1, cls["synonym"].length)
+          assert_instance_of(String, cls["synonym"][0])
         else
-          assert_equal(0, cls["synonyms"].length)
+          assert_equal(0, cls["synonym"].length)
         end
       end
     end
