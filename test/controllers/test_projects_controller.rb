@@ -16,7 +16,7 @@ class TestProjectsController < TestCase
     "type":"object",
     "title":"Project",
     "description":"A BioPortal project, which may refer to multiple ontologies.",
-    "additionalProperties":false,
+    "additionalProperties":true,
     "properties":{
       "id":{ "type":"string", "required": true },
       "acronym":{ "type":"string", "required": true },
@@ -25,7 +25,6 @@ class TestProjectsController < TestCase
       "created":{ "type":"string", "format":"datetime", "required": true },
       "homePage":{ "type":"string", "format":"uri", "required": true },
       "description":{ "type":"string", "required": true },
-      "contacts":{ "type":"string" },
       "institution":{ "type":"string" },
       "ontologyUsed":{ "type":"array", "items":{ "type":"string" } }
     }
