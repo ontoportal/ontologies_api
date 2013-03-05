@@ -72,7 +72,7 @@ class TestClsesController < TestCase
         assert(!cls["prefLabel"].nil?)
         assert_instance_of(String, cls["prefLabel"])
         assert_instance_of(Array, cls["synonym"])
-        assert(cls["id"] == cls_id)
+        assert(cls["@id"] == cls_id)
 
         if submission_id == nil or submission_id == 3
           assert(cls["prefLabel"]["In version 3.2"])
@@ -104,9 +104,9 @@ class TestClsesController < TestCase
     assert_equal 9, roots.length
     roots.each do |r|
       assert_instance_of String, r["prefLabel"]
-      assert_instance_of String, r["id"]
+      assert_instance_of String, r["@id"]
       #By definition roots have no parents
-      escaped_root_id= CGI.escape(r["id"])
+      escaped_root_id= CGI.escape(r["@id"])
       get "/ontologies/#{ont.acronym}/classes/#{escaped_root_id}/parents"
       last_response.ok?
       parents = JSON.parse(last_response.body)
@@ -171,7 +171,7 @@ class TestClsesController < TestCase
       get call
       assert last_response.ok?
       ancestors = JSON.parse(last_response.body)
-      ancestors.map! { |a| a["id"] }
+      ancestors.map! { |a| a["@id"] }
       assert ancestors.sort == ancestors_data[cls_id].sort
     end
   end
@@ -232,7 +232,7 @@ class TestClsesController < TestCase
       descendants = JSON.parse(last_response.body)
       assert descendants["page"] == 1
       descendants = descendants["classes"]
-      descendants.map! { |a| a["id"] }
+      descendants.map! { |a| a["@id"] }
       assert descendants.sort == descendants_data[cls_id].sort
     end
 
@@ -251,7 +251,7 @@ class TestClsesController < TestCase
         page_response = JSON.parse(last_response.body)
         descendants.concat page_response["classes"]
       end while page_response["next"]
-      descendants.map! { |a| a["id"] }
+      descendants.map! { |a| a["@id"] }
       assert descendants.sort == descendants_data[cls_id].sort
     end
   end
@@ -275,17 +275,17 @@ class TestClsesController < TestCase
       get call
       assert last_response.ok?
       parents = JSON.parse(last_response.body)
-      assert parents[0]["id"] == parent_ids[i]
+      assert parents[0]["@id"] == parent_ids[i]
 
       #the children of every parent must contain himself.
       parents.each do |p|
-        escaped_p_id= CGI.escape(p["id"])
+        escaped_p_id= CGI.escape(p["@id"])
         call = "/ontologies/#{ont.acronym}/classes/#{escaped_p_id}/children"
         get call
         last_response.ok?
         children = JSON.parse(last_response.body)
         children = children["classes"]
-        children.map! { |c| c["id"] }
+        children.map! { |c| c["@id"] }
         assert children.length > 0 and children.include? cls_id
       end
     end
@@ -319,7 +319,7 @@ class TestClsesController < TestCase
       assert last_response.ok?
       children = JSON.parse(last_response.body)["classes"]
       #TODO eventually this should test for id and not resource_id
-      children.map! { |c| c["id"] }
+      children.map! { |c| c["@id"] }
       assert children.sort == children_arrays[i].sort
 
       #the parent of every children must contain himself.
@@ -329,7 +329,7 @@ class TestClsesController < TestCase
         get call
         last_response.ok?
         parents = JSON.parse(last_response.body)
-        parents.map! { |p| p["id"] }
+        parents.map! { |p| p["@id"] }
         assert parents.length > 0 and parents.include? cls_id
       end
     end

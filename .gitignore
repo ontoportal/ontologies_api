@@ -35,3 +35,5 @@ test/data/ontology_files/repo/**/*
 .idea
 
 *.swp
+
+.ruby-version
