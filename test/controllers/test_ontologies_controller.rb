@@ -134,7 +134,7 @@ class TestOntologiesController < TestCase
     assert last_response.status == 201
     sub = JSON.parse(last_response.body)
 
-    get "/ontologies/#{@acronym}?ontology_submission_id=#{sub['submissionId']}"
+    get "/ontologies/#{@acronym}?ontology_submission_id=#{sub['submissionId']}&include=all"
     ont = JSON.parse(last_response.body)
     assert ont["acronym"].eql?(@acronym.upcase)
     post "/ontologies/#{@acronym}/submissions/parse?ontology_submission_id=#{sub['submissionId']}"
@@ -142,7 +142,7 @@ class TestOntologiesController < TestCase
 
     max = 25
     while (ont["submissionStatus"] == "UPLOADED" and max > 0)
-      get "/ontologies/#{@acronym}?ontology_submission_id=#{sub['submissionId']}"
+      get "/ontologies/#{@acronym}?ontology_submission_id=#{sub['submissionId']}&include=all"
       ont = JSON.parse(last_response.body)
       assert last_response.status == 200
       max = max -1
