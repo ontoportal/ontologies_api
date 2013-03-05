@@ -18,7 +18,8 @@ class TestProjectsController < TestCase
     "description":"A BioPortal project, which may refer to multiple ontologies.",
     "additionalProperties":true,
     "properties":{
-      "id":{ "type":"string", "required": true },
+      "@id":{ "type":"string", "format":"uri", "required": true },
+      "@type":{ "type":"string", "format":"uri", "required": true },
       "acronym":{ "type":"string", "required": true },
       "name":{ "type":"string", "required": true },
       "creator":{ "type":"string", "required": true },
