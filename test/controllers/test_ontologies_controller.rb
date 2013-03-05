@@ -126,7 +126,7 @@ class TestOntologiesController < TestCase
 
     get "/ontologies/#{@acronym}"
     ont = JSON.parse(last_response.body)
-    assert ont["acronym"].eql?(@acronym.upcase)
+    assert ont["acronym"].eql?(@acronym)
   end
 
   def test_create_new_ontology_and_parse
