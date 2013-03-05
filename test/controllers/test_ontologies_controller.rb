@@ -136,7 +136,7 @@ class TestOntologiesController < TestCase
 
     get "/ontologies/#{@acronym}?ontology_submission_id=#{sub['submissionId']}&include=all"
     ont = JSON.parse(last_response.body)
-    assert ont["acronym"].eql?(@acronym.upcase)
+    assert ont["ontology"].eql?("http://data.bioontology.org/metadata/ontology/#{@acronym}")
     post "/ontologies/#{@acronym}/submissions/parse?ontology_submission_id=#{sub['submissionId']}"
     assert last_response.status == 200
 
