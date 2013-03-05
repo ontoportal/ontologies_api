@@ -76,7 +76,7 @@ class TestUsersController < TestCase
     patch "/users/fred", add_first_name.to_json, "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
-    get "/users/fred"
+    get "/users/fred?include=all"
     fred = JSON.parse(last_response.body)
     assert fred["firstName"].eql?("Fred")
   end
