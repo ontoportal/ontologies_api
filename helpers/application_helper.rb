@@ -61,7 +61,7 @@ module Sinatra
         end
 
         obj = response.shift
-        halt 404 if obj.nil? || obj.length == 0
+        halt 404 if obj.nil?
         SERIALIZER.build_response(@env, status: status, ld_object: obj)
       end
 
