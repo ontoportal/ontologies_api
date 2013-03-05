@@ -17,8 +17,9 @@ class TestReviewsController < TestCase
     "description":"A BioPortal ontology review.",
     "additionalProperties":false,
     "properties":{
-      "id":{ "type":"string", "required": true },
-      "creator":{ "type":"string", "required": true },
+      "@id":{ "type":"string", "format":"uri", "required": true },
+      "@type":{ "type":"string", "format":"uri", "required": true },
+      "creator":{ "type":"string", "format":"uri", "required": true },
       "created":{ "type":"string", "format":"datetime", "required": true },
       "body":{ "type":"string", "required": true },
       "ontologyReviewed":{ "type":"string", "required": true },
@@ -85,13 +86,13 @@ class TestReviewsController < TestCase
     assert_equal(1, reviews.length)
     r = reviews[0]
     assert_instance_of(Hash, r)
-    assert_equal(@user.username, r['creator'])
-    assert_equal(@ont.acronym, r['ontologyReviewed'])
+    assert_equal(@user.resource_id, r['creator'])
+    assert_equal(@ont.resource_id, r['ontologyReviewed'])
     validate_json(last_response.body, JSON_SCHEMA_STR, true)
   end
 
   def test_review_get
-    _reviews_get_success(@ont.acronym, @user.username, true)
+    _reviews_get_success(@ont, @user, true)
   end
 
   def test_review_create_success
@@ -99,7 +100,7 @@ class TestReviewsController < TestCase
     _reviews_delete(@ont.acronym, @user.username)
     put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
     _response_status(201, last_response)
-    _reviews_get_success(@ont.acronym, @user.username, true)
+    _reviews_get_success(@ont, @user, true)
   end
 
   def test_review_create_conflict
@@ -107,7 +108,7 @@ class TestReviewsController < TestCase
     put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
     _response_status(409, last_response)
     # The existing project should remain valid
-    _reviews_get_success(@ont.acronym, @user.username, true)
+    _reviews_get_success(@ont, @user, true)
   end
 
   def test_review_create_failure
@@ -126,7 +127,7 @@ class TestReviewsController < TestCase
     @review_params[:qualityRating] = @review_params[:qualityRating] + 1
     patch "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
     _response_status(204, last_response)
-    _reviews_get_success(@ont.acronym, @user.username, true)
+    _reviews_get_success(@ont, @user, true)
   end
 
   def test_delete_review
@@ -155,8 +156,8 @@ class TestReviewsController < TestCase
   # @param [String] acronym review ontology acronym
   # @param [String] username review username
   # @param [boolean] validate_data verify response body json content
-  def _reviews_get_success(acronym, username, validate_data=false)
-    get "/ontologies/#{acronym}/reviews/#{username}"
+  def _reviews_get_success(ont, user, validate_data=false)
+    get "/ontologies/#{ont.acronym}/reviews/#{user.username}"
     _response_status(200, last_response)
     if validate_data
       # Assume we have JSON data in the response body.
@@ -164,8 +165,8 @@ class TestReviewsController < TestCase
       assert_instance_of(Array, reviews)
       r = reviews[0]
       assert_instance_of(Hash, r)
-      assert_equal(username, r['creator'], r.to_s)
-      assert_equal(acronym, r['ontologyReviewed'])
+      assert_equal(user.resource_id, r['creator'], r.to_s)
+      assert_equal(ont.resource_id, r['ontologyReviewed'])
       validate_json(last_response.body, JSON_SCHEMA_STR, true)
     end
   end
