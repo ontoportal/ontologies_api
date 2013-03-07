@@ -32,3 +32,7 @@ else
   gem 'ontologies_linked_data', :git => 'https://github.com/ncbo/ontologies_linked_data.git'
 end
 
+# ontologies_api-specific gems
+gem 'haml'
+gem 'redcarpet'
+gem 'activesupport'
