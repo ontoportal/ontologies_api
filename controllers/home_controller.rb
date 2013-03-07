@@ -6,7 +6,7 @@ class HomeController
     end
 
     get "documentation" do
-      @metadata_all = metadata_all
+      @metadata_all = metadata_all.sort {|a,b| a[0].name <=> b[0].name}
       haml :documentation
     end
 
@@ -18,20 +18,27 @@ class HomeController
     template :layout do
       <<-EOS
 %html
+%head
+  %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
+  %link{href: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel: "stylesheet", media: "screen"}
   :css
+    body { margin: 3em; }
     table, th, td {
-      border-collapse: collapse;
-      border: 1px solid #D3D3D3;
+      max-width: 1040px;
+      vertical-align: top;
     }
     td, th { padding: 5px; }
     th {
       text-align: left;
       font-weight: bold;
     }
+    h2 { margin-top: 1.5em; }
     .collection_link {
       font-size: larger;
       padding: 0 0 .5em;
     }
+    .resource { margin-bottom: 2em; }
+%body
   = yield
       EOS
     end
@@ -44,10 +51,10 @@ class HomeController
   This API uses hypermedia to expose relationships between media types. The state of the application
   is driven by navigating these links.
 %h3 Common Parameters
-%table
+%table.table.table-striped.table-bordered
   %tr
     %th Parameter
-    %th Values
+    %th Possible Values
     %th Description
   %tr
     %td include
@@ -68,7 +75,7 @@ class HomeController
     %td
       The API returns JSON as the default content type. This can be overridden by using the <code>format</code>
       query string parameter. The API also respects <code>Accept</code> header entries, with precedence given
-      to the <code>format</code> option.
+      to the <code>format</code> parameter.
 
 %h2 Content Types
 %p
@@ -83,6 +90,10 @@ class HomeController
   XML is also available as an alternative content type.
 
 %h2 Media Types
+%ol
+  -@metadata_all.each do |cls|
+    %li
+      %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:uri]
 -@metadata_all.each do |cls, type|
   -@metadata = type
   =render(:haml, :metadata)
@@ -91,28 +102,40 @@ class HomeController
 
     template :metadata do
       <<-EOS
-%h3= @metadata[:uri]
+%h3{id: @metadata[:cls].name.split("::").last}= @metadata[:uri]
 %div.collection_link
   =resource_collection_link(@metadata[:cls])
-%table
-  %tr
-    %th Attribute
-    %th Default
-    %th Unique
-    %th Cardinality
-    %th Type
-  -@metadata[:attributes].each do |attr, values|
+%div.resource
+  -routes = routes_by_class[@metadata[:cls]]
+  -if routes
+    %table.table.table-striped.table-bordered
+      %tr
+        %th HTTP Verb
+        %th Path
+      -routes.each do |route|
+        %tr
+          %td= route[0]
+          %td= route[1]
+
+  %table.table.table-striped.table-bordered
     %tr
-      %td= attr.to_s
-      %td= values[:shows_default]
-      %td= values[:unique]
-      %td= values[:cardinality]
-      %td= values[:type].to_s
+      %th Attribute
+      %th Default
+      %th Unique
+      %th Cardinality
+      %th Type
+    -@metadata[:attributes].each do |attr, values|
+      %tr
+        %td= attr.to_s
+        %td= values[:shows_default]
+        %td= values[:unique]
+        %td= values[:cardinality]
+        %td= values[:type].to_s + "&nbsp;"
       EOS
     end
 
     def resource_collection_link(cls)
-      resource = @metadata[:cls].split("::").last
+      resource = @metadata[:cls].name.split("::").last
       return "" if resource.nil?
       resource_path = "/" + resource.downcase.pluralize
       return "" unless routes_list.include?(resource_path)
@@ -157,9 +180,10 @@ class HomeController
         cls_info = {
           attributes: attributes_info,
           uri: cls.type_uri,
-          cls: cls.name
+          cls: cls
         }
 
+        # Merge Ontology and OntologySubmission
         if cls == LinkedData::Models::OntologySubmission || cls == LinkedData::Models::Ontology
           ont = info[LinkedData::Models::Ontology] ||= {}
           attributes = ont[:attributes] || {}
@@ -172,7 +196,39 @@ class HomeController
           info[cls] = cls_info
         end
       end
+
+      # Sort by 'shown by default'
+      info.each do |cls, cls_props|
+        shown = {}
+        not_shown = {}
+        cls_props[:attributes].each {|attr,values| values[:shows_default] ? shown[attr] = values : not_shown[attr] = values}
+        cls_props[:attributes] = shown.merge(not_shown)
+      end
+
       info
+    end
+
+    def routes_by_class
+      all_routes = Sinatra::Application.routes
+      routes_by_file = {}
+      all_routes.each do |method, routes|
+        routes.each do |route|
+          routes_by_file[route.file] ||= []
+          routes_by_file[route.file] << route
+        end
+      end
+      routes_by_class = {}
+      routes_by_file.each do |file, routes|
+        cls_name = file.split("/").last.gsub(".rb", "").classify.gsub("Controller", "").singularize
+        cls = LinkedData::Models.const_get(cls_name) rescue nil
+        next if cls.nil?
+        routes.each do |route|
+          next if route.verb == "HEAD"
+          routes_by_class[cls] ||= []
+          routes_by_class[cls] << [route.verb, route.path]
+        end
+      end
+      routes_by_class
     end
 
     def routes_list
