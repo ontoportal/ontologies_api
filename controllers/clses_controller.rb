@@ -42,11 +42,6 @@ class ClsesController
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
       ancestors = cls.ancestors
-      ancestors.each do |c|
-        c.prefLabel
-        c.synonym
-        c.definition
-      end
       reply ancestors
     end
 
@@ -54,42 +49,26 @@ class ClsesController
     get '/:cls/descendants' do
       ont, submission = get_ontology_and_submission
       page, size = get_page_params
-      cls = get_class(submission)
-      descendents = cls.descendents
-      page_descendents = descendents.page(page, size)
-      page_descendents.each do |c|
-        c.prefLabel
-        c.synonym
-        c.definition
-      end
-      page_descendents ={ :classes => page_descendents,
-              :count => cls.children.length,
-              :page => page,
-              :size => size }
-      page_descendents[:next] = page + 1 if descendents.page(page + 1, size)
-      reply page_descendents
+      cls = get_class(submission,load_attrs=[])
+      ld = { prefLabel: true, synonym: true, definition: true }
+      page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
+                                                 page: page, size: size,
+                                                 load_attrs: ld,
+                                                 query_options: { rules: "SUBC+SUBP" }
+      reply page_data
     end
 
     # Get all children of given class
     get '/:cls/children' do
       ont, submission = get_ontology_and_submission
       page, size = get_page_params
-      cls = get_class(submission)
-      children = cls.children
-      children = children || []
-      page_children = children.page(page, size)
-      page_children.each do |c|
-        c.prefLabel
-        c.synonym
-        c.definition
-      end
-      page_children ={ :classes => page_children,
-              :count => cls.children.length,
-              :page => page,
-              :size => size }
-      page_children[:next] = page + 1 if cls.children.page(page + 1, size)
-
-      reply page_children
+      cls = get_class(submission,load_attrs=[])
+      ld = { prefLabel: true, synonym: true, definition: true }
+      page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
+                                                 page: page, size: size,
+                                                 load_attrs: ld,
+                                                 query_options: { rules: "SUBP" }
+      reply page_data
     end
 
     # Get all parents of given class
@@ -100,11 +79,6 @@ class ClsesController
       if parents.nil?
         reply []
       else
-        parents.each do |c|
-          c.prefLabel
-          c.synonym
-          c.definition
-        end
         reply parents
       end
     end
@@ -124,12 +98,13 @@ class ClsesController
     end
 
     private
-    def get_class(submission)
+    def get_class(submission,load_attrs=nil)
+      load_attrs = load_attrs || [:prefLabel, :synonym, :definition]
       if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
       end
       cls = LinkedData::Models::Class.find(RDF::IRI.new(params[:cls]), submission: submission,
-                                           :load_attrs => [:prefLabel, :synonym, :definition])
+                                           :load_attrs => load_attrs)
       if cls.nil?
         submission.ontology.load unless submission.ontology.loaded?
         error 404, "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
