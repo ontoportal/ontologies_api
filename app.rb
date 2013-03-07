@@ -4,6 +4,7 @@ require 'sinatra'
 # sinatra-contrib
 require 'sinatra/respond_with'
 require 'sinatra/namespace'
+require 'sinatra/advanced_routes'
 
 # Logging setup
 require_relative "config/logging"
