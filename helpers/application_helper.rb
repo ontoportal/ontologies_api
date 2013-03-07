@@ -62,14 +62,6 @@ module Sinatra
 
         obj = response.shift
         halt 404 if obj.nil?
-
-        if obj.respond_to?("each")
-          obj.each do |sub_obj|
-            sub_obj.load unless !sub_obj.respond_to?("loaded?") || sub_obj.loaded?
-          end
-        else
-          obj.load unless !obj.respond_to?("loaded?") || obj.loaded?
-        end
         SERIALIZER.build_response(@env, status: status, ld_object: obj)
       end
 
