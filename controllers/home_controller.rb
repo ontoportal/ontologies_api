@@ -37,7 +37,7 @@ class HomeController
       font-size: larger;
       padding: 0 0 .5em;
     }
-    .resource { margin-bottom: 2em; }
+    .resource { margin-bottom: 2.5em; }
 %body
   = yield
       EOS
@@ -108,6 +108,7 @@ class HomeController
 %div.resource
   -routes = routes_by_class[@metadata[:cls]]
   -if routes
+    %h4 HTTP Methods for Resource
     %table.table.table-striped.table-bordered
       %tr
         %th HTTP Verb
@@ -117,6 +118,7 @@ class HomeController
           %td= route[0]
           %td= route[1]
 
+  %h4 Resource Description
   %table.table.table-striped.table-bordered
     %tr
       %th Attribute
@@ -131,6 +133,17 @@ class HomeController
         %td= values[:unique]
         %td= values[:cardinality]
         %td= values[:type].to_s + "&nbsp;"
+  -links = hypermedia_links(@metadata[:cls])
+  -if links && !links.empty?
+    %h4 Related Hypermedia Links
+    %table.table.table-striped.table-bordered
+      %tr
+        %th Type
+        %th Path
+      -hypermedia_links(@metadata[:cls]).each do |link|
+        %tr
+          %td= link.type
+          %td= link.path
       EOS
     end
 
@@ -206,6 +219,10 @@ class HomeController
       end
 
       info
+    end
+
+    def hypermedia_links(cls)
+      cls.hypermedia_settings[:link_to]
     end
 
     def routes_by_class
