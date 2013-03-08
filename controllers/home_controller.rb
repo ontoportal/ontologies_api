@@ -38,12 +38,14 @@ class HomeController
       text-align: left;
       font-weight: bold;
     }
-    h2 { margin-top: 1.5em; }
+    h2 { margin-top: 1em; }
     .collection_link {
       font-size: larger;
       padding: 0 0 .5em;
     }
-    .resource { margin-bottom: 2.5em; }
+    .resource {
+      margin: 0 2em 2.5em 3em;
+    }
 %body
   = yield
       EOS
@@ -108,11 +110,12 @@ class HomeController
 
     template :metadata do
       <<-EOS
-%h3{id: @metadata[:cls].name.split("::").last}= @metadata[:uri]
-%div.collection_link
-  =resource_collection_link(@metadata[:cls])
+-routes = routes_by_class[@metadata[:cls]]
+-return "" if routes.nil? || routes.empty?
+%h3.text-success{id: @metadata[:cls].name.split("::").last}= @metadata[:uri]
 %div.resource
-  -routes = routes_by_class[@metadata[:cls]]
+  %div.collection_link
+    =resource_collection_link(@metadata[:cls])
   -if routes
     %h4 HTTP Methods for Resource
     %table.table.table-striped.table-bordered
@@ -139,6 +142,7 @@ class HomeController
         %td= values[:unique]
         %td= values[:cardinality]
         %td= values[:type].to_s + "&nbsp;"
+
   -links = hypermedia_links(@metadata[:cls])
   -if links && !links.empty?
     %h4 Related Hypermedia Links
