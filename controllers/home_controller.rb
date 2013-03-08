@@ -167,9 +167,11 @@ class HomeController
     end
 
     def metadata_all
+      return @metadata_all_info if @metadata_all_info
       ld_classes = ObjectSpace.each_object(Class).select { |klass| klass < LinkedData::Models::Base }
       info = {}
       ld_classes.each do |cls|
+        next if routes_by_class[cls].nil? || routes_by_class[cls].empty?
         attributes = cls.defined_attributes_not_transient
         attributes_info = {}
         attributes.each do |attribute|
@@ -213,6 +215,7 @@ class HomeController
         cls_props[:attributes] = shown.merge(not_shown)
       end
 
+      @metadata_all_info = info
       info
     end
 
@@ -221,6 +224,7 @@ class HomeController
     end
 
     def routes_by_class
+      return @routes_by_class if @routes_by_class
       all_routes = Sinatra::Application.routes
       routes_by_file = {}
       all_routes.each do |method, routes|
@@ -240,10 +244,12 @@ class HomeController
           routes_by_class[cls] << [route.verb, route.path]
         end
       end
+      @routes_by_class = routes_by_class
       routes_by_class
     end
 
     def routes_list
+      return @navigable_routes if @navigable_routes
       routes = Sinatra::Application.routes["GET"]
       navigable_routes = []
       Sinatra::Application.each_route do |route|
@@ -251,6 +257,7 @@ class HomeController
           navigable_routes << route.path
         end
       end
+      @navigable_routes = navigable_routes
       navigable_routes
     end
 
