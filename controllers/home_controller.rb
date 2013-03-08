@@ -2,7 +2,13 @@ class HomeController
   namespace "/" do
 
     get do
-      reply routes_list
+      routes = routes_list
+      routes_hash = {}
+      routes.each do |route|
+        next if route.length < 3 || route.split("/").length > 2
+        routes_hash[route.gsub("/", "")] = $REST_URL_PREFIX+route
+      end
+      reply ({links: routes_hash})
     end
 
     get "documentation" do
