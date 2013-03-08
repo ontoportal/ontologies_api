@@ -38,6 +38,7 @@ class TestUsersController < TestCase
     get '/users'
     assert last_response.ok?
     users = JSON.parse(last_response.body)
+    users.any? {|u| u[:username].eql?("fred")}
     assert users.length >= @usernames.length
   end
 
