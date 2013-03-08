@@ -196,18 +196,7 @@ class HomeController
           cls: cls
         }
 
-        # Merge Ontology and OntologySubmission
-        if cls == LinkedData::Models::OntologySubmission || cls == LinkedData::Models::Ontology
-          ont = info[LinkedData::Models::Ontology] ||= {}
-          attributes = ont[:attributes] || {}
-          info[LinkedData::Models::Ontology][:attributes] = attributes.merge(cls_info[:attributes])
-          if cls == LinkedData::Models::Ontology
-            cls_info.delete(:attributes)
-            info[cls].merge!(cls_info)
-          end
-        else
-          info[cls] = cls_info
-        end
+        info[cls] = cls_info
       end
 
       # Sort by 'shown by default'
