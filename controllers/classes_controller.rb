@@ -6,13 +6,12 @@ class ClassesController
     get do
       ont, submission = get_ontology_and_submission
       page, size = get_page_params
-      clss = submission.classes :load_attrs => [:prefLabel, :synonym, :definition]
-      page_class ={ :classes => clss.page(page, size),
-              :count => clss.length,
-              :page => page,
-              :size => size }
-      page_class[:next] = page + 1 if clss.page(page + 1, size)
-      reply page_class
+      ld = get_include_attrs
+      page_data = LinkedData::Models::Class.page submission: submission,
+                                                 page: page, size: size,
+                                                 load_attrs: ld,
+                                                 query_options: { rules: "SUBC" }
+      reply page_data
     end
 
     # Get root classes

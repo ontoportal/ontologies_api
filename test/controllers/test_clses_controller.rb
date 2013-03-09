@@ -37,7 +37,7 @@ class TestClsesController < TestCase
     begin
       call = "/ontologies/#{ont.acronym}/classes"
       if page_response
-        call <<  "?page=#{page_response['next']}&size=#{page_response['size']}"
+        call <<  "?page=#{page_response['next_page']}"
       end
       get call
       assert last_response.ok?
@@ -46,8 +46,8 @@ class TestClsesController < TestCase
       #more testing needs to be done here
       assert last_response.ok?
       count_terms = count_terms + page_response["class"].length
-    end while page_response["next"]
-    assert count_terms == Integer(page_response["count"])
+    end while page_response["next_page"]
+    assert count_terms == 488
   end
 
   def test_single_cls
