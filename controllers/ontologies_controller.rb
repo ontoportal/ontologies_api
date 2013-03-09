@@ -5,10 +5,10 @@ class OntologiesController
     # Display all ontologies
     get do
       if params["include"].nil? || params["include"].empty?
-        onts = Ontology.all(:load_attrs => :defined)
+        onts = Ontology.all(load_attrs: Ontology.goo_attrs_to_load)
       else
         onts = []
-        containers = Ontology.all(:load_attrs => :defined)
+        containers = Ontology.all(load_attrs: Ontology.goo_attrs_to_load)
         containers.each do |ont|
           onts << ont.latest_submission
         end

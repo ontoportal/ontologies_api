@@ -7,7 +7,7 @@ class ProjectsController
 
     # Display all projects
     get do
-      reply MODEL.all
+      reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load)
     end
 
     # Retrieve a single project, by unique project identifier (id)

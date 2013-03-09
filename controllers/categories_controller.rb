@@ -2,7 +2,7 @@ class CategoriesController
   namespace "/categories" do
     # Display all categories
     get do
-      categories = Category.all
+      categories = Category.all(load_attrs: Category.goo_attrs_to_load)
       reply categories
     end
 

@@ -2,7 +2,7 @@ class GroupsController
   namespace "/groups" do
     # Display all groups
     get do
-      groups = Group.all
+      groups = Group.all(load_attrs: Group.goo_attrs_to_load)
       reply groups
     end
 
