@@ -39,7 +39,7 @@ class ProjectsController
     # Update an existing submission of a project
     patch '/:project' do
       id = params[ID_SYMBOL]
-      m = MODEL.find(id)
+      m = MODEL.find(id, load_attrs: [])
       if m.nil?
         error 404, "#{ID_NAME} #{id} was not found. Submit new items using HTTP PUT instead of PATCH."
       end
