@@ -36,7 +36,7 @@ class OntologiesController
       if ont.nil?
         ont = instance_from_params(Ontology, params)
       else
-        error 409, "Ontology already exists, to add a new submission, please POST to: /ontologies/#{params["acronym"]}/submission"
+        error 409, "Ontology already exists, to add a new submission, please POST to: /ontologies/#{params["acronym"]}/submission. To modify the resource, use PATCH."
       end
 
       if ont.valid?

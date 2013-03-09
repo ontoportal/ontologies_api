@@ -26,11 +26,14 @@ class HomeController
 %html
 %head
   %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
+  %link{href: "http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css", rel: "stylesheet", media: "screen"}
   %link{href: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel: "stylesheet", media: "screen"}
   :css
-    body { margin: 3em; }
-    table, th, td {
+    body {
       max-width: 1040px;
+      margin: 3em;
+    }
+    table, th, td {
       vertical-align: top;
     }
     td, th { padding: 5px; }
@@ -47,7 +50,18 @@ class HomeController
       margin: 0 2em 2.5em 3em;
     }
 %body
+  %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+  %script{src: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"}
+  %script{src: "http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"}
   = yield
+  :javascript
+    // @prettify
+    !function ($) {
+      $(function(){
+      window.prettyPrint && prettyPrint()
+      })
+    }(window.jQuery);
+    // #prettify
       EOS
     end
 
@@ -58,6 +72,7 @@ class HomeController
 %p
   This API uses hypermedia to expose relationships between media types. The state of the application
   is driven by navigating these links.
+
 %h3 Common Parameters
 %table.table.table-striped.table-bordered
   %tr
@@ -86,18 +101,89 @@ class HomeController
       to the <code>format</code> parameter.
 
 %h2 Content Types
-%p
 :markdown
   #### JSON
-  The default content type is JSON, specifically a variant called [JSON-LD](http://json-ld.org/)
-  , or JSON Linked Data. You can treat this variant like normal JSON. All JSON parsers will be able
+  The default content type is JSON, specifically a variant called [JSON-LD](http://json-ld.org/),
+  or JSON Linked Data. You can treat this variant like normal JSON. All JSON parsers will be able
   to parse the output normally. The benefit of JSON-LD is that it enables hypermedia links, and you
-  will find these in attributes labeled `@id`.
+  will find these links exposed as URLs in attributes labeled `@id`, which correspond to the id of the
+  parent resource, or in an array called `links`, which contains a hash of link types with corresponding URLs.
+
+  Here is a sample output of the JSON response format:
+  <pre class="prettyprint linenums lang-javascript" style="display: table; padding-right: 20px;">
+  {
+      "administeredBy": [
+          "http://data.bioontology.org/user/nevada"
+      ],
+      "acronym": "ABA-API-TST",
+      "name": "ABA Adult Mouse Brain",
+      "@id": "http://data.bioontology.org/ontology/ABA-API-TST",
+      "@type": "http://data.bioontology.org/metadata/Ontology",
+      "links": {
+          "metrics": "http://data.bioontology.org/ontologies/ABA-API-TST/metrics",
+          "submissions": "http://data.bioontology.org/ontologies/ABA-API-TST/submissions",
+          "classes": "http://data.bioontology.org/ontologies/ABA-API-TST/classes",
+          "roots": "http://data.bioontology.org/ontologies/ABA-API-TST/classes/roots",
+          "reviews": "http://data.bioontology.org/ontologies/ABA-API-TST/reviews"
+      },
+      "@context": {
+          "@vocab": "http://data.bioontology.org/metadata/",
+          "acronym": "http://omv.ontoware.org/2005/05/ontology#acronym",
+          "name": "http://omv.ontoware.org/2005/05/ontology#name",
+          "administeredBy": {
+              "@id": "http://data.bioontology.org/metadata/User",
+              "@type": "@id"
+          }
+      }
+  }
+  </pre>
+
+  - Line 7 shows the id for the resource. Doing an HTTP GET on the id will retreive the resource.
+  - Line 8 shows the media type (see below).
+  - Line 9 starts the links hash.
+  - Line 16 is the resource's context, which can be used to determine the type for lists of ids. For example, line 2 lists
+    the ids for users who administer the ontology, which can be determined by looking for the `administeredBy` attribute
+    in the `@context` hash.
+  - If you are interested in the predicate URI values used in the resource, these can be deterined by looking up the
+    attribute in the `@context` hash or by appending the value of `@vocab` (line 17) to an attribute name in cases where
+    the attribute isn't listed specifically in the `@context`.
 
   #### XML
   XML is also available as an alternative content type.
 
+%p Here is sample output for the XML format:
+<pre class="prettyprint linenums lang-xml" style="display: table; padding-right: 20px;">
+:escaped
+  <ontology>
+    <administeredByCollection>
+      <administeredBy>http://data.bioontology.org/user/nevada</administeredBy>
+    </administeredByCollection>
+    <acronym>ABA-API-TST</acronym>
+    <name>ABA Adult Mouse Brain</name>
+    <id>http://data.bioontology.org/ontology/ABA-API-TST</id>
+    <links>
+      <self href="http://data.bioontology.org/ontology/ABA-API-TST" rel="http://data.bioontology.org/metadata/Ontology"/>
+      <metrics href="/ontologies/ABA-API-TST/metrics"/>
+      <submissions href="/ontologies/ABA-API-TST/submissions" rel="http://data.bioontology.org/metadata/OntologySubmission"/>
+      <classes href="/ontologies/ABA-API-TST/classes" rel="http://www.w3.org/2002/07/owl#Class"/>
+      <roots href="/ontologies/ABA-API-TST/classes/roots" rel="http://www.w3.org/2002/07/owl#Class"/>
+      <reviews href="/ontologies/ABA-API-TST/reviews" rel="http://data.bioontology.org/metadata/Review"/>
+    </links>
+  </ontology>
+</pre>
+
 %h2 Media Types
+
+%h3 Documentation
+:markdown
+  The documentation below describes the media types that available in the API. Media types describe the types of
+  resources available, including the HTTP verbs that may be used with them and the attributes that each resource
+  contains.
+
+  #### HTTP Verbs
+  The API uses different verbs to support processing of resources. This includes things like creating or deleting
+  individual resources or something more specific like parsing an ontology. Typically, the verbs will be used
+
 %ol
   -@metadata_all.each do |cls|
     %li
@@ -115,7 +201,11 @@ class HomeController
 %h3.text-success{id: @metadata[:cls].name.split("::").last}= @metadata[:uri]
 %div.resource
   %div.collection_link
-    =resource_collection_link(@metadata[:cls])
+    -link = resource_collection_link(@metadata[:cls])
+    -if link && !link.eql?("")
+      =resource_collection_link(@metadata[:cls])
+    -else
+      Sample Link: coming soon
   -if routes
     %h4 HTTP Methods for Resource
     %table.table.table-striped.table-bordered
