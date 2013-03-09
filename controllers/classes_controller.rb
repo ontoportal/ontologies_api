@@ -49,8 +49,8 @@ class ClassesController
     get '/:cls/descendants' do
       ont, submission = get_ontology_and_submission
       page, size = get_page_params
+      ld = get_include_attrs
       cls = get_class(submission,load_attrs=[])
-      ld = { prefLabel: true, synonym: true, definition: true }
       page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
                                                  page: page, size: size,
                                                  load_attrs: ld,
@@ -97,9 +97,20 @@ class ClassesController
       return page, size
     end
 
+    def get_include_attrs
+      unless @params.include? "include"
+        return { prefLabel: true, synonym: true, definition: true, children_count: true }
+      end
+      ld = Hash.new
+      (params["include"].split ",").each do |attr|
+        ld[attr.to_sym]=true
+      end
+      return ld
+    end
+
     private
     def get_class(submission,load_attrs=nil)
-      load_attrs = load_attrs || [:prefLabel, :synonym, :definition]
+      load_attrs = load_attrs || { prefLabel: true, synonym: true, definition: true, children_count: true }
       if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
       end
@@ -113,9 +124,8 @@ class ClassesController
     end
 
     def get_ontology_and_submission
-      ont = Ontology.find(@params["ontology"])
+      ont = Ontology.find(@params["ontology"], load_attrs: { acronym: true, submissions: { submissionId: true, submissionStatus: { code: true } } })
       error 400, "You must provide an existing `acronym` to retrieve roots" if ont.nil?
-      ont.load unless ont.loaded?
       submission = nil
       if @params.include? "ontology_submission_id"
         submission = ont.submission(@params[:ontology_submission_id])
