@@ -22,7 +22,7 @@ class TestClsesController < TestCase
         #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
         #more testing needs to be done here
         assert last_response.ok?
-        assert clss["classes"].length == 50 #default size
+        assert clss["class"].length == 50 #default size
     end
   end
 
@@ -45,7 +45,7 @@ class TestClsesController < TestCase
       #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
       #more testing needs to be done here
       assert last_response.ok?
-      count_terms = count_terms + page_response["classes"].length
+      count_terms = count_terms + page_response["class"].length
     end while page_response["next"]
     assert count_terms == Integer(page_response["count"])
   end
@@ -231,7 +231,7 @@ class TestClsesController < TestCase
       assert last_response.ok?
       descendants = JSON.parse(last_response.body)
       assert descendants["page"] == 1
-      descendants = descendants["classes"]
+      descendants = descendants["class"]
       descendants.map! { |a| a["@id"] }
       assert descendants.sort == descendants_data[cls_id].sort
     end
@@ -244,13 +244,13 @@ class TestClsesController < TestCase
       begin
         call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/descendants?size=7"
         if page_response
-          call << "&page=#{page_response["next"]}"
+          call << "&page=#{page_response["next_page"]}"
         end
         get call
         assert last_response.ok?
         page_response = JSON.parse(last_response.body)
-        descendants.concat page_response["classes"]
-      end while page_response["next"]
+        descendants.concat page_response["class"]
+      end while page_response["next_page"]
       descendants.map! { |a| a["@id"] }
       assert descendants.sort == descendants_data[cls_id].sort
     end
@@ -284,7 +284,7 @@ class TestClsesController < TestCase
         get call
         last_response.ok?
         children = JSON.parse(last_response.body)
-        children = children["classes"]
+        children = children["class"]
         children.map! { |c| c["@id"] }
         assert children.length > 0 and children.include? cls_id
       end
@@ -317,7 +317,7 @@ class TestClsesController < TestCase
       call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/children"
       get call
       assert last_response.ok?
-      children = JSON.parse(last_response.body)["classes"]
+      children = JSON.parse(last_response.body)["class"]
       #TODO eventually this should test for id and not resource_id
       children.map! { |c| c["@id"] }
       assert children.sort == children_arrays[i].sort
