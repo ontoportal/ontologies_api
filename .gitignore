@@ -13,7 +13,6 @@ test/version_tmp
 tmp
 logs/**
 .tags*
-bin/*
 
 # YARD artifacts
 .yardoc
