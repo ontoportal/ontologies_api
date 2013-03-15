@@ -29,6 +29,7 @@ class HomeController
   %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
   %link{href: "http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css", rel: "stylesheet", media: "screen"}
   %link{href: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel: "stylesheet", media: "screen"}
+  %link{href: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css", rel: "stylesheet", media: "screen"}
   :css
     body {
       margin: 3em;
@@ -53,6 +54,17 @@ class HomeController
       cursor: help;
       vertical-align: -7%;
     }
+    @media (max-width: 767px) {
+      .bs-docs-sidenav {
+        width: auto;
+        margin-bottom: 20px;
+      }
+      .bs-docs-sidenav.affix {
+        position: static;
+        width: auto;
+        top: 0;
+      }
+    }
 
 %body
   %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
@@ -74,165 +86,167 @@ class HomeController
 
     template :documentation do
       <<-EOS
-%div.span3.bs-docs-sidebar
-  %ul.nav.nav-list.bs-docs-sidenav.affix
-    %li
-      %a{href: "#nav_home"} Home
-    %li
-      %a{href: "#nav_usage"} General Usage
-    %li
-      %a{href: "#nav_content_types"} Content Types
-    %li
-      %a{href: "#nav_media_types"} Media Types
-      %ul.nav.nav-list
-        -@metadata_all.each do |cls|
-          %li
-            %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:cls].name.split("::").last
+%div.container
+  %div.row
+    %div.span3
+      %ul.nav.nav-list.bs-docs-sidenav.affix.sidebar-nav
+        %li
+          %a{href: "#nav_home"} Home
+        %li
+          %a{href: "#nav_usage"} General Usage
+        %li
+          %a{href: "#nav_content_types"} Content Types
+        %li
+          %a{href: "#nav_media_types"} Media Types
+          %ul.nav.nav-list
+            -@metadata_all.each do |cls|
+              %li
+                %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:cls].name.split("::").last
 
 
-%div.span9
+    %div.span9
 
-  %h1#nav_home API Documentation
-  %h2#nav_usage General Usage
-  %p
-    This API uses hypermedia to expose relationships between media types. The state of the application
-    is driven by navigating these links.
+      %h1#nav_home API Documentation
+      %h2#nav_usage General Usage
+      %p
+        This API uses hypermedia to expose relationships between media types. The state of the application
+        is driven by navigating these links.
 
-  %h3 Common Parameters
-  %table.table.table-striped.table-bordered
-    %tr
-      %th Parameter
-      %th Possible Values
-      %th Description
-    %tr
-      %td include
-      %td
-        all<br/>
-        {comma-separated list of attributes, EX: attr1,attr2}
-      %td
-        By default, the API will show a subset of the available attributes for a given media type.
-        This behavior can be overridden by providing <code>include=all</code> to show all attributes
-        or <code>include=attribute1,attribute2</code> to include a specific list. The API is optimized
-        to return the default values, so overriding this can impact the performance of your request.
-    %tr
-      %td format
-      %td
-        json<br/>
-        jsonp<br/>
-        xml
-      %td
-        The API returns JSON as the default content type. This can be overridden by using the <code>format</code>
-        query string parameter. The API also respects <code>Accept</code> header entries, with precedence given
-        to the <code>format</code> parameter.
+      %h3 Common Parameters
+      %table.table.table-striped.table-bordered
+        %tr
+          %th Parameter
+          %th Possible Values
+          %th Description
+        %tr
+          %td include
+          %td
+            all<br/>
+            {comma-separated list of attributes, EX: attr1,attr2}
+          %td
+            By default, the API will show a subset of the available attributes for a given media type.
+            This behavior can be overridden by providing <code>include=all</code> to show all attributes
+            or <code>include=attribute1,attribute2</code> to include a specific list. The API is optimized
+            to return the default values, so overriding this can impact the performance of your request.
+        %tr
+          %td format
+          %td
+            json<br/>
+            jsonp<br/>
+            xml
+          %td
+            The API returns JSON as the default content type. This can be overridden by using the <code>format</code>
+            query string parameter. The API also respects <code>Accept</code> header entries, with precedence given
+            to the <code>format</code> parameter.
 
-  %h2#nav_content_types Content Types
+      %h2#nav_content_types Content Types
 
-  :markdown
-    #### JSON
-    The default content type is JSON, specifically a variant called [JSON-LD](http://json-ld.org/),
-    or JSON Linked Data. You can treat this variant like normal JSON. All JSON parsers will be able
-    to parse the output normally. The benefit of JSON-LD is that it enables hypermedia links, and you
-    will find these links exposed as URLs in attributes labeled `@id`, which correspond to the id of the
-    parent resource, or in an array called `links`, which contains a hash of link types with corresponding URLs.
+      :markdown
+        #### JSON
+        The default content type is JSON, specifically a variant called [JSON-LD](http://json-ld.org/),
+        or JSON Linked Data. You can treat this variant like normal JSON. All JSON parsers will be able
+        to parse the output normally. The benefit of JSON-LD is that it enables hypermedia links, and you
+        will find these links exposed as URLs in attributes labeled `@id`, which correspond to the id of the
+        parent resource, or in an array called `links`, which contains a hash of link types with corresponding URLs.
 
-    Here is a sample output of the JSON response format:
-    <pre class="prettyprint linenums lang-javascript" style="display: table; padding-right: 20px;">
-    {
-        "administeredBy": [
-            "http://data.bioontology.org/user/nevada"
-        ],
-        "acronym": "ABA-API-TST",
-        "name": "ABA Adult Mouse Brain",
-        "@id": "http://data.bioontology.org/ontology/ABA-API-TST",
-        "@type": "http://data.bioontology.org/metadata/Ontology",
-        "links": {
-            "metrics": "http://data.bioontology.org/ontologies/ABA-API-TST/metrics",
-            "submissions": "http://data.bioontology.org/ontologies/ABA-API-TST/submissions",
-            "classes": "http://data.bioontology.org/ontologies/ABA-API-TST/classes",
-            "roots": "http://data.bioontology.org/ontologies/ABA-API-TST/classes/roots",
-            "reviews": "http://data.bioontology.org/ontologies/ABA-API-TST/reviews"
-        },
-        "@context": {
-            "@vocab": "http://data.bioontology.org/metadata/",
-            "acronym": "http://omv.ontoware.org/2005/05/ontology#acronym",
-            "name": "http://omv.ontoware.org/2005/05/ontology#name",
-            "administeredBy": {
-                "@id": "http://data.bioontology.org/metadata/User",
-                "@type": "@id"
+        Here is a sample output of the JSON response format:
+        <pre class="prettyprint linenums lang-javascript" style="display: table; padding-right: 20px;">
+        {
+            "administeredBy": [
+                "http://data.bioontology.org/user/nevada"
+            ],
+            "acronym": "ABA-API-TST",
+            "name": "ABA Adult Mouse Brain",
+            "@id": "http://data.bioontology.org/ontology/ABA-API-TST",
+            "@type": "http://data.bioontology.org/metadata/Ontology",
+            "links": {
+                "metrics": "http://data.bioontology.org/ontologies/ABA-API-TST/metrics",
+                "submissions": "http://data.bioontology.org/ontologies/ABA-API-TST/submissions",
+                "classes": "http://data.bioontology.org/ontologies/ABA-API-TST/classes",
+                "roots": "http://data.bioontology.org/ontologies/ABA-API-TST/classes/roots",
+                "reviews": "http://data.bioontology.org/ontologies/ABA-API-TST/reviews"
+            },
+            "@context": {
+                "@vocab": "http://data.bioontology.org/metadata/",
+                "acronym": "http://omv.ontoware.org/2005/05/ontology#acronym",
+                "name": "http://omv.ontoware.org/2005/05/ontology#name",
+                "administeredBy": {
+                    "@id": "http://data.bioontology.org/metadata/User",
+                    "@type": "@id"
+                }
             }
         }
-    }
-    </pre>
+        </pre>
 
-    - Line 7 shows the id for the resource. Doing an HTTP GET on the id will retreive the resource.
-    - Line 8 shows the media type (see below).
-    - Line 9 starts the links hash.
-    - Line 16 is the resource's context, which can be used to determine the type for lists of ids. For example, line 2 lists
-      the ids for users who administer the ontology, which can be determined by looking for the `administeredBy` attribute
-      in the `@context` hash.
-    - If you are interested in the predicate URI values used in the resource, these can be deterined by looking up the
-      attribute in the `@context` hash or by appending the value of `@vocab` (line 17) to an attribute name in cases where
-      the attribute isn't listed specifically in the `@context`.
+        - Line 7 shows the id for the resource. Doing an HTTP GET on the id will retreive the resource.
+        - Line 8 shows the media type (see below).
+        - Line 9 starts the links hash.
+        - Line 16 is the resource's context, which can be used to determine the type for lists of ids. For example, line 2 lists
+          the ids for users who administer the ontology, which can be determined by looking for the `administeredBy` attribute
+          in the `@context` hash.
+        - If you are interested in the predicate URI values used in the resource, these can be deterined by looking up the
+          attribute in the `@context` hash or by appending the value of `@vocab` (line 17) to an attribute name in cases where
+          the attribute isn't listed specifically in the `@context`.
 
-    #### XML
-    XML is also available as an alternative content type.
+        #### XML
+        XML is also available as an alternative content type.
 
-  %p Here is sample output for the XML format:
-  <pre class="prettyprint linenums lang-xml" style="display: table; padding-right: 20px;">
-  :escaped
-    <ontology>
-      <administeredByCollection>
-        <administeredBy>http://data.bioontology.org/user/nevada</administeredBy>
-      </administeredByCollection>
-      <acronym>ABA-API-TST</acronym>
-      <name>ABA Adult Mouse Brain</name>
-      <id>http://data.bioontology.org/ontology/ABA-API-TST</id>
-      <links>
-        <self href="http://data.bioontology.org/ontology/ABA-API-TST" rel="http://data.bioontology.org/metadata/Ontology"/>
-        <metrics href="/ontologies/ABA-API-TST/metrics"/>
-        <submissions href="/ontologies/ABA-API-TST/submissions" rel="http://data.bioontology.org/metadata/OntologySubmission"/>
-        <classes href="/ontologies/ABA-API-TST/classes" rel="http://www.w3.org/2002/07/owl#Class"/>
-        <roots href="/ontologies/ABA-API-TST/classes/roots" rel="http://www.w3.org/2002/07/owl#Class"/>
-        <reviews href="/ontologies/ABA-API-TST/reviews" rel="http://data.bioontology.org/metadata/Review"/>
-      </links>
-    </ontology>
-  </pre>
+      %p Here is sample output for the XML format:
+      <pre class="prettyprint linenums lang-xml" style="display: table; padding-right: 20px;">
+      :escaped
+        <ontology>
+          <administeredByCollection>
+            <administeredBy>http://data.bioontology.org/user/nevada</administeredBy>
+          </administeredByCollection>
+          <acronym>ABA-API-TST</acronym>
+          <name>ABA Adult Mouse Brain</name>
+          <id>http://data.bioontology.org/ontology/ABA-API-TST</id>
+          <links>
+            <self href="http://data.bioontology.org/ontology/ABA-API-TST" rel="http://data.bioontology.org/metadata/Ontology"/>
+            <metrics href="/ontologies/ABA-API-TST/metrics"/>
+            <submissions href="/ontologies/ABA-API-TST/submissions" rel="http://data.bioontology.org/metadata/OntologySubmission"/>
+            <classes href="/ontologies/ABA-API-TST/classes" rel="http://www.w3.org/2002/07/owl#Class"/>
+            <roots href="/ontologies/ABA-API-TST/classes/roots" rel="http://www.w3.org/2002/07/owl#Class"/>
+            <reviews href="/ontologies/ABA-API-TST/reviews" rel="http://data.bioontology.org/metadata/Review"/>
+          </links>
+        </ontology>
+      </pre>
 
-  :markdown
-    - Line 8 starts the links section
-    - Lines 9-14 list links by type. The `href` attribute contains the link location and the `rel` attribute defines the type
-      of resource that will be found at that location.
-    - Elements outside of the links can also contain `href` and `rel` attributes (coming soon...)
+      :markdown
+        - Line 8 starts the links section
+        - Lines 9-14 list links by type. The `href` attribute contains the link location and the `rel` attribute defines the type
+          of resource that will be found at that location.
+        - Elements outside of the links can also contain `href` and `rel` attributes (coming soon...)
 
-  %h2#nav_media_types Media Types
+      %h2#nav_media_types Media Types
 
-  %h3 Documentation
-  :markdown
-    The documentation below describes the media types that available in the API. Media types describe the types of
-    resources available, including the HTTP verbs that may be used with them and the attributes that each resource
-    contains.
+      %h3 Documentation
+      :markdown
+        The documentation below describes the media types that available in the API. Media types describe the types of
+        resources available, including the HTTP verbs that may be used with them and the attributes that each resource
+        contains.
 
-    #### HTTP Verbs
-    The API uses different verbs to support processing of resources. This includes things like creating or deleting
-    individual resources or something more specific like parsing an ontology. Typically, the verbs will be used in
-    conjunciton with the URL that represents the id for a given resource. Here is how we interpret the verbs:
+        #### HTTP Verbs
+        The API uses different verbs to support processing of resources. This includes things like creating or deleting
+        individual resources or something more specific like parsing an ontology. Typically, the verbs will be used in
+        conjunciton with the URL that represents the id for a given resource. Here is how we interpret the verbs:
 
-    - <span class="label label-info">GET</span> Used to retreive a resource or collection of resources.
-    - <span class="label label-info">POST</span> Used to create a resource when the server determines the resource's id.
-    - <span class="label label-info">PUT</span> Used to create a resource when a client determines the resource's id.
-    - <span class="label label-info">PATCH</span> Used to modify an existing resource. The attributes in a PATCH request will replace existing attributes.
-    - <span class="label label-info">DELETE</span> Used to delete an existing resource.
+        - <span class="label label-info">GET</span> Used to retreive a resource or collection of resources.
+        - <span class="label label-info">POST</span> Used to create a resource when the server determines the resource's id.
+        - <span class="label label-info">PUT</span> Used to create a resource when a client determines the resource's id.
+        - <span class="label label-info">PATCH</span> Used to modify an existing resource. The attributes in a PATCH request will replace existing attributes.
+        - <span class="label label-info">DELETE</span> Used to delete an existing resource.
 
-    #### Available Media Types
-  %ol
-    -@metadata_all.each do |cls|
-      %li
-        %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:uri]
+        #### Available Media Types
+      %ol
+        -@metadata_all.each do |cls|
+          %li
+            %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:uri]
 
-  -@metadata_all.each do |cls, type|
-    -@metadata = type
-    =render(:haml, :metadata)
-      EOS
+      -@metadata_all.each do |cls, type|
+        -@metadata = type
+        =render(:haml, :metadata)
+          EOS
     end
 
     template :metadata do
