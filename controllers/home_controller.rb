@@ -7,7 +7,7 @@ class HomeController
       routes.each do |route|
         next if route.length < 3 || route.split("/").length > 2
         route_no_slash = route.gsub("/", "")
-        routes_hash[route_no_slash] = $REST_URL_PREFIX+route_no_slash
+        routes_hash[route_no_slash] = LinkedData.settings.rest_url_prefix+route_no_slash
       end
       reply ({links: routes_hash})
     end
