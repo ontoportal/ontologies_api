@@ -5,7 +5,7 @@ class ClassesController
     # Display a page for all classes
     get do
       ont, submission = get_ontology_and_submission
-      page, size = get_page_params
+      page, size = page_params
       ld = get_include_attrs
       page_data = LinkedData::Models::Class.page submission: submission,
                                                  page: page, size: size,
@@ -47,7 +47,7 @@ class ClassesController
     # Get all descendants for given class
     get '/:cls/descendants' do
       ont, submission = get_ontology_and_submission
-      page, size = get_page_params
+      page, size = page_params
       ld = get_include_attrs
       cls = get_class(submission,load_attrs=[])
       page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
@@ -60,7 +60,7 @@ class ClassesController
     # Get all children of given class
     get '/:cls/children' do
       ont, submission = get_ontology_and_submission
-      page, size = get_page_params
+      page, size = page_params
       cls = get_class(submission,load_attrs=[])
       ld = { prefLabel: true, synonym: true, definition: true }
       page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
@@ -82,19 +82,7 @@ class ClassesController
       end
     end
 
-    #TODO Eventually this needs to be moved to a wider context.
-    def get_page_params
-      page = @params["page"] || 1
-      size = @params["size"] || 50
-      begin
-        page = Integer(page)
-        size = Integer(size)
-      rescue
-        error 400, "Page number and page size must integers. page no. is #{page} and page size is #{size}."
-      end
-      raise error 400, "Limit page size is 500. Page size in request is #{size}" if size > 500
-      return page, size
-    end
+    private
 
     def get_include_attrs
       unless @params.include? "include"
@@ -107,7 +95,6 @@ class ClassesController
       return ld
     end
 
-    private
     def get_class(submission,load_attrs=nil)
       load_attrs = load_attrs || { prefLabel: true, synonym: true, definition: true, children_count: true }
       if !(SparqlRd::Utils::Http.valid_uri? params[:cls])

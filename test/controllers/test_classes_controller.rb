@@ -242,7 +242,7 @@ class TestClsesController < TestCase
       descendants = []
       page_response = nil
       begin
-        call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/descendants?size=7"
+        call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/descendants?pagesize=7"
         if page_response
           call << "&page=#{page_response["next_page"]}"
         end
