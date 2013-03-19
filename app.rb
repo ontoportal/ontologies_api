@@ -6,6 +6,14 @@ require 'sinatra/respond_with'
 require 'sinatra/namespace'
 require 'sinatra/advanced_routes'
 
+# Other gem dependencies
+require 'json'
+require 'ontologies_linked_data'
+
+# Require middleware
+require 'rack/accept'
+require 'rack/post-body-to-params'
+
 # Logging setup
 require_relative "config/logging"
 
@@ -17,14 +25,6 @@ end
 # Setup the environment
 environment = [:production, :development, :test].include?(settings.environment) ? settings.environment : :development
 require_relative "config/environments/#{environment}.rb"
-
-# Other gem dependencies
-require 'json'
-require 'ontologies_linked_data'
-
-# Require middleware
-require 'rack/accept'
-require 'rack/post-body-to-params'
 
 # Use middleware (ORDER IS IMPORTANT)
 use Rack::Accept
