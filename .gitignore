@@ -25,7 +25,9 @@ doc/
 # Support local configs
 Gemfile.local
 Gemfile.lock
-config/environments/local/*.rb
+config/environments/production.rb
+config/environments/test.rb
+config/environments/development.rb
 
 # Ignore generated test data
 test/data/uploaded_ontologies/**/*
@@ -37,3 +39,6 @@ test/data/ontology_files/repo/**/*
 *.swp
 
 .ruby-version
+
+
+
