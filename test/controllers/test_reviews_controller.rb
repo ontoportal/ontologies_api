@@ -15,7 +15,7 @@ class TestReviewsController < TestCase
     "type":"object",
     "title":"Review",
     "description":"A BioPortal ontology review.",
-    "additionalProperties":false,
+    "additionalProperties":true,
     "properties":{
       "@id":{ "type":"string", "format":"uri", "required": true },
       "@type":{ "type":"string", "format":"uri", "required": true },
