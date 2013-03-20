@@ -16,8 +16,9 @@ module Sinatra
         return page, size
       end
 
-      def page_object(page_count, array)
+      def page_object(total_result_count, array)
         page, size = page_params
+        page_count = (total_result_count.to_f / size.to_f).ceil
         LinkedData::Models::Page.new(page, page+1, page_count, array)
       end
     end

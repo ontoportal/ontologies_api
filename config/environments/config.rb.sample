@@ -8,6 +8,5 @@ LinkedData.config do |config|
   config.goo_host = "localhost"
   config.goo_port = 9000
   config.search_server_url = "http://localhost:8983/solr"
-  config.repository_folder = "./test/data/ontology_files/repo"
   config.rest_url_prefix = "http://data.bioontology.org/"
 end
