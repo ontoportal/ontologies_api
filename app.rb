@@ -21,6 +21,10 @@ require_relative "config/logging"
 # Development-specific options
 if [:development, :console].include?(settings.environment)
   require 'pry' # Debug by placing 'binding.pry' where you want the interactive console to start
+  # Show exceptions
+  set :raise_errors, true
+  set :dump_errors, false
+  set :show_exceptions, false
 end
 
 # Setup the environment
