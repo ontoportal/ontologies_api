@@ -10,7 +10,7 @@ class ClassesController
       page_data = LinkedData::Models::Class.page submission: submission,
                                                  page: page, size: size,
                                                  load_attrs: ld,
-                                                 query_options: { rules: "SUBC" }
+                                                 query_options: { rules: "SUBP" }
       reply page_data
     end
 
