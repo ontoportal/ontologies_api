@@ -109,9 +109,7 @@ class ClassesController
         submission = ont.latest_submission
       end
       error 400,  "Ontology #{@params["ontology"]} submission not found." if submission.nil?
-      submission.load unless submission.loaded?
       status = submission.submissionStatus
-      status.load unless status.loaded?
       if !status.parsed?
         error 400,  "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
       end
