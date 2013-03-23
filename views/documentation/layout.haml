@@ -1,0 +1,57 @@
+%html
+%head
+  %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
+  %link{href: "http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css", rel: "stylesheet", media: "screen"}
+  %link{href: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel: "stylesheet", media: "screen"}
+  %link{href: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css", rel: "stylesheet", media: "screen"}
+  :css
+    body {
+      margin: 3em;
+    }
+    table, th, td {
+      vertical-align: top;
+    }
+    td, th { padding: 5px; }
+    th {
+      text-align: left;
+      font-weight: bold;
+    }
+    h2 { margin-top: 1em; }
+    .collection_link {
+      font-size: larger;
+      padding: 0 0 .5em;
+    }
+    .resource {
+      margin: 0 2em 2.5em 3em;
+    }
+    .helper {
+      cursor: help;
+      vertical-align: -7%;
+    }
+    @media (max-width: 767px) {
+      .bs-docs-sidenav {
+        width: auto;
+        margin-bottom: 20px;
+      }
+      .bs-docs-sidenav.affix {
+        position: static;
+        width: auto;
+        top: 0;
+      }
+    }
+
+%body
+  %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+  %script{src: "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"}
+  %script{src: "http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"}
+
+  = yield
+
+  :javascript
+    // @prettify
+    !function ($) {
+      $(function(){
+      window.prettyPrint && prettyPrint()
+      })
+    }(window.jQuery);
+    // #prettify
