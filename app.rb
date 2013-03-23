@@ -18,6 +18,10 @@ require 'rack/post-body-to-params'
 # Logging setup
 require_relative "config/logging"
 
+# Setup root and static public directory
+set :root, File.dirname(__FILE__)
+set :public_folder, Proc.new { File.join(root, "public") }
+
 # Development-specific options
 if [:development, :console].include?(settings.environment)
   require 'pry' # Debug by placing 'binding.pry' where you want the interactive console to start
