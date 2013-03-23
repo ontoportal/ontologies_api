@@ -1,0 +1,17 @@
+%html
+  %head
+    %meta{"http-equiv".to_sym => "content-type", content: "text/html;charset=UTF-8"}
+    - # Force IE to use latest rendering engine
+    %meta{"http-equiv".to_sym => "X-UA-Compatible", content: "IE=Edge"}
+
+    - # Provide a nice-looking view for browsers
+    %link{rel: "stylesheet", href: "/jsonview/jsonview.css", type: "text/css", media: "screen", charset: "utf-8"}
+    %script{src: "/jsonview/jsonview.js", type: "text/javascript"}
+  %body
+    %div#jsonview
+    %div#jsontext{style: "display: none;"}
+    :javascript
+      var json = #{object_for_render};
+      var jsonFormatter = new JSONFormatter();
+      var newHtml = jsonFormatter.jsonToHTML(json, null, "API JSON View");
+      document.getElementById("jsonview").innerHTML = newHtml;
