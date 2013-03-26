@@ -31,6 +31,16 @@
           %th Possible Values
           %th Description
         %tr
+          %td apikey
+          %td {your api key}
+          %td
+            %p
+              An API Key is required to access any API call. It can be provided in three ways:
+              %ol
+                %li Using the <code>apikey</code> query string parameter
+                %li Providing an <code>Authorization</code> header: <code>Authorization: apikey token=your_apikey</code> (replace `your_apikey` with your actual key)
+                %li When using a web browser to explore the API, if you provide your API Key once using method 1, it will be stored in a cookie for subsequent requests. You can override this by providing a different API Key in a new call.
+        %tr
           %td include
           %td
             all<br/>
@@ -157,4 +167,4 @@
 
       -@metadata_all.each do |cls, type|
         -@metadata = type
-        =render(:haml, "documentation/metadata")
+        =render(:haml, "documentation/metadata".to_sym)
