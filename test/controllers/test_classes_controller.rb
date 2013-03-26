@@ -46,7 +46,7 @@ class TestClsesController < TestCase
       #more testing needs to be done here
       assert last_response.ok?
       count_terms = count_terms + page_response["class"].length
-    end while page_response["next_page"]
+    end while page_response["nextPage"]
     assert count_terms == 488
   end
 
@@ -244,13 +244,13 @@ class TestClsesController < TestCase
       begin
         call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/descendants?pagesize=7"
         if page_response
-          call << "&page=#{page_response["next_page"]}"
+          call << "&page=#{page_response["nextPage"]}"
         end
         get call
         assert last_response.ok?
         page_response = JSON.parse(last_response.body)
         descendants.concat page_response["class"]
-      end while page_response["next_page"]
+      end while page_response["nextPage"]
       descendants.map! { |a| a["@id"] }
       assert descendants.sort == descendants_data[cls_id].sort
     end
