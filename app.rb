@@ -20,7 +20,9 @@ require_relative "config/logging"
 
 # Setup root and static public directory
 set :root, File.dirname(__FILE__)
-set :public_folder, Proc.new { File.join(root, "public") }
+use Rack::Static,
+  :urls => ["/static"],
+  :root => "public"
 
 # Development-specific options
 if [:development, :console].include?(settings.environment)
