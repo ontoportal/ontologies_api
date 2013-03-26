@@ -85,7 +85,7 @@ class ClassesController
     private
 
     def get_class(submission,load_attrs=nil)
-      load_attrs = load_attrs || { prefLabel: true, synonym: true, definition: true, children_count: true }
+      load_attrs = load_attrs || { prefLabel: true, synonym: true, definition: true, childrenCount: true }
       if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
       end
