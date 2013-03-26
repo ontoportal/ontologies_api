@@ -3,7 +3,7 @@ require 'sinatra/base'
 module Sinatra
   module Helpers
     module ApplicationHelper
-      SERIALIZER = LinkedData::Serializer.new
+      SERIALIZER = LinkedData::Serializer
 
       ##
       # Escape text for use in html
