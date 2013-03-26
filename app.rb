@@ -40,6 +40,8 @@ require_relative "config/environments/#{environment}.rb"
 # Use middleware (ORDER IS IMPORTANT)
 use Rack::Accept
 use Rack::PostBodyToParams
+use LinkedData::Security::Authorization
+
 if [:development].include?(settings.environment)
   begin
     require 'rack/perftools_profiler'
