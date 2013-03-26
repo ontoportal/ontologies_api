@@ -18,9 +18,5 @@ else
   log.sync = true
   LOGGER = CustomLogger.new(log)
   LOGGER.level = Logger::INFO
-  $stdout.reopen(log)
-  $stderr.reopen(log)
-  $stderr.sync = true
-  $stdout.sync = true
+  use Rack::CommonLogger, log
 end
-use Rack::CommonLogger, LOGGER
