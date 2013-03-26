@@ -1,3 +1,5 @@
+require 'haml'
+
 class HomeController
   namespace "/" do
 
