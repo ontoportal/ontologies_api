@@ -24,6 +24,10 @@ use Rack::Static,
   :urls => ["/static"],
   :root => "public"
 
+# Setup the environment
+environment = settings.environment.nil? ? :development : settings.environment
+require_relative "config/environments/#{environment}.rb"
+
 # Development-specific options
 if [:development, :console].include?(settings.environment)
   require 'pry' # Debug by placing 'binding.pry' where you want the interactive console to start
@@ -32,10 +36,6 @@ if [:development, :console].include?(settings.environment)
   set :dump_errors, false
   set :show_exceptions, false
 end
-
-# Setup the environment
-environment = [:production, :development, :test].include?(settings.environment) ? settings.environment : :development
-require_relative "config/environments/#{environment}.rb"
 
 # Use middleware (ORDER IS IMPORTANT)
 use Rack::Accept
