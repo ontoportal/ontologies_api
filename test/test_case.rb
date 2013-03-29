@@ -12,7 +12,8 @@ end
 require_relative '../app'
 require 'test/unit'
 require 'rack/test'
-require 'json'
+require 'multi_json'
+require 'oj'
 require 'json-schema'
 
 ENV['RACK_ENV'] = 'test'

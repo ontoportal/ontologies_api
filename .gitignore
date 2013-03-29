@@ -42,3 +42,5 @@ test/data/ontology_files/repo/**/*
 
 
 
+
+config/environments/console.rb
