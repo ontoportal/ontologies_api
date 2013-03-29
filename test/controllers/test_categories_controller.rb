@@ -1,5 +1,5 @@
 require_relative '../test_case'
-require "json"
+require "multi_json"
 
 class TestCategoriesController < TestCase
 
@@ -49,7 +49,7 @@ class TestCategoriesController < TestCase
     get '/categories'
     assert last_response.ok?
 
-    categories = JSON.parse(last_response.body)
+    categories = MultiJson.load(last_response.body)
     all_acronyms = []
     categories.each do |returned_cat|
       all_acronyms << returned_cat["acronym"]
@@ -64,21 +64,21 @@ class TestCategoriesController < TestCase
     @cats.each do |acronym, name_desc|
       get "/categories/#{acronym}"
       assert last_response.ok?
-      category = JSON.parse(last_response.body)
+      category = MultiJson.load(last_response.body)
       assert_equal acronym, category["acronym"]
     end
   end
 
   def test_create_new_category
     acronym = @test_cat[:acronym]
-    put "/categories/#{acronym}", @test_cat.to_json, "CONTENT_TYPE" => "application/json"
+    put "/categories/#{acronym}", MultiJson.dump(@test_cat), "CONTENT_TYPE" => "application/json"
 
     assert last_response.status == 201
-    assert JSON.parse(last_response.body)["acronym"].eql?(acronym)
+    assert MultiJson.load(last_response.body)["acronym"].eql?(acronym)
 
     get "/categories/#{acronym}"
     assert last_response.ok?
-    assert JSON.parse(last_response.body)["acronym"].eql?(acronym)
+    assert MultiJson.load(last_response.body)["acronym"].eql?(acronym)
   end
 
   def test_update_patch_category
@@ -89,11 +89,11 @@ class TestCategoriesController < TestCase
     new_desc = "Anatomyzation new DESCRIPTION"
     new_values = {name: new_name, description: new_desc}
 
-    patch "/categories/#{acronym}", new_values.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/categories/#{acronym}", MultiJson.dump(new_values), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
     get "/categories/#{acronym}"
-    group = JSON.parse(last_response.body)
+    group = MultiJson.load(last_response.body)
     assert group["name"].eql?(new_name)
     assert group["description"].eql?(new_desc)
   end

@@ -1,5 +1,4 @@
 require_relative '../test_case'
-require 'json'
 
 class TestUsersController < TestCase
   def setup
@@ -37,7 +36,7 @@ class TestUsersController < TestCase
   def test_all_users
     get '/users'
     assert last_response.ok?
-    users = JSON.parse(last_response.body)
+    users = MultiJson.load(last_response.body)
     users.any? {|u| u[:username].eql?("fred")}
     assert users.length >= @usernames.length
   end
@@ -47,18 +46,18 @@ class TestUsersController < TestCase
     get "/users/#{user}"
     assert last_response.ok?
 
-    assert_equal "fred", JSON.parse(last_response.body)["username"]
+    assert_equal "fred", MultiJson.load(last_response.body)["username"]
   end
 
   def test_create_new_user
     user = {email: "#{@username}@example.org", password: "pass_the_word"}
-    put "/users/#{@username}", user.to_json, "CONTENT_TYPE" => "application/json"
+    put "/users/#{@username}", MultiJson.dump(user), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201
-    assert JSON.parse(last_response.body)["username"].eql?(@username)
+    assert MultiJson.load(last_response.body)["username"].eql?(@username)
 
     get "/users/#{@username}"
     assert last_response.ok?
-    assert JSON.parse(last_response.body)["username"].eql?(@username)
+    assert MultiJson.load(last_response.body)["username"].eql?(@username)
   end
 
   def test_create_new_invalid_user
@@ -74,11 +73,11 @@ class TestUsersController < TestCase
 
   def test_update_patch_user
     add_first_name = {firstName: "Fred"}
-    patch "/users/fred", add_first_name.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/users/fred", MultiJson.dump(add_first_name), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
     get "/users/fred?include=all"
-    fred = JSON.parse(last_response.body)
+    fred = MultiJson.load(last_response.body)
     assert fred["firstName"].eql?("Fred")
   end
 

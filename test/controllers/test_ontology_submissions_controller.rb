@@ -1,5 +1,4 @@
 require_relative '../test_case'
-require 'json'
 
 class TestOntologySubmissionsController < TestCase
   def setup
@@ -64,7 +63,7 @@ class TestOntologySubmissionsController < TestCase
 
     submissions_goo = OntologySubmission.where(ontology: { acronym: ontology})
 
-    submissions = JSON.parse(last_response.body)
+    submissions = MultiJson.load(last_response.body)
     assert submissions.length == submissions_goo.length
 
     delete_ontologies_and_submissions()
@@ -73,7 +72,7 @@ class TestOntologySubmissionsController < TestCase
   def test_create_new_submission_missing_file_and_pull_location
     post "/ontologies/#{@acronym}/submissions", name: @name, hasOntologyLanguage: "OWL"
     assert last_response.status == 422
-    assert JSON.parse(last_response.body)["errors"]
+    assert MultiJson.load(last_response.body)["errors"]
   end
 
   def test_create_new_submission_file
@@ -81,17 +80,17 @@ class TestOntologySubmissionsController < TestCase
     assert last_response.status == 201
 
     get "/ontologies/#{@acronym}"
-    ont = JSON.parse(last_response.body)
+    ont = MultiJson.load(last_response.body)
     assert ont["acronym"].eql?(@acronym)
   end
 
   def test_create_new_submission_and_parse
     post "/ontologies/#{@acronym}/submissions", @file_params
     assert last_response.status == 201
-    sub = JSON.parse(last_response.body)
+    sub = MultiJson.load(last_response.body)
 
     get "/ontologies/#{@acronym}/submissions/#{sub['submissionId']}?include=all"
-    ont = JSON.parse(last_response.body)
+    ont = MultiJson.load(last_response.body)
     assert ont["ontology"]["acronym"].eql?(@acronym)
     post "/ontologies/#{@acronym}/submissions/#{sub['submissionId']}/parse"
     assert last_response.status == 200
@@ -99,7 +98,7 @@ class TestOntologySubmissionsController < TestCase
     max = 25
     while (ont["submissionStatus"] == "UPLOADED" and max > 0)
       get "/ontologies/#{@acronym}/submissions/#{sub['submissionId']}?include=all"
-      ont = JSON.parse(last_response.body)
+      ont = MultiJson.load(last_response.body)
       assert last_response.status == 200
       max = max - 1
       sleep(1.5)
@@ -111,7 +110,7 @@ class TestOntologySubmissionsController < TestCase
     #we should be able to get roots
     get "/ontologies/#{@acronym}/classes/roots"
     assert last_response.status == 200
-    roots = JSON.parse(last_response.body)
+    roots = MultiJson.load(last_response.body)
     assert roots.length > 0
   end
 
@@ -129,11 +128,11 @@ class TestOntologySubmissionsController < TestCase
     submission.ontology.load unless submission.ontology.loaded?
 
     new_values = {description: "Testing new description changes"}
-    patch "/ontologies/#{submission.ontology.acronym}/submissions/#{submission.submissionId}", new_values.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/ontologies/#{submission.ontology.acronym}/submissions/#{submission.submissionId}", MultiJson.dump(new_values), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
     get "/ontologies/#{submission.ontology.acronym}/submissions/#{submission.submissionId}"
-    submission = JSON.parse(last_response.body)
+    submission = MultiJson.load(last_response.body)
     assert submission["description"].eql?("Testing new description changes")
   end
 

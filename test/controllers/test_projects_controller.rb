@@ -75,7 +75,7 @@ class TestProjectsController < TestCase
   def test_all_projects
     get '/projects'
     _response_status(200, last_response)
-    projects = JSON.parse(last_response.body)
+    projects = MultiJson.load(last_response.body)
     assert_instance_of(Array, projects)
     assert_equal(1, projects.length)
     p = projects[0]
@@ -86,14 +86,14 @@ class TestProjectsController < TestCase
   def test_project_create_success
     # Ensure it doesn't exist first (undo the setup @p.save creation)
     _project_delete(@p.acronym)
-    put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    put "/projects/#{@p.acronym}", MultiJson.dump(@projectParams), "CONTENT_TYPE" => "application/json"
     _response_status(201, last_response)
     _project_get_success(@p.acronym, true)
   end
 
   def test_project_create_conflict
     # Fail PUT for any project that already exists.
-    put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    put "/projects/#{@p.acronym}", MultiJson.dump(@projectParams), "CONTENT_TYPE" => "application/json"
     _response_status(409, last_response)
     # The existing project should remain valid
     _project_get_success(@p.acronym, true)
@@ -105,13 +105,13 @@ class TestProjectsController < TestCase
     # Fail PUT for any project with required missing data.
     username = 'user_does_not_exist'
     @projectParams['creator'] = username
-    put "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    put "/projects/#{@p.acronym}", MultiJson.dump(@projectParams), "CONTENT_TYPE" => "application/json"
     _response_status(422, last_response)
     _project_get_failure(@p.acronym)
   end
 
   def test_project_update_success
-    patch "/projects/#{@p.acronym}", @projectParams.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/projects/#{@p.acronym}", MultiJson.dump(@projectParams), "CONTENT_TYPE" => "application/json"
     _response_status(204, last_response)
     _project_get_success(@p.acronym)
     # TODO: validate the data updated
@@ -146,7 +146,7 @@ class TestProjectsController < TestCase
     _response_status(200, last_response)
     if validate_data
       # Assume we have JSON data in the response body.
-      p = JSON.parse(last_response.body)
+      p = MultiJson.load(last_response.body)
       assert_instance_of(Hash, p)
       assert_equal(acronym, p['acronym'], p.to_s)
       validate_json(last_response.body, JSON_SCHEMA_STR)

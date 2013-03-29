@@ -1,5 +1,4 @@
 require_relative '../test_case'
-require 'json'
 
 class TestOntologiesController < TestCase
   def setup
@@ -57,7 +56,7 @@ class TestOntologiesController < TestCase
     get '/ontologies'
     assert last_response.ok?
 
-    onts = JSON.parse(last_response.body)
+    onts = MultiJson.load(last_response.body)
     assert onts.length >= num_onts_created
 
     all_ont_acronyms = []
@@ -78,7 +77,7 @@ class TestOntologiesController < TestCase
     get "/ontologies/#{ontology}"
     assert last_response.ok?
 
-    ont = JSON.parse(last_response.body)
+    ont = MultiJson.load(last_response.body)
     assert ont["acronym"] = ontology
 
     delete_ontologies_and_submissions()
@@ -93,18 +92,18 @@ class TestOntologiesController < TestCase
   def test_create_new_ontology_invalid
     put "/ontologies/#{@acronym}"
     assert last_response.status == 422
-    assert JSON.parse(last_response.body)["errors"]
+    assert MultiJson.load(last_response.body)["errors"]
   end
 
   def test_patch_ontology
     _create_onts
     name = "Test new name"
     new_name = {name: name}
-    patch "/ontologies/#{@acronym}", new_name.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/ontologies/#{@acronym}", MultiJson.dump(new_name), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
     get "/ontologies/#{@acronym}"
-    ont = JSON.parse(last_response.body)
+    ont = MultiJson.load(last_response.body)
     assert ont["name"].eql?(name)
   end
 

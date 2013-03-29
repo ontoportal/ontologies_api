@@ -81,7 +81,7 @@ class TestReviewsController < TestCase
     # The setup creates a single review for ontology 'TST' by creator 'test_user'
     get '/reviews'
     _response_status(200, last_response)
-    reviews = JSON.parse(last_response.body)
+    reviews = MultiJson.load(last_response.body)
     assert_instance_of(Array, reviews)
     assert_equal(1, reviews.length)
     r = reviews[0]
@@ -98,14 +98,14 @@ class TestReviewsController < TestCase
   def test_review_create_success
     # Ensure it doesn't exist first (undo the setup creation)
     _reviews_delete(@ont.acronym, @user.username)
-    put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
+    put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
     _response_status(201, last_response)
     _reviews_get_success(@ont, @user, true)
   end
 
   def test_review_create_conflict
     # Fail PUT for any review that already exists.
-    put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
+    put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
     _response_status(409, last_response)
     # The existing project should remain valid
     _reviews_get_success(@ont, @user, true)
@@ -117,7 +117,7 @@ class TestReviewsController < TestCase
     # Fail PUT for any review with required missing data.
     username = 'user_name_does_not_exist'
     @review_params[:creator] = username
-    put "/ontologies/#{@ont.acronym}/reviews/#{username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
+    put "/ontologies/#{@ont.acronym}/reviews/#{username}", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
     _response_status(422, last_response)
     _reviews_get_failure(@ont.acronym, username)
   end
@@ -125,7 +125,7 @@ class TestReviewsController < TestCase
   def test_review_update_success
     # Use patch for existing reviews (it is created in the setup)
     @review_params[:qualityRating] = @review_params[:qualityRating] + 1
-    patch "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", @review_params.to_json, "CONTENT_TYPE" => "application/json"
+    patch "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
     _response_status(204, last_response)
     _reviews_get_success(@ont, @user, true)
   end
@@ -161,7 +161,7 @@ class TestReviewsController < TestCase
     _response_status(200, last_response)
     if validate_data
       # Assume we have JSON data in the response body.
-      reviews = JSON.parse(last_response.body)
+      reviews = MultiJson.load(last_response.body)
       assert_instance_of(Array, reviews)
       r = reviews[0]
       assert_instance_of(Hash, r)

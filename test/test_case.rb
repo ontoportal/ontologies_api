@@ -194,12 +194,12 @@ class TestCase < Test::Unit::TestCase
 
   # Validate JSON object against a JSON schema.
   # @note schema is only validated after json data fails to validate.
-  # @param [String] jsonData a json string that will be parsed by JSON.parse
-  # @param [String] jsonSchemaString a json schema string that will be parsed by JSON.parse
+  # @param [String] jsonData a json string that will be parsed by MultiJson.load
+  # @param [String] jsonSchemaString a json schema string that will be parsed by MultiJson.load
   # @param [boolean] list set it true for jsonObj array of items to validate against jsonSchemaString
   def validate_json(jsonData, jsonSchemaString, list=false)
-    jsonObj = JSON.parse(jsonData)
-    jsonSchema = JSON.parse(jsonSchemaString)
+    jsonObj = MultiJson.load(jsonData)
+    jsonSchema = MultiJson.load(jsonSchemaString)
     assert(
         JSON::Validator.validate(jsonSchema, jsonObj, :list => list),
         JSON::Validator.fully_validate(jsonSchema, jsonObj, :validate_schema => true, :list => list).to_s
