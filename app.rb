@@ -8,8 +8,8 @@ require 'sinatra/advanced_routes'
 require 'sinatra/multi_route'
 
 # Other gem dependencies
-require 'multi_json'
 require 'oj'
+require 'multi_json'
 require 'ontologies_linked_data'
 
 # Require middleware
