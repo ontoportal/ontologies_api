@@ -12,6 +12,7 @@ gem 'rack-post-body-to-params'
 gem 'simplecov', :require => false, :group => :test
 
 # HTTP server
+gem 'unicorn'
 gem 'thin'
 
 # Debugging
