@@ -19,6 +19,10 @@ logs/**
 _yardoc
 doc/
 
+# Only the bins we want
+bin/**
+!bin/owlapi_wrapper.jar
+
 # Mac artifacts
 **.DS_Store
 
