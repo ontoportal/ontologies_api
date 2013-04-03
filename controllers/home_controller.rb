@@ -6,11 +6,14 @@ class HomeController
     get do
       routes = routes_list
       routes_hash = {}
+      context = {}
       routes.each do |route|
         next if route.length < 3 || route.split("/").length > 2
         route_no_slash = route.gsub("/", "")
+        context[route_no_slash] = route_to_class_map[route].type_uri if route_to_class_map[route]
         routes_hash[route_no_slash] = LinkedData.settings.rest_url_prefix+route_no_slash
       end
+      routes_hash["@context"] = context
       reply ({links: routes_hash})
     end
 
@@ -117,6 +120,18 @@ class HomeController
       end
       @routes_by_class = routes_by_class
       routes_by_class
+    end
+
+    def route_to_class_map
+      return @route_to_class_map if @route_to_class_map
+      map = {}
+      routes_by_class.each do |cls, routes|
+        routes.each do |route|
+          map[route[1]] = cls
+        end
+      end
+      @route_to_class_map = map
+      map
     end
 
     def routes_list
