@@ -22,7 +22,7 @@ class TestClsesController < TestCase
         #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
         #more testing needs to be done here
         assert last_response.ok?
-        assert clss["class"].length == 50 #default size
+        assert clss["collection"].length == 50 #default size
     end
   end
 
@@ -45,7 +45,7 @@ class TestClsesController < TestCase
       #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
       #more testing needs to be done here
       assert last_response.ok?
-      count_terms = count_terms + page_response["class"].length
+      count_terms = count_terms + page_response["collection"].length
     end while page_response["nextPage"]
     assert count_terms == 488
   end
@@ -231,7 +231,7 @@ class TestClsesController < TestCase
       assert last_response.ok?
       descendants = MultiJson.load(last_response.body)
       assert descendants["page"] == 1
-      descendants = descendants["class"]
+      descendants = descendants["collection"]
       descendants.map! { |a| a["@id"] }
       assert descendants.sort == descendants_data[cls_id].sort
     end
@@ -249,7 +249,7 @@ class TestClsesController < TestCase
         get call
         assert last_response.ok?
         page_response = MultiJson.load(last_response.body)
-        descendants.concat page_response["class"]
+        descendants.concat page_response["collection"]
       end while page_response["nextPage"]
       descendants.map! { |a| a["@id"] }
       assert descendants.sort == descendants_data[cls_id].sort
@@ -284,7 +284,7 @@ class TestClsesController < TestCase
         get call
         last_response.ok?
         children = MultiJson.load(last_response.body)
-        children = children["class"]
+        children = children["collection"]
         children.map! { |c| c["@id"] }
         assert children.length > 0 and children.include? cls_id
       end
@@ -317,7 +317,7 @@ class TestClsesController < TestCase
       call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/children"
       get call
       assert last_response.ok?
-      children = MultiJson.load(last_response.body)["class"]
+      children = MultiJson.load(last_response.body)["collection"]
       #TODO eventually this should test for id and not resource_id
       children.map! { |c| c["@id"] }
       assert children.sort == children_arrays[i].sort
