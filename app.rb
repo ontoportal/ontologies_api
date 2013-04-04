@@ -43,12 +43,15 @@ use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
 
-if [:development].include?(settings.environment)
-  begin
-    require 'rack/perftools_profiler'
-    use Rack::PerftoolsProfiler, :default_printer => :pdf, :mode => :cputime, :frequency => 1000
-  rescue LoadError
-    # perftools isn't there
+#At the moment this cannot be enabled under ruby-2.0
+if false
+  if [:development].include?(settings.environment)
+    begin
+      require 'rack/perftools_profiler'
+      use Rack::PerftoolsProfiler, :default_printer => :pdf, :mode => :cputime, :frequency => 1000
+    rescue LoadError
+      # perftools isn't there
+    end
   end
 end
 

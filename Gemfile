@@ -19,7 +19,7 @@ gem 'thin'
 gem 'pry', :group => :development
 
 # Profiling
-gem 'rack-perftools_profiler', :group => :profiling
+#gem 'rack-perftools_profiler', :group => :profiling
 
 # Code reloading
 gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/shotgun.git', :branch => 'ncbo'
