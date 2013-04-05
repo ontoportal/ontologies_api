@@ -85,6 +85,7 @@ class TestOntologySubmissionsController < TestCase
   end
 
   def test_create_new_submission_and_parse
+    skip("See issue #16")
     post "/ontologies/#{@acronym}/submissions", @file_params
     assert last_response.status == 201
     sub = MultiJson.load(last_response.body)
