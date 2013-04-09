@@ -1,7 +1,7 @@
 require_relative '../test_case'
 require 'json-schema'
 
-class TestProjectsController < TestCase
+class TestResourceIndexController < TestCase
 
   DEBUG_MESSAGES=false
 
