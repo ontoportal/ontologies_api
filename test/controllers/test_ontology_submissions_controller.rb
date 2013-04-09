@@ -98,8 +98,8 @@ class TestOntologySubmissionsController < TestCase
     max = 25
     while (ont["submissionStatus"] == "UPLOADED" and max > 0)
       get "/ontologies/#{@acronym}/submissions/#{sub['submissionId']}?include=all"
-      ont = MultiJson.load(last_response.body)
       assert last_response.status == 200
+      ont = MultiJson.load(last_response.body)
       max = max - 1
       sleep(1.5)
     end

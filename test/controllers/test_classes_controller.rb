@@ -4,7 +4,7 @@ class TestClassesController < TestCase
 
   def setup_only_once
     return create_ontologies_and_submissions(
-     ont_count: 1, submission_count: 3, process_submission: true, random_submission_count: false)
+     ont_count: 1, submission_count: 3, submissions_to_process: [1, 2], process_submission: true, random_submission_count: false)
   end
 
   def test_first_default_page
@@ -12,17 +12,17 @@ class TestClassesController < TestCase
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
 
-    submission_ids = [nil, 2,3]
+    submission_ids = 1..2
     submission_ids.each do |submission_id|
-        call = "/ontologies/#{ont.acronym}/classes"
-        call << "?ontology_submission_id=#{submission_id}" if submission_id
-        get call
-        assert last_response.ok?
-        clss = MultiJson.load(last_response.body)
-        #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
-        #more testing needs to be done here
-        assert last_response.ok?
-        assert clss["collection"].length == 50 #default size
+      call = "/ontologies/#{ont.acronym}/classes"
+      call << "?ontology_submission_id=#{submission_id}" if submission_id
+      get call
+      assert last_response.ok?
+      clss = MultiJson.load(last_response.body)
+      #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
+      #more testing needs to be done here
+      assert last_response.ok?
+      assert clss["collection"].length == 50 #default size
     end
   end
 
@@ -74,7 +74,7 @@ class TestClassesController < TestCase
         assert_instance_of(Array, cls["synonym"])
         assert(cls["@id"] == cls_id)
 
-        if submission_id == nil or submission_id == 3
+        if submission_id == 1 or submission_id == 2
           assert(cls["prefLabel"]["In version 3.2"])
           assert(cls["definition"][0]["In version 3.2"])
         else
@@ -93,7 +93,6 @@ class TestClassesController < TestCase
   end
 
   def test_roots_for_cls
-
     num_onts_created, created_ont_acronyms = setup_only_once
 
     ont = Ontology.find(created_ont_acronyms.first)
@@ -121,7 +120,7 @@ class TestClassesController < TestCase
     ont = Ontology.find(created_ont_acronyms.first)
     ont.load unless ont.loaded?
     #first submission was not parsed
-    get "/ontologies/#{ont.acronym}/classes/roots?ontology_submission_id=1"
+    get "/ontologies/#{ont.acronym}/classes/roots?ontology_submission_id=3"
 
     assert_equal 400, last_response.status
     assert last_response.body["has not been parsed"]

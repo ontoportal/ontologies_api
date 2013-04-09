@@ -10,7 +10,8 @@ if ENV["COVERAGE"].eql?("true")
 end
 
 require_relative '../app'
-require 'test/unit'
+require 'minitest/unit'
+MiniTest::Unit.autorun
 require 'rack/test'
 require 'multi_json'
 require 'oj'
@@ -31,10 +32,41 @@ if !LinkedData.settings.goo_host.eql?("localhost")
   $stdout.flush
 end
 
+class AppUnit < MiniTest::Unit
+  def before_suites
+    # code to run before the first test (gets inherited in sub-tests)
+  end
+
+  def after_suites
+    # code to run after the last test (gets inherited in sub-tests)
+    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
+  end
+
+  def _run_suites(suites, type)
+    begin
+      before_suites
+      super(suites, type)
+    ensure
+      after_suites
+    end
+  end
+
+  def _run_suite(suite, type)
+    begin
+      suite.before_suite if suite.respond_to?(:before_suite)
+      super(suite, type)
+    ensure
+      suite.after_suite if suite.respond_to?(:after_suite)
+    end
+  end
+end
+
+AppUnit.runner = AppUnit.new
+
 # All tests should inherit from this class.
 # Use 'rake test' from the command line to run tests.
 # See http://www.sinatrarb.com/testing.html for testing information
-class TestCase < Test::Unit::TestCase
+class TestCase < MiniTest::Unit::TestCase
   include Rack::Test::Methods
 
   def app
@@ -42,10 +74,6 @@ class TestCase < Test::Unit::TestCase
   end
 
   def teardown
-    if Kernel.const_defined?("TestClassesController") && self.instance_of?(::TestClassesController)
-      return
-    end
-    delete_ontologies_and_submissions
   end
 
   ##
@@ -56,127 +84,13 @@ class TestCase < Test::Unit::TestCase
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   # @option options [TrueClass, FalseClass] :process_submission Parse the test ontology file
   def create_ontologies_and_submissions(options = {})
-    if Kernel.const_defined?("TestClassesController") && self.instance_of?(::TestClassesController)
-      ont = LinkedData::Models::Ontology.find("TST-ONT-0")
-      if !ont.nil?
-        ont.load unless ont.loaded?
-        if ont.submissions.length == 3
-          ont.submissions.each do |ss|
-            ss.load unless ss.loaded?
-            return 1, ["TST-ONT-0"] if ss.submissionStatus.parsed?
-          end
-        end
-      end
-    end
-
-    LinkedData::Models::SubmissionStatus.init
-    delete_ontologies_and_submissions
-    ont_count = options[:ont_count] || 5
-    submission_count = options[:submission_count] || 5
-    random_submission_count = options[:random_submission_count].nil? ? true : options[:random_submission_count]
-
-    u = LinkedData::Models::User.new(username: "tim", email: "tim@example.org", password: "password")
-    u.save unless u.exist? || !u.valid?
-
-    LinkedData::Models::SubmissionStatus.init
-
-    of = LinkedData::Models::OntologyFormat.new(acronym: "OWL")
-    if of.exist?
-      of = LinkedData::Models::OntologyFormat.find("OWL")
-    else
-      of.save
-    end
-
-    contact_name = "Sheila"
-    contact_email = "sheila@example.org"
-    contact = LinkedData::Models::Contact.where(name: contact_name, email: contact_email)
-    contact = LinkedData::Models::Contact.new(name: contact_name, email: contact_email) if contact.empty?
-
-    ont_acronyms = []
-    ontologies = []
-    ont_count.to_i.times do |count|
-      acronym = "TST-ONT-#{count}"
-      ont_acronyms << acronym
-
-      o = LinkedData::Models::Ontology.new({
-        acronym: acronym,
-        name: "Test Ontology ##{count}",
-        administeredBy: u
-      })
-
-      o.save
-      ontologies << o
-
-      LinkedData::Models::SubmissionStatus.init
-
-      # Random submissions (between 1 and max)
-      max = random_submission_count ? (1..submission_count.to_i).to_a.shuffle.first : submission_count
-      max.times do
-        os = LinkedData::Models::OntologySubmission.new({
-          ontology: o,
-          hasOntologyLanguage: of,
-          submissionStatus: LinkedData::Models::SubmissionStatus.find("UPLOADED"),
-          submissionId: o.next_submission_id,
-          definitionProperty: (RDF::IRI.new "http://bioontology.org/ontologies/biositemap.owl#definition"),
-          summaryOnly: true,
-          contact: contact,
-          released: DateTime.now - 3
-        })
-        if (options.include? :process_submission)
-          file_path = nil
-          if os.submissionId < 4
-            file_path = "test/data/ontology_files/BRO_v3.#{os.submissionId-1}.owl"
-          else
-            raise ArgumentError, "create_ontologies_and_submissions does not support process submission with more than 2 versions"
-          end
-          uploadFilePath = LinkedData::Models::OntologySubmission.copy_file_repository(o.acronym, os.submissionId, file_path)
-          os.uploadFilePath = uploadFilePath
-        else
-          os.summaryOnly = true
-        end
-        os.save
-      end
-    end
-
-    # Get ontology objects if empty
-    if ontologies.empty?
-      ont_acronyms.each do |ont_id|
-        ontologies << LinkedData::Models::Ontology.find(ont_id)
-      end
-    end
-
-    if options.include? :process_submission
-      ontologies.each do |o|
-        o.load unless o.loaded?
-        o.submissions.each do |ss|
-          ss.load unless ss.loaded?
-          next if ss.submissionId == 1
-          ss.ontology.load unless ss.ontology.loaded?
-          ss.process_submission Logger.new(STDOUT)
-        end
-      end
-    end
-
-    return ont_count, ont_acronyms, ontologies
+    LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
   end
 
   ##
-  # Delete all ontologies and their submissions. This will look for all ontologies starting with TST-ONT- and ending in a Fixnum
+  # Delete all ontologies and their submissions
   def delete_ontologies_and_submissions
-    LinkedData::Models::Ontology.all.each do |ont|
-      ont.load unless ont.nil? || ont.loaded?
-      ont.submissions.each do |ss|
-        ss.load unless ss.loaded?
-        ss.delete
-      end
-      ont.delete
-    end
-
-    u = LinkedData::Models::User.find("tim")
-    u.delete unless u.nil?
-
-    of = LinkedData::Models::OntologyFormat.find("OWL")
-    of.delete unless of.nil?
+    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
   end
 
   # Delete triple store models

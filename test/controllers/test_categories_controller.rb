@@ -84,7 +84,7 @@ class TestCategoriesController < TestCase
   def test_update_patch_category
     acronym = 'ANAT'
     category = Category.find(acronym)
-    assert_not_nil category
+    assert_instance_of Category, category
     new_name = "Anatomyzation new NAME"
     new_desc = "Anatomyzation new DESCRIPTION"
     new_values = {name: new_name, description: new_desc}

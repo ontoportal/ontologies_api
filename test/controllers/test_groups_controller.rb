@@ -74,7 +74,7 @@ class TestGroupsController < TestCase
   def test_update_patch_group
     acronym = 'CTSA-HOM'
     group = Group.find(acronym)
-    assert_not_nil group
+    assert_instance_of Group, group
     new_name = "CTSA Health Brand new NAME"
     new_desc = "CTSA Health Brand new DESCRIPTION"
     new_values = {name: new_name, description: new_desc}
