@@ -1,4 +1,4 @@
-class OntologySubmissionsController
+class OntologySubmissionsController < ApplicationController
   namespace "/ontologies/:acronym/submissions" do
 
     ##

@@ -1,6 +1,6 @@
 require 'haml'
 
-class HomeController
+class HomeController < ApplicationController
   namespace "/" do
 
     get do

@@ -1,4 +1,4 @@
-class MappingsController
+class MappingsController < ApplicationController
   # Get mappings for a class
   get '/ontologies/:ontology/classes/:cls/mappings' do
     source = params[:source]

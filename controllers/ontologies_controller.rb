@@ -1,4 +1,4 @@
-class OntologiesController
+class OntologiesController < ApplicationController
   namespace "/ontologies" do
 
     ##

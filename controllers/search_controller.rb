@@ -1,4 +1,4 @@
-class SearchController
+class SearchController < ApplicationController
   namespace "/search" do
 
     # execute a search query

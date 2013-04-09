@@ -1,4 +1,4 @@
-class ClassesController
+class ClassesController < ApplicationController
 
   namespace "/ontologies/:ontology/classes" do
 

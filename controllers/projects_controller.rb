@@ -1,4 +1,4 @@
-class ProjectsController
+class ProjectsController < ApplicationController
   namespace "/projects" do
 
     MODEL = LinkedData::Models::Project

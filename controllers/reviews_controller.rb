@@ -1,4 +1,4 @@
-class ReviewsController
+class ReviewsController < ApplicationController
 
   MODEL = LinkedData::Models::Review
 
