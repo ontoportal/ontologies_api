@@ -1,6 +1,6 @@
 require_relative '../test_case'
 
-class TestClsesController < TestCase
+class TestClassesController < TestCase
 
   def setup_only_once
     return create_ontologies_and_submissions(

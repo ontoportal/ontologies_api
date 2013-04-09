@@ -45,7 +45,7 @@ class TestCase < Test::Unit::TestCase
   end
 
   def teardown
-    if Kernel.const_defined?("TestClsesController") && self.instance_of?(::TestClsesController)
+    if Kernel.const_defined?("TestClassesController") && self.instance_of?(::TestClassesController)
       return
     end
     delete_ontologies_and_submissions
@@ -59,7 +59,7 @@ class TestCase < Test::Unit::TestCase
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   # @option options [TrueClass, FalseClass] :process_submission Parse the test ontology file
   def create_ontologies_and_submissions(options = {})
-    if Kernel.const_defined?("TestClsesController") && self.instance_of?(::TestClsesController)
+    if Kernel.const_defined?("TestClassesController") && self.instance_of?(::TestClassesController)
       ont = LinkedData::Models::Ontology.find("TST-ONT-0")
       if !ont.nil?
         ont.load unless ont.loaded?
