@@ -22,6 +22,7 @@ module Sinatra
         LinkedData::Models::Page.new(page, page+1, page_count, array)
       end
     end
-    helpers PaginationHelper
   end
 end
+
+helpers Sinatra::Helpers::PaginationHelper

@@ -63,7 +63,7 @@ module Sinatra
         return File.open(file_log_path,"w")
       end
     end
-
-    helpers OntologyHelper
   end
 end
+
+helpers Sinatra::Helpers::OntologyHelper

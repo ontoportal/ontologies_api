@@ -96,6 +96,7 @@ module Sinatra
 
     end
 
-    helpers ApplicationHelper
   end
 end
+
+helpers Sinatra::Helpers::ApplicationHelper
