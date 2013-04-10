@@ -32,7 +32,7 @@ class TestResourceIndexController < TestCase
   #}
   #END_JSON_SCHEMA_STR
 
-  
+
   def teardown
     delete_goo_models(LinkedData::Models::Ontology.all)
     delete_goo_models(LinkedData::Models::User.all)
@@ -68,6 +68,25 @@ class TestResourceIndexController < TestCase
     #p = projects[0]
     #assert_equal(@p.name, p['name'])
     #validate_json(last_response.body, JSON_SCHEMA_STR, true)
+  end
+
+  def test_get_classes
+    #get "/resource_index/search?classes[acronym1][classid1,classid2,classid3]&classes[acronym2][classid1,classid2]"
+    #resource_id = 'GEO'
+    acronym = 'NCIt'
+    classid1 = 'Melanoma'
+    classid2 = 'activity:IRB'
+    get "/resource_index/search?classes[#{acronym}]=#{classid1}"
+    _response_status(200, last_response)
+    #get "/resource_index/search?classes[#{acronym}]=#{classid1},#{classid2}"
+    #_response_status(200, last_response)
+  end
+
+  def test_get_element_resources
+    resource_id = 'GEO'
+    element_id = 'E-GEOD-19229'
+    get "/resource_index/resources/#{resource_id}/elements/#{element_id}"
+    _response_status(200, last_response)
   end
 
   def _response_status(status, response)

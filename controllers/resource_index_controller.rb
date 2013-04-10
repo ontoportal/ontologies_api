@@ -1,72 +1,66 @@
 
 require 'ncbo_resource_index'
 
-#  @options[:resource_index_location]  = "http://rest.bioontology.org/resource_index/"
-#  @options[:filterNumber]             = true
-#  @options[:isStopWordsCaseSensitive] = false
-#  @options[:isVirtualOntologyId]      = true
-#  @options[:levelMax]                 = 0
-#  @options[:longestOnly]              = false
-#  @options[:ontologiesToExpand]       = []
-#  @options[:ontologiesToKeepInResult] = []
-#  @options[:mappingTypes]             = []
-#  @options[:minTermSize]              = 3
-#  @options[:scored]                   = true
-#  @options[:semanticTypes]            = []
-#  @options[:stopWords]                = []
-#  @options[:wholeWordOnly]            = true
-#  @options[:withDefaultStopWords]     = true
-#  @options[:withSynonyms]             = true
-#  @options[:conceptids]               = []
-#  @options[:mode]                     = :union
-#  @options[:elementid]                = []
-#  @options[:resourceids]              = []
-#  @options[:elementDetails]           = false
-#  @options[:withContext]              = true
-#  @options[:offset]                   = 0
-#  @options[:limit]                    = 10
-#  @options[:format]                   = :xml
-#  @options[:counts]                   = false
-#  @options[:request_timeout]          = 300
-
 
 class ResourceIndexController < ApplicationController
 
-  @@ncboJenkinsApiKey="ccd30807-516a-4b1a-809d-5a88d34c57f4"
-  @ri = NCBO::ResourceIndex.new(:apikey => @@ncboJenkinsApiKey)
+  # Note get_options method is in resource_index_helper.rb
 
-  namespace "/resource_index/search" do
+  namespace "/resource_index" do
+
     # Return search results
-    get do
-      #reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load)
+    get '/search' do
+      options = get_options(params)
+      # Assume request signature of the form:
+      # classes[acronym1][classid1,classid2,classid3]&classes[acronym2][classid1,classid2]
+      if params.key?("classes")
+        classes = []
+        class_hash = params["classes"]
+        class_hash.each do |k,v|
+          # Use 'k' as an ontology acronym, translate it to an ontology virtual ID.
+          ont_id = get_ontology_virtual_id(k)
+          next if ont_id == nil
+          # TODO: use 'v' as a CSV list of concepts (class ID)
+          v.split(',').each do |class_id|
+            classes.push("#{ont_id}/#{class_id}")
+          end
+        end
+        result = NCBO::ResourceIndex.find_by_concept(classes, options)
+        #binding.pry
+        reply result
+      end
+      #
+      # TODO: reply with syntax error message?
+      #
+    end
+
+    # Return all resources
+    get "/resources" do
+      options = get_options(params)
+      response = NCBO::ResourceIndex.resources(options)
+      # TODO: massage the return values (may need 'models' for elements, annotations etc.)
+      reply response
+    end
+
+    # Return a specific resource
+    get "/resources/:resource_id" do
+      options = get_options(params)
+      response = NCBO::ResourceIndex.resources(options)
+      # TODO: massage the return values (may need 'models' for elements, annotations etc.)
+      reply response
+    end
+
+    # Return a specific element from a specific resource
+    get "/resources/:resource_id/elements/:element_id" do
+      options = get_options(params)
+      response = NCBO::ResourceIndex.resources(options)
+      # TODO: massage the return values (may need 'models' for elements, annotations etc.)
+      reply response
     end
 
     #
-    # No other HTTP methods are supported for search.
-    #
-  end
-
-  namespace "/resource_index/resources" do
-
-    # Return resource index resources
-    get do
-      #reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load)
-    end
-
-    get "/:resource_id" do
-      #reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load)
-    end
-
-    get "/:resource_id/elements/:element_id" do
-      #reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load)
-      #result_concept = ri.find_by_concept(["1032/Melanoma"])
-      #result_element = ri.find_by_element("E-GEOD-19229", "GEO")
-    end
-
-    #
-    # No other HTTP methods are supported for resources?
+    # TODO: enable POST methods?
     #
   end
 
 end
-
