@@ -93,6 +93,13 @@ module Sinatra
         halt status, { :errors => message, :status => status }
       end
 
+      def includes_options
+        if @params.key?("include")
+          return @params["include"].split(",").map {|e| e.to_sym}
+        end
+        Array.new
+      end
+
     end
 
   end
