@@ -6,7 +6,7 @@ class ClassesController < ApplicationController
     get do
       ont, submission = get_ontology_and_submission
       page, size = page_params
-      ld = LinkedData::Models::Class.goo_attrs_to_load
+      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_options)
       page_data = LinkedData::Models::Class.page submission: submission,
                                                  page: page, size: size,
                                                  load_attrs: ld,
@@ -48,7 +48,7 @@ class ClassesController < ApplicationController
     get '/:cls/descendants' do
       ont, submission = get_ontology_and_submission
       page, size = page_params
-      ld = LinkedData::Models::Class.goo_attrs_to_load
+      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_options)
       cls = get_class(submission,load_attrs=[])
       page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
                                                  page: page, size: size,
