@@ -11,13 +11,8 @@ class OntologiesController < ApplicationController
     ##
     # Display the most recent submission of the ontology
     get '/:acronym' do
-      submission = params[:ontology_submission_id]
       ont = Ontology.find(params["acronym"])
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
-      if submission
-        ont = ont.submission(submission)
-        error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
-      end
       reply ont
     end
 
