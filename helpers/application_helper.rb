@@ -23,7 +23,6 @@ module Sinatra
           attr_cls = obj.class.range_class(attribute)
           no_unique_attr = !attr_cls.nil? && (attr_cls.goop_settings[:unique][:fields].nil? || attr_cls.goop_settings[:unique][:fields].length != 1)
           if attr_cls && no_unique_attr
-            # binding.pry if attr_cls == LinkedData::Models::Contact
             found_objs = attr_cls.where(value)
             if found_objs.nil? || found_objs.empty?
               new_obj = attr_cls.new(value)
@@ -92,6 +91,13 @@ module Sinatra
           status = 500
         end
         halt status, { :errors => message, :status => status }
+      end
+
+      def includes_options
+        if @params.key?("include")
+          return @params["include"].split(",").map {|e| e.to_sym}
+        end
+        Array.new
       end
 
     end

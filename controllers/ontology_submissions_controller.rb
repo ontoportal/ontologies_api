@@ -1,4 +1,21 @@
 class OntologySubmissionsController < ApplicationController
+  get "/submissions" do
+    includes = OntologySubmission.goo_attrs_to_load(includes_options)
+    includes.merge(submissionId: true) if includes.is_a?(Hash)
+    includes.merge(ontology: {acronym: true}) if includes.is_a?(Hash) && !includes.key?(:ontology)
+    submissions = OntologySubmission.all(load_attrs: includes)
+
+    # Figure out latest parsed submissions using all submissions
+    latest_submissions = {}
+    submissions.each do |sub|
+      next unless sub.submissionStatus.parsed?
+      latest_submissions[sub.ontology.acronym] ||= sub
+      latest_submissions[sub.ontology.acronym] = sub if sub.submissionId > latest_submissions[sub.ontology.acronym].submissionId
+    end
+
+    reply latest_submissions.values
+  end
+
   namespace "/ontologies/:acronym/submissions" do
 
     ##

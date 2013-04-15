@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
   namespace "/reviews" do
     # Return an array of all reviews.
     get do
-      reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load)
+      reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load(includes_options))
     end
   end
 
