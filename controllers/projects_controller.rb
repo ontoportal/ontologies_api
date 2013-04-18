@@ -1,4 +1,13 @@
 class ProjectsController < ApplicationController
+
+  ##
+  # Ontology projects
+  get "/ontologies/:acronym/projects" do
+    ont = Ontology.find(params["acronym"])
+    error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
+    reply ont.projects
+  end
+
   namespace "/projects" do
 
     MODEL = LinkedData::Models::Project
