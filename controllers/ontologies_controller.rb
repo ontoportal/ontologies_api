@@ -17,27 +17,11 @@ class OntologiesController < ApplicationController
     end
 
     ##
-    # Ontology groups
-    get "/:acronym/groups" do
-      ont = Ontology.find(params["acronym"], load_attrs: {group: Group.goo_attrs_to_load})
-      error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
-      reply ont.group
-    end
-
-    ##
-    # Ontology categories
-    get "/:acronym/categories" do
-      ont = Ontology.find(params["acronym"], load_attrs: {hasDomain: Category.goo_attrs_to_load})
-      error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
-      reply ont.hasDomain
-    end
-
-    ##
-    # Ontology categories
-    get "/:acronym/projects" do
+    # Ontology latest submission
+    get "/:acronym/latest_submission" do
       ont = Ontology.find(params["acronym"])
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
-      reply ont.projects
+      reply ont.latest_submission
     end
 
     ##
