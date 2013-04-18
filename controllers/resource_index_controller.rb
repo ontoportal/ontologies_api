@@ -46,15 +46,15 @@ class ResourceIndexController < ApplicationController
       reply massage_resources(result)
     end
 
-    # Return a specific resource
-    get "/resources/:resource_id" do
+    # Return specific resources
+    get "/resources/:resources" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
       reply massage_resources(result)
     end
 
-    # Return a specific element from a specific resource
-    get "/resources/:resource_id/elements/:element_id" do
+    # Return specific elements from specific resources
+    get "/resources/:resources/elements/:elements" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
       # TODO: Use the element method instead (Paul is fixing bug)

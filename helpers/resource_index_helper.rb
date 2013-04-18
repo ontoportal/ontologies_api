@@ -70,53 +70,51 @@ module Sinatra
         else
           options[:apikey] = user.apikey
         end
-
-        # TODO: map new to old parameter names
-
         #
         # Generic parameters that can apply to any endpoint.
         #
-
         #* elements={element1,element2}
-        element = [params["element_id"]].flatten
+        element = [params["elements"]].flatten
         options[:elementid] = element unless element.nil? || element.empty?
-
+        #
         #* resources={resource1,resource2}
-        resource = [params["resource_id"]].flatten
+        resource = [params["resources"]].flatten
         options[:resourceids] = resource unless resource.nil? || resource.empty?
-
+        #
         #* ontologies={acronym1,acronym2,acronym3}
         ontologies = [params["ontologies"]].flatten
         ontologies.map! {|acronym| get_ontology_virtual_id(acronym) }
         ontologies.delete_if {|ontID| ontID.nil? } # cleanup missing ontology lookup
         options[:ontologiesToExpand]       = ontologies
         options[:ontologiesToKeepInResult] = ontologies
-
+        #
         #* semantic_types={semType1,semType2,semType3}
         options[:semanticTypes] = [params["semantic_types"]].flatten
-
+        #
         #* max_level={0..N}
         options[:levelMax] = params["max_level"] if params.key?("max_level")
-
+        #
         #* mapping_types={automatic,manual}
         mapping_types = [params["mapping_types"]].flatten
         mapping_types.delete_if {|x| x.nil? }
         options[:mappingTypes] = mapping_types unless mapping_types.empty?
-
+        #
         #* exclude_numbers={true|false}
         options[:filterNumber] = params["exclude_numbers"] if params.key?("exclude_numbers")
-
+        #
         #* minimum_match_length={0..N}
         options[:minTermSize] = params["minimum_match_length"] if params.key?("minimum_match_length")
-
+        #
         #* include_synonyms={true|false}
         options[:withSynonyms] = params["include_synonyms"] if params.key?("include_synonyms")
-
+        #
         #* include_offsets={true|false}
+        # TODO: code this one!
 
+        #
         #* mode={union|intersection}
         options[:mode] = params["mode"] if params.key?("mode")
-
+        #
         # Stop words
         #
         #* exclude_words={word1,word2,word3}
