@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
 
   ##
   # Ontology groups
-  get "/:acronym/groups" do
+  get "/ontologies/:acronym/groups" do
     ont = Ontology.find(params["acronym"], load_attrs: {group: Group.goo_attrs_to_load})
     error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
     reply ont.group
