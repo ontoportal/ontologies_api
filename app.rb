@@ -15,6 +15,7 @@ require 'ontologies_linked_data'
 # Require middleware
 require 'rack/accept'
 require 'rack/post-body-to-params'
+require 'rack/cache'
 
 # Logging setup
 require_relative "config/logging"
@@ -24,6 +25,11 @@ set :root, File.dirname(__FILE__)
 use Rack::Static,
   :urls => ["/static"],
   :root => "public"
+
+use Rack::Cache,
+  :verbose     => true,
+  :metastore   => 'file:./cache/rack/meta',
+  :entitystore => 'file:./cache/rack/body'
 
 # Setup the environment
 environment = settings.environment.nil? ? :development : settings.environment

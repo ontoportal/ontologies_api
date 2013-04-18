@@ -11,6 +11,7 @@ gem 'rack-accept'
 gem 'rack-post-body-to-params'
 gem 'simplecov', :require => false, :group => :test
 gem 'minitest'
+gem 'rack-cache'
 
 # HTTP server
 gem 'unicorn'
