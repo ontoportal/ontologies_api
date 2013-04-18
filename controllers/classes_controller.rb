@@ -30,7 +30,7 @@ class ClassesController < ApplicationController
     end
 
     # Get a tree view
-    get '/:cls/tree' do
+    get '/:cls/paths_to_root' do
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
       reply cls.paths_to_root
