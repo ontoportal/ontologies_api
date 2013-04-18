@@ -126,7 +126,7 @@ class TestClassesController < TestCase
     assert last_response.body["has not been parsed"]
   end
 
-  def test_tree_for_cls
+  def test_path_to_root_for_cls
 
     num_onts_created, created_ont_acronyms = setup_only_once
 
@@ -136,7 +136,7 @@ class TestClassesController < TestCase
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
     clss_ids.each do |cls_id|
       escaped_cls= CGI.escape(cls_id)
-      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/tree"
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/paths_to_root"
       get call
       assert last_response.ok?
     end
