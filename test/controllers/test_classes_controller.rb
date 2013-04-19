@@ -138,6 +138,10 @@ class TestClassesController < TestCase
       escaped_cls= CGI.escape(cls_id)
       call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/tree"
       get call
+      tree = MultiJson.load(last_response.body)
+      tree.each do |r|
+        r.include?("childrenCount")
+      end
       assert last_response.ok?
     end
   end
