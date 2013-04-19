@@ -94,7 +94,7 @@ module Sinatra
       end
 
       def includes_options
-        if @params.key?("include")
+        if @params["include"]
           return @params["include"].split(",").map {|e| e.to_sym}
         end
         Array.new

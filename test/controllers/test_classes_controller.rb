@@ -126,7 +126,7 @@ class TestClassesController < TestCase
     assert last_response.body["has not been parsed"]
   end
 
-  def test_tree_for_cls
+  def test_tree
 
     num_onts_created, created_ont_acronyms = setup_only_once
 
@@ -137,6 +137,26 @@ class TestClassesController < TestCase
     clss_ids.each do |cls_id|
       escaped_cls= CGI.escape(cls_id)
       call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/tree"
+      get call
+      tree = MultiJson.load(last_response.body)
+      tree.each do |r|
+        r.include?("childrenCount")
+      end
+      assert last_response.ok?
+    end
+  end
+
+  def test_path_to_root_for_cls
+
+    num_onts_created, created_ont_acronyms = setup_only_once
+
+    ont = Ontology.find(created_ont_acronyms.first)
+    ont.load unless ont.loaded?
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
+    clss_ids.each do |cls_id|
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/paths_to_root"
       get call
       assert last_response.ok?
     end

@@ -29,12 +29,32 @@ class ClassesController < ApplicationController
       reply cls
     end
 
-    # Get a tree view
-    get '/:cls/tree' do
+    # Get a paths_to_root view
+    get '/:cls/paths_to_root' do
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
       reply cls.paths_to_root
     end
+    
+    # Get a tree view
+    get '/:cls/tree' do
+      ont, submission = get_ontology_and_submission
+      cls = get_class(submission)
+      root_tree = cls.tree
+
+      #add the other roots to the response
+      roots = submission.roots
+      found = false
+      roots.each_index do |i|
+        r = roots[i]
+        if r.resource_id.value == root_tree.resource_id.value
+          roots[i] = root_tree
+          break
+        end
+      end
+      reply roots
+    end
+
 
     # Get all ancestors for given class
     get '/:cls/ancestors' do

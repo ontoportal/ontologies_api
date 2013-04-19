@@ -38,22 +38,36 @@ if [:development, :console].include?(settings.environment)
   set :show_exceptions, false
 end
 
+#At the moment this cannot be enabled under ruby-2.0
+if [:development].include?(settings.environment)
+  begin
+    require 'rack-mini-profiler'
+    Rack::MiniProfiler.config.storage = Rack::MiniProfiler::FileStore
+    c = ::Rack::MiniProfiler.config
+    c.pre_authorize_cb = lambda { |env|
+      true
+    }
+    tmp = File.expand_path("../tmp/miniprofiler", __FILE__)
+    FileUtils.mkdir_p(tmp) unless File.exists?(tmp)
+    c.storage_options = {path: tmp}
+    use Rack::MiniProfiler
+  rescue LoadError
+    # profiler isn't there
+  end
+end
+
+if settings.environment == :production
+  require 'rack/cache'
+  use Rack::Cache,
+    :verbose     => true,
+    :metastore   => 'file:./cache/rack/meta',
+    :entitystore => 'file:./cache/rack/body'
+end
+
 # Use middleware (ORDER IS IMPORTANT)
 use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
-
-#At the moment this cannot be enabled under ruby-2.0
-if false
-  if [:development].include?(settings.environment)
-    begin
-      require 'rack/perftools_profiler'
-      use Rack::PerftoolsProfiler, :default_printer => :pdf, :mode => :cputime, :frequency => 1000
-    rescue LoadError
-      # perftools isn't there
-    end
-  end
-end
 
 # Initialize the app
 require_relative 'init'

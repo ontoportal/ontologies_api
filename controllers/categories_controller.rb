@@ -1,4 +1,13 @@
 class CategoriesController < ApplicationController
+
+  ##
+  # Ontology categories
+  get "/ontologies/:acronym/categories" do
+    ont = Ontology.find(params["acronym"], load_attrs: {hasDomain: Category.goo_attrs_to_load})
+    error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
+    reply ont.hasDomain
+  end
+
   namespace "/categories" do
     # Display all categories
     get do
