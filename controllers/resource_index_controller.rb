@@ -1,5 +1,5 @@
 
-require 'ncbo_resource_index'
+require 'ncbo_resource_index_client'
 
 class ResourceIndexController < ApplicationController
 
