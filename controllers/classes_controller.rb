@@ -35,9 +35,12 @@ class ClassesController < ApplicationController
       cls = get_class(submission)
       reply cls.paths_to_root
     end
-    
+
     # Get a tree view
     get '/:cls/tree' do
+      params["include"] = "prefLabel,childrenCount,children"
+      env["rack.request.query_hash"] = params
+
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
       root_tree = cls.tree
