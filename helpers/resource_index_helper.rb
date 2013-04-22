@@ -74,29 +74,28 @@ module Sinatra
         # Generic parameters that can apply to any endpoint.
         #
         #* elements={element1,element2}
-        element = [params["elements"]].flatten
+        element = [params["elements"]].compact
         options[:elementid] = element unless element.nil? || element.empty?
         #
         #* resources={resource1,resource2}
-        resource = [params["resources"]].flatten
+        resource = [params["resources"]].compact
         options[:resourceids] = resource unless resource.nil? || resource.empty?
         #
         #* ontologies={acronym1,acronym2,acronym3}
-        ontologies = [params["ontologies"]].flatten
+        ontologies = [params["ontologies"]].compact
         ontologies.map! {|acronym| get_ontology_virtual_id(acronym) }
-        ontologies.delete_if {|ontID| ontID.nil? } # cleanup missing ontology lookup
         options[:ontologiesToExpand]       = ontologies
         options[:ontologiesToKeepInResult] = ontologies
         #
         #* semantic_types={semType1,semType2,semType3}
-        options[:semanticTypes] = [params["semantic_types"]].flatten
+        semanticTypes = [params["semantic_types"]].compact
+        options[:semanticTypes] = semanticTypes unless semanticTypes.nil? || semanticTypes.empty?
         #
         #* max_level={0..N}
         options[:levelMax] = params["max_level"] if params.key?("max_level")
         #
         #* mapping_types={automatic,manual}
-        mapping_types = [params["mapping_types"]].flatten
-        mapping_types.delete_if {|x| x.nil? }
+        mapping_types = [params["mapping_types"]].compact
         options[:mappingTypes] = mapping_types unless mapping_types.empty?
         #
         #* exclude_numbers={true|false}
@@ -119,8 +118,7 @@ module Sinatra
         #
         #* exclude_words={word1,word2,word3}
         #* excluded_words_are_case_sensitive={true|false}
-        exclude_words = [params["exclude_words"]].flatten
-        exclude_words.delete_if {|x| x.nil? }
+        exclude_words = [params["exclude_words"]].compact
         options[:stopWords] = exclude_words
         options[:withDefaultStopWords] = false if not exclude_words.empty?
         case_sensitive = params["excluded_words_are_case_sensitive"]

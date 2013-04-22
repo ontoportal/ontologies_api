@@ -9,7 +9,7 @@ class TestResourceIndexController < TestCase
   # json-schema for description and validation of REST json responses.
   # http://tools.ietf.org/id/draft-zyp-json-schema-03.html
   # http://tools.ietf.org/html/draft-zyp-json-schema-03
-  RESOURCE_SCHEMA_STR = <<-END_RESOURCE_SCHEMA_STR
+  RESOURCE_SCHEMA = <<-END_RESOURCE_SCHEMA
   {
     "type": "object",
     "title": "resource",
@@ -53,8 +53,8 @@ class TestResourceIndexController < TestCase
       }
     }
   }
-  END_RESOURCE_SCHEMA_STR
-  RESOURCES_SCHEMA_STR = <<-END_RESOURCES_SCHEMA_STR
+  END_RESOURCE_SCHEMA
+  RESOURCES_SCHEMA = <<-END_RESOURCES_SCHEMA
   {
     "type": "array",
     "title": "resources",
@@ -63,35 +63,30 @@ class TestResourceIndexController < TestCase
       "type": "object"
     }
   }
-  END_RESOURCES_SCHEMA_STR
+  END_RESOURCES_SCHEMA
 
-  ELEMENT_FIELD_SCHEMA_STR = <<-END_ELEMENT_FIELD_SCHEMA_STR
+  ELEMENT_FIELD_SCHEMA = <<-END_ELEMENT_FIELD_SCHEMA
   {
     "type": "object",
     "title": "element_field",
     "description": "A Resource Index element field.",
     "additionalProperties": false,
     "properties": {
-      "name": {
-        "type": "string",
-        "required": true
-      },
       "text": {
         "type": "string",
-        "required": true
-      },
-      "weight": {
-        "type": "number",
         "required": true
       },
       "associatedOntologies": {
         "type": "array",
         "required": true
+      },
+      "weight": {
+        "type": "number"
       }
     }
   }
-  END_ELEMENT_FIELD_SCHEMA_STR
-  ELEMENT_SCHEMA_STR = <<-END_ELEMENT_SCHEMA_STR
+  END_ELEMENT_FIELD_SCHEMA
+  ELEMENT_SCHEMA = <<-END_ELEMENT_SCHEMA
   {
     "type": "object",
     "title": "element",
@@ -103,13 +98,13 @@ class TestResourceIndexController < TestCase
         "required": true
       },
       "fields": {
-        "type": "array",
+        "type": "object",
         "required": true
       }
     }
   }
-  END_ELEMENT_SCHEMA_STR
-  ELEMENTS_SCHEMA_STR = <<-END_ELEMENTS_SCHEMA_STR
+  END_ELEMENT_SCHEMA
+  ELEMENTS_SCHEMA = <<-END_ELEMENTS_SCHEMA
   {
     "type": "array",
     "title": "elements",
@@ -118,7 +113,7 @@ class TestResourceIndexController < TestCase
       "type": "object"
     }
   }
-  END_ELEMENTS_SCHEMA_STR
+  END_ELEMENTS_SCHEMA
 
 
   def teardown
@@ -154,14 +149,17 @@ class TestResourceIndexController < TestCase
     classid2 = 'activity:IRB'
     get "/resource_index/ranked_elements?classes[#{acronym}]=#{classid1}"
     _response_status(200, last_response)
-    #validate_json(last_response.body, RESOURCE_SCHEMA_STR, true)
+    #validate_json(last_response.body, RESOURCE_SCHEMA, true)
     results = MultiJson.load(last_response.body)
     results["resources"].each do |r|
       elements = r["elements"]
-      validate_json(MultiJson.dump(elements), ELEMENT_SCHEMA_STR, true)
+      validate_json(MultiJson.dump(elements), ELEMENT_SCHEMA, true)
       elements.each do |e|
-        fields = e["fields"]
-        validate_json(MultiJson.dump(fields), ELEMENT_FIELD_SCHEMA_STR, true)
+        # TODO: iterate over the field objects to validate, revise the
+        # TODO: wiki page elements section and the massage_elements code.
+        e["fields"].each_value do |field|
+          validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
+        end
       end
     end
     #binding.pry
@@ -178,17 +176,16 @@ class TestResourceIndexController < TestCase
     get "/resource_index/search?classes[#{acronym}]=#{classid1}"
     #get "/resource_index/search?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
-    validate_json(last_response.body, RESOURCE_SCHEMA_STR, true)
+    #validate_json(last_response.body, RESOURCE_SCHEMA, true)
     resources = MultiJson.load(last_response.body)
     assert_instance_of(Array, resources)
-    not assert_empty(resources, "Error: empty resources.")
-    # TODO: Check for an empty Array?
+    refute_empty(resources, "Error: empty resources.")
   end
 
   def test_get_resources
     get '/resource_index/resources'
     _response_status(200, last_response)
-    validate_json(last_response.body, RESOURCE_SCHEMA_STR, true)
+    validate_json(last_response.body, RESOURCE_SCHEMA, true)
     resources = MultiJson.load(last_response.body)
     assert_instance_of(Array, resources)
   end
@@ -198,7 +195,7 @@ class TestResourceIndexController < TestCase
     element_id = 'E-GEOD-19229'
     get "/resource_index/resources/#{resource_id}/elements/#{element_id}"
     _response_status(200, last_response)
-    validate_json(last_response.body, RESOURCE_SCHEMA_STR, true)
+    validate_json(last_response.body, RESOURCE_SCHEMA, true)
     resources = MultiJson.load(last_response.body)
     assert_instance_of(Array, resources)
   end

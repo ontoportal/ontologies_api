@@ -10,6 +10,7 @@ class ResourceIndexController < ApplicationController
   namespace "/resource_index" do
 
     get '/search' do
+      #ranked_elements = false
       options = get_options(params)
       classes = get_classes(params)
       if classes.empty?
@@ -17,13 +18,26 @@ class ResourceIndexController < ApplicationController
         # TODO: reply with syntax error message?
         #
       else
+        options[:elementDetails] = true
         result = NCBO::ResourceIndex.find_by_concept(classes, options)
         # TODO: massage the result format
+        #binding.pry
+        #result.each do |annotations|
+        #  annotations.each do |annotation|
+        #    # TODO: massage annotation.concept - change ontology version ID to virtual ID and acronym
+        #    # TODO: massage annotation.context ?
+        #    elements = massage_elements([annotation.element])
+        #    annotation.element = elements[0]
+        #  end
+        #end
+        # TODO: Restructure the output
+        # use annotation.context[:contextType] to group element annotations
         reply result
       end
     end
 
     get '/ranked_elements' do
+      ranked_elements = true
       options = get_options(params)
       classes = get_classes(params)
       if classes.empty?
@@ -33,7 +47,7 @@ class ResourceIndexController < ApplicationController
       else
         result = NCBO::ResourceIndex.ranked_elements(classes, options)
         result.resources.each do |r|
-          r[:elements] = massage_elements(r[:elements])
+          r[:elements] = massage_elements(r[:elements], ranked_elements)
         end
         reply result
       end
@@ -67,25 +81,24 @@ class ResourceIndexController < ApplicationController
     # TODO: enable POST methods?
     #
 
-    def massage_elements(element_array)
+    def massage_elements(element_array, ranked=true)
       elements = []
       element_array.each do |e|
         element = {
             "id" => e[:localElementId],
-            "fields" => []
+            "fields" => {}
         }
         e[:text].each do |name, description|
-          weight = 0.0
-          e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
-          ontID = [e[:ontoIds][name]].flatten  # Wrap Fixnum or Array into Array
-          element["fields"].push(
-            {
-              "name" => name,
-              "text" => description,
-              "weight" => weight,
-              "associatedOntologies" => ontID
-            }
-          )
+          ontID = [e[:ontoIds][name]].compact  # Wrap Fixnum or Array into Array
+          element["fields"][name] = {
+                  "text" => description,
+                  "associatedOntologies" => ontID
+          }
+          if ranked
+            weight = 0.0
+            e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
+            element["fields"][name]["weight"] = weight
+          end
         end
         elements.push element
       end
