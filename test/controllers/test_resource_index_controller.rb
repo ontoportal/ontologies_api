@@ -9,6 +9,17 @@ class TestResourceIndexController < TestCase
   # json-schema for description and validation of REST json responses.
   # http://tools.ietf.org/id/draft-zyp-json-schema-03.html
   # http://tools.ietf.org/html/draft-zyp-json-schema-03
+
+
+
+  SEARCH_SCHEMA = <<-END_SEARCH_SCHEMA
+  {
+    "type": "object",
+    "title": "annotations",
+    "description": "A hash of Resource Index resource annotations."
+  }
+  END_SEARCH_SCHEMA
+
   RESOURCE_SCHEMA = <<-END_RESOURCE_SCHEMA
   {
     "type": "object",
@@ -176,10 +187,9 @@ class TestResourceIndexController < TestCase
     get "/resource_index/search?classes[#{acronym}]=#{classid1}"
     #get "/resource_index/search?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
-    #validate_json(last_response.body, RESOURCE_SCHEMA, true)
-    resources = MultiJson.load(last_response.body)
-    assert_instance_of(Array, resources)
-    refute_empty(resources, "Error: empty resources.")
+    validate_json(last_response.body, SEARCH_SCHEMA)
+    annotations = MultiJson.load(last_response.body)
+    assert_instance_of(Hash, annotations)
   end
 
   def test_get_resources
@@ -188,6 +198,7 @@ class TestResourceIndexController < TestCase
     validate_json(last_response.body, RESOURCE_SCHEMA, true)
     resources = MultiJson.load(last_response.body)
     assert_instance_of(Array, resources)
+    # TODO: Add element validations, as in test_get_ranked_elements
   end
 
   def test_get_resource_element
@@ -198,6 +209,7 @@ class TestResourceIndexController < TestCase
     validate_json(last_response.body, RESOURCE_SCHEMA, true)
     resources = MultiJson.load(last_response.body)
     assert_instance_of(Array, resources)
+    # TODO: Add element validations, as in test_get_ranked_elements
   end
 
   def _response_status(status, response)

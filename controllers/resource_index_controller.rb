@@ -20,20 +20,44 @@ class ResourceIndexController < ApplicationController
       else
         options[:elementDetails] = true
         result = NCBO::ResourceIndex.find_by_concept(classes, options)
-        # TODO: massage the result format
-        #binding.pry
-        #result.each do |annotations|
-        #  annotations.each do |annotation|
-        #    # TODO: massage annotation.concept - change ontology version ID to virtual ID and acronym
-        #    # TODO: massage annotation.context ?
-        #    elements = massage_elements([annotation.element])
-        #    annotation.element = elements[0]
-        #  end
-        #end
-        # TODO: Restructure the output
-        # use annotation.context[:contextType] to group element annotations
-        reply result
+        reply massage_search(result)
       end
+    end
+
+    def massage_search(old_response)
+      # TODO: massage the result format
+
+      contextMap = {
+        "mgrepContext" => "directAnnotations",
+        "mappingContext" => "mappingAnnotations",
+        "isaContext" => "hierarchyAnnotations"
+      }
+
+      new_response = {}
+      #binding.pry
+      old_response.each do |a|
+        elements = []
+        a.annotations.each do |annotation|
+          # TODO: massage annotation.concept - change ontology version ID to virtual ID and acronym
+          concept = {
+              "id" => annotation.concept[:localConceptId]
+          }
+          # TODO: use annotation.context[:contextType] to group element annotations
+          # TODO: massage annotation.context ?
+          #elements.push( massage_elements([annotation.element]))
+          elements.push( concept )
+        end
+        new_response[a.resource] = {
+            "totalElements" => elements.length,
+            "elements" => elements
+        }
+      end
+      # TODO: Restructure the output
+      return new_response
+    end
+
+    def massage_search_annotation(a)
+
     end
 
     get '/ranked_elements' do
