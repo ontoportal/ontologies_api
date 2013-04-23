@@ -4,7 +4,7 @@ require 'redis'
 module Sinatra
   module Helpers
     module ResourceIndexHelper
-      REDIS = Redis.new(host: LinkedData.settings.redis_host)
+      REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
 
       ##
       # Takes a URI and shortens it (takes off everything except the last fragment) according to NCBO rules.
