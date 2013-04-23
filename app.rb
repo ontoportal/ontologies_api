@@ -11,6 +11,7 @@ require 'sinatra/multi_route'
 require 'oj'
 require 'multi_json'
 require 'ontologies_linked_data'
+require 'ncbo_annotator'
 
 # Require middleware
 require 'rack/accept'

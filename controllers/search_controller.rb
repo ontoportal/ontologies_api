@@ -28,7 +28,15 @@ class SearchController < ApplicationController
       args.delete "pagesize"
       raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if q.nil? || q.strip.empty?
       pagenum, pagesize = page_params()
-      args["start"] = pagenum
+
+
+      if pagenum <= 1
+        args["start"] = 0
+
+
+      else
+        args["start"] = 0
+      end
       args["rows"] = pagesize
       return args
     end
