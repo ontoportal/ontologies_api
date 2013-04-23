@@ -40,7 +40,7 @@ class ResourceIndexController < ApplicationController
         a.annotations.each do |annotation|
           # TODO: massage annotation.concept - change ontology version ID to virtual ID and acronym
           concept = {
-              "id" => annotation.concept[:localConceptId]
+              "id" => annotation.element[:localElementId]
           }
           # TODO: use annotation.context[:contextType] to group element annotations
           # TODO: massage annotation.context ?
