@@ -10,7 +10,6 @@ class ResourceIndexController < ApplicationController
   namespace "/resource_index" do
 
     get '/search' do
-      #ranked_elements = false
       options = get_options(params)
       classes = get_classes(params)
       if classes.empty?
@@ -20,11 +19,11 @@ class ResourceIndexController < ApplicationController
       else
         options[:elementDetails] = true
         result = NCBO::ResourceIndex.find_by_concept(classes, options)
-        reply massage_search(result)
+        reply massage_search(result, options)
       end
     end
 
-    def massage_search(old_response)
+    def massage_search(old_response, options)
       # TODO: massage the result format
 
       contextMap = {
@@ -32,28 +31,24 @@ class ResourceIndexController < ApplicationController
         "mappingContext" => "mappingAnnotations",
         "isaContext" => "hierarchyAnnotations"
       }
-
-      new_response = {}
+      resources = {}
       #binding.pry
       old_response.each do |a|
         elements = []
         a.annotations.each do |annotation|
           # TODO: massage annotation.concept - change ontology version ID to virtual ID and acronym
-          concept = {
-              "id" => annotation.element[:localElementId]
-          }
           # TODO: use annotation.context[:contextType] to group element annotations
           # TODO: massage annotation.context ?
-          #elements.push( massage_elements([annotation.element]))
-          elements.push( concept )
+          element = massage_element(annotation.element, options[:elementDetails])
+          elements.push(element)
         end
-        new_response[a.resource] = {
+        resources[a.resource] = {
             "totalElements" => elements.length,
             "elements" => elements
         }
       end
       # TODO: Restructure the output
-      return new_response
+      return resources
     end
 
     def massage_search_annotation(a)
@@ -61,7 +56,6 @@ class ResourceIndexController < ApplicationController
     end
 
     get '/ranked_elements' do
-      ranked_elements = true
       options = get_options(params)
       classes = get_classes(params)
       if classes.empty?
@@ -71,7 +65,7 @@ class ResourceIndexController < ApplicationController
       else
         result = NCBO::ResourceIndex.ranked_elements(classes, options)
         result.resources.each do |r|
-          r[:elements] = massage_elements(r[:elements], ranked_elements)
+          r[:elements] = massage_elements(r[:elements])
         end
         reply result
       end
@@ -107,26 +101,29 @@ class ResourceIndexController < ApplicationController
 
     def massage_elements(element_array, ranked=true)
       elements = []
-      element_array.each do |e|
-        element = {
-            "id" => e[:localElementId],
-            "fields" => {}
-        }
+      element_array.each { |e| elements.push massage_element(e, ranked) }
+      return elements
+    end
+
+    def massage_element(e, with_fields=true, with_weight=true)
+      element = { "id" => e[:localElementId] }
+      if with_fields
+        fields = {}
         e[:text].each do |name, description|
           ontID = [e[:ontoIds][name]].compact  # Wrap Fixnum or Array into Array
-          element["fields"][name] = {
-                  "text" => description,
-                  "associatedOntologies" => ontID
+          fields[name] = {
+              "text" => description,
+              "associatedOntologies" => ontID
           }
-          if ranked
+          if with_weight
             weight = 0.0
             e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
-            element["fields"][name]["weight"] = weight
+            fields[name]["weight"] = weight
           end
         end
-        elements.push element
+        element["fields"] = fields
       end
-      return elements
+      return element
     end
 
     def massage_resources(resource_array)

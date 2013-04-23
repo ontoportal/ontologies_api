@@ -190,6 +190,7 @@ class TestResourceIndexController < TestCase
     validate_json(last_response.body, SEARCH_SCHEMA)
     annotations = MultiJson.load(last_response.body)
     assert_instance_of(Hash, annotations)
+    binding.pry
   end
 
   def test_get_resources
