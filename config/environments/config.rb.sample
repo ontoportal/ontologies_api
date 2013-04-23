@@ -10,4 +10,6 @@ LinkedData.config do |config|
   config.search_server_url = "http://localhost:8983/solr"
   config.rest_url_prefix = "http://data.bioontology.org/"
   config.enable_security = false
+  config.redis_host = "localhost"
+  config.redis_port = 6379
 end
