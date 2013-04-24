@@ -55,6 +55,20 @@ module Sinatra
         REDIS.hmget("ri:#{version_id}", "acronym").first
       end
 
+      ##
+      # Given an acronym, get the ontology id URI (http://data.bioontology.org/ontologies/BRO)
+      def ontology_uri_from_acronym(acronym)
+        REDIS.get("ont_id:uri:#{acronym}")
+      end
+
+      ##
+      # Given an ontology id URI, get the virtual id
+      def virtual_id_from_uri(uri)
+        virtual_id = REDIS.get("ont_id:virtual:#{uri}")
+        virtual_id = virtual_id.to_i unless virtual_id.nil?
+        virtual_id
+      end
+
     end
   end
 end
