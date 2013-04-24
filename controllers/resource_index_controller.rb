@@ -13,9 +13,7 @@ class ResourceIndexController < ApplicationController
       options = get_options(params)
       classes = get_classes(params)
       if classes.empty?
-        #
         # TODO: reply with syntax error message?
-        #
       else
         options[:elementDetails] = true
         result = NCBO::ResourceIndex.find_by_concept(classes, options)
@@ -23,45 +21,11 @@ class ResourceIndexController < ApplicationController
       end
     end
 
-    def massage_search(old_response, options)
-      # TODO: massage the result format
-
-      contextMap = {
-        "mgrepContext" => "directAnnotations",
-        "mappingContext" => "mappingAnnotations",
-        "isaContext" => "hierarchyAnnotations"
-      }
-      resources = {}
-      #binding.pry
-      old_response.each do |a|
-        elements = []
-        a.annotations.each do |annotation|
-          # TODO: massage annotation.concept - change ontology version ID to virtual ID and acronym
-          # TODO: use annotation.context[:contextType] to group element annotations
-          # TODO: massage annotation.context ?
-          element = massage_element(annotation.element, options[:elementDetails])
-          elements.push(element)
-        end
-        resources[a.resource] = {
-            "totalElements" => elements.length,
-            "elements" => elements
-        }
-      end
-      # TODO: Restructure the output
-      return resources
-    end
-
-    def massage_search_annotation(a)
-
-    end
-
     get '/ranked_elements' do
       options = get_options(params)
       classes = get_classes(params)
       if classes.empty?
-        #
         # TODO: reply with syntax error message?
-        #
       else
         result = NCBO::ResourceIndex.ranked_elements(classes, options)
         result.resources.each do |r|
@@ -99,27 +63,82 @@ class ResourceIndexController < ApplicationController
     # TODO: enable POST methods?
     #
 
-    def massage_elements(element_array, ranked=true)
+    def massage_search(old_response, options)
+      resources = {}
+      old_response.each do |resource|
+        elements = {}
+        annotations = []
+        resource.annotations.each do |a|
+          version_id, short_id = a.concept[:localConceptId].split('/')
+          class_uri = uri_from_short_id(version_id, short_id)
+          # NOTE: Skipping nil class_uri values, could mess with paging details
+          # The nil values are marginal cases for OBO terms
+          if class_uri.nil?
+            class_uri = a.concept[:localConceptId]
+          end
+          ontology_acronym = acronym_from_version_id(a.concept[:localOntologyId])
+          annotated_class = {
+              :id => class_uri,
+              :ontology => ontology_acronym
+          }
+          # NOTE: options[:scored] is not related to element weights.
+          element = massage_element(a.element, options[:elementDetails])
+          el_id = element["id"]
+          # Check whether the element already exists in elements, avoid repetitions.
+          unless elements.include? el_id
+            elements[el_id] = element["fields"]
+          end
+          annotations.push massage_search_context(a, annotated_class)
+        end
+        # TODO: add search option to exclude 0-element resources?
+        resources[resource.resource] = {
+            "annotations" => annotations,
+            "annotatedElements" => elements
+        }
+      end
+      return resources
+    end
+
+    def massage_search_context(a, annotated_class)
+      # annotations is a hash of annotation hashes,
+      # this method will modify it directly (by reference).
+      annotationTypeMap = {
+          "mgrepContext" => "direct",
+          "mappingContext" => "mapping",
+          "isaContext" => "hierarchy"
+      }
+      annotation = {
+          :annotatedClass => annotated_class,
+          :annotationType => annotationTypeMap[ a.context[:contextType] ],
+          :elementField => a.context[:contextName],
+          :elementId => a.element[:localElementId],
+          :from => a.context[:from],
+          :to => a.context[:to],
+          #:score => a.score
+      }
+      return annotation
+    end
+
+    def massage_elements(element_array)
       elements = []
-      element_array.each { |e| elements.push massage_element(e, ranked) }
+      element_array.each { |e| elements.push massage_element(e) }
       return elements
     end
 
-    def massage_element(e, with_fields=true, with_weight=true)
+    def massage_element(e, with_fields=true)
       element = { "id" => e[:localElementId] }
       if with_fields
         fields = {}
         e[:text].each do |name, description|
           ontID = [e[:ontoIds][name]].compact  # Wrap Fixnum or Array into Array
+          ontID.delete_if {|x| x == 0 }
+          weight = 0.0
+          e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
           fields[name] = {
-              "text" => description,
-              "associatedOntologies" => ontID
+            "text" => description,
+            "associatedOntologies" => ontID,
+            "weight" => weight
           }
-          if with_weight
-            weight = 0.0
-            e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
-            fields[name]["weight"] = weight
-          end
         end
         element["fields"] = fields
       end

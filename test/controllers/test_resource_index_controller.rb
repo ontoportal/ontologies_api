@@ -10,122 +10,103 @@ class TestResourceIndexController < TestCase
   # http://tools.ietf.org/id/draft-zyp-json-schema-03.html
   # http://tools.ietf.org/html/draft-zyp-json-schema-03
 
-
-
-  SEARCH_SCHEMA = <<-END_SEARCH_SCHEMA
+  SEARCH_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
     "title": "annotations",
     "description": "A hash of Resource Index resource annotations."
   }
-  END_SEARCH_SCHEMA
+  END_SCHEMA
 
-  RESOURCE_SCHEMA = <<-END_RESOURCE_SCHEMA
+  SEARCH_ANNOTATIONS_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "array",
+    "title": "resources",
+    "description": "An array of Resource Index resource objects.",
+    "items": { "type": "object" }
+  }
+  END_SCHEMA
+
+  SEARCH_ANNOTATION_SCHEMA = <<-END_SCHEMA
+  {
+      "type": "object",
+      "title": "annotation",
+      "description": "A Resource Index annotation.",
+      "additionalProperties": false,
+      "properties": {
+          "annotatedClass": { "type": "object", "required": true },
+          "annotationType": { "type": "string", "required": true },
+          "elementField": { "type": "string", "required": true },
+          "elementId": { "type": "string", "required": true },
+          "from": { "type": "number", "required": true },
+          "to": { "type": "number", "required": true }
+      }
+  }
+  END_SCHEMA
+
+  RESOURCES_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "array",
+    "title": "resources",
+    "description": "An array of Resource Index resource objects.",
+    "items": { "type": "object" }
+  }
+  END_SCHEMA
+
+  RESOURCE_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
     "title": "resource",
     "description": "A Resource Index resource.",
     "additionalProperties": false,
     "properties": {
-      "resourceName": {
-        "type": "string",
-        "required": true
-      },
-      "resourceId": {
-        "type": "string",
-        "required": true
-      },
-      "mainContext": {
-        "type": "string",
-        "required": true
-      },
-      "resourceURL": {
-        "type": "string",
-        "format": "uri",
-        "required": true
-      },
-      "resourceElementURL": {
-        "type": "string",
-        "format": "uri"
-      },
-      "resourceDescription": {
-        "type": "string"
-      },
-      "resourceLogo": {
-        "type": "string",
-        "format": "uri"
-      },
-      "lastUpdateDate": {
-        "type": "string",
-        "format": "datetime"
-      },
-      "totalElements": {
-        "type": "number"
-      }
+      "resourceName": { "type": "string", "required": true },
+      "resourceId": { "type": "string", "required": true },
+      "mainContext": { "type": "string", "required": true },
+      "resourceURL": { "type": "string", "format": "uri", "required": true },
+      "resourceElementURL": { "type": "string", "format": "uri" },
+      "resourceDescription": { "type": "string" },
+      "resourceLogo": { "type": "string", "format": "uri" },
+      "lastUpdateDate": { "type": "string", "format": "datetime" },
+      "totalElements": { "type": "number" }
     }
   }
-  END_RESOURCE_SCHEMA
-  RESOURCES_SCHEMA = <<-END_RESOURCES_SCHEMA
-  {
-    "type": "array",
-    "title": "resources",
-    "description": "An array of Resource Index resource objects.",
-    "items": {
-      "type": "object"
-    }
-  }
-  END_RESOURCES_SCHEMA
+  END_SCHEMA
 
-  ELEMENT_FIELD_SCHEMA = <<-END_ELEMENT_FIELD_SCHEMA
+  ELEMENTS_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
-    "title": "element_field",
-    "description": "A Resource Index element field.",
-    "additionalProperties": false,
-    "properties": {
-      "text": {
-        "type": "string",
-        "required": true
-      },
-      "associatedOntologies": {
-        "type": "array",
-        "required": true
-      },
-      "weight": {
-        "type": "number"
-      }
-    }
+    "title": "elements",
+    "description": "A hash of Resource Index element objects."
   }
-  END_ELEMENT_FIELD_SCHEMA
-  ELEMENT_SCHEMA = <<-END_ELEMENT_SCHEMA
+  END_SCHEMA
+
+  ELEMENT_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
     "title": "element",
     "description": "A Resource Index element.",
     "additionalProperties": false,
     "properties": {
-      "id": {
-        "type": "string",
-        "required": true
-      },
-      "fields": {
-        "type": "object",
-        "required": true
-      }
+      "id": { "type": "string", "required": true },
+      "fields": { "type": "object", "required": true }
     }
   }
-  END_ELEMENT_SCHEMA
-  ELEMENTS_SCHEMA = <<-END_ELEMENTS_SCHEMA
-  {
-    "type": "array",
-    "title": "elements",
-    "description": "An array of Resource Index element objects.",
-    "items": {
-      "type": "object"
-    }
-  }
-  END_ELEMENTS_SCHEMA
+  END_SCHEMA
 
+  ELEMENT_FIELD_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "object",
+    "title": "element_field",
+    "description": "A Resource Index element field.",
+    "additionalProperties": false,
+    "properties": {
+      "text": { "type": "string", "required": true },
+      "associatedOntologies": { "type": "array", "items": { "type": number" }, "required": true },
+      "weight": { "type": "number", "required": true }
+    }
+  }
+  END_SCHEMA
 
   def teardown
     delete_goo_models(LinkedData::Models::Ontology.all)
@@ -154,43 +135,40 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_ranked_elements
-    #get "/resource_index/search?classes[acronym1][classid1,classid2,classid3]&classes[acronym2][classid1,classid2]"
-    acronym = 'nif'
-    classid1 = 'obo2:DOID_1909' # Melanoma
-    classid2 = 'activity:IRB'
-    get "/resource_index/ranked_elements?classes[#{acronym}]=#{classid1}"
+    #get "/resource_index/ranked_elements?classes[acronym1][classid1,classid2,classid3]&classes[acronym2][classid1,classid2]"
+    endpoint='ranked_elements'
+    acronym = 'DOID'        # Human disease ontology
+    classid1 = 'DOID:1324' # lung cancer
+    classid2 = 'DOID:11920' # tracheal cancer
+    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1}"
+    #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
+    # TODO: validate the ranked elements response data
     #validate_json(last_response.body, RESOURCE_SCHEMA, true)
     results = MultiJson.load(last_response.body)
-    results["resources"].each do |r|
-      elements = r["elements"]
-      validate_json(MultiJson.dump(elements), ELEMENT_SCHEMA, true)
-      elements.each do |e|
-        # TODO: iterate over the field objects to validate, revise the
-        # TODO: wiki page elements section and the massage_elements code.
-        e["fields"].each_value do |field|
-          validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
-        end
-      end
-    end
-    #binding.pry
-    #assert_instance_of(Array, elements)
-    # TODO: Check for an empty Array?
+    #validate_json(MultiJson.dump(results["resources"]), RESOURCE_SCHEMA, true)
+    #results["resources"].each { |r| validate_elements(r["elements"]) }
+    refute_empty(results["resources"], "ERROR: empty results['resources']")
   end
 
   def test_get_search_classes
     #get "/resource_index/search?classes[acronym1][classid1,classid2,classid3]&classes[acronym2][classid1,classid2]"
     #resource_id = 'GEO'
-    acronym = 'nif'
-    classid1 = 'obo2:DOID_1909' # Melanoma
-    classid2 = 'activity:IRB'
-    get "/resource_index/search?classes[#{acronym}]=#{classid1}"
-    #get "/resource_index/search?classes[#{acronym}]=#{classid1},#{classid2}"
+    endpoint='search'
+    acronym = 'DOID'        # Human disease ontology
+    classid1 = 'DOID:1324'  # lung cancer
+    classid2 = 'DOID:11920' # tracheal cancer
+    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1}"
+    #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
     validate_json(last_response.body, SEARCH_SCHEMA)
     annotations = MultiJson.load(last_response.body)
     assert_instance_of(Hash, annotations)
-    binding.pry
+    annotations.each_value do |v|
+      validate_json(MultiJson.dump(v["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
+      #binding.pry
+      #validate_elements(v["annotatedElements"])
+    end
   end
 
   def test_get_resources
@@ -220,6 +198,16 @@ class TestResourceIndexController < TestCase
       assert_equal(status, response.status)
     end
   end
+
+  def validate_elements(elements)
+    validate_json(MultiJson.dump(elements), ELEMENTS_SCHEMA)
+    elements.each_value do |e|
+      e.each_value do |field|
+        validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
+      end
+    end
+  end
+
 
 end
 
