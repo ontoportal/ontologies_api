@@ -199,6 +199,10 @@
       %h2#nav_content_types Content Types
 
       :markdown
+        The API returns JSON as the default content type. This can be overridden by using the `format`
+        query string parameter with the value `json`, `jsonp`, or `xml`. The API also respects `Accept` header entries
+        (EX: `application/json`, `application/xml`), with precedence given to the `format` parameter.
+
         #### JSON
         The default content type is JSON, specifically a variant called [JSON-LD](http://json-ld.org/),
         or JSON Linked Data. You can treat this variant like normal JSON. All JSON parsers will be able
