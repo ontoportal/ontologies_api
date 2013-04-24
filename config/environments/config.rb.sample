@@ -13,3 +13,9 @@ LinkedData.config do |config|
   config.redis_host = "localhost"
   config.redis_port = 6379
 end
+
+Annotator.config do |config|
+  config.mgrep_dictionary_file ||= "./test/tmp/dict"
+  config.mgrep_host            ||= "localhost"
+  config.mgrep_port            ||= 55555
+end

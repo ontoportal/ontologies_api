@@ -4,9 +4,11 @@ class AnnotatorController < ApplicationController
     # execute an annotator query
     get do
       text = params["text"]
-      page_params = get_page_params(text, @params.dup)
+      raise error 400, "A text to be annotated must be supplied using the argument text=<text to be annotated>" if text.nil? || text.strip.empty?
+      ontologiesStr = params["ontologies"] || ""
+      ontologies = ontologiesStr.split(",").map {|e| e.strip}
       annotator = Annotator::Models::NcboAnnotator.new
-      annotations = annotator.annotate(text)
+      annotations = annotator.annotate(text, ontologies)
       reply 200, annotations
     end
 
@@ -23,7 +25,6 @@ class AnnotatorController < ApplicationController
     private
 
     def get_page_params(text, args={})
-      raise error 400, "A text to be annotated must be supplied using the argument text=<text to be annotated>" if text.nil? || text.strip.empty?
       return args
     end
   end
