@@ -7,13 +7,25 @@
         %li
           %a{href: "#nav_usage"} General Usage
         %li
-          %a{href: "#nav_content_types"} Content Types
-        %li
-          %a{href: "#nav_media_types"} Media Types
+          %a{href: "#nav_non_rest"} Search and Annotation Endpoints
           %ul.nav.nav-list
-            -@metadata_all.each do |cls|
-              %li
-                %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:cls].name.split("::").last
+            %li
+              %a{href: "#nav_search"} Classes Search
+            %li
+              %a{href: "#nav_annotator"} Annotator
+            %li
+              %a{href: "#nav_resource_index"} Resource Index
+        %li
+          %a{href: "#nav_resource_endpoints"} Resource Endpoints
+          %ul.nav.nav-list
+            %li
+              %a{href: "#nav_media_types"} Media Types
+              %ul.nav.nav-list
+                -@metadata_all.each do |cls|
+                  %li
+                    %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:cls].name.split("::").last
+        %li
+          %a{href: "#nav_content_types"} Content Types
 
 
     %div.span9
@@ -60,6 +72,129 @@
             The API returns JSON as the default content type. This can be overridden by using the <code>format</code>
             query string parameter. The API also respects <code>Accept</code> header entries, with precedence given
             to the <code>format</code> parameter.
+
+      %h2#nav_non_rest Search, Annotation, and Resource Index Endpoints
+
+      %p Several endpoints are available for performing lookups for classes, annotations, and annotated resources. These endpoints are not strictly RESTful, but do return objects with links where relevant.
+
+      %h3#nav_search Classes Search
+
+      %p
+        An endpoint for searching classes and their properties is available
+        %ul
+          %li
+            Perform search
+          %ul
+            %li
+              <span class="label label-info">GET</span> <code>/search?q={search query}</code>
+            %li
+              example:
+              %a{href: "/search?q=melanoma"} /search?q=melanoma
+
+      %h3#nav_annotator Annotator
+
+      %p
+        The Annotator endpoint will examine text input and return relevant classes. Currently, the annotator only returns direct annotations (hierarchy and mapping annoations are planned for a future release).
+        %ul
+          %li Annotate text
+          %ul
+            %li
+              <span class="label label-info">GET</span> <code>/annotator?text={input text}</code>
+            %li
+              example:
+              %a{href: "/annotator?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye."} /annotator?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye.
+
+      %h3#nav_resource_index Resource Index
+
+      %p
+        The Resource Index contains a collection of annotated resources that can be searched by providing ontology acronyms with a corresponding class id or set of ids
+        %ul
+          %li
+            Perform search
+            %ul
+              %li
+                Single class
+                %ul
+                  %li
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_acronym1][classid1]</code>
+                  %li
+                    example:
+                    %a{href: "/resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]"} /resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]
+              %li
+                Multiple classes, single ontology
+                %ul
+                  %li
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_acronym1][classid1,classid2]</code>
+                  %li
+                    example:
+                    %a{href: "/resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006]"} /resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006]
+              %li
+                Multiple classes, multiple ontologies
+                %ul
+                  %li
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_acronym1][classid1]&classes[ontology_acronym2][classid1,classid2]</code>
+                  %li
+                    example:
+                    %a{href: "/resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]&classes[MDR][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMDR%2F10025044]"} /resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]&classes[MDR][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMDR%2F10025044]
+          %li
+            Parameters
+            %ul
+              %li
+                Filtering & query behavior
+                %ul
+                  %li ontologies={acronym1,acronym2,acronym3}
+                  %li semantic_types={semType1,semType2,semType3}
+                  %li max_level={0..N}
+                  %li mapping_types={automatic|manual}
+                  %li resources={resource1,resource2}
+                  %li exclude_numbers={true|false}
+                  %li minimum_match_length={0..N}
+                  %li include_synonyms={true|false}
+                  %li include_offsets={true|false}
+                  %li mode={union|intersection}
+              %li
+                Stop words
+                %ul
+                  %li exclude_words={word1,word2,word3}
+                  %li excluded_words_are_case_sensitive={true|false}
+
+      %h2#nav_resource_endpoints Resource Endpoints
+
+      %p
+        Endpoints for RESTful resources can be found below, specifically in the list of Media Types.
+        Using the provided hypermedia links, you can navigate from resource to resource.
+        Each Media Type has a corresponding collection URL (when available), a list of HTTP verbs that can
+        be used to operate on the resources, a description of the resource (including available attributes),
+        and a list of hypermedia links that can be found on each resource.
+
+      %h2#nav_media_types Media Types
+
+      %h3 Documentation
+      :markdown
+        The documentation below describes the media types that available in the API. Media types describe the types of
+        resources available, including the HTTP verbs that may be used with them and the attributes that each resource
+        contains.
+
+        #### HTTP Verbs
+        The API uses different verbs to support processing of resources. This includes things like creating or deleting
+        individual resources or something more specific like parsing an ontology. Typically, the verbs will be used in
+        conjunciton with the URL that represents the id for a given resource. Here is how we interpret the verbs:
+
+        - <span class="label label-info">GET</span> Used to retreive a resource or collection of resources.
+        - <span class="label label-info">POST</span> Used to create a resource when the server determines the resource's id.
+        - <span class="label label-info">PUT</span> Used to create a resource when a client determines the resource's id.
+        - <span class="label label-info">PATCH</span> Used to modify an existing resource. The attributes in a PATCH request will replace existing attributes.
+        - <span class="label label-info">DELETE</span> Used to delete an existing resource.
+
+        #### Available Media Types
+      %ol
+        -@metadata_all.each do |cls|
+          %li
+            %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:uri]
+
+      -@metadata_all.each do |cls, type|
+        -@metadata = type
+        =render(:haml, "documentation/metadata".to_sym)
 
       %h2#nav_content_types Content Types
 
@@ -140,31 +275,3 @@
           of resource that will be found at that location.
         - Elements outside of the links can also contain `href` and `rel` attributes (coming soon...)
 
-      %h2#nav_media_types Media Types
-
-      %h3 Documentation
-      :markdown
-        The documentation below describes the media types that available in the API. Media types describe the types of
-        resources available, including the HTTP verbs that may be used with them and the attributes that each resource
-        contains.
-
-        #### HTTP Verbs
-        The API uses different verbs to support processing of resources. This includes things like creating or deleting
-        individual resources or something more specific like parsing an ontology. Typically, the verbs will be used in
-        conjunciton with the URL that represents the id for a given resource. Here is how we interpret the verbs:
-
-        - <span class="label label-info">GET</span> Used to retreive a resource or collection of resources.
-        - <span class="label label-info">POST</span> Used to create a resource when the server determines the resource's id.
-        - <span class="label label-info">PUT</span> Used to create a resource when a client determines the resource's id.
-        - <span class="label label-info">PATCH</span> Used to modify an existing resource. The attributes in a PATCH request will replace existing attributes.
-        - <span class="label label-info">DELETE</span> Used to delete an existing resource.
-
-        #### Available Media Types
-      %ol
-        -@metadata_all.each do |cls|
-          %li
-            %a{href: "#" + cls[1][:cls].name.split("::").last}= cls[1][:uri]
-
-      -@metadata_all.each do |cls, type|
-        -@metadata = type
-        =render(:haml, "documentation/metadata".to_sym)
