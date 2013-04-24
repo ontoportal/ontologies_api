@@ -21,4 +21,9 @@ class TestApplicationHelper < TestCaseHelpers
     assert ontologies == ["http://data.bioontology.org/ontologies/BRO", "http://data.bioontology.org/ontologies/NCIt"]
   end
 
+  def test_ontology_uri_from_acronym
+    uri = helper.ontology_uri_from_acronym("BRO")
+    assert uri == "http://data.bioontology.org/ontologies/BRO"
+  end
+
 end

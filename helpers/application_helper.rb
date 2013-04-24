@@ -110,7 +110,7 @@ module Sinatra
         params ||= @params
         if params["ontologies"]
           # Get list
-          ontologies = params["ontologies"].split(",")
+          ontologies = params["ontologies"].split(",").map {|o| o.strip}
           # When they aren't URIs, make them URIs
           ontologies.map! {|o| o.start_with?("http://") ? o : ontology_uri_from_acronym(o)}
           # Extra safe, do a Goo lookup for any remaining
