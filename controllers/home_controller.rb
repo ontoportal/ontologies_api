@@ -1,4 +1,5 @@
 require 'haml'
+require 'redcarpet'
 
 class HomeController < ApplicationController
   namespace "/" do

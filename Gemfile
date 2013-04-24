@@ -36,6 +36,7 @@ else
   gem 'sparql_http', :git => 'https://github.com/ncbo/sparql_http.git'
   gem 'ontologies_linked_data', :git => 'https://github.com/ncbo/ontologies_linked_data.git'
   gem 'ncbo_resource_index_client', :git => 'https://github.com/ncbo/resource_index_ruby_client.git'
+  gem 'ncbo_annotator', :git => 'https://github.com/ncbo/ncbo_annotator.git'
 end
 
 # ontologies_api-specific gems

@@ -33,4 +33,14 @@ class TestResourceIndexHelper < TestCaseHelpers
     uri = helper.uri_from_short_id("TM817086", "45215")
     assert uri == "http://who.int/ictm/constitution#TM817086"
   end
+
+  def test_ontology_uri_from_acronym
+    uri = helper.ontology_uri_from_acronym("BRO")
+    assert uri == "http://data.bioontology.org/ontologies/BRO"
+  end
+
+  def test_virtual_id_from_uri
+    virtual_id = helper.virtual_id_from_uri("http://data.bioontology.org/ontologies/BRO")
+    assert virtual_id == 1104
+  end
 end
