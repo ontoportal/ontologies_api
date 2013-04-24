@@ -4,7 +4,7 @@ class OntologiesController < ApplicationController
     ##
     # Display all ontologies
     get do
-      onts = Ontology.all(load_attrs: Ontology.goo_attrs_to_load(includes_options))
+      onts = Ontology.all(load_attrs: Ontology.goo_attrs_to_load(includes_param))
       reply onts
     end
 

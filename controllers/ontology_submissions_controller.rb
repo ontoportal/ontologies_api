@@ -1,6 +1,6 @@
 class OntologySubmissionsController < ApplicationController
   get "/submissions" do
-    includes = OntologySubmission.goo_attrs_to_load(includes_options)
+    includes = OntologySubmission.goo_attrs_to_load(includes_param)
     includes.merge(submissionId: true) if includes.is_a?(Hash)
     includes.merge(ontology: {acronym: true}) if includes.is_a?(Hash) && !includes.key?(:ontology)
     submissions = OntologySubmission.all(load_attrs: includes)

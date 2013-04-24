@@ -42,7 +42,6 @@ module Sinatra
           class_hash = params["classes"]
           class_hash.each do |k,v|
             # Use 'k' as an ontology acronym, translate it to an ontology virtual ID.
-            # TODO: Change this to use virtual_id_from_acronym(k)
             ont_id = virtual_id_from_acronym(k)
             next if ont_id == nil  # TODO: raise an exception?
             # Use 'v' as a CSV list of concepts (class ID)
@@ -79,7 +78,6 @@ module Sinatra
         #
         #* ontologies={acronym1,acronym2,acronym3}
         ontologies = [params["ontologies"]].compact
-        # TODO: Change this to use virtual_id_from_acronym(acronym)
         ontologies.map! {|acronym| virtual_id_from_acronym(acronym) }
         options[:ontologiesToExpand]       = ontologies
         options[:ontologiesToKeepInResult] = ontologies

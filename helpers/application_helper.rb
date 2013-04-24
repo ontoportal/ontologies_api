@@ -4,6 +4,7 @@ module Sinatra
   module Helpers
     module ApplicationHelper
       SERIALIZER = LinkedData::Serializer
+      REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
 
       ##
       # Escape text for use in html
@@ -93,15 +94,40 @@ module Sinatra
         halt status, { :errors => message, :status => status }
       end
 
-      def includes_options
+      ##
+      # Look for the includes parameter and provide a formatted list of attributes
+      def includes_param
         if @params["include"]
           return @params["include"].split(",").map {|e| e.to_sym}
         end
         Array.new
       end
 
-    end
+      ##
+      # Look for the ontologies acronym and give back a formatted list of ontolody id uris
+      # This can be called without passing an argument and it will use the values from the current request
+      def ontologies_param(params = nil)
+        params ||= @params
+        if params["ontologies"]
+          # Get list
+          ontologies = params["ontologies"].split(",")
+          # When they aren't URIs, make them URIs
+          ontologies.map! {|o| o.start_with?("http://") ? o : ontology_uri_from_acronym(o)}
+          # Extra safe, do a Goo lookup for any remaining
+          ontologies.map! {|o| o.start_with?("http://") ? o : Ontology.find(o)}
+          ontologies.compact!
+          return ontologies
+        end
+        Array.new
+      end
 
+      ##
+      # Given an acronym, get the ontology id URI (http://data.bioontology.org/ontologies/BRO)
+      def ontology_uri_from_acronym(acronym)
+        REDIS.get("ont_id:uri:#{acronym}")
+      end
+
+    end
   end
 end
 
