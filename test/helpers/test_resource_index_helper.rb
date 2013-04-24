@@ -30,7 +30,7 @@ class TestResourceIndexHelper < TestCaseHelpers
   end
 
   def test_uri_from_short_id
-    uri = helper.uri_from_short_id("TM817086", "45215")
+    uri = helper.uri_from_short_id("45215", "TM817086")
     assert uri == "http://who.int/ictm/constitution#TM817086"
   end
 
