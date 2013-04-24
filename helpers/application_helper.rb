@@ -105,6 +105,7 @@ module Sinatra
 
       ##
       # Look for the ontologies acronym and give back a formatted list of ontolody id uris
+      # This can be called without passing an argument and it will use the values from the current request
       def ontologies_param(params = nil)
         params ||= @params
         if params["ontologies"]
