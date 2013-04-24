@@ -93,7 +93,9 @@ module Sinatra
         halt status, { :errors => message, :status => status }
       end
 
-      def includes_options
+      ##
+      # Look for the includes parameter and provide a formatted list of attributes
+      def includes_param
         if @params["include"]
           return @params["include"].split(",").map {|e| e.to_sym}
         end

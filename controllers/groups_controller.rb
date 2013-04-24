@@ -11,7 +11,7 @@ class GroupsController < ApplicationController
   namespace "/groups" do
     # Display all groups
     get do
-      groups = Group.all(load_attrs: Group.goo_attrs_to_load(includes_options))
+      groups = Group.all(load_attrs: Group.goo_attrs_to_load(includes_param))
       reply groups
     end
 
