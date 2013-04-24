@@ -164,7 +164,7 @@ module Sinatra
       # this will do a Redis lookup and give you the full URI. The short_id is based on
       # what is produced by the `shorten_uri` method and should match Resource Index localConceptId output.
       # In fact, doing localConceptId.split("/") should give you the parameters for this method.
-      def uri_from_short_id(short_id, version_id)
+      def uri_from_short_id(version_id, short_id)
         REDIS.get("ri:#{version_id}:#{short_id}")
       end
 
