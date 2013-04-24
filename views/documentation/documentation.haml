@@ -116,33 +116,33 @@
                 Single class
                 %ul
                   %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_acronym1][classid1]</code>
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1][classid1]</code>
                   %li
                     example:
-                    %a{href: "/resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]"} /resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]
+                    %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]
               %li
                 Multiple classes, single ontology
                 %ul
                   %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_acronym1][classid1,classid2]</code>
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1][classid1,classid2]</code>
                   %li
                     example:
-                    %a{href: "/resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006]"} /resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006]
+                    %a{href: "/resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006]"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006]
               %li
                 Multiple classes, multiple ontologies
                 %ul
                   %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_acronym1][classid1]&classes[ontology_acronym2][classid1,classid2]</code>
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1][classid1]&classes[ontology_acronym2][classid1,classid2]</code>
                   %li
                     example:
-                    %a{href: "/resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]&classes[MDR][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMDR%2F10025044]"} /resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]&classes[MDR][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMDR%2F10025044]
+                    %a{href: "/resource_index/search?classes[SNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]&classes[MDR][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMDR%2F10025044]"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003]&classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FMDR][http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMDR%2F10025044]
           %li
             Parameters
             %ul
               %li
                 Filtering & query behavior
                 %ul
-                  %li ontologies={acronym1,acronym2,acronym3}
+                  %li ontologies={ontology_id1,ontology_id2,ontology_id3}
                   %li semantic_types={semType1,semType2,semType3}
                   %li max_level={0..N}
                   %li mapping_types={automatic|manual}
