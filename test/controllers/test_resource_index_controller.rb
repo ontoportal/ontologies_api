@@ -130,13 +130,16 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_ranked_elements
-    #get "/resource_index/ranked_elements?classes[acronym1][classid1,classid2,classid3]&classes[acronym2][classid1,classid2]"
+    #get "/resource_index/ranked_elements?{classes}"  # such that {classes} is of the form:
+    #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
     endpoint='ranked_elements'
-    acronym = 'DOID'        # Human disease ontology
-    classid1 = 'DOID:1324' # lung cancer
-    # TODO: test additional class in REST call
-    #classid2 = 'DOID:11920' # tracheal cancer
-    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1}"
+    acronym = 'BRO'
+    classid1 = 'BRO:Algorithm'
+    classid2 = 'BRO:Graph_Algorithm'
+    #
+    # Note: Using classid1 encounters network timeout exception
+    #
+    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid2}"
     #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
     # TODO: validate the ranked elements response data
@@ -148,20 +151,28 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_search_classes
-    #get "/resource_index/search?classes[acronym1][classid1,classid2,classid3]&classes[acronym2][classid1,classid2]"
-    #resource_id = 'GEO'
+    #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
+    #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
     endpoint='search'
-    acronym = 'DOID'        # Human disease ontology
-    classid1 = 'DOID:1324'  # lung cancer
-    # TODO: test additional class in REST call
-    #classid2 = 'DOID:11920' # tracheal cancer
-    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1}"
+    # 1104 is BRO
+    # 1104, BRO:Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm
+    # 1104, BRO:Graph_Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm
+    acronym = 'BRO'
+    classid1 = 'BRO:Algorithm'
+    classid2 = 'BRO:Graph_Algorithm'
+    #
+    # Note: Using classid1 encounters network timeout exception
+    #
+    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid2}"
     #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
     validate_json(last_response.body, SEARCH_SCHEMA)
     annotations = MultiJson.load(last_response.body)
     assert_instance_of(Hash, annotations)
     annotations.each_value do |v|
+      #if not v['annotatedElements'].empty?
+      #  binding.pry
+      #end
       validate_json(MultiJson.dump(v["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
       validate_elements(v["annotatedElements"])
     end

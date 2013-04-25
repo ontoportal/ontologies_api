@@ -36,14 +36,15 @@ module Sinatra
 
       def get_classes(params)
         # Assume request signature of the form:
-        # classes[acronym1][classid1,classid2,classid3]&classes[acronym2][classid1,classid2]
+        # classes[acronym1|URI1][classid1,classid2,classid3]&classes[acronym2|URI2][classid1,classid2]
         classes = []
         if params.key?("classes")
           class_hash = params["classes"]
           class_hash.each do |k,v|
-            # Use 'k' as an ontology acronym, translate it to an ontology virtual ID.
+            # Use 'k' as an ontology acronym or URI, translate it to an ontology virtual ID.
             ont_id = virtual_id_from_acronym(k)
-            next if ont_id == nil  # TODO: raise an exception?
+            ont_id = virtual_id_from_uri(k) if ont_id.nil?
+            next if ont_id.nil?  # TODO: raise an exception?
             # Use 'v' as a CSV list of concepts (class ID)
             v.split(',').each do |class_id|
               classes.push("#{ont_id}/#{class_id}")
@@ -172,26 +173,31 @@ module Sinatra
 
       ##
       # Given a version id, return the acronym (uses a Redis lookup)
+      # @param version_id [Number] the ontology version ID
       def acronym_from_version_id(version_id)
         REDIS.hmget("ri:#{version_id}", "acronym").first
       end
 
       ##
-      # Given a virtual id, return the acronym (uses a Redis lookup)
-      def acronym_from_virtual_id(virtual_id)
-        REDIS.hmget("ri:#{virtual_id}", "acronym").first
-      end
-
-      ##
       # Given an acronym, return the virtual id (uses a Redis lookup)
+      # @param acronym [String] the ontology acronym
       def virtual_id_from_acronym(acronym)
         uri = ontology_uri_from_acronym(acronym)
         return virtual_id_from_uri(uri)
       end
 
-      # Given an acronym, get the ontology id URI (http://data.bioontology.org/ontologies/BRO)
+      ##
+      # Given an acronym, get the ontology URI (http://data.bioontology.org/ontologies/BRO)
+      # @param acronym [String] the ontology acronym
       def ontology_uri_from_acronym(acronym)
         REDIS.get("ont_id:uri:#{acronym}")
+      end
+
+      ##
+      # Given a virtual id, return the ontology URI (uses a Redis lookup)
+      # @param virtual_id [Number] the ontology virtual ID
+      def ontology_uri_from_virtual_id(virtual_id)
+        REDIS.get("ont_id:uri_from_virtual:#{virtual_id}")
       end
 
       ##

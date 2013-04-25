@@ -139,21 +139,21 @@ class ResourceIndexController < ApplicationController
       if with_fields
         fields = {}
         e[:text].each do |name, description|
+          # TODO: Parse the text field to translate the term IDs into a list of URIs?
+          #"text"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
+          #
+          # Parse the associated ontologies to return a list of ontology URIs
           ontIDs = [e[:ontoIds][name]].compact  # Wrap Fixnum or Array into Array
           ontIDs.delete_if {|x| x == 0 }
           ontIDs.each_with_index do |id, i|     # Try to convert to ontology URIs
-            a = acronym_from_virtual_id(id)
-            if a.nil?
+            uri = ontology_uri_from_virtual_id(id)
+            if uri.nil?
               ontIDs[i] = id.to_s # conform to expected data type for JSON validation
             else
-              uri = ontology_uri_from_acronym(a)
-              if uri.nil?
-                ontIDs[i] = id.to_s # conform to expected data type for JSON validation
-              else
-                ontIDs[i] = ontology_uri_from_acronym(a)
-              end
+              ontIDs[i] = uri
             end
           end
+
           weight = 0.0
           e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
           fields[name] = {
