@@ -85,12 +85,7 @@ class TestResourceIndexController < TestCase
   {
     "type": "object",
     "title": "element",
-    "description": "A Resource Index element.",
-    "additionalProperties": false,
-    "properties": {
-      "id": { "type": "string", "required": true },
-      "fields": { "type": "object", "required": true }
-    }
+    "description": "A Resource Index element."
   }
   END_SCHEMA
 
@@ -102,7 +97,7 @@ class TestResourceIndexController < TestCase
     "additionalProperties": false,
     "properties": {
       "text": { "type": "string", "required": true },
-      "associatedOntologies": { "type": "array", "items": { "type": number" }, "required": true },
+      "associatedOntologies": { "type": "array", "items": { "type": "string" }, "required": true },
       "weight": { "type": "number", "required": true }
     }
   }
@@ -139,7 +134,8 @@ class TestResourceIndexController < TestCase
     endpoint='ranked_elements'
     acronym = 'DOID'        # Human disease ontology
     classid1 = 'DOID:1324' # lung cancer
-    classid2 = 'DOID:11920' # tracheal cancer
+    # TODO: test additional class in REST call
+    #classid2 = 'DOID:11920' # tracheal cancer
     get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1}"
     #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
@@ -157,7 +153,8 @@ class TestResourceIndexController < TestCase
     endpoint='search'
     acronym = 'DOID'        # Human disease ontology
     classid1 = 'DOID:1324'  # lung cancer
-    classid2 = 'DOID:11920' # tracheal cancer
+    # TODO: test additional class in REST call
+    #classid2 = 'DOID:11920' # tracheal cancer
     get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1}"
     #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
@@ -166,8 +163,7 @@ class TestResourceIndexController < TestCase
     assert_instance_of(Hash, annotations)
     annotations.each_value do |v|
       validate_json(MultiJson.dump(v["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
-      #binding.pry
-      #validate_elements(v["annotatedElements"])
+      validate_elements(v["annotatedElements"])
     end
   end
 
@@ -202,6 +198,7 @@ class TestResourceIndexController < TestCase
   def validate_elements(elements)
     validate_json(MultiJson.dump(elements), ELEMENTS_SCHEMA)
     elements.each_value do |e|
+      validate_json(MultiJson.dump(e), ELEMENT_SCHEMA)
       e.each_value do |field|
         validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
       end

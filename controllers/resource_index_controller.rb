@@ -69,26 +69,15 @@ class ResourceIndexController < ApplicationController
         elements = {}
         annotations = []
         resource.annotations.each do |a|
-          version_id, short_id = a.concept[:localConceptId].split('/')
-          class_uri = uri_from_short_id(version_id, short_id)
+          annotated_class = get_annotated_class_from_concept(a.concept)
           # NOTE: Skipping nil class_uri values, could mess with paging details
           # The nil values are marginal cases for OBO terms
-          if class_uri.nil?
-            class_uri = a.concept[:localConceptId]
-          end
-          ontology_acronym = acronym_from_version_id(a.concept[:localOntologyId])
-          annotated_class = {
-              :id => class_uri,
-              :ontology => ontology_acronym
-          }
+          next if annotated_class.nil?
           # NOTE: options[:scored] is not related to element weights.
           element = massage_element(a.element, options[:elementDetails])
           el_id = element["id"]
-          # Check whether the element already exists in elements, avoid repetitions.
-          unless elements.include? el_id
-            elements[el_id] = element["fields"]
-          end
-          annotations.push massage_search_context(a, annotated_class)
+          elements[el_id] = element["fields"] unless elements.include?(el_id)
+          annotations.push massage_search_annotation(a, annotated_class)
         end
         # TODO: add search option to exclude 0-element resources?
         resources[resource.resource] = {
@@ -99,7 +88,26 @@ class ResourceIndexController < ApplicationController
       return resources
     end
 
-    def massage_search_context(a, annotated_class)
+    # @param concept [{:localConceptId => 'version_id/term_id'}]
+    # @return nil or annotated_class = { :id => 'term_uri', :ontology => 'ontology_uri'}
+    def get_annotated_class_from_concept(concept)
+      version_id, short_id = concept[:localConceptId].split('/')
+      class_uri = uri_from_short_id(version_id, short_id)
+      return nil if class_uri.nil?
+      # undo the comment for testing purposes, only when class_uri.nil?
+      #class_uri = concept[:localConceptId] if class_uri.nil?
+      ontology_acronym = acronym_from_version_id(version_id)
+      return nil if ontology_acronym.nil?
+      ontology_uri = ontology_uri_from_acronym(ontology_acronym)
+      return nil if ontology_uri.nil?
+      annotated_class = {
+          :id => class_uri,
+          :ontology => ontology_uri
+      }
+      return annotated_class
+    end
+
+    def massage_search_annotation(a, annotated_class)
       # annotations is a hash of annotation hashes,
       # this method will modify it directly (by reference).
       annotationTypeMap = {
@@ -120,6 +128,7 @@ class ResourceIndexController < ApplicationController
     end
 
     def massage_elements(element_array)
+      # TODO: change this to use map! instead of each loop?
       elements = []
       element_array.each { |e| elements.push massage_element(e) }
       return elements
@@ -130,13 +139,26 @@ class ResourceIndexController < ApplicationController
       if with_fields
         fields = {}
         e[:text].each do |name, description|
-          ontID = [e[:ontoIds][name]].compact  # Wrap Fixnum or Array into Array
-          ontID.delete_if {|x| x == 0 }
+          ontIDs = [e[:ontoIds][name]].compact  # Wrap Fixnum or Array into Array
+          ontIDs.delete_if {|x| x == 0 }
+          ontIDs.each_with_index do |id, i|     # Try to convert to ontology URIs
+            a = acronym_from_virtual_id(id)
+            if a.nil?
+              ontIDs[i] = id.to_s # conform to expected data type for JSON validation
+            else
+              uri = ontology_uri_from_acronym(a)
+              if uri.nil?
+                ontIDs[i] = id.to_s # conform to expected data type for JSON validation
+              else
+                ontIDs[i] = ontology_uri_from_acronym(a)
+              end
+            end
+          end
           weight = 0.0
           e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
           fields[name] = {
             "text" => description,
-            "associatedOntologies" => ontID,
+            "associatedOntologies" => ontIDs,
             "weight" => weight
           }
         end
