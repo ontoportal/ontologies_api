@@ -17,4 +17,26 @@ eos
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
   end
+
+  def test_annotate_hierarchy
+    text = "Aggregate Human Data chromosomal mutation Aggregate Human Data chromosomal deletion Aggregate Human Data Resource Federal Funding Resource receptor antagonists chromosomal mutation"
+
+    params = {text: text, max_level: 5}
+    get "/annotator", params
+    assert last_response.ok?
+    annotations = MultiJson.load(last_response.body)
+    #paul: here you can reproduce the serializer output
+    #this is what I get:
+    # {"cls"=>
+    # "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data",
+    # "hierarchy"=>
+    #  [{"cls"=>"#<LinkedData::Models::Class:0x007fce65bb9708>", "distance"=>1},
+    #   {"cls"=>"#<LinkedData::Models::Class:0x007fce65bfaed8>", "distance"=>2},
+    # (..)
+
+    #TODO
+    #this test is a replication of what is tested in linked data
+    #just to be sure that the serializer works correctly
+
+  end
 end
