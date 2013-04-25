@@ -10,7 +10,6 @@ class AnnotatorController < ApplicationController
       ontologies = ontologiesStr.split(",").map {|e| e.strip}
       annotator = Annotator::Models::NcboAnnotator.new
       annotations = annotator.annotate(text, ontologies, max_level)
-      binding.pry
       reply 200, annotations
     end
 
