@@ -16,7 +16,7 @@ class SearchController < ApplicationController
         docs.push(instance)
       end
       #need to return a Page object
-      page = page_object(total_found, docs)
+      page = page_object(docs, total_found)
       reply 200, page
     end
 
