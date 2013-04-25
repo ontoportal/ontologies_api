@@ -72,6 +72,16 @@
             The API returns JSON as the default content type. This can be overridden by using the <code>format</code>
             query string parameter. The API also respects <code>Accept</code> header entries, with precedence given
             to the <code>format</code> parameter.
+        %tr
+          %td page
+          %td {integer representing the page number}
+          %td
+            For calls that are paged, this will indicate which page number you want to retrieve.
+            You can follow hypermedia links for <code>nextPage</code> and <code>prevPage</code> as well.
+        %tr
+          %td pagesize
+          %td {integer representing the size of the returned page}
+          %td For calls that are paged, this will indicate the size of the page you want to retrieve.
 
       %h2#nav_non_rest Search, Annotation, and Resource Index Endpoints
 
