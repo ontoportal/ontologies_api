@@ -7,8 +7,9 @@ class AnnotatorController < ApplicationController
       raise error 400, "A text to be annotated must be supplied using the argument text=<text to be annotated>" if text.nil? || text.strip.empty?
       ontologies = ontologies_param
       max_level = params["max_level"].to_i || 0
+      exclude_nums = params["exclude_numbers"].eql?("true")
       annotator = Annotator::Models::NcboAnnotator.new
-      annotations = annotator.annotate(text, ontologies, max_level)
+      annotations = annotator.annotate(text, ontologies, max_level, exclude_nums)
       reply 200, annotations
     end
 
