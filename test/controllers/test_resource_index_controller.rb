@@ -10,19 +10,51 @@ class TestResourceIndexController < TestCase
   # http://tools.ietf.org/id/draft-zyp-json-schema-03.html
   # http://tools.ietf.org/html/draft-zyp-json-schema-03
 
-  SEARCH_SCHEMA = <<-END_SCHEMA
+  PAGE_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
-    "title": "annotations",
-    "description": "A hash of Resource Index resource annotations."
+    "title": "page",
+    "description": "A Resource Index page of results.",
+    "additionalProperties": false,
+    "properties": {
+      "page": { "type": "number", "required": true },
+      "pageCount": { "type": "number", "required": true },
+      "prevPage": { "type": ["number","null"], "required": true },
+      "nextPage": { "type": ["number","null"], "required": true },
+      "links": { "type": "object", "required": true },
+      "collection": { "type": "array", "required": true }
+    }
+  }
+  END_SCHEMA
+
+  SEARCH_RESOURCES_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "array",
+    "title": "resources",
+    "description": "An array of Resource Index resource objects.",
+    "items": { "type": "object" }
+  }
+  END_SCHEMA
+
+  SEARCH_RESOURCE_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "object",
+    "title": "search resource",
+    "description": "A Resource Index resource.",
+    "additionalProperties": false,
+    "properties": {
+      "id": { "type": "string", "required": true },
+      "annotations": { "type": "array", "required": true },
+      "annotatedElements": { "type": "object", "required": true }
+    }
   }
   END_SCHEMA
 
   SEARCH_ANNOTATIONS_SCHEMA = <<-END_SCHEMA
   {
     "type": "array",
-    "title": "resources",
-    "description": "An array of Resource Index resource objects.",
+    "title": "annotations",
+    "description": "An array of Resource Index annotation objects.",
     "items": { "type": "object" }
   }
   END_SCHEMA
@@ -41,6 +73,31 @@ class TestResourceIndexController < TestCase
           "from": { "type": "number", "required": true },
           "to": { "type": "number", "required": true }
       }
+  }
+  END_SCHEMA
+
+  RANKED_ELEMENTS_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "array",
+    "title": "ranked elements",
+    "description": "An array of Resource Index ranked element objects.",
+    "items": { "type": "object" }
+  }
+  END_SCHEMA
+
+  RANKED_ELEMENT_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "object",
+    "title": "ranked element",
+    "description": "A Resource Index ranked element.",
+    "additionalProperties": false,
+    "properties": {
+      "resourceId": { "type": "string", "required": true },
+      "offset": { "type": "number", "required": true },
+      "limit": { "type": "number", "required": true },
+      "totalResults": { "type": "number", "required": true },
+      "elements": { "type": "array", "required": true }
+    }
   }
   END_SCHEMA
 
@@ -73,7 +130,7 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  ELEMENTS_SCHEMA = <<-END_SCHEMA
+  ELEMENTS_ANNOTATED_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
     "title": "elements",
@@ -81,11 +138,32 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  ELEMENT_SCHEMA = <<-END_SCHEMA
+  ELEMENT_ANNOTATED_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
     "title": "element",
     "description": "A Resource Index element."
+  }
+  END_SCHEMA
+
+  ELEMENTS_RANKED_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "array",
+    "title": "elements",
+    "description": "An array of Resource Index element objects."
+  }
+  END_SCHEMA
+
+  ELEMENT_RANKED_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "object",
+    "title": "element",
+    "description": "A Resource Index element.",
+    "additionalProperties": false,
+    "properties": {
+      "id": { "type": "string", "required": true },
+      "fields": { "type": "object", "required": true }
+    }
   }
   END_SCHEMA
 
@@ -142,12 +220,13 @@ class TestResourceIndexController < TestCase
     get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid2}"
     #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
-    # TODO: validate the ranked elements response data
-    #validate_json(last_response.body, RESOURCE_SCHEMA, true)
-    results = MultiJson.load(last_response.body)
-    #validate_json(MultiJson.dump(results["resources"]), RESOURCE_SCHEMA, true)
-    #results["resources"].each { |r| validate_elements(r["elements"]) }
-    refute_empty(results["resources"], "ERROR: empty results['resources']")
+    validate_json(last_response.body, PAGE_SCHEMA)
+    page = MultiJson.load(last_response.body)
+    resources = page["collection"]
+    refute_empty(resources, "ERROR: empty resources for ranked elements")
+    validate_json(MultiJson.dump(resources), RANKED_ELEMENT_SCHEMA, true)
+    # TODO: Resolve why ranked elements is different from annotated elements
+    resources.each { |r| validate_ranked_elements(r["elements"]) }
   end
 
   def test_get_search_classes
@@ -161,20 +240,20 @@ class TestResourceIndexController < TestCase
     classid1 = 'BRO:Algorithm'
     classid2 = 'BRO:Graph_Algorithm'
     #
-    # Note: Using classid1 encounters network timeout exception
+    # Note: Using classid1 encounters network timeout exception for that term
     #
     get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid2}"
     #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
     _response_status(200, last_response)
-    validate_json(last_response.body, SEARCH_SCHEMA)
-    annotations = MultiJson.load(last_response.body)
-    assert_instance_of(Hash, annotations)
-    annotations.each_value do |v|
-      #if not v['annotatedElements'].empty?
-      #  binding.pry
-      #end
-      validate_json(MultiJson.dump(v["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
-      validate_elements(v["annotatedElements"])
+    validate_json(last_response.body, PAGE_SCHEMA)
+    page = MultiJson.load(last_response.body)
+    annotations = page["collection"]
+    assert_instance_of(Array, annotations)
+    validate_json(MultiJson.dump(annotations), SEARCH_RESOURCE_SCHEMA, true)
+    annotations.each do |a|
+      validate_json(MultiJson.dump(a["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
+      # TODO: Resolve why ranked elements is different from annotated elements
+      validate_annotated_elements(a["annotatedElements"])
     end
   end
 
@@ -206,16 +285,24 @@ class TestResourceIndexController < TestCase
     end
   end
 
-  def validate_elements(elements)
-    validate_json(MultiJson.dump(elements), ELEMENTS_SCHEMA)
+  def validate_annotated_elements(elements)
+    validate_json(MultiJson.dump(elements), ELEMENTS_ANNOTATED_SCHEMA)
     elements.each_value do |e|
-      validate_json(MultiJson.dump(e), ELEMENT_SCHEMA)
+      validate_json(MultiJson.dump(e), ELEMENT_ANNOTATED_SCHEMA)
       e.each_value do |field|
         validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
       end
     end
   end
 
+  def validate_ranked_elements(elements)
+    validate_json(MultiJson.dump(elements), ELEMENT_RANKED_SCHEMA, true)
+    elements.each do |e|
+      e["fields"].each_value do |field|
+        validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
+      end
+    end
+  end
 
 end
 
