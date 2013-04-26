@@ -69,15 +69,24 @@ module Sinatra
         #
         # Generic parameters that can apply to any endpoint.
         #
-        #* elements={element1,element2}
+        # Paging parameters (helper methods are in PaginationHelper)
+        #
+        # This gives you the page and page_size from the request with defaults if they don't exist
+        page, page_size = page_params
+        # Calculates offset (limit doesn't really get calculated, but just to be consistent we include it)
+        offset, limit = offset_and_limit(page, page_size)
+        options[:offset] = offset unless offset.nil?
+        options[:limit] = limit unless limit.nil?
+        #
+        #* elements={element1,...,elementN}
         element = [params["elements"]].compact
         options[:elementid] = element unless element.nil? || element.empty?
         #
-        #* resources={resource1,resource2}
+        #* resources={resource1,...,resourceN}
         resource = [params["resources"]].compact
         options[:resourceids] = resource unless resource.nil? || resource.empty?
         #
-        #* ontologies={acronym1,acronym2,acronym3}
+        #* ontologies={acronym1|URL1,acronym2|URL2,...,acronymN|URLn}
         ontologies = [params["ontologies"]].compact
         ontologies.map! {|acronym| virtual_id_from_acronym(acronym) }
         options[:ontologiesToExpand]       = ontologies

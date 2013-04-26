@@ -25,11 +25,37 @@ eos
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
-    #paul: here you can reproduce the serializer output
+    
+    assert annotations.length == 6
+    
+    assert annotations[0]["annotatedClass"]["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
+    hhh = annotations[0]["hierarchy"].sort {|x| x["distance"]}.map { |x| x["annotatedClass"]["@id"] }
+    assert hhh == ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Resource",
+ "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Information_Resource",
+ "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Clinical_Care_Data",
+ "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"]
+    
+    assert annotations[1]["annotatedClass"]["@id"] == "http://purl.obolibrary.org/obo/MCBCC_0000288#ChromosomalMutation"
+    hhh = annotations[1]["hierarchy"].sort {|x| x["distance"]}.map { |x| x["annotatedClass"]["@id"] }
+    assert hhh == ["http://purl.obolibrary.org/obo/MCBCC_0000287#GeneticVariation"]
 
-    #TODO
-    #this test is a replication of what is tested in linked data
-    #just to be sure that the serializer works correctly
+    assert annotations[2]["annotatedClass"]["@id"] == "http://purl.obolibrary.org/obo/MCBCC_0000289#ChromosomalDeletion"
+    hhh = annotations[2]["hierarchy"].sort {|x| x["distance"]}.map { |x| x["annotatedClass"]["@id"] }
+    assert hhh == ["http://purl.obolibrary.org/obo/MCBCC_0000287#GeneticVariation",
+            "http://purl.obolibrary.org/obo/MCBCC_0000288#ChromosomalMutation"]
 
+    assert annotations[3]["annotatedClass"]["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"
+    hhh = annotations[3]["hierarchy"].sort {|x| x["distance"]}.map { |x| x["annotatedClass"]["@id"] }
+    assert hhh == ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Resource",
+ "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Information_Resource"]
+      
+    assert annotations[4]["annotatedClass"]["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Federal_Funding_Resource"
+    hhh = annotations[4]["hierarchy"].sort {|x| x["distance"]}.map { |x| x["annotatedClass"]["@id"] }
+    assert hhh == ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Resource",
+ "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Funding_Resource"]
+
+    assert annotations[5]["annotatedClass"]["@id"] == "http://purl.obolibrary.org/obo/MCBCC_0000275#ReceptorAntagonists"
+    hhh = annotations[5]["hierarchy"].sort {|x| x["distance"]}.map { |x| x["annotatedClass"]["@id"] }
+    assert hhh == ["http://purl.obolibrary.org/obo/MCBCC_0000256#ChemicalsAndDrugs"]
   end
 end

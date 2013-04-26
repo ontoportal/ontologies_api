@@ -3,6 +3,8 @@ require 'sinatra/base'
 module Sinatra
   module Helpers
     module PaginationHelper
+      ##
+      # Check the request params to get page and pagesize, both are returned
       def page_params
         page = @params["page"]     || 1
         size = @params["pagesize"] || 50
@@ -16,9 +18,19 @@ module Sinatra
         return page, size
       end
 
-      def page_object(total_result_count, array)
+      ##
+      # Calculate the offset and limit based on page and pagesize, both are returned
+      def offset_and_limit(page, pagesize)
+        offset = page * pagesize - pagesize
+        return offset, pagesize
+      end
+
+      ##
+      # Return a page object given the total potential results for a call and an array
+      def page_object(array, total_result_count = nil)
         page, size = page_params
-        page_count = (total_result_count.to_f / size.to_f).ceil
+        page_count = (total_result_count.to_f / size.to_f).ceil unless total_result_count.nil?
+        page_count ||= 0
         page_obj = LinkedData::Models::Page.new(page, page+1, page_count, array)
         page_obj.totalResults = total_result_count
         page_obj
