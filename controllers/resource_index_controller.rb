@@ -17,7 +17,12 @@ class ResourceIndexController < ApplicationController
       else
         options[:elementDetails] = true
         result = NCBO::ResourceIndex.find_by_concept(classes, options)
-        reply massage_search(result, options)
+        results_array = massage_search(result, options)
+        # Gives you back a page object with some stuff calculated by default. total_result_count is optional,
+        # we won't use it for resource index. The page object is what you will use when you do a `reply`
+        #page = page_object(results_array, total_result_count)
+        page = page_object(results_array)
+        reply page
       end
     end
 
@@ -31,7 +36,9 @@ class ResourceIndexController < ApplicationController
         result.resources.each do |r|
           r[:elements] = massage_elements(r[:elements])
         end
-        reply result
+        # TODO: Massage additional components of response (response.concepts)?
+        page = page_object(result.resources)
+        reply page
       end
     end
 
@@ -54,14 +61,16 @@ class ResourceIndexController < ApplicationController
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
       # TODO: Use the element method instead (Paul is fixing bug)
-      #result = NCBO::ResourceIndex.element(params["element_id"], params["resource_id"], options)
+      #result = NCBO::ResourceIndex.element(params["elements"], params["resources"], options)
       #binding.pry
       reply massage_resources(result)
     end
 
+
+    ##
+    # Data massage methods.
     #
-    # TODO: enable POST methods?
-    #
+
 
     def massage_search(old_response, options)
       resources = {}
@@ -81,11 +90,12 @@ class ResourceIndexController < ApplicationController
         end
         # TODO: add search option to exclude 0-element resources?
         resources[resource.resource] = {
+            "id" => resource.resource,
             "annotations" => annotations,
             "annotatedElements" => elements
         }
       end
-      return resources
+      return resources.values
     end
 
     # @param concept [{:localConceptId => 'version_id/term_id'}]
@@ -100,10 +110,8 @@ class ResourceIndexController < ApplicationController
       return nil if ontology_acronym.nil?
       ontology_uri = ontology_uri_from_acronym(ontology_acronym)
       return nil if ontology_uri.nil?
-      annotated_class = {
-          :id => class_uri,
-          :ontology => ontology_uri
-      }
+      annotated_class = LinkedData::Models::Class.read_only(RDF::IRI.new(class_uri), {})
+      annotated_class.submissionAcronym = ontology_uri
       return annotated_class
     end
 
@@ -153,7 +161,6 @@ class ResourceIndexController < ApplicationController
               ontIDs[i] = uri
             end
           end
-
           weight = 0.0
           e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
           fields[name] = {
