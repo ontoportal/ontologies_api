@@ -110,15 +110,15 @@ class OntologySubmissionsController < ApplicationController
 
     ##
     # Download a submission
-    get '/:ontology_submission_id/download' do
-      error 500, "Not implemented"
-    end
+    # get '/:ontology_submission_id/download' do
+    #   error 500, "Not implemented"
+    # end
 
     ##
     # Properties for given submission
-    get '/:ontology_submission_id/properties' do
-      error 500, "Not implemented"
-    end
+    # get '/:ontology_submission_id/properties' do
+    #   error 500, "Not implemented"
+    # end
 
   end
 end

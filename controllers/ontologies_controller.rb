@@ -70,15 +70,15 @@ class OntologiesController < ApplicationController
 
     ##
     # Download an ontology
-    get '/:acronym/download' do
-      error 500, "Not implemented"
-    end
+    # get '/:acronym/download' do
+    #   error 500, "Not implemented"
+    # end
 
     ##
     # Properties for given ontology
-    get '/:acronym/properties' do
-      error 500, "Not implemented"
-    end
+    # get '/:acronym/properties' do
+    #   error 500, "Not implemented"
+    # end
 
   end
 end
