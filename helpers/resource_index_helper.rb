@@ -47,6 +47,11 @@ module Sinatra
             next if ont_id.nil?  # TODO: raise an exception?
             # Use 'v' as a CSV list of concepts (class ID)
             v.split(',').each do |class_id|
+              # Shorten id as necessary
+              if class_id.start_with?("http://")
+                format ||= LinkedData::Models::Ontology.find(k.split("/").last).latest_submission.hasOntologyLanguage.acronym.to_s
+                class_id = shorten_uri(class_id, format)
+              end
               classes.push("#{ont_id}/#{class_id}")
             end
           end
