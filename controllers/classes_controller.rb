@@ -85,6 +85,7 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       page, size = page_params
       cls = get_class(submission,load_attrs=[])
+      error 404 if cls.nil?
       ld = { prefLabel: true, synonym: true, definition: true }
       page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
                                                  page: page, size: size,
