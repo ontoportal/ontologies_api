@@ -34,12 +34,12 @@ namespace :unicorn do
   namespace :start do
     desc "Unicorn start (production settings)"
     task :production do
-      `unicorn -p 80 -c config/unicorn.rb -D -E production`
+      `bundle exec unicorn -p 80 -c config/unicorn.rb -D -E production`
     end
 
     desc "Unicorn start (development settings)"
     task :development do
-      `unicorn -p 9393 -c config/unicorn.rb -E production`
+      `bundle exec unicorn -p 9393 -c config/unicorn.rb`
     end
   end
   
@@ -55,6 +55,7 @@ namespace :unicorn do
         print "."
         pids = `pgrep -f 'unicorn master'`
       end
+      print "\n"
     end
   end
 end  
