@@ -40,7 +40,7 @@ if [:development, :console].include?(settings.environment)
 end
 
 #At the moment this cannot be enabled under ruby-2.0
-if [:development, :production].include?(settings.environment)
+if [:development].include?(settings.environment)
   begin
     require 'rack-mini-profiler'
     Rack::MiniProfiler.config.storage = Rack::MiniProfiler::FileStore
@@ -58,7 +58,7 @@ if [:development, :production].include?(settings.environment)
   end
 end
 
-if false && settings.environment == :production
+if settings.environment == :production
   require 'rack/cache'
   use Rack::Cache,
     :verbose     => true,
