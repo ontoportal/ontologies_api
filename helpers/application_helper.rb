@@ -114,6 +114,9 @@ module Sinatra
           # When they aren't URIs, make them URIs
           ontologies.map! {|o| o.start_with?("http://") ? o : ontology_uri_from_acronym(o)}
           # Extra safe, do a Goo lookup for any remaining
+          if ontologies.include? nil
+            error 404, "The ontologies parameter `[#{params["ontologies"]}]` include inexistent acronyms. Notice that acronyms are case sensitive."
+          end
           ontologies.map! {|o| o.start_with?("http://") ? o : Ontology.find(o)}
           ontologies.compact!
           return ontologies
