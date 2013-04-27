@@ -113,6 +113,15 @@
             %li
               example:
               %a{href: "/annotator?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye."} /annotator?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye.
+          %li
+            Parameters
+            %ul
+              %li
+                Filtering & query behavior
+                %ul
+                  %li ontologies={ontology_id1,ontology_id2,ontology_id3}
+                  %li max_level={0..N}
+
 
       %h3#nav_resource_index Resource Index
 
@@ -160,7 +169,6 @@
                   %li exclude_numbers={true|false}
                   %li minimum_match_length={0..N}
                   %li include_synonyms={true|false}
-                  %li include_offsets={true|false}
                   %li mode={union|intersection}
               %li
                 Stop words
