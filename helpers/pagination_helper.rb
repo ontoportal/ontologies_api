@@ -22,7 +22,7 @@ module Sinatra
       # Calculate the offset and limit based on page and pagesize, both are returned
       def offset_and_limit(page, pagesize)
         offset = page * pagesize - pagesize
-        return offset, limit
+        return offset, pagesize
       end
 
       ##
