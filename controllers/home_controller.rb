@@ -35,7 +35,8 @@ class HomeController < ApplicationController
       if resource.eql?("Class")
         return "Example class: <a href='/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F154501005'>/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F154501005</a>"
       end
-      return "" unless routes_list.include?(resource_path)
+      do_not_display = /\/mappings|\/notes/
+      return "Sample Link: coming soon" if !routes_list.include?(resource_path) || resource_path.match(do_not_display)
       return "Resource collection: <a href='#{resource_path}'>#{resource_path}</a>"
     end
 

@@ -3,11 +3,8 @@
 %h3.text-success{id: @metadata[:cls].name.split("::").last}= @metadata[:uri]
 %div.resource
   %div.collection_link
-    -link = resource_collection_link(@metadata[:cls])
-    -if link && !link.eql?("")
-      =resource_collection_link(@metadata[:cls])
-    -else
-      Sample Link: coming soon
+    =resource_collection_link(@metadata[:cls])
+
   -if routes
     %h4 HTTP Methods for Resource
     %table.table.table-striped.table-bordered
