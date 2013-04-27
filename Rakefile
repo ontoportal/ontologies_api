@@ -30,3 +30,31 @@ task :coverage do
   Rake::Task["test"].invoke
 end
 
+namespace :unicorn do
+  namespace :start do
+    desc "Unicorn start (production settings)"
+    task :production do
+      `unicorn -p 80 -c config/unicorn.rb -D -E production`
+    end
+
+    desc "Unicorn start (development settings)"
+    task :development do
+      `unicorn -p 9393 -c config/unicorn.rb -E production`
+    end
+  end
+  
+  desc "Unicorn stop"
+  task :stop do
+    `pkill -QUIT -f 'unicorn master'`
+    if $?.exitstatus == 1
+      puts "Unicorn not running"
+    elsif $?.exitstatus == 0
+      print "Killing unicorn..."
+      pids = `pgrep -f 'unicorn master'`
+      while !pids.empty?
+        print "."
+        pids = `pgrep -f 'unicorn master'`
+      end
+    end
+  end
+end  
