@@ -67,8 +67,8 @@ class ClassesController < ApplicationController
       reply ancestors
     end
 
-    # Get all descendants for given class
-    get '/:cls/descendants' do
+    # Get all descendents for given class
+    get '/:cls/descendents' do
       ont, submission = get_ontology_and_submission
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
