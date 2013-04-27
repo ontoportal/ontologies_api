@@ -40,7 +40,7 @@ if [:development, :console].include?(settings.environment)
 end
 
 #At the moment this cannot be enabled under ruby-2.0
-if [:development].include?(settings.environment)
+if [:development, :production].include?(settings.environment)
   begin
     require 'rack-mini-profiler'
     Rack::MiniProfiler.config.storage = Rack::MiniProfiler::FileStore
@@ -52,12 +52,13 @@ if [:development].include?(settings.environment)
     FileUtils.mkdir_p(tmp) unless File.exists?(tmp)
     c.storage_options = {path: tmp}
     use Rack::MiniProfiler
+    puts ">> rack-mini-profiler is enabled"
   rescue LoadError
     # profiler isn't there
   end
 end
 
-if settings.environment == :production
+if false && settings.environment == :production
   require 'rack/cache'
   use Rack::Cache,
     :verbose     => true,

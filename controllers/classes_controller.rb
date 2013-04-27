@@ -97,7 +97,10 @@ class ClassesController < ApplicationController
     get '/:cls/parents' do
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
-      parents = cls.parents
+      ld = { prefLabel: true, synonym: true, definition: true }
+      parents = LinkedData::Models::Class.where submission: submission, children: cls,
+                                                 load_attrs: ld,
+                                                 query_options: { rules: "SUBP" }
       if parents.nil?
         reply []
       else
