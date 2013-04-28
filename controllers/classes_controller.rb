@@ -127,7 +127,7 @@ class ClassesController < ApplicationController
 
     def get_ontology_and_submission
       ont = Ontology.find(@params["ontology"], load_attrs: { acronym: true, submissions: { submissionId: true, submissionStatus: { code: true } } })
-      error 400, "You must provide an existing `acronym` to retrieve roots" if ont.nil?
+      error 400, "You must provide an existing `acronym` to retrieve class elements" if ont.nil?
       submission = nil
       if @params.include? "ontology_submission_id"
         submission = ont.submission(@params[:ontology_submission_id])
