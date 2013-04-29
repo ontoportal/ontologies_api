@@ -112,7 +112,7 @@ class ClassesController < ApplicationController
     private
 
     def get_class(submission,load_attrs=nil)
-      load_attrs = load_attrs || { prefLabel: true, synonym: true, definition: true, childrenCount: true }
+      load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
       end
