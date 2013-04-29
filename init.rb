@@ -17,15 +17,15 @@ require_dir("controllers")
 # Look for routes without an optional trailing slash or existing trailing slash
 # and add the optional trailing slash so both /ontologies/ and /ontologies works
 def rewrite_routes_trailing_slash
-  trailing_slash = Regexp.new(/.*\/\$\/$/)
-  no_trailing_slash = Regexp.new(/(\$\/)$/)
+  trailing_slash = Regexp.new(/.*\/\?\\z/)
+  no_trailing_slash = Regexp.new(/(.*)\\z\//)
   Sinatra::Application.routes.each do |method, routes|
     routes.each do |r|
       route_regexp_str = r[0].inspect
       if trailing_slash.match(route_regexp_str)
         next
       else
-        new_route = route_regexp_str.gsub(no_trailing_slash, "\\/\?$/")
+        new_route = route_regexp_str.gsub(no_trailing_slash, "\\1\\/?\\z/")
         r[0] = eval(new_route)
       end
     end
