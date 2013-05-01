@@ -7,10 +7,14 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      query_options = { rules: "SUBP" }
+      if ld.include?(:ancestors) || ld.include?(:descendants) 
+        query_options = { rules: "SUBP+SUBC" }
+      end
       page_data = LinkedData::Models::Class.page submission: submission,
                                                  page: page, size: size,
                                                  load_attrs: ld,
-                                                 query_options: { rules: "SUBP" }
+                                                 query_options: query_options
       reply page_data
     end
 
@@ -116,8 +120,12 @@ class ClassesController < ApplicationController
       if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
       end
+      query_options = { rules: "SUBP" }
+      if load_attrs.include?(:ancestors) || load_attrs.include?(:descendants) 
+        query_options = { rules: "SUBP+SUBC" }
+      end
       cls = LinkedData::Models::Class.find(RDF::IRI.new(params[:cls]), submission: submission,
-                                           :load_attrs => load_attrs)
+                                           :load_attrs => load_attrs, query_options: query_options)
       if cls.nil?
         submission.ontology.load unless submission.ontology.loaded?
         error 404, "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
