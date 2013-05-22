@@ -10,7 +10,7 @@ gem 'rake'
 gem 'rack-accept'
 gem 'rack-post-body-to-params'
 gem 'simplecov', :require => false, :group => :test
-gem 'minitest'
+gem 'minitest', '< 5.0'
 gem 'rack-cache'
 gem 'redis'
 
