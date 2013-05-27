@@ -19,16 +19,9 @@ module Sinatra
       # users to overwrite any attribute, including things like passwords.
       def populate_from_params(obj, params)
         params.each do |attribute, value|
-          attr_cls = obj.class.model_settings[:range][attribute.to_sym]
-          if attr_cls && obj.class.model_settings[:name_with] != attribute
-            found_objs = attr_cls.where(attribute => value).include(attr_cls.attributes).to_a
-            if found_objs.nil? || found_objs.empty?
-              new_obj = attr_cls.new(attribute => value)
-              value = new_obj
-            else
-              value = found_objs
-            end
-          elsif attr_cls
+          attribute = attribute.to_sym
+          attr_cls = obj.class.model_settings[:range][attribute]
+          if attr_cls
             value = attr_cls.find(value).include(attr_cls.attributes).first
           end
           # Don't populate naming attributes if they exist
