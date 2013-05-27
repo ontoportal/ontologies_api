@@ -25,7 +25,7 @@ module Sinatra
             value = attr_cls.find(value).include(attr_cls.attributes).first
           end
           # Don't populate naming attributes if they exist
-          if obj.class.model_settings[:name_with] != attribute.to_sym || obj.send(attribute).nil?
+          if obj.class.model_settings[:name_with] != attribute || obj.send(attribute).nil?
             obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
           end
         end
