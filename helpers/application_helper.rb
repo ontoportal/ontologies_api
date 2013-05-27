@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'date'
 
 module Sinatra
   module Helpers
@@ -23,6 +24,9 @@ module Sinatra
           attr_cls = obj.class.model_settings[:range][attribute]
           if attr_cls
             value = attr_cls.find(value).include(attr_cls.attributes).first
+          elsif attribute == :created
+            # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
+            value = DateTime.parse(value)
           end
           # Don't populate naming attributes if they exist
           if obj.class.model_settings[:name_with] != attribute || obj.send(attribute).nil?
