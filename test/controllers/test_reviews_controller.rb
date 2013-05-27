@@ -48,13 +48,13 @@ class TestReviewsController < TestCase
     super
     @user = LinkedData::Models::User.new(username: "test_user", email: "test_user@example.org", password: "password")
     @user.save
-    @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: @user)
+    @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: [@user])
     @ont.save
     @review_params = {
-        :creator => @user.username.value,
-        :created => DateTime.new,
+        :creator => @user.username,
+        :created => DateTime.now,
         :body => "This is a test review.",
-        :ontologyReviewed => @ont.acronym.value,
+        :ontologyReviewed => @ont.acronym,
         :usabilityRating => 0,
         :coverageRating => 0,
         :qualityRating => 0,
@@ -86,8 +86,8 @@ class TestReviewsController < TestCase
     assert_equal(1, reviews.length)
     r = reviews[0]
     assert_instance_of(Hash, r)
-    assert_equal(@user.resource_id, r['creator'])
-    assert_equal(@ont.resource_id, r['ontologyReviewed'])
+    assert_equal(@user.id, r['creator'])
+    assert_equal(@ont.id, r['ontologyReviewed'])
     validate_json(last_response.body, JSON_SCHEMA_STR, true)
   end
 
@@ -165,8 +165,8 @@ class TestReviewsController < TestCase
       assert_instance_of(Array, reviews)
       r = reviews[0]
       assert_instance_of(Hash, r)
-      assert_equal(user.resource_id, r['creator'], r.to_s)
-      assert_equal(ont.resource_id, r['ontologyReviewed'])
+      assert_equal(user.id, r['creator'], r.to_s)
+      assert_equal(ont.id, r['ontologyReviewed'])
       validate_json(last_response.body, JSON_SCHEMA_STR, true)
     end
   end
