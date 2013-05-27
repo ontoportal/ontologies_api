@@ -17,24 +17,24 @@ module Sinatra
       # Will also try to find related objects using a Goo lookup.
       # TODO: Currerntly, this allows for mass-assignment of everything, which will permit
       # users to overwrite any attribute, including things like passwords.
-      # TODO: We should only mass-assign attributes that are declared (if obj.respond_to?...)
       def populate_from_params(obj, params)
-        obj.load if obj.kind_of?(Goo::Base::Resource) && obj.lazy_loaded?
         params.each do |attribute, value|
-          attr_cls = obj.class.range_class(attribute)
-          no_unique_attr = !attr_cls.nil? && (attr_cls.goop_settings[:unique][:fields].nil? || attr_cls.goop_settings[:unique][:fields].length != 1)
-          if attr_cls && no_unique_attr
-            found_objs = attr_cls.where(value)
+          attr_cls = obj.class.model_settings[:range][attribute.to_sym]
+          if attr_cls && obj.class.model_settings[:name_with] != attribute
+            found_objs = attr_cls.where(attribute => value).include(attr_cls.attributes).to_a
             if found_objs.nil? || found_objs.empty?
-              new_obj = attr_cls.new(value)
+              new_obj = attr_cls.new(attribute => value)
               value = new_obj
             else
               value = found_objs
             end
           elsif attr_cls
-            value = attr_cls.find(value)
+            value = attr_cls.find(value).include(attr_cls.attributes).first
           end
-          obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
+          # Don't populate naming attributes if they exist
+          if obj.class.model_settings[:name_with] != attribute.to_sym || obj.send(attribute).nil?
+            obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
+          end
         end
         obj
       end
