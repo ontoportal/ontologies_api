@@ -103,7 +103,6 @@ class TestCase < MiniTest::Unit::TestCase
   def delete_goo_models(gooModelArray)
     gooModelArray.each do |m|
       next if m.nil?
-      m.load
       m.delete
     end
   end
