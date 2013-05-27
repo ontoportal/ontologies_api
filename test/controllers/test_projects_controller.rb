@@ -48,27 +48,27 @@ class TestProjectsController < TestCase
     teardown
     @user = LinkedData::Models::User.new(username: "test_user", email: "test_user@example.org", password: "password")
     @user.save
-    @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: @user)
+    @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: [@user])
     @ont.save
     @p = LinkedData::Models::Project.new
     @p.creator = @user
-    @p.created = DateTime.new
+    @p.created = DateTime.now
     @p.name = "Test Project" # must be a valid URI
     @p.acronym = "TP"
-    @p.homePage = "http://www.example.org"
+    @p.homePage = RDF::IRI.new("http://www.example.org")
     @p.description = "A test project"
     @p.institution = "A university"
-    @p.ontologyUsed = [@ont,]
+    @p.ontologyUsed = [@ont]
     @p.save
     @projectParams = {
-        acronym: @p.acronym.value,
-        name: @p.name.value,
-        description: @p.description.value,
-        homePage: @p.homePage.value,
-        creator: @p.creator.username.value,
-        created: @p.created.value,
-        institution: @p.institution.value,
-        ontologyUsed: @p.ontologyUsed.first.acronym.value
+        acronym: @p.acronym,
+        name: @p.name,
+        description: @p.description,
+        homePage: @p.homePage.to_s,
+        creator: @p.creator.username,
+        created: @p.created,
+        institution: @p.institution,
+        ontologyUsed: [@p.ontologyUsed.first.acronym]
     }
   end
 
