@@ -3,7 +3,7 @@ class CategoriesController < ApplicationController
   ##
   # Ontology categories
   get "/ontologies/:acronym/categories" do
-    ont = Ontology.find(params["acronym"], load_attrs: {hasDomain: Category.goo_attrs_to_load})
+    ont = Ontology.find(params["acronym"]).include(hasDomain: Category.goo_attrs_to_load).first
     error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
     reply ont.hasDomain
   end
@@ -11,14 +11,14 @@ class CategoriesController < ApplicationController
   namespace "/categories" do
     # Display all categories
     get do
-      categories = Category.all(load_attrs: Category.goo_attrs_to_load(includes_param))
+      categories = Category.where.include(Category.goo_attrs_to_load(includes_param)).to_a
       reply categories
     end
 
     # Display a single category
     get '/:acronym' do
       acronym = params["acronym"]
-      category = Category.find(acronym)
+      category = Category.find(acronym).include(Category.goo_attrs_to_load(includes_param)).first
       error 404, "Category #{acronym} not found" if category.nil?
       reply 200, category
     end
@@ -26,7 +26,7 @@ class CategoriesController < ApplicationController
     # Create a category with the given acronym
     put '/:acronym' do
       acronym = params["acronym"]
-      category = Category.find(acronym)
+      category = Category.find(acronym).include(Category.goo_attrs_to_load(includes_param)).first
 
       if category.nil?
         category = instance_from_params(Category, params)
@@ -45,12 +45,11 @@ class CategoriesController < ApplicationController
     # Update an existing submission of a category
     patch '/:acronym' do
       acronym = params["acronym"]
-      category = Category.find(acronym)
+      category = Category.find(acronym).include(Category.attributes).first
 
       if category.nil?
         error 400, "Category does not exist, please create using HTTP PUT before modifying"
       else
-        category.load unless category.loaded?
         populate_from_params(category, params)
 
         if category.valid?
@@ -64,8 +63,7 @@ class CategoriesController < ApplicationController
 
     # Delete a category
     delete '/:acronym' do
-      category = Category.find(params["acronym"])
-      category.load unless category.loaded?
+      category = Category.find(params["acronym"]).first
       category.delete
       halt 204
     end

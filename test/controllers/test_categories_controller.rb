@@ -35,11 +35,11 @@ class TestCategoriesController < TestCase
   end
 
   def _delete_categories
-    test_cat = Category.find(@test_cat[:acronym])
+    test_cat = Category.find(@test_cat[:acronym]).first
     test_cat.delete unless test_cat.nil?
 
     @cats.each do |acronym, name_desc|
-      cat = Category.find(acronym)
+      cat = Category.find(acronym).first
       cat.delete unless cat.nil?
       assert Category.find(acronym).nil?
     end
@@ -83,7 +83,7 @@ class TestCategoriesController < TestCase
 
   def test_update_patch_category
     acronym = 'ANAT'
-    category = Category.find(acronym)
+    category = Category.find(acronym).first
     assert_instance_of Category, category
     new_name = "Anatomyzation new NAME"
     new_desc = "Anatomyzation new DESCRIPTION"
