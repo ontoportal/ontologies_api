@@ -21,7 +21,7 @@ module Sinatra
       def populate_from_params(obj, params)
         params.each do |attribute, value|
           attribute = attribute.to_sym
-          attr_cls = obj.class.model_settings[:range][attribute]
+          attr_cls = obj.class.range(attribute)
           if attr_cls
             value = attr_cls.find(value).include(attr_cls.attributes).first
           elsif attribute == :created
