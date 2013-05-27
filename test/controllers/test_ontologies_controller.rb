@@ -1,52 +1,49 @@
 require_relative '../test_case'
 
 class TestOntologiesController < TestCase
-  def setup
+  def self.before_suite
     _set_vars
     _delete
-    _create_models
+    _create_user
+    _create_onts
   end
 
-  def teardown
+  def self.after_suite
     _set_vars
     _delete
+    self.new("after_suite").delete_ontologies_and_submissions()
   end
 
-  def _set_vars
-    @acronym = "TST"
-    @name = "Test Ontology"
-    @file_params = {
-      name: @name,
+  def self._set_vars
+    @@acronym = "TST"
+    @@name = "Test Ontology"
+    @@file_params = {
+      name: @@name,
       hasOntologyLanguage: "OWL",
       administeredBy: "tim",
     }
   end
 
-  def _create_models
-    _create_user
-  end
-
-  def _create_user
+  def self._create_user
     username = "tim"
     test_user = User.new(username: username, email: "#{username}@example.org", password: "password")
     test_user.save if test_user.valid?
-    user = test_user.valid? ? test_user : User.find(username)
-    user
+    @@user = test_user.valid? ? test_user : User.find(username).first
   end
 
-  def _delete
+  def self._delete
     _delete_onts
-    test_user = User.find("tim")
+    test_user = User.find("tim").first
     test_user.delete unless test_user.nil?
   end
 
-  def _create_onts
-    ont = Ontology.new(acronym: @acronym, name: @name, administeredBy: _create_user)
-    ont.save
+  def self._create_onts
+    ont = Ontology.new(acronym: @@acronym, name: @@name, administeredBy: [@@user])
+    ont.save if ont.valid?
   end
 
-  def _delete_onts
-    ont = Ontology.find(@acronym)
+  def self._delete_onts
+    ont = Ontology.find(@@acronym).first
     ont.delete unless ont.nil?
   end
 
@@ -67,8 +64,6 @@ class TestOntologiesController < TestCase
     created_ont_acronyms.each do |acronym|
       assert all_ont_acronyms.include?(acronym)
     end
-
-    delete_ontologies_and_submissions()
   end
 
   def test_single_ontology
@@ -79,40 +74,37 @@ class TestOntologiesController < TestCase
 
     ont = MultiJson.load(last_response.body)
     assert ont["acronym"] = ontology
-
-    delete_ontologies_and_submissions()
   end
 
   def test_create_new_ontology_same_acronym
-    _create_onts
-    put "/ontologies/#{@acronym}", :name => @name
+    self.class._create_onts
+    put "/ontologies/#{@@acronym}", :name => @@name
     assert last_response.status == 409
   end
 
   def test_create_new_ontology_invalid
-    put "/ontologies/#{@acronym}"
+    put "/ontologies/ont_no_properties"
     assert last_response.status == 422
     assert MultiJson.load(last_response.body)["errors"]
   end
 
   def test_patch_ontology
-    _create_onts
+    self.class._create_onts
     name = "Test new name"
     new_name = {name: name}
-    patch "/ontologies/#{@acronym}", MultiJson.dump(new_name), "CONTENT_TYPE" => "application/json"
+    patch "/ontologies/#{@@acronym}", MultiJson.dump(new_name), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 204
 
-    get "/ontologies/#{@acronym}"
+    get "/ontologies/#{@@acronym}"
     ont = MultiJson.load(last_response.body)
     assert ont["name"].eql?(name)
   end
 
   def test_delete_ontology
-    _create_onts
-    delete "/ontologies/#{@acronym}"
+    delete "/ontologies/#{@@acronym}"
     assert last_response.status == 204
 
-    get "/ontologies/#{@acronym}"
+    get "/ontologies/#{@@acronym}"
     assert last_response.status == 404
   end
 

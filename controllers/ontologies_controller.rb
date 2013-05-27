@@ -4,14 +4,14 @@ class OntologiesController < ApplicationController
     ##
     # Display all ontologies
     get do
-      onts = Ontology.all(load_attrs: Ontology.goo_attrs_to_load(includes_param))
+      onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
       reply onts
     end
 
     ##
     # Display the most recent submission of the ontology
     get '/:acronym' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).include(Ontology.goo_attrs_to_load(includes_param)).first
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       reply ont
     end
@@ -19,7 +19,7 @@ class OntologiesController < ApplicationController
     ##
     # Ontology latest submission
     get "/:acronym/latest_submission" do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).include(Ontology.goo_attrs_to_load(includes_param.merge(submissions: true))).first
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       reply ont.latest_submission
     end
@@ -27,7 +27,7 @@ class OntologiesController < ApplicationController
     ##
     # Ontologies get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:acronym' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       if ont.nil?
         ont = instance_from_params(Ontology, params)
       else
@@ -46,7 +46,7 @@ class OntologiesController < ApplicationController
     ##
     # Update an ontology
     patch '/:acronym' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).include(Ontology.attributes).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
       populate_from_params(ont, params)
@@ -62,7 +62,7 @@ class OntologiesController < ApplicationController
     ##
     # Delete an ontology and all its versions
     delete '/:acronym' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       ont.delete
       halt 204
@@ -79,6 +79,5 @@ class OntologiesController < ApplicationController
     # get '/:acronym/properties' do
     #   error 500, "Not implemented"
     # end
-
   end
 end
