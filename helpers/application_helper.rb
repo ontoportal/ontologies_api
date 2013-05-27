@@ -31,6 +31,8 @@ module Sinatra
           elsif attribute == :created
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
+          elsif attribute == :homePage
+            value = RDF::IRI.new(value)
           end
           # Don't populate naming attributes if they exist
           if obj.class.model_settings[:name_with] != attribute || obj.send(attribute).nil?
