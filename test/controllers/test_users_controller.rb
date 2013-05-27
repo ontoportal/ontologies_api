@@ -1,34 +1,34 @@
 require_relative '../test_case'
 
 class TestUsersController < TestCase
-  def setup
+  def self.before_suite
     # Create a bunch of test users
-    @usernames = %w(fred goerge henry ben mark matt charlie)
+    @@usernames = %w(fred goerge henry ben mark matt charlie)
 
     # Make sure these don't exist
     _delete_users
 
     # Create them again
-    @usernames.each do |username|
+    @@usernames.each do |username|
       User.new(username: username, email: "#{username}@example.org", password: "pass_word").save
     end
 
     # Test data
-    @username = "test_user"
+    @@username = "test_user"
   end
 
-  def teardown
+  def self.after_suite
     # Delete users
     _delete_users
 
     # Remove test user if exists
-    test_user = User.find(@username)
+    test_user = User.find(@@username).first
     test_user.delete unless test_user.nil?
   end
 
-  def _delete_users
-    @usernames.each do |username|
-      user = User.find(username)
+  def self._delete_users
+    @@usernames.each do |username|
+      user = User.find(username).first
       user.delete unless user.nil?
     end
   end
@@ -38,7 +38,7 @@ class TestUsersController < TestCase
     assert last_response.ok?
     users = MultiJson.load(last_response.body)
     users.any? {|u| u[:username].eql?("fred")}
-    assert users.length >= @usernames.length
+    assert users.length >= @@usernames.length
   end
 
   def test_single_user
@@ -50,14 +50,14 @@ class TestUsersController < TestCase
   end
 
   def test_create_new_user
-    user = {email: "#{@username}@example.org", password: "pass_the_word"}
-    put "/users/#{@username}", MultiJson.dump(user), "CONTENT_TYPE" => "application/json"
+    user = {email: "#{@@username}@example.org", password: "pass_the_word"}
+    put "/users/#{@@username}", MultiJson.dump(user), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201
-    assert MultiJson.load(last_response.body)["username"].eql?(@username)
+    assert MultiJson.load(last_response.body)["username"].eql?(@@username)
 
-    get "/users/#{@username}"
+    get "/users/#{@@username}"
     assert last_response.ok?
-    assert MultiJson.load(last_response.body)["username"].eql?(@username)
+    assert MultiJson.load(last_response.body)["username"].eql?(@@username)
   end
 
   def test_create_new_invalid_user
@@ -66,10 +66,9 @@ class TestUsersController < TestCase
   end
 
   def test_no_duplicate_user
-    put "/users/#{@usernames.shuffle.first}"
+    put "/users/#{@@usernames.shuffle.first}"
     assert last_response.status == 409
   end
-
 
   def test_update_patch_user
     add_first_name = {firstName: "Fred"}
