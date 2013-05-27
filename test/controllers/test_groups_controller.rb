@@ -35,12 +35,12 @@ class TestGroupsController < TestCase
   end
 
   def _delete_groups
-    test_group = Group.find(@test_group[:acronym])
+    test_group = Group.find(@test_group[:acronym]).first
     test_group.delete unless test_group.nil?
     @groups.each do |acronym, name_desc|
-      group = Group.find(acronym)
+      group = Group.find(acronym).first
       group.delete unless group.nil?
-      assert Group.find(acronym).nil?
+      assert Group.find(acronym).first.nil?
     end
   end
 
@@ -73,7 +73,7 @@ class TestGroupsController < TestCase
 
   def test_update_patch_group
     acronym = 'CTSA-HOM'
-    group = Group.find(acronym)
+    group = Group.find(acronym).first
     assert_instance_of Group, group
     new_name = "CTSA Health Brand new NAME"
     new_desc = "CTSA Health Brand new DESCRIPTION"

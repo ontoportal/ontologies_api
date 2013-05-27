@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
   ##
   # Ontology groups
   get "/ontologies/:acronym/groups" do
-    ont = Ontology.find(params["acronym"], load_attrs: {group: Group.goo_attrs_to_load})
+    ont = Ontology.find(params["acronym"]).include(group: Group.goo_attrs_to_load).first
     error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
     reply ont.group
   end
@@ -11,14 +11,14 @@ class GroupsController < ApplicationController
   namespace "/groups" do
     # Display all groups
     get do
-      groups = Group.all(load_attrs: Group.goo_attrs_to_load(includes_param))
+      groups = Group.where.include(Group.goo_attrs_to_load(includes_param)).to_a
       reply groups
     end
 
     # Display a single group
     get '/:acronym' do
       acronym = params["acronym"]
-      g = Group.find(acronym)
+      g = Group.find(acronym).include(Group.goo_attrs_to_load(includes_param)).first
       error 404, "Group #{acronym} not found" if g.nil?
       reply 200, g
     end
@@ -26,7 +26,7 @@ class GroupsController < ApplicationController
     # Create a group with the given acronym
     put '/:acronym' do
       acronym = params["acronym"]
-      group = Group.find(acronym)
+      group = Group.find(acronym).first
 
       if group.nil?
         group = instance_from_params(Group, params)
@@ -45,12 +45,11 @@ class GroupsController < ApplicationController
     # Update an existing submission of an group
     patch '/:acronym' do
       acronym = params["acronym"]
-      group = Group.find(acronym)
+      group = Group.find(acronym).include(Group.attributes).first
 
       if group.nil?
         error 400, "Group does not exist, please create using HTTP PUT before modifying"
       else
-        group.load unless group.loaded?
         populate_from_params(group, params)
 
         if group.valid?
@@ -64,8 +63,7 @@ class GroupsController < ApplicationController
 
     # Delete a group
     delete '/:acronym' do
-      group = Group.find(params["acronym"])
-      group.load unless group.loaded?
+      group = Group.find(params["acronym"]).first
       group.delete
       halt 204
     end
