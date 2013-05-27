@@ -23,7 +23,11 @@ module Sinatra
           attribute = attribute.to_sym
           attr_cls = obj.class.range(attribute)
           if attr_cls
-            value = attr_cls.find(value).include(attr_cls.attributes).first
+            if value.is_a?(Array)
+              value = value.map {|e| attr_cls.find(e).include(attr_cls.attributes).first}
+            else
+              value = attr_cls.find(value).include(attr_cls.attributes).first
+            end
           elsif attribute == :created
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
