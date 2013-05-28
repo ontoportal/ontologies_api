@@ -19,10 +19,16 @@ module Sinatra
       # TODO: Currerntly, this allows for mass-assignment of everything, which will permit
       # users to overwrite any attribute, including things like passwords.
       def populate_from_params(obj, params)
+        return if obj.nil?
+
         params.each do |attribute, value|
           attribute = attribute.to_sym
           attr_cls = obj.class.range(attribute)
+
+          # Try to find dependent Goo objects, but only if the naming is not done via Proc
+          # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
           if attr_cls && !attr_cls.name_with.is_a?(Proc)
+            # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)
               value = value.map {|e| attr_cls.find(e).include(attr_cls.attributes).first}
             else
@@ -31,6 +37,7 @@ module Sinatra
           elsif attr_cls
             retreived_value = attr_cls.where(value.symbolize_keys).to_a
             if retreived_value.empty?
+              # Create a new object and save if one didn't exist
               retreived_value = attr_cls.new(value.symbolize_keys)
               retreived_value.save
             end
@@ -42,6 +49,7 @@ module Sinatra
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
             value = RDF::IRI.new(value)
           end
+
           # Don't populate naming attributes if they exist
           if obj.class.model_settings[:name_with] != attribute || obj.send(attribute).nil?
             obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
