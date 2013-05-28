@@ -21,14 +21,14 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display all submissions of an ontology
     get do
-      ont = Ontology.find(params["acronym"]).include(:submissions).first
+      ont = Ontology.find(params["acronym"]).include(submissions: OntologySubmission.goo_attrs_to_load(includes_param)).first
       reply ont.submissions
     end
 
     ##
     # Create a new submission for an existing ontology
     post do
-      ont = Ontology.find(params["acronym"]).first
+      ont = Ontology.find(params["acronym"]).include(Ontology.attributes).first
       error 422, "You must provide a valid `acronym` to create a new submission" if ont.nil?
       reply 201, create_submission(ont)
     end
@@ -39,7 +39,7 @@ class OntologySubmissionsController < ApplicationController
       ont = Ontology.find(params["acronym"]).include(:submissions).first
       ont_submission = ont.submission(params["ontology_submission_id"])
       error 404, "`submissionId` not found" if ont_submission.nil?
-      ont_submission.bring(OntologySubmission.goo_attrs_to_load(includes_param))
+      ont_submission.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
       reply ont_submission
     end
 
