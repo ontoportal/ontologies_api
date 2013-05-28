@@ -22,16 +22,24 @@ module Sinatra
         params.each do |attribute, value|
           attribute = attribute.to_sym
           attr_cls = obj.class.range(attribute)
-          if attr_cls
+          if attr_cls && !attr_cls.name_with.is_a?(Proc)
             if value.is_a?(Array)
               value = value.map {|e| attr_cls.find(e).include(attr_cls.attributes).first}
             else
               value = attr_cls.find(value).include(attr_cls.attributes).first
             end
-          elsif attribute == :created
+          elsif attr_cls
+            retreived_value = attr_cls.where(value.symbolize_keys).to_a
+            if retreived_value.empty?
+              retreived_value = attr_cls.new(value.symbolize_keys)
+              retreived_value.save
+            end
+            value = retreived_value
+          elsif attribute == :created || attribute == :released
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
           elsif attribute == :homePage
+            # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
             value = RDF::IRI.new(value)
           end
           # Don't populate naming attributes if they exist
