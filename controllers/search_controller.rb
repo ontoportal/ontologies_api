@@ -12,7 +12,12 @@ class SearchController < ApplicationController
       resp["response"]["docs"].each do |doc|
         resource_id = doc["resource_id"]
         doc.delete "resource_id"
-        instance = LinkedData::Models::Class.read_only(resource_id, doc)
+        doc[:id] = resource_id
+        ontology_uri = doc["ontologyId"].first.sub(/\/submissions\/.*/, "")
+        ontology = LinkedData::Models::Ontology.read_only(id: ontology_uri, acronym: doc["submissionAcronym"])
+        submission = LinkedData::Models::OntologySubmission.read_only(id: doc["ontologyId"], ontology: ontology)
+        doc[:submission] = submission
+        instance = LinkedData::Models::Class.read_only(doc)
         docs.push(instance)
       end
       #need to return a Page object
