@@ -29,9 +29,7 @@ module Sinatra
       # Return a page object given the total potential results for a call and an array
       def page_object(array, total_result_count = nil)
         page, size = page_params
-        page_count = (total_result_count.to_f / size.to_f).ceil unless total_result_count.nil?
-        page_count ||= 0
-        page_obj = LinkedData::Models::Page.new(page, page+1, page_count, array)
+        page_obj = LinkedData::Models::Page.new(page, size, total_result_count, array)
         page_obj
       end
     end
