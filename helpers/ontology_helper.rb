@@ -50,9 +50,8 @@ module Sinatra
       end
 
       def get_parse_log_file(submission)
-        submission.load unless submission.loaded?
+        submission.bring(ontology:[:acronym])
         ontology = submission.ontology
-        ontology.load unless ontology.loaded?
 
         parse_log_folder = File.join(LinkedData.settings.repository_folder, "parse-logs")
         Dir.mkdir(parse_log_folder) unless File.exist? parse_log_folder
