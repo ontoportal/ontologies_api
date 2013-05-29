@@ -45,35 +45,43 @@ class HomeController < ApplicationController
       metadata_all[cls]
     end
 
+    def sample_objects
+      ontology = LinkedData::Models::Ontology.read_only(id: LinkedData.settings.rest_url_prefix+"/ontologies/BRO", acronym: "BRO")
+      submission = LinkedData::Models::OntologySubmission.read_only(id: LinkedData.settings.rest_url_prefix+"/ontologies/BRO/submissions/1", ontology: ontology)
+      cls = LinkedData::Models::Class.read_only(id: "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Ontology_Development_and_Management", submission: submission)
+      return {
+        LinkedData::Models::Ontology.type_uri => ontology,
+        LinkedData::Models::Class.type_uri => cls
+      }
+    end
+
     def metadata_all
       return @metadata_all_info if @metadata_all_info
       ld_classes = ObjectSpace.each_object(Class).select { |klass| klass < LinkedData::Models::Base }
       info = {}
       ld_classes.each do |cls|
         next if routes_by_class[cls].nil? || routes_by_class[cls].empty?
-        attributes = cls.defined_attributes_not_transient
+        attributes = cls.attributes(:all)
         attributes_info = {}
         attributes.each do |attribute|
           next if cls.hypermedia_settings[:serialize_never].include?(attribute)
 
-          schema = cls.goop_settings[:attributes][attribute][:validators]
-          if schema[:instance_of]
-            model = schema[:instance_of][:with]
-            model_cls = Goo.find_model_by_name(model)
+          model_cls = cls.range(attribute)
+          if model_cls
             type = model_cls.type_uri if model_cls.respond_to?("type_uri")
-          elsif schema[:instance_of] && !schema[:instance_of][:date_time_xsd].nil?
-            type = "xsd:dateTime"
-          else
-            type = ""
           end
 
           shows_default = cls.hypermedia_settings[:serialize_default].empty? ? true : cls.hypermedia_settings[:serialize_default].include?(attribute)
 
+          schema = cls.attribute_settings(attribute) rescue nil
+          schema ||= {}
           attributes_info[attribute] = {
             type: type || "",
-            shows_default: shows_default,
-            unique: !schema[:unique].nil?,
-            cardinality: schema[:cardinality] || {min: 0}
+            shows_default: shows_default || "&nbsp;",
+            unique: cls.unique?(attribute) || "&nbsp;",
+            required: cls.required?(attribute) || "&nbsp;",
+            list: cls.list?(attribute) || "&nbsp;",
+            cardinality: cls.cardinality(attribute) || "&nbsp;"
           }
         end
 

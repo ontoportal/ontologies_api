@@ -22,6 +22,8 @@
       %th Attribute
       %th <abbr title="Indication of whether the attribute shows by default, use `include=all` to show all attributes.">Default</abbr>
       %th <abbr title="Unique attributes will have a unique value across all of the resources of this type.">Unique</abbr>
+      %th <abbr title="Required attributes will always need to be present in order for the resource to be valid">Required</abbr>
+      %th <abbr title="List indicates if the attribute contains a list or single value">List</abbr>
       %th <abbr title="Cardinality determines how many values are allowed for an attribute. min=>1 means at least one, max=>1 means no more than one.">Cardinality</abbr>
       %th <abbr title="Some attributes contain a link to another resource. This is indicated by the `type` column.">Type</abbr>
     -@metadata[:attributes].each do |attr, values|
@@ -29,17 +31,20 @@
         %td= attr.to_s
         %td= values[:shows_default]
         %td= values[:unique]
+        %td= values[:required]
+        %td= values[:list]
         %td= values[:cardinality]
         %td= values[:type].to_s + "&nbsp;"
 
-  -links = hypermedia_links(@metadata[:cls])
+  -links = LinkedData::Hypermedia.generate_links(sample_objects[@metadata[:cls].type_uri])
   -if links && !links.empty?
-    %h4 Related Hypermedia Links (we're trying to make these sample links... coming soon...)
+    %h4 Related Hypermedia Links
     %table.table.table-striped.table-bordered
       %tr
         %th Type
-        %th Path
-      -hypermedia_links(@metadata[:cls]).each do |link|
+        %th URL
+      -links.each do |link, uri|
         %tr
-          %td= link.type
-          %td= link.path
+          %td= link
+          %td
+            %a{href: uri}= uri
