@@ -4,7 +4,10 @@ class OntologiesController < ApplicationController
     ##
     # Display all ontologies
     get do
-      onts = Ontology.all(load_attrs: Ontology.goo_attrs_to_load(includes_param))
+      load_attrs = Ontology.goo_attrs_to_load(includes_param)
+      load_attrs[:viewOf] = nil
+      onts = Ontology.all(load_attrs: load_attrs)
+      onts.select! { |ont| ont.viewOf.nil? }
       reply onts
     end
 

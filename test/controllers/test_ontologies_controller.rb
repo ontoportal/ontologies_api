@@ -18,7 +18,15 @@ class TestOntologiesController < TestCase
     @file_params = {
       name: @name,
       hasOntologyLanguage: "OWL",
-      administeredBy: "tim",
+      administeredBy: "tim"
+    }
+
+    @view_acronym = 'TST_VIEW'
+    @view_name = 'Test View of Test Ontology'
+    @view_file_params = {
+        name: @view_name,
+        hasOntologyLanguage: "OWL",
+        administeredBy: "tom"
     }
   end
 
@@ -40,12 +48,24 @@ class TestOntologiesController < TestCase
     test_user.delete unless test_user.nil?
   end
 
-  def _create_onts
+  def test_create_view
     ont = Ontology.new(acronym: @acronym, name: @name, administeredBy: _create_user)
     ont.save
   end
 
+  def _create_onts
+    user = _create_user
+    ont = Ontology.new(acronym: @acronym, name: @name, administeredBy: user)
+    ont.save
+
+    view = Ontology.new(acronym: @view_acronym, name: @view_name, administeredBy: user, viewOf: ont)
+    view.save
+  end
+
   def _delete_onts
+    view = Ontology.find(@view_acronym)
+    view.delete unless view.nil?
+
     ont = Ontology.find(@acronym)
     ont.delete unless ont.nil?
   end
@@ -108,7 +128,7 @@ class TestOntologiesController < TestCase
   end
 
   def test_delete_ontology
-    _create_onts
+   # _create_onts
     delete "/ontologies/#{@acronym}"
     assert last_response.status == 204
 
