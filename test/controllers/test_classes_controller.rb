@@ -3,7 +3,6 @@ require_relative '../test_case'
 class TestClassesController < TestCase
 
   def self.before_suite 
-    return
     options = {ont_count: 1, 
                submission_count: 3, 
                submissions_to_process: [1, 2], 
