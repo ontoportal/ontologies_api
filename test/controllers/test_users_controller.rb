@@ -81,10 +81,10 @@ class TestUsersController < TestCase
   end
 
   def test_delete_user
-    delete "/users/fred"
+    delete "/users/ben"
     assert last_response.status == 204
 
-    get "/users/fred"
+    get "/users/ben"
     assert last_response.status == 404
   end
 
