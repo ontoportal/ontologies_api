@@ -19,7 +19,7 @@ class AnnotatorController < ApplicationController
       annotator.generate_dictionary_file
     end
 
-    post '/cache' do
+    get '/cache' do
       annotator = Annotator::Models::NcboAnnotator.new
       annotator.create_term_cache
     end
