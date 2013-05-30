@@ -110,8 +110,14 @@ class ResourceIndexController < ApplicationController
       return nil if ontology_acronym.nil?
       ontology_uri = ontology_uri_from_acronym(ontology_acronym)
       return nil if ontology_uri.nil?
-      annotated_class = LinkedData::Models::Class.read_only(RDF::IRI.new(class_uri), {})
-      annotated_class.submissionAcronym = ontology_uri
+
+
+      ontology = LinkedData::Models::Ontology.read_only(id: RDF::IRI.new(ontology_uri), acronym: ontology_uri.split("/").last)
+      submission = LinkedData::Models::OntologySubmission.read_only(id: RDF::IRI.new(ontology_uri+"/submissions/latest"), ontology: ontology)
+      annotated_class = LinkedData::Models::Class.read_only(id: RDF::IRI.new(class_uri), submission: submission)
+
+      # annotated_class = LinkedData::Models::Class.read_only(RDF::IRI.new(class_uri), {})
+      # annotated_class.submissionAcronym = ontology_uri
       return annotated_class
     end
 

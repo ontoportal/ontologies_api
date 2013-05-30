@@ -2,15 +2,17 @@ require_relative '../test_case'
 
 class TestClassesController < TestCase
 
-  def setup_only_once
-    return create_ontologies_and_submissions(
-     ont_count: 1, submission_count: 3, submissions_to_process: [1, 2], process_submission: true, random_submission_count: false)
+  def self.before_suite 
+    options = {ont_count: 1, 
+               submission_count: 3, 
+               submissions_to_process: [1, 2], 
+               process_submission: true, 
+               random_submission_count: false}
+    return LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
   end
 
   def test_first_default_page
-    num_onts_created, created_ont_acronyms = setup_only_once
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
     submission_ids = 1..2
     submission_ids.each do |submission_id|
@@ -27,10 +29,7 @@ class TestClassesController < TestCase
   end
 
   def test_all_class_pages
-    num_onts_created, created_ont_acronyms = setup_only_once
-
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
     page_response = nil
     count_terms = 0
@@ -51,15 +50,12 @@ class TestClassesController < TestCase
   end
 
   def test_single_cls
-    num_onts_created, created_ont_acronyms = setup_only_once
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
 
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
-
-    submission_ids = [nil, 2,3]
+    submission_ids = [nil, 1,2]
     #last submission is nil
     submission_ids.each do |submission_id|
       clss_ids.each do |cls_id|
@@ -74,7 +70,7 @@ class TestClassesController < TestCase
         assert_instance_of(Array, cls["synonym"])
         assert(cls["@id"] == cls_id)
 
-        if submission_id == 1 or submission_id == 2
+        if submission_id.nil? || submission_id == 2
           assert(cls["prefLabel"]["In version 3.2"])
           assert(cls["definition"][0]["In version 3.2"])
         else
@@ -93,10 +89,8 @@ class TestClassesController < TestCase
   end
 
   def test_roots_for_cls
-    num_onts_created, created_ont_acronyms = setup_only_once
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
     get "/ontologies/#{ont.acronym}/classes/roots"
     assert last_response.ok?
     roots = MultiJson.load(last_response.body)
@@ -115,10 +109,8 @@ class TestClassesController < TestCase
 
   def test_classes_for_not_parsed_ontology
 
-    num_onts_created, created_ont_acronyms = setup_only_once
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
     #first submission was not parsed
     get "/ontologies/#{ont.acronym}/classes/roots?ontology_submission_id=3"
 
@@ -128,10 +120,8 @@ class TestClassesController < TestCase
 
   def test_tree
 
-    num_onts_created, created_ont_acronyms = setup_only_once
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
     clss_ids.each do |cls_id|
@@ -148,10 +138,7 @@ class TestClassesController < TestCase
 
   def test_path_to_root_for_cls
 
-    num_onts_created, created_ont_acronyms = setup_only_once
-
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
     clss_ids.each do |cls_id|
@@ -164,10 +151,7 @@ class TestClassesController < TestCase
 
   def test_ancestors_for_cls
 
-    num_onts_created, created_ont_acronyms = setup_only_once
-
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
     ancestors_data = {}
     ancestors_data['http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction'] =[
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource",
@@ -196,10 +180,7 @@ class TestClassesController < TestCase
   end
 
   def test_descendants_for_cls
-    num_onts_created, created_ont_acronyms = setup_only_once
-
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
     descendants_data = {}
     descendants_data['http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research'] =[
@@ -276,7 +257,6 @@ class TestClassesController < TestCase
   end
 
   def test_parents_for_cls_round_trip
-    num_onts_created, created_ont_acronyms = setup_only_once
 
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
@@ -284,8 +264,7 @@ class TestClassesController < TestCase
     parent_ids = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data",
     "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Microscope"]
 
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
     clss_ids.each_index do |i|
       cls_id = clss_ids[i]
@@ -311,7 +290,6 @@ class TestClassesController < TestCase
   end
 
   def test_children_for_cls_round_trip
-    num_onts_created, created_ont_acronyms = setup_only_once
 
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data',
             "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Microscope" ]
@@ -327,8 +305,7 @@ class TestClassesController < TestCase
         "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Light_Microscope"
       ] ]
 
-    ont = Ontology.find(created_ont_acronyms.first)
-    ont.load unless ont.loaded?
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
     clss_ids.each_index do |i|
       cls_id = clss_ids[i]

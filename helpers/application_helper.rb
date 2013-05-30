@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'date'
 
 module Sinatra
   module Helpers
@@ -17,24 +18,42 @@ module Sinatra
       # Will also try to find related objects using a Goo lookup.
       # TODO: Currerntly, this allows for mass-assignment of everything, which will permit
       # users to overwrite any attribute, including things like passwords.
-      # TODO: We should only mass-assign attributes that are declared (if obj.respond_to?...)
       def populate_from_params(obj, params)
-        obj.load if obj.kind_of?(Goo::Base::Resource) && obj.lazy_loaded?
+        return if obj.nil?
+
         params.each do |attribute, value|
-          attr_cls = obj.class.range_class(attribute)
-          no_unique_attr = !attr_cls.nil? && (attr_cls.goop_settings[:unique][:fields].nil? || attr_cls.goop_settings[:unique][:fields].length != 1)
-          if attr_cls && no_unique_attr
-            found_objs = attr_cls.where(value)
-            if found_objs.nil? || found_objs.empty?
-              new_obj = attr_cls.new(value)
-              value = new_obj
+          attribute = attribute.to_sym
+          attr_cls = obj.class.range(attribute)
+
+          # Try to find dependent Goo objects, but only if the naming is not done via Proc
+          # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
+          if attr_cls && !attr_cls.name_with.is_a?(Proc)
+            # Replace the initial value with the object, handling Arrays as appropriate
+            if value.is_a?(Array)
+              value = value.map {|e| attr_cls.find(e).include(attr_cls.attributes).first}
             else
-              value = found_objs
+              value = attr_cls.find(value).include(attr_cls.attributes).first
             end
           elsif attr_cls
-            value = attr_cls.find(value)
+            retreived_value = attr_cls.where(value.symbolize_keys).to_a
+            if retreived_value.empty?
+              # Create a new object and save if one didn't exist
+              retreived_value = attr_cls.new(value.symbolize_keys)
+              retreived_value.save
+            end
+            value = retreived_value
+          elsif attribute == :created || attribute == :released
+            # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
+            value = DateTime.parse(value)
+          elsif attribute == :homePage
+            # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
+            value = RDF::IRI.new(value)
           end
-          obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
+
+          # Don't populate naming attributes if they exist
+          if obj.class.model_settings[:name_with] != attribute || obj.send(attribute).nil?
+            obj.send("#{attribute}=", value) if obj.respond_to?("#{attribute}=")
+          end
         end
         obj
       end

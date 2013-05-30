@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
   namespace "/reviews" do
     # Return an array of all reviews.
     get do
-      reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load(includes_param))
+      reply MODEL.where.include(MODEL.goo_attrs_to_load(includes_param)).to_a
     end
   end
 
@@ -14,12 +14,12 @@ class ReviewsController < ApplicationController
 
     # Return an array of reviews for an ontology acronym.
     get do
-      reply MODEL.where :ontologyReviewed => { :acronym => params[:acronym] }
+      reply MODEL.where(:ontologyReviewed => { :acronym => params[:acronym] }).include(MODEL.goo_attrs_to_load(includes_param)).to_a
     end
 
     # Return an array of reviews by a user for an ontology.
     get '/:username' do
-      reviews = MODEL.where :ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}
+      reviews = MODEL.where(:ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}).include(MODEL.goo_attrs_to_load(includes_param)).to_a
       if reviews.empty?
         error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}."
       end
@@ -28,7 +28,7 @@ class ReviewsController < ApplicationController
 
     # Create a new review for an ontology by a user.
     put '/:username' do
-      reviews = MODEL.where :ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}
+      reviews = MODEL.where(:ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}).include(MODEL.attributes).to_a
       if not reviews.empty?
         error 409, "Reviews already exist for ontology:#{params[:acronym]}, by user:#{params[:username]}. Update using PATCH instead of PUT."
       end
@@ -43,7 +43,7 @@ class ReviewsController < ApplicationController
 
     # Update an existing submission of a review by a user.
     patch '/:username' do
-      reviews = MODEL.where :ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}
+      reviews = MODEL.where(:ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}).include(MODEL.attributes).to_a
       if reviews.empty?
         error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}.  Use PUT, not PATCH, to submit new reviews."
       end
@@ -61,7 +61,7 @@ class ReviewsController < ApplicationController
 
     # Delete a review for an ontology by a user.
     delete '/:username' do
-      reviews = MODEL.where :ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}
+      reviews = MODEL.where(:ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}).to_a
       if reviews.empty?
         error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}."
       else

@@ -7,14 +7,11 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      query_options = { rules: "SUBP" }
-      if ld.include?(:ancestors) || ld.include?(:descendants) 
-        query_options = { rules: "SUBP+SUBC" }
-      end
-      page_data = LinkedData::Models::Class.page submission: submission,
-                                                 page: page, size: size,
-                                                 load_attrs: ld,
-                                                 query_options: query_options
+      page_data = LinkedData::Models::Class.in(submission)
+                                .include(ld)
+                                .page(page,size)
+                                .read_only
+                                .all
       reply page_data
     end
 
@@ -50,13 +47,15 @@ class ClassesController < ApplicationController
       root_tree = cls.tree
 
       #add the other roots to the response
-      roots = submission.roots
+      roots = submission.roots(extra_include=nil, aggregate_children=true)
       found = false
       roots.each_index do |i|
         r = roots[i]
-        if r.resource_id.value == root_tree.resource_id.value
+        if r.id == root_tree.id
           roots[i] = root_tree
-          break
+        else
+          roots[i].instance_variable_set("@children",[])
+          roots[i].loaded_attributes << :children
         end
       end
       reply roots
@@ -66,7 +65,12 @@ class ClassesController < ApplicationController
     # Get all ancestors for given class
     get '/:cls/ancestors' do
       ont, submission = get_ontology_and_submission
-      cls = get_class(submission)
+
+      #I really want ancestors: [ user options ]
+      load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      load_attrs = [ ancestors: load_attrs ]
+      cls = get_class(submission,load_attrs=load_attrs)
+      error 404 if cls.nil?
       ancestors = cls.ancestors
       reply ancestors
     end
@@ -75,12 +79,13 @@ class ClassesController < ApplicationController
     get '/:cls/descendants' do
       ont, submission = get_ontology_and_submission
       page, size = page_params
-      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       cls = get_class(submission,load_attrs=[])
-      page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
-                                                 page: page, size: size,
-                                                 load_attrs: ld,
-                                                 query_options: { rules: "SUBC+SUBP" }
+      error 404 if cls.nil?
+      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      page_data = LinkedData::Models::Class.where(ancestors: cls).in(submission)
+                                        .include(ld)
+                                        .page(page,size)
+                                        .read_only.all
       reply page_data
     end
 
@@ -90,11 +95,11 @@ class ClassesController < ApplicationController
       page, size = page_params
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
-      ld = { prefLabel: true, synonym: true, definition: true }
-      page_data = LinkedData::Models::Class.page submission: submission, parents: cls,
-                                                 page: page, size: size,
-                                                 load_attrs: ld,
-                                                 query_options: { rules: "SUBP" }
+      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      page_data = LinkedData::Models::Class.where(parents: cls).in(submission)
+                                        .include(ld)
+                                        .page(page,size)
+                                        .read_only.all
       reply page_data
     end
 
@@ -102,10 +107,10 @@ class ClassesController < ApplicationController
     get '/:cls/parents' do
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
-      ld = { prefLabel: true, synonym: true, definition: true }
-      parents = LinkedData::Models::Class.where submission: submission, children: cls,
-                                                 load_attrs: ld,
-                                                 query_options: { rules: "SUBP" }
+      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      parents = LinkedData::Models::Class.where(children: cls).in(submission)
+                                        .include(ld)
+                                        .read_only.all
       if parents.nil?
         reply []
       else
@@ -117,25 +122,27 @@ class ClassesController < ApplicationController
 
     def get_class(submission,load_attrs=nil)
       load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      if !(SparqlRd::Utils::Http.valid_uri? params[:cls])
+      cls_uri = RDF::URI.new(params[:cls])
+      if !cls_uri.valid?
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
       end
-      query_options = { rules: "SUBP" }
-      if load_attrs.include?(:ancestors) || load_attrs.include?(:descendants) 
-        query_options = { rules: "SUBP+SUBC" }
-      end
-      cls = LinkedData::Models::Class.find(RDF::IRI.new(params[:cls]), submission: submission,
-                                           :load_attrs => load_attrs, query_options: query_options)
+      childrenCount = load_attrs.delete :childrenCount
+      cls = LinkedData::Models::Class.find(cls_uri).in(submission)
+      cls = cls.include(load_attrs) if load_attrs && load_attrs.length > 0
+      cls.aggregate(:count, :children) if childrenCount
+      cls = cls.first
       if cls.nil?
-        submission.ontology.load unless submission.ontology.loaded?
-        error 404, "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
+        error 404, 
+           "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
       end
       return cls
     end
 
     def get_ontology_and_submission
-      ont = Ontology.find(@params["ontology"], load_attrs: { acronym: true, submissions: { submissionId: true, submissionStatus: { code: true } } })
-      error 400, "You must provide an existing `acronym` to retrieve class elements" if ont.nil?
+      ont = Ontology.find(@params["ontology"])
+              .include(:acronym)
+              .include(submissions: [:submissionId, submissionStatus: [:code], ontology: [:acronym]])
+              .first
       submission = nil
       if @params.include? "ontology_submission_id"
         submission = ont.submission(@params[:ontology_submission_id])

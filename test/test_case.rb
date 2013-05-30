@@ -45,7 +45,6 @@ class AppUnit < MiniTest::Unit
 
   def after_suites
     # code to run after the last test (gets inherited in sub-tests)
-    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
   end
 
   def _run_suites(suites, type)
@@ -104,7 +103,6 @@ class TestCase < MiniTest::Unit::TestCase
   def delete_goo_models(gooModelArray)
     gooModelArray.each do |m|
       next if m.nil?
-      m.load
       m.delete
     end
   end

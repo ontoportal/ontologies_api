@@ -2,17 +2,17 @@ class UsersController < ApplicationController
   namespace "/users" do
     # Display all users
     get do
-      reply User.all(load_attrs: User.goo_attrs_to_load(includes_param))
+      reply User.where.include(User.goo_attrs_to_load(includes_param)).to_a
     end
 
     # Display a single user
     get '/:username' do
-      reply User.find(params[:username])
+      reply User.find(params[:username]).include(User.goo_attrs_to_load(includes_param)).first
     end
 
     # Users get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:username' do
-      user = User.find(params["username"])
+      user = User.find(params["username"]).first
       error 409, "User with username `#{params["username"]}` already exists" unless user.nil?
       user = instance_from_params(User, params)
       if user.valid?
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
 
     # Update an existing submission of an user
     patch '/:username' do
-      user = User.find(params[:username], load_attrs: [])
+      user = User.find(params[:username]).include(User.attributes).first
       populate_from_params(user, params)
       if user.valid?
         user.save
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
 
     # Delete a user
     delete '/:username' do
-      User.find(params[:username]).delete
+      User.find(params[:username]).first.delete
       halt 204
     end
 

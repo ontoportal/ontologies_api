@@ -19,6 +19,8 @@
   xml:base="file:/Users/twhetzel/Documents/Stanford/Outreach/BRO/BRO_v3.0_alpha3/BRO_v3.0_alpha3.owl">
   <owl:Ontology rdf:about="http://bioontology.org/ontologies/BiomedicalResources.owl">
     <owl:imports rdf:resource="http://www.w3.org/2004/02/skos/core"/>
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >3.2.1</owl:versionInfo>
   </owl:Ontology>
   <owl:Class rdf:about="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Biomaterial_Analysis_Service">
     <rdfs:subClassOf>
@@ -282,6 +284,15 @@
     >Data Compression</core:prefLabel>
     <desc:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Resource that provides access to software, applications, or toolkits that reduces the bits (information units) needed to encode the data.</desc:definition>
+  </owl:Class>
+  <owl:Class rdf:about="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Exercise_Study_Facility">
+    <desc:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A facility or core that provides services and equipment related to exercise physiology.</desc:definition>
+    <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Exercise Study Facility</core:prefLabel>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Physiology_Facility"/>
+    </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:about="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Text_Mining">
     <rdfs:subClassOf>
@@ -3436,6 +3447,13 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
     <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Cell Biology Facility</core:prefLabel>
   </owl:Class>
+  <owl:Class rdf:about="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Sleep_Study_Facility">
+    <rdfs:subClassOf rdf:resource="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Physiology_Facility"/>
+    <desc:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A facility or core that provides services for research on sleep problems.</desc:definition>
+    <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Sleep Study Facility</core:prefLabel>
+  </owl:Class>
   <owl:Class rdf:about="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Biomedical_Supply_Resource">
     <rdfs:subClassOf rdf:resource="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Material_Resource"/>
     <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
@@ -3726,6 +3744,16 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
     <rdfs:domain rdf:resource="http://bioontology.org/ontologies/biositemap.owl#Resource_Description"/>
     <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >contact person</core:prefLabel>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://bioontology.org/ontologies/biositemap.owl#publication_identifier">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >publication identifier</rdfs:label>
+    <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >publication identifier</core:prefLabel>
+    <desc:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Publication identifier for the resource from a publicly available publication database (e.g. PMID: 19483092 or doi: 10.1093/nar/gkp440).</desc:definition>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://bioontology.org/ontologies/biositemap.owl#Resource_Description"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="http://bioontology.org/ontologies/biositemap.owl#documentation_URL">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DeprecatedProperty"/>
@@ -4516,7 +4544,6 @@ we think this should be deleted</desc:definition>
     <desc:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Resource that provides access to information content entity that specifies, using a programming language, some algorithm.</desc:definition>
   </owl:DeprecatedClass>
-  <BRO:Backup_Archive_Service rdf:about="http://bioontology.org/ontologies/BiomedicalResources.owl#Backup_Archive_Service_3"/>
   <owl:DeprecatedClass rdf:about="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Free_Text">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdfs:subClassOf rdf:resource="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Deprecated_Resource"/>
@@ -4539,7 +4566,6 @@ we think this should be deleted</desc:definition>
     <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Discrete Data</core:prefLabel>
   </owl:DeprecatedClass>
-  <BRO:Backup_Archive_Service rdf:about="http://bioontology.org/ontologies/BiomedicalResources.owl#Backup_Archive_Service_1"/>
   <owl:DeprecatedClass rdf:about="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#License_and_Terms_for_Redistribution">
     <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >License and Terms for Redistribution</core:prefLabel>
@@ -4562,7 +4588,6 @@ we think this should be deleted</desc:definition>
     <rdfs:subClassOf rdf:resource="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Deprecated_Resource"/>
     <desc:replacedBy rdf:resource="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"/>
   </owl:DeprecatedClass>
-  <BRO:Backup_Archive_Service rdf:about="http://bioontology.org/ontologies/BiomedicalResources.owl#Backup_Archive_Service_2"/>
   <owl:DeprecatedClass rdf:about="http://bioontology.org/ontologies/Activity.owl#Novel_Therapeutics">
     <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Novel Therapeutics</core:prefLabel>
@@ -4737,7 +4762,6 @@ we think this should be deleted</desc:definition>
     <core:prefLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Deprecated Area of Research</core:prefLabel>
   </owl:DeprecatedClass>
-  <BRO:Atlas rdf:about="http://bioontology.org/ontologies/BiomedicalResources.owl#Atlas_1"/>
 </rdf:RDF>
 
 <!-- Created with Protege (with OWL Plugin 3.4.4, Build 579)  http://protege.stanford.edu -->

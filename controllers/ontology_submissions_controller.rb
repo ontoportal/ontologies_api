@@ -3,7 +3,7 @@ class OntologySubmissionsController < ApplicationController
     includes = OntologySubmission.goo_attrs_to_load(includes_param)
     includes.merge(submissionId: true) if includes.is_a?(Hash)
     includes.merge(ontology: {acronym: true}) if includes.is_a?(Hash) && !includes.key?(:ontology)
-    submissions = OntologySubmission.all(load_attrs: includes)
+    submissions = OntologySubmission.where.include(includes).to_a
 
     # Figure out latest parsed submissions using all submissions
     latest_submissions = {}
@@ -21,14 +21,14 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display all submissions of an ontology
     get do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).include(submissions: OntologySubmission.goo_attrs_to_load(includes_param)).first
       reply ont.submissions
     end
 
     ##
     # Create a new submission for an existing ontology
     post do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).include(Ontology.attributes).first
       error 422, "You must provide a valid `acronym` to create a new submission" if ont.nil?
       reply 201, create_submission(ont)
     end
@@ -36,20 +36,23 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display a submission
     get '/:ontology_submission_id' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).include(:submissions).first
       ont_submission = ont.submission(params["ontology_submission_id"])
+      error 404, "`submissionId` not found" if ont_submission.nil?
+      ont_submission.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
       reply ont_submission
     end
 
     ##
     # Update an existing submission of an ontology
     patch '/:ontology_submission_id' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
       submission = ont.submission(params[:ontology_submission_id])
       error 422, "You must provide an existing `submissionId` to patch" if submission.nil?
 
+      submission.bring(*OntologySubmission.attributes)
       populate_from_params(submission, params)
 
       if submission.valid?
@@ -64,7 +67,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Delete a specific ontology submission
     delete '/:ontology_submission_id' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       submission = ont.submission(params[:ontology_submission_id])
       error 422, "You must provide an existing `submissionId` to delete" if submission.nil?
@@ -75,7 +78,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Trigger the parsing of ontology submission ID
     post '/:ontology_submission_id/parse' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to parse a submission" if ont.nil?
       error 422, "You must provide a `submissionId`" if params[:ontology_submission_id].nil?
       submission = ont.submission(params[:ontology_submission_id])
@@ -89,7 +92,7 @@ class OntologySubmissionsController < ApplicationController
         begin
           submission.process_submission(logger_for_parsing)
         rescue => e
-          submission.submissionStatus = SubmissionStatus.find("ERROR_RDF")
+          submission.submissionStatus = SubmissionStatus.find("ERROR_RDF").first
           submission.parseError = e.message
           if submission.valid?
             submission.save

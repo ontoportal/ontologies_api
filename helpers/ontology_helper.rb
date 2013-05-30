@@ -16,20 +16,17 @@ module Sinatra
           file_location = OntologySubmission.copy_file_repository(params["acronym"], submission_id, tmpfile, filename)
         end
 
-        SubmissionStatus.init
-        OntologyFormat.init
-
         # Create OntologySubmission
         ont_submission = instance_from_params(OntologySubmission, params)
         ont_submission.ontology = ont
-        ont_submission.submissionStatus = SubmissionStatus.find("UPLOADED")
+        ont_submission.submissionStatus = SubmissionStatus.find("UPLOADED").first
         ont_submission.submissionId = submission_id
         ont_submission.pullLocation = params["pullLocation"].nil? ? nil : RDF::IRI.new(params["pullLocation"])
         ont_submission.uploadFilePath = file_location
 
         # Add new format if it doesn't exist
         if ont_submission.hasOntologyLanguage.nil?
-          ont_submission.hasOntologyLanguage = OntologyFormat.find(params["hasOntologyLanguage"])
+          ont_submission.hasOntologyLanguage = OntologyFormat.find(params["hasOntologyLanguage"]).first
         end
 
         if ont_submission.valid?
@@ -53,9 +50,8 @@ module Sinatra
       end
 
       def get_parse_log_file(submission)
-        submission.load unless submission.loaded?
+        submission.bring(ontology:[:acronym])
         ontology = submission.ontology
-        ontology.load unless ontology.loaded?
 
         parse_log_folder = File.join(LinkedData.settings.repository_folder, "parse-logs")
         Dir.mkdir(parse_log_folder) unless File.exist? parse_log_folder

@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   ##
   # Ontology projects
   get "/ontologies/:acronym/projects" do
-    ont = Ontology.find(params["acronym"])
+    ont = Ontology.find(params["acronym"]).include(:projects).first
     error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
     reply ont.projects
   end
@@ -16,13 +16,13 @@ class ProjectsController < ApplicationController
 
     # Display all projects
     get do
-      reply MODEL.all(load_attrs: MODEL.goo_attrs_to_load(includes_param))
+      reply MODEL.where.include(MODEL.goo_attrs_to_load(includes_param)).to_a
     end
 
     # Retrieve a single project, by unique project identifier (id)
     get '/:project' do
       id = params[ID_SYMBOL]
-      m = MODEL.find(id)
+      m = MODEL.find(id).include(MODEL.goo_attrs_to_load(includes_param)).first
       if m.nil?
         error 404, "#{ID_NAME} #{id} was not found."
       end
@@ -32,8 +32,8 @@ class ProjectsController < ApplicationController
     # Projects get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:project' do
       id = params[ID_SYMBOL]
-      m = MODEL.find(id)
-      if not m.nil?
+      m = MODEL.find(id).first
+      unless m.nil?
         error 409, "#{ID_NAME} #{id} already exists. Submit updates using HTTP PATCH instead of PUT."
       end
       m = instance_from_params(MODEL, params)
@@ -48,9 +48,9 @@ class ProjectsController < ApplicationController
     # Update an existing submission of a project
     patch '/:project' do
       id = params[ID_SYMBOL]
-      m = MODEL.find(id, load_attrs: [])
+      m = MODEL.find(id).include(MODEL.attributes).first
       if m.nil?
-        error 404, "#{ID_NAME} #{id} was not found. Submit new items using HTTP PUT instead of PATCH."
+        error 404, "#{ID_NAME} #{id} was not found, cannot PATCH."
       end
       m = populate_from_params(m, params)
       if m.valid?
@@ -63,7 +63,7 @@ class ProjectsController < ApplicationController
 
     delete '/:project' do
       id = params[ID_SYMBOL]
-      m = MODEL.find(id)
+      m = MODEL.find(id).first
       if m.nil?
         error 404, "#{ID_NAME} #{id} was not found."
       else

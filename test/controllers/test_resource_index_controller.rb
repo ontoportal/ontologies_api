@@ -181,32 +181,6 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  def teardown
-    delete_goo_models(LinkedData::Models::Ontology.all)
-    delete_goo_models(LinkedData::Models::User.all)
-    @params = nil
-    @user = nil
-    @ont = nil
-    @p = nil
-  end
-
-  def setup
-    @user = LinkedData::Models::User.new(username: "test_user", email: "test_user@example.org", password: "password")
-    @user.save
-    @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: @user)
-    @ont.save
-    #@params = {
-    #    acronym: @p.acronym.value,
-    #    name: @p.name.value,
-    #    description: @p.description.value,
-    #    homePage: @p.homePage.value,
-    #    creator: @p.creator.username.value,
-    #    created: @p.created.value,
-    #    institution: @p.institution.value,
-    #    ontologyUsed: @p.ontologyUsed.first.acronym.value
-    #}
-  end
-
   def test_get_ranked_elements
     #get "/resource_index/ranked_elements?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
