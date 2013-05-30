@@ -20,7 +20,15 @@ class TestOntologiesController < TestCase
     @@file_params = {
       name: @@name,
       hasOntologyLanguage: "OWL",
-      administeredBy: "tim",
+      administeredBy: "tim"
+    }
+
+    @@view_acronym = 'TST_VIEW'
+    @@view_name = 'Test View of Test Ontology'
+    @@view_file_params = {
+        name: @@view_name,
+        hasOntologyLanguage: "OWL",
+        administeredBy: "tom"
     }
   end
 
@@ -40,11 +48,16 @@ class TestOntologiesController < TestCase
   def self._create_onts
     ont = Ontology.new(acronym: @@acronym, name: @@name, administeredBy: [@@user])
     ont.save if ont.valid?
+
+    view = Ontology.new(acronym: @@view_acronym, name: @@view_name, administeredBy: [@@user], viewOf: ont)
+    view.save
   end
 
   def self._delete_onts
     ont = Ontology.find(@@acronym).first
     ont.delete unless ont.nil?
+    view = Ontology.find(@@view_acronym).first
+    view.delete unless view.nil?
   end
 
   def test_all_ontologies
@@ -77,6 +90,7 @@ class TestOntologiesController < TestCase
   end
 
   def test_create_new_ontology_same_acronym
+    self.class._delete_onts
     self.class._create_onts
     put "/ontologies/#{@@acronym}", :name => @@name
     assert last_response.status == 409
@@ -89,6 +103,7 @@ class TestOntologiesController < TestCase
   end
 
   def test_patch_ontology
+    self.class._delete_onts
     self.class._create_onts
     name = "Test new name"
     new_name = {name: name}

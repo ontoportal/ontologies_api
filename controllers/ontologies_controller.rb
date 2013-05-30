@@ -4,7 +4,7 @@ class OntologiesController < ApplicationController
     ##
     # Display all ontologies
     get do
-      onts = Ontology.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
+      onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
       reply onts
     end
 

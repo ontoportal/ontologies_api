@@ -144,6 +144,17 @@ module Sinatra
       end
 
       ##
+      # Get semantic types parameter in the form [semanticTypes=T099,T085,T345]
+      def semantic_types_param(params = nil)
+        params ||= @params
+        if params["semanticTypes"]
+          semanticTypes = params["semanticTypes"].split(",").map {|o| o.strip}
+          return semanticTypes
+        end
+        Array.new
+      end
+
+      ##
       # Given an acronym, get the ontology id URI (http://data.bioontology.org/ontologies/BRO)
       def ontology_uri_from_acronym(acronym)
         REDIS.get("ont_id:uri:#{acronym}")
