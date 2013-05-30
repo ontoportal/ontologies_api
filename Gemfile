@@ -13,7 +13,6 @@ gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '< 5.0'
 gem 'rack-cache'
 gem 'redis'
-gem 'sparql-client', :git => 'https://github.com/ncbo/sparql-client.git'
 
 # HTTP server
 gem 'unicorn'
@@ -37,6 +36,7 @@ else
   gem 'ontologies_linked_data', :git => 'https://github.com/ncbo/ontologies_linked_data.git'
   gem 'ncbo_resource_index_client', :git => 'https://github.com/ncbo/resource_index_ruby_client.git'
   gem 'ncbo_annotator', :git => 'https://github.com/ncbo/ncbo_annotator.git'
+  gem 'sparql-client', :git => 'https://github.com/ncbo/sparql-client.git'
 end
 
 # ontologies_api-specific gems
