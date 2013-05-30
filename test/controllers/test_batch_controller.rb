@@ -11,20 +11,21 @@ class TestBatchController < TestCase
   end
 
   def test_class_batch_one_ontology
-    ont_id = @@ontologies.map { |x| x.id.to_s }.select { |y| y.include? "BRO"}.first
-    assert ont_id, "BRO is not found to exectute batch test."
+    bro = @@ontologies.map { |x| x.id.to_s }.select { |y| y.include? "BRO"}.first
+    assert bro, "BRO is not found to execute batch test."
     class_ids = {
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Information_Resource" => "Information Resource",
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource" => "Data Resource",
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Clinical_Care_Data" => "Clinical Care Data",
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data" => "Aggregate Human Data"
     }
-    collection = class_ids.keys.map { |x| { "class" => x , "ontology" => ont_id } }
+    collection = class_ids.keys.map { |x| { "class" => x , "ontology" => bro } }
     call_params = {
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
         "include" => ["prefLabel","synonym"]
-    } }
+      }
+    }
     post "/batch/", call_params
     assert last_response.ok?
     data = MultiJson.load(last_response.body)
@@ -40,8 +41,8 @@ class TestBatchController < TestCase
   def test_class_batch_multiple
     bro = @@ontologies.map { |x| x.id.to_s }.select { |y| y.include? "BRO"}.first
     mccl = @@ontologies.map { |x| x.id.to_s }.select { |y| y.include? "MCCL"}.first
-    assert bro, "BRO is not found to exectute batch test."
-    assert mccl, "mccl is not found to exectute batch test."
+    assert bro, "BRO is not found to execute batch test."
+    assert mccl, "mccl is not found to execute batch test."
     class_ids = {
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Information_Resource" => "Information Resource",
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource" => "Data Resource",
@@ -55,7 +56,8 @@ class TestBatchController < TestCase
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
         "include" => ["prefLabel"]
-    } }
+      }
+    }
     post "/batch/", call_params
     assert last_response.ok?
     data = MultiJson.load(last_response.body)
@@ -71,7 +73,7 @@ class TestBatchController < TestCase
 
   def test_class_all_bro
     mccl = @@ontologies.select { |y| y.id.to_s.include? "MCCL"}.first
-    assert mccl, "mccl is not found to exectute batch test."
+    assert mccl, "mccl is not found to execute batch test."
     classes = LinkedData::Models::Class.in(mccl.latest_submission).include(:prefLabel).page(1,500).read_only.all
     class_ids = {}
     classes.each do |klass|
@@ -82,7 +84,8 @@ class TestBatchController < TestCase
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
         "include" => ["prefLabel"]
-    } }
+      }
+    }
     post "/batch/", call_params
     assert last_response.ok?
     data = MultiJson.load(last_response.body)
