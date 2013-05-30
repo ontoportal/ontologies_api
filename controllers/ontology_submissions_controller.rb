@@ -92,7 +92,7 @@ class OntologySubmissionsController < ApplicationController
         begin
           submission.process_submission(logger_for_parsing)
         rescue => e
-          submission.submissionStatus = SubmissionStatus.find("ERROR_RDF")
+          submission.submissionStatus = SubmissionStatus.find("ERROR_RDF").first
           submission.parseError = e.message
           if submission.valid?
             submission.save
