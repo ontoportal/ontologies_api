@@ -66,7 +66,7 @@ class TestUsersController < TestCase
   end
 
   def test_no_duplicate_user
-    put "/users/#{@@usernames.shuffle.first}"
+    put "/users/fred"
     assert last_response.status == 409
   end
 
