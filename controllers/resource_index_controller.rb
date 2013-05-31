@@ -12,40 +12,37 @@ class ResourceIndexController < ApplicationController
     get '/search' do
       options = get_options(params)
       classes = get_classes(params)
-      if classes.empty?
-        # TODO: reply with syntax error message?
-      else
-        options[:elementDetails] = true
-        result = NCBO::ResourceIndex.find_by_concept(classes, options)
-        results_array = massage_search(result, options)
-        # Gives you back a page object with some stuff calculated by default. total_result_count is optional,
-        # we won't use it for resource index. The page object is what you will use when you do a `reply`
-        #page = page_object(results_array, total_result_count)
-        page = page_object(results_array)
-        reply page
-      end
+      error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
+      options[:elementDetails] = true
+      result = NCBO::ResourceIndex.find_by_concept(classes, options)
+      error 404, "No resources found" if result.nil?
+      results_array = massage_search(result, options)
+      # Gives you back a page object with some stuff calculated by default. total_result_count is optional,
+      # we won't use it for resource index. The page object is what you will use when you do a `reply`
+      #page = page_object(results_array, total_result_count)
+      page = page_object(results_array)
+      reply page
     end
 
     get '/ranked_elements' do
       options = get_options(params)
       classes = get_classes(params)
-      if classes.empty?
-        # TODO: reply with syntax error message?
-      else
-        result = NCBO::ResourceIndex.ranked_elements(classes, options)
-        result.resources.each do |r|
-          r[:elements] = massage_elements(r[:elements])
-        end
-        # TODO: Massage additional components of response (response.concepts)?
-        page = page_object(result.resources)
-        reply page
+      error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
+      result = NCBO::ResourceIndex.ranked_elements(classes, options)
+      error 404, "No resources found" if result.nil?
+      result.resources.each do |r|
+        r[:elements] = massage_elements(r[:elements])
       end
+      # TODO: Massage additional components (result.concepts)?
+      page = page_object(result.resources)
+      reply page
     end
 
     # Return all resources
     get "/resources" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
+      error 404, "No resources found" if result.nil?
       reply massage_resources(result)
     end
 
@@ -53,6 +50,7 @@ class ResourceIndexController < ApplicationController
     get "/resources/:resources" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
+      error 404, "No resources found" if result.nil?
       reply massage_resources(result)
     end
 
@@ -60,6 +58,7 @@ class ResourceIndexController < ApplicationController
     get "/resources/:resources/elements/:elements" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
+      error 404, "No resources found" if result.nil?
       # TODO: Use the element method instead (Paul is fixing bug)
       #result = NCBO::ResourceIndex.element(params["elements"], params["resources"], options)
       #binding.pry
@@ -110,7 +109,6 @@ class ResourceIndexController < ApplicationController
       return nil if ontology_acronym.nil?
       ontology_uri = ontology_uri_from_acronym(ontology_acronym)
       return nil if ontology_uri.nil?
-
 
       ontology = LinkedData::Models::Ontology.read_only(id: RDF::IRI.new(ontology_uri), acronym: ontology_uri.split("/").last)
       submission = LinkedData::Models::OntologySubmission.read_only(id: RDF::IRI.new(ontology_uri+"/submissions/latest"), ontology: ontology)
