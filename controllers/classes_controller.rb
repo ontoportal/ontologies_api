@@ -18,22 +18,21 @@ class ClassesController < ApplicationController
     # Get root classes
     get '/roots' do
       ont, submission = get_ontology_and_submission
-      roots = submission.roots
+      roots = submission.roots(LinkedData::Models::Class.goo_attrs_to_load(includes_param))
       reply roots
     end
 
-    #
     # Display a single class
     get '/:cls' do
       ont, submission = get_ontology_and_submission
-      cls = get_class(submission)
+      cls = get_class(submission, LinkedData::Models::Class.goo_attrs_to_load(includes_param))
       reply cls
     end
 
     # Get a paths_to_root view
     get '/:cls/paths_to_root' do
       ont, submission = get_ontology_and_submission
-      cls = get_class(submission)
+      cls = get_class(submission, LinkedData::Models::Class.goo_attrs_to_load(includes_param))
       reply cls.paths_to_root
     end
 
@@ -132,7 +131,7 @@ class ClassesController < ApplicationController
       cls.aggregate(:count, :children) if childrenCount
       cls = cls.first
       if cls.nil?
-        error 404, 
+        error 404,
            "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
       end
       return cls
