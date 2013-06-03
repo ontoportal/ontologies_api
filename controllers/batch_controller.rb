@@ -1,10 +1,10 @@
 class BatchController < ApplicationController
   namespace "/batch" do
     post do "/"
-      unless params.key?("http://www.w3.org/2002/07/owl#Class")
+      resource_type = "http://www.w3.org/2002/07/owl#Class"
+      unless params.key?(resource_type)
         error 422, "Batch endpoint only support calls to owl:Class resources"
       end
-      resource_type = params.keys.first
       batch_params = params[resource_type]
       incl = batch_params["include"]
       collection = batch_params["collection"]
@@ -28,7 +28,7 @@ class BatchController < ApplicationController
         latest.bring(ontology:[:acronym])
         classes.concat(LinkedData::Models::Class.in(latest).ids(class_ids).include(goo_include.map{|x| x.to_sym}).read_only.all)
       end
-      reply({ "http://www.w3.org/2002/07/owl#Class" => classes })
+      reply({ resource_type => classes })
     end
   end
 end
