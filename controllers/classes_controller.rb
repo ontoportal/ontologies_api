@@ -18,7 +18,9 @@ class ClassesController < ApplicationController
     # Get root classes
     get '/roots' do
       ont, submission = get_ontology_and_submission
-      roots = submission.roots(LinkedData::Models::Class.goo_attrs_to_load(includes_param))
+      load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      include_childrenCount = load_attrs.include?(:childrenCount)
+      roots = submission.roots(load_attrs, include_childrenCount)
       reply roots
     end
 
