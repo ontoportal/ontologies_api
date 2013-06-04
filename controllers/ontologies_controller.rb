@@ -19,9 +19,11 @@ class OntologiesController < ApplicationController
     ##
     # Ontology latest submission
     get "/:acronym/latest_submission" do
-      ont = Ontology.find(params["acronym"]).include(Ontology.goo_attrs_to_load(includes_param.merge(submissions: true))).first
+      ont = Ontology.find(params["acronym"]).include(:acronym, :submissions).first
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
-      reply ont.latest_submission
+      latest = ont.latest_submission
+      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+      reply latest
     end
 
     ##

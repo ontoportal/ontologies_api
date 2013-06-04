@@ -15,7 +15,7 @@ class ResourceIndexController < ApplicationController
       error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
       options[:elementDetails] = true
       result = NCBO::ResourceIndex.find_by_concept(classes, options)
-      error 404, "No resources found" if result.nil?
+      error 404, "No resources found" if (result.nil? || result.empty?)
       results_array = massage_search(result, options)
       # Gives you back a page object with some stuff calculated by default. total_result_count is optional,
       # we won't use it for resource index. The page object is what you will use when you do a `reply`
@@ -29,7 +29,7 @@ class ResourceIndexController < ApplicationController
       classes = get_classes(params)
       error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
       result = NCBO::ResourceIndex.ranked_elements(classes, options)
-      error 404, "No resources found" if result.nil?
+      error 404, "No resources found" if (result.nil? || result.empty?)
       result.resources.each do |r|
         r[:elements] = massage_elements(r[:elements])
       end
@@ -42,7 +42,7 @@ class ResourceIndexController < ApplicationController
     get "/resources" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
-      error 404, "No resources found" if result.nil?
+      error 404, "No resources found" if (result.nil? || result.empty?)
       reply massage_resources(result)
     end
 
@@ -50,7 +50,7 @@ class ResourceIndexController < ApplicationController
     get "/resources/:resources" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
-      error 404, "No resources found" if result.nil?
+      error 404, "No resources found" if (result.nil? || result.empty?)
       reply massage_resources(result)
     end
 
@@ -58,7 +58,7 @@ class ResourceIndexController < ApplicationController
     get "/resources/:resources/elements/:elements" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
-      error 404, "No resources found" if result.nil?
+      error 404, "No resources found" if (result.nil? || result.empty?)
       # TODO: Use the element method instead (Paul is fixing bug)
       #result = NCBO::ResourceIndex.element(params["elements"], params["resources"], options)
       #binding.pry

@@ -11,7 +11,7 @@ class HomeController < ApplicationController
       routes.each do |route|
         next if route.length < 3 || route.split("/").length > 2
         route_no_slash = route.gsub("/", "")
-        context[route_no_slash] = route_to_class_map[route].type_uri if route_to_class_map[route] && route_to_class_map[route].respond_to?(:type_uri)
+        context[route_no_slash] = route_to_class_map[route].type_uri.to_s if route_to_class_map[route] && route_to_class_map[route].respond_to?(:type_uri)
         routes_hash[route_no_slash] = LinkedData.settings.rest_url_prefix+route_no_slash
       end
       routes_hash["@context"] = context
