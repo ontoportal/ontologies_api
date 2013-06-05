@@ -40,6 +40,7 @@ class ClassesController < ApplicationController
 
     # Get a tree view
     get '/:cls/tree' do
+      # We override include values other than the following, user-provided include ignored
       params["include"] = "prefLabel,childrenCount,children"
       env["rack.request.query_hash"] = params
 
@@ -127,10 +128,10 @@ class ClassesController < ApplicationController
       if !cls_uri.valid?
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
       end
-      childrenCount = load_attrs.delete :childrenCount
+      aggregates = LinkedData::Models::Class.goo_aggregates_to_load(load_attrs)
       cls = LinkedData::Models::Class.find(cls_uri).in(submission)
       cls = cls.include(load_attrs) if load_attrs && load_attrs.length > 0
-      cls.aggregate(:count, :children) if childrenCount
+      cls.aggregate(*aggregates) unless aggregates.empty?
       cls = cls.first
       if cls.nil?
         error 404,
