@@ -49,7 +49,6 @@ class ClassesController < ApplicationController
 
       #add the other roots to the response
       roots = submission.roots(extra_include=nil, aggregate_children=true)
-      found = false
       roots.each_index do |i|
         r = roots[i]
         if r.id == root_tree.id
