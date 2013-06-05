@@ -83,10 +83,10 @@ class ClassesController < ApplicationController
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      page_data = LinkedData::Models::Class.where(ancestors: cls).in(submission)
-                                        .include(ld)
-                                        .page(page,size)
-                                        .read_only.all
+      aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
+      page_data_query = LinkedData::Models::Class.where(ancestors: cls).in(submission).include(ld)
+      page_data_query.aggregate(*aggregates) unless aggregates.empty?
+      page_data = page_data_query.page(page,size).all
       reply page_data
     end
 
@@ -94,13 +94,13 @@ class ClassesController < ApplicationController
     get '/:cls/children' do
       ont, submission = get_ontology_and_submission
       page, size = page_params
-      cls = get_class(submission,load_attrs=[])
+      cls = get_class(submission)
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      page_data = LinkedData::Models::Class.where(parents: cls).in(submission)
-                                        .include(ld)
-                                        .page(page,size)
-                                        .read_only.all
+      aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
+      page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
+      page_data_query.aggregate(*aggregates) unless aggregates.empty?
+      page_data = page_data_query.page(page,size).all
       reply page_data
     end
 
@@ -109,9 +109,10 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       cls = get_class(submission)
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      parents = LinkedData::Models::Class.where(children: cls).in(submission)
-                                        .include(ld)
-                                        .read_only.all
+      aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
+      parents_query = LinkedData::Models::Class.where(children: cls).in(submission).include(ld)
+      parents_query.aggregate(*aggregates) unless aggregates.empty?
+      parents = parents_query.all
       if parents.nil?
         reply []
       else
