@@ -44,6 +44,7 @@ if [:development].include?(settings.environment)
   begin
     require 'rack-mini-profiler'
     Rack::MiniProfiler.config.storage = Rack::MiniProfiler::FileStore
+    Rack::MiniProfiler.config.position = 'right'
     c = ::Rack::MiniProfiler.config
     c.pre_authorize_cb = lambda { |env|
       true
