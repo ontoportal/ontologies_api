@@ -9,13 +9,7 @@ class SearchController < ApplicationController
       params = get_params(globalParams)
       docs = Array.new
 
-      puts query
-      puts
-      puts params
-
-
       resp = LinkedData::Models::Class.search(query, params)
-
       total_found = resp["response"]["numFound"]
 
       resp["response"]["docs"].each do |doc|
