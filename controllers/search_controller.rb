@@ -4,9 +4,18 @@ class SearchController < ApplicationController
     # execute a search query
     get do
       q = params["q"]
-      page_params = get_page_params(q, @params.dup)
+      globalParams = @params.dup
+      query = get_query(q, globalParams)
+      params = get_params(globalParams)
       docs = Array.new
-      resp = LinkedData::Models::Class.search(q, page_params)
+
+      puts query
+      puts
+      puts params
+
+
+      resp = LinkedData::Models::Class.search(query, params)
+
       total_found = resp["response"]["numFound"]
 
       resp["response"]["docs"].each do |doc|
@@ -31,20 +40,58 @@ class SearchController < ApplicationController
 
     private
 
-    def get_page_params(q, args={})
+    def get_query(q, args={})
+      raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if q.nil? || q.strip.empty?
+      query = ""
+      acronyms = []
+      ontParam = ""
+
+      if args["exactMatch"] == "true"
+        query = "prefLabelExact:\"#{q}\""
+      else
+        query = "(prefLabel:#{q} OR synonym:#{q})"
+      end
+      query << " AND submissionAcronym:"
+
+      if !args["ontologies"]
+        if args["includeViews"] == "true"
+          onts = Ontology.where.include(:acronym).to_a
+        else
+          onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include([:acronym]).to_a
+        end
+        acronyms = onts.map {|o| o.acronym}
+      else
+        acronyms = params["ontologies"].split(",").map {|o| o.strip}
+      end
+
+      if (acronyms.length == 1)
+        ontParam << "\"#{acronyms[0]}\""
+      elsif (acronyms.length > 1)
+        ontParam << "(\"#{acronyms[0]}\""
+        acronyms[1..-1].each do |ont|
+          ontParam << " OR \"#{ont}\""
+        end
+        ontParam << ")"
+      end
+      query << ontParam
+
+      if args["onlyDefinitions"] == "true"
+        query << " AND definition:[* TO *]"
+      end
+
+      return query
+    end
+
+    def get_params(args={})
       args.delete "q"
       args.delete "page"
       args.delete "pagesize"
-      raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if q.nil? || q.strip.empty?
       pagenum, pagesize = page_params()
-
 
       if pagenum <= 1
         args["start"] = 0
-
-
       else
-        args["start"] = 0
+        args["start"] = pagenum * pagesize - pagesize
       end
       args["rows"] = pagesize
       return args
