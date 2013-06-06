@@ -1,7 +1,7 @@
 class OntologySubmissionsController < ApplicationController
   get "/submissions" do
     includes = OntologySubmission.goo_attrs_to_load(includes_param)
-    includes.concat([:submissionId, ontology: [:acronym]])
+    includes.concat([:submissionId, ontology: Ontology.goo_attrs_to_load])
     submissions = OntologySubmission.where.include(includes).to_a
 
     # Figure out latest parsed submissions using all submissions
