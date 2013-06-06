@@ -6,7 +6,7 @@ class BatchController < ApplicationController
         error 422, "Batch endpoint only support calls to owl:Class resources"
       end
       batch_params = params[resource_type]
-      incl = batch_params["include"]
+      incl = batch_params["include"].split(",").map {|e| e.to_sym}
       collection = batch_params["collection"]
       error 422, "Call should contain 'include' parameters" if incl.nil?
       error 422, "Call should contain 'collection' parameter" if collection.nil? || collection.length == 0
