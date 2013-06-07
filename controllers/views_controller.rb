@@ -5,7 +5,7 @@ class ViewsController < ApplicationController
     ##
     # Display all views of an ontology
     get do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).include(views: Ontology.goo_attrs_to_load(includes_param)).first
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       reply ont.views
     end
@@ -13,9 +13,9 @@ class ViewsController < ApplicationController
     ##
     # Display a given view
     get '/:view' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       error 404, "You must provide a valid ontology `acronym` to retrieve its view" if ont.nil?
-      view = Ontology.find(params["view"])
+      view = Ontology.find(params["view"]).include(Ontology.goo_attrs_to_load(includes_param)).first
       error 404, "You must provide a valid view `acronym` to retrieve a view" if view.nil?
       reply view
     end
@@ -23,9 +23,9 @@ class ViewsController < ApplicationController
     ##
     # Display the most recent submission of the ontology
     put '/:view' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       error 404, "You must provide a valid ontology `acronym` to create a view on it" if ont.nil?
-      view = Ontology.find(params["view"])
+      view = Ontology.find(params["view"]).include(Ontology.attributes(:all)).first
 
       if view.nil?
         view = instance_from_params(Ontology, params)
@@ -47,9 +47,9 @@ class ViewsController < ApplicationController
     ##
     # Update a view
     patch '/:view' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       error 404, "You must provide an existing ontology `acronym` to patch its view" if ont.nil?
-      view = Ontology.find(params["view"])
+      view = Ontology.find(params["view"]).include(Ontology.attributes(:all)).first
       error 404, "You must provide a valid view `acronym` to retrieve a view to be updated" if view.nil?
 
       populate_from_params(view, params)
@@ -65,9 +65,9 @@ class ViewsController < ApplicationController
     ##
     # Delete a view and all its submissions
     delete '/:view' do
-      ont = Ontology.find(params["acronym"])
+      ont = Ontology.find(params["acronym"]).first
       error 404, "You must provide an existing ontology `acronym` to delete its view" if ont.nil?
-      view = Ontology.find(params["view"])
+      view = Ontology.find(params["view"]).first
       error 404, "You must provide a valid view `acronym` to delete a view" if view.nil?
       view.delete
       halt 204
