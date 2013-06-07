@@ -1,6 +1,7 @@
 class BatchController < ApplicationController
   namespace "/batch" do
     post do "/"
+      fix_batch_params_for_request()
       resource_type = "http://www.w3.org/2002/07/owl#Class"
       unless params.key?(resource_type)
         error 422, "Batch endpoint only support calls to owl:Class resources"
@@ -30,5 +31,16 @@ class BatchController < ApplicationController
       end
       reply({ resource_type => classes })
     end
+
+    private
+
+    def fix_batch_params_for_request
+      batch_include = []
+      @params.each {|resource_type, values| batch_include << values["include"]}
+      batch_include.compact!
+      @params["include"] = batch_include.join(",")
+      env["rack.request.query_hash"] = @params
+    end
+
   end
 end

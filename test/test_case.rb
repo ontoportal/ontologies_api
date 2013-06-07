@@ -9,6 +9,8 @@ if ENV["COVERAGE"].eql?("true")
   end
 end
 
+ENV['RACK_ENV'] = 'test'
+
 require_relative '../app'
 require 'minitest/unit'
 MiniTest::Unit.autorun
@@ -16,8 +18,6 @@ require 'rack/test'
 require 'multi_json'
 require 'oj'
 require 'json-schema'
-
-ENV['RACK_ENV'] = 'test'
 
 # Check to make sure you want to run if not pointed at localhost
 safe_host = Regexp.new(/localhost|ncbo-dev*/)

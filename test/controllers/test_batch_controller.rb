@@ -1,7 +1,7 @@
 require_relative '../test_case'
 
 class TestBatchController < TestCase
-  def self.before_suite 
+  def self.before_suite
     LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
     @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
   end
@@ -55,7 +55,7 @@ class TestBatchController < TestCase
     call_params = {
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
-        "include" => ["prefLabel"]
+        "include" => "prefLabel"
       }
     }
     post "/batch/", call_params
@@ -83,7 +83,7 @@ class TestBatchController < TestCase
     call_params = {
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
-        "include" => ["prefLabel"]
+        "include" => "prefLabel"
       }
     }
     post "/batch/", call_params
