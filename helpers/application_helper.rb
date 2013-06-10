@@ -133,10 +133,21 @@ module Sinatra
           # When they aren't URIs, make them URIs
           ontologies.map! {|o| o.start_with?("http://") ? o : ontology_uri_from_acronym(o)}
           # Extra safe, do a Goo lookup for any remaining
-          if ontologies.include? nil
-            error 404, "The ontologies parameter `[#{params["ontologies"]}]` include inexistent acronyms. Notice that acronyms are case sensitive."
+          ontologies.map! do |o|
+            if o.to_s.start_with?("http://")
+              o
+            else
+              ont = Ontology.find(o).first
+              if ont.nil?
+                nil
+              else
+                ont.id.to_s
+              end
+            end
           end
-          ontologies.map! {|o| o.start_with?("http://") ? o : Ontology.find(o)}
+          if ontologies.include? nil
+            error 404, "The ontologies parameter `[#{params["ontologies"]}]` includes non-existent acronyms. Notice that acronyms are case sensitive."
+          end
           ontologies.compact!
           return ontologies
         end
@@ -155,9 +166,11 @@ module Sinatra
       end
 
       ##
-      # Given an acronym, get the ontology id URI (http://data.bioontology.org/ontologies/BRO)
+      # Given an acronym, get the ontology URI (http://data.bioontology.org/ontologies/BRO)
+      # @param acronym [String] the ontology acronym
       def ontology_uri_from_acronym(acronym)
-        REDIS.get("ont_id:uri:#{acronym}")
+        uri = REDIS.get("ont_id:uri:#{acronym}")
+        uri || acronym
       end
 
     end
