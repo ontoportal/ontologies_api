@@ -201,13 +201,6 @@ module Sinatra
       end
 
       ##
-      # Given an acronym, get the ontology URI (http://data.bioontology.org/ontologies/BRO)
-      # @param acronym [String] the ontology acronym
-      def ontology_uri_from_acronym(acronym)
-        REDIS.get("ont_id:uri:#{acronym}")
-      end
-
-      ##
       # Given a virtual id, return the ontology URI (uses a Redis lookup)
       # @param virtual_id [Number] the ontology virtual ID
       def ontology_uri_from_virtual_id(virtual_id)

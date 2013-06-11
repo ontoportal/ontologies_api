@@ -5,7 +5,7 @@ class AnnotatorController < ApplicationController
     get do
       text = params["text"]
       raise error 400, "A text to be annotated must be supplied using the argument text=<text to be annotated>" if text.nil? || text.strip.empty?
-      ontologies = ontologies_param
+      ontologies = ontologies_param_to_acronyms
       semantic_types = semantic_types_param
       max_level = params["max_level"].to_i || 0
       exclude_nums = params["exclude_numbers"].eql?("true")
@@ -14,7 +14,7 @@ class AnnotatorController < ApplicationController
       reply 200, annotations
     end
 
-    post '/dictionary' do
+    get '/dictionary' do
       annotator = Annotator::Models::NcboAnnotator.new
       annotator.generate_dictionary_file
     end

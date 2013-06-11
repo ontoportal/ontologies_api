@@ -154,6 +154,11 @@ module Sinatra
         Array.new
       end
 
+      def ontologies_param_to_acronyms(params = nil)
+        ontResourceIds = ontologies_param(params)
+        return ontResourceIds.map { |ontResourceId| ontResourceId.to_s.split('/')[-1]}
+      end
+
       ##
       # Get semantic types parameter in the form [semanticTypes=T099,T085,T345]
       def semantic_types_param(params = nil)
@@ -169,8 +174,7 @@ module Sinatra
       # Given an acronym, get the ontology URI (http://data.bioontology.org/ontologies/BRO)
       # @param acronym [String] the ontology acronym
       def ontology_uri_from_acronym(acronym)
-        uri = REDIS.get("ont_id:uri:#{acronym}")
-        uri || acronym
+        return REDIS.get("ont_id:uri:#{acronym}") || acronym
       end
 
     end
