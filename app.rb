@@ -59,18 +59,18 @@ if [:development].include?(settings.environment)
   end
 end
 
-if settings.environment == :production
+# Use middleware (ORDER IS IMPORTANT)
+use Rack::Accept
+use Rack::PostBodyToParams
+use LinkedData::Security::Authorization
+
+if LinkedData.settings.enable_http_cache
   require 'rack/cache'
   use Rack::Cache,
     :verbose     => true,
     :metastore   => 'file:./cache/rack/meta',
     :entitystore => 'file:./cache/rack/body'
 end
-
-# Use middleware (ORDER IS IMPORTANT)
-use Rack::Accept
-use Rack::PostBodyToParams
-use LinkedData::Security::Authorization
 
 # Initialize the app
 require_relative 'init'
