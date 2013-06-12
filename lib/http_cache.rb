@@ -124,5 +124,13 @@ module LinkedData
       return @key, @field
     end
 
+    ##
+    # invalidate all http cache entries
+    def self.invalidate_all_entries
+      entries_size = self.size
+      REDIS.del("http_cache")
+      return entries_size
+    end
+
   end
 end

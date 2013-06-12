@@ -36,4 +36,18 @@ class TestHTTPCache < TestCase
     assert last_response.headers["Last-Modified"].nil?
   end
 
+  def test_cache_invalidate_all_entries
+    LinkedData.settings.enable_http_cache = true
+    get "/"
+    get "/ontologies"
+    get "/groups"
+    assert last_response.ok?
+    n = LinkedData::HTTPCache.size
+    assert n >= 3
+    inv_n = LinkedData::HTTPCache.invalidate_all_entries
+    assert_equal n, inv_n
+    n = LinkedData::HTTPCache.size
+    assert_equal 0, n
+  end
+
 end
