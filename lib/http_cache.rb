@@ -7,6 +7,7 @@ module LinkedData
     REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
     @@redis_available = nil
     CACHE_INVALIDATION_VERBS = Set.new(["POST", "PUT", "PATCH", "DELETE"])
+    CACHE_MAX_AGE = 2592000 # 2592000 == 30 days
 
     def initialize(options = {})
       @env = options[:env]
@@ -48,6 +49,7 @@ module LinkedData
     def cache_headers(headers)
       raise ArgumentError, "`headers` should be a hash of headers" unless headers.is_a?(Hash)
       headers["Vary"] = "User-Agent, Accept, Accept-Language, Accept-Encoding, Authorization"
+      headers["Cache-Control"] = "public, max-age=#{CACHE_MAX_AGE}"
     end
 
     private

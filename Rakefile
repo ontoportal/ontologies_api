@@ -23,6 +23,12 @@ Rake::TestTask.new do |t|
   t.test_files = FileList['test/helpers/test*.rb']
 end
 
+Rake::TestTask.new do |t|
+  t.libs = []
+  t.name = "test:lib"
+  t.test_files = FileList['test/lib/test*.rb']
+end
+
 desc "Run test coverage analysis"
 task :coverage do
   puts "Code coverage reports will be visible in the /coverage folder"
@@ -42,7 +48,7 @@ namespace :unicorn do
       `bundle exec unicorn -p 9393 -c config/unicorn.rb`
     end
   end
-  
+
   desc "Unicorn stop"
   task :stop do
     `pkill -QUIT -f 'unicorn master'`
@@ -58,4 +64,4 @@ namespace :unicorn do
       print "\n"
     end
   end
-end  
+end
