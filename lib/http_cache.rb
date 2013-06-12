@@ -132,5 +132,11 @@ module LinkedData
       return entries_size
     end
 
+    ##
+    # get the size (number o entries) in the cache
+    def self.size
+      return REDIS.hlen("http_cache")
+    end
+
   end
 end
