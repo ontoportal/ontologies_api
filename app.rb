@@ -39,8 +39,8 @@ if [:development, :console].include?(settings.environment)
   set :show_exceptions, false
 end
 
-#At the moment this cannot be enabled under ruby-2.0
-if [:development].include?(settings.environment)
+# mini-profiler sets the etag header to nil, so don't use when caching is enabled
+if [:development].include?(settings.environment) && !LinkedData.settings.enable_http_cache
   begin
     require 'rack-mini-profiler'
     Rack::MiniProfiler.config.storage = Rack::MiniProfiler::FileStore
