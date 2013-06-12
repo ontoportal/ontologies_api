@@ -1,11 +1,19 @@
 class SearchController < ApplicationController
   namespace "/search" do
+    ONTOLOGIES_PARAM = "ontologies"
+    EXACT_MATCH_PARAM = "exactMatch"
+    INCLUDE_VIEWS_PARAM = "includeViews"
+    REQUIRE_DEFINITIONS_PARAM = "requireDefinitions"
 
     # execute a search query
     get do
       q = params["q"]
       globalParams = @params.dup
       query = get_query(q, globalParams)
+
+      puts query
+
+
       params = get_params(globalParams)
       docs = Array.new
 
@@ -38,41 +46,61 @@ class SearchController < ApplicationController
       raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if q.nil? || q.strip.empty?
       query = ""
       acronyms = []
-      ontParam = ""
 
-      if args["exactMatch"] == "true"
+      if args[EXACT_MATCH_PARAM] == "true"
         query = "prefLabelExact:\"#{q}\""
       else
-        query = "(prefLabel:#{q} OR synonym:#{q})"
+        query = get_tokenized_query(q)
       end
-      query << " AND submissionAcronym:"
 
-      if !args["ontologies"]
-        if args["includeViews"] == "true"
+      if !args[ONTOLOGIES_PARAM]
+        if args[INCLUDE_VIEWS_PARAM] == "true"
           onts = Ontology.where.include(:acronym).to_a
         else
           onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include([:acronym]).to_a
         end
         acronyms = onts.map {|o| o.acronym}
       else
-        acronyms = params["ontologies"].split(",").map {|o| o.strip}
+        acronyms = params[ONTOLOGIES_PARAM].split(",").map {|o| o.strip}
       end
 
-      if (acronyms.length == 1)
-        ontParam << "\"#{acronyms[0]}\""
-      elsif (acronyms.length > 1)
-        ontParam << "(\"#{acronyms[0]}\""
-        acronyms[1..-1].each do |ont|
-          ontParam << " OR \"#{ont}\""
-        end
-        ontParam << ")"
-      end
-      query << ontParam
+      query << " AND "
+      query << get_single_field_query_param(acronyms, "submissionAcronym", "OR")
 
-      if args["onlyDefinitions"] == "true"
+      if args[REQUIRE_DEFINITIONS_PARAM] == "true"
         query << " AND definition:[* TO *]"
       end
 
+      return query
+    end
+
+    def get_tokenized_query(text)
+      words = text.split
+      query = "("
+      query << get_single_field_query_param(words, "prefLabel", "AND")
+      query << " OR "
+      query << get_single_field_query_param(words, "synonym", "AND")
+      query << ")"
+      return query
+    end
+
+    def get_single_field_query_param(words, fieldName, clause)
+      query = "#{fieldName}:"
+
+      if (words.length > 1)
+        query << "("
+      end
+      query << "\"#{words[0]}\""
+
+      if (words.length > 1)
+        words[1..-1].each do |word|
+          query << " #{clause} \"#{word}\""
+        end
+      end
+
+      if (words.length > 1)
+        query << ")"
+      end
       return query
     end
 
