@@ -127,15 +127,18 @@ module LinkedData
     ##
     # invalidate all http cache entries
     def self.invalidate_all_entries
-      entries_size = self.size
-      REDIS.del("http_cache")
+      entries = REDIS.keys(pattern="http_cache*")
+      entries_size = entries.length
+      entries.each do |http_cache_key|
+        REDIS.del("http_cache")
+      end
       return entries_size
     end
 
     ##
     # get the size (number o entries) in the cache
     def self.size
-      return REDIS.hlen("http_cache")
+      return REDIS.keys(pattern="http_cache*").length
     end
 
   end

@@ -43,7 +43,6 @@ class TestHTTPCache < TestCase
     get "/groups"
     assert last_response.ok?
     n = LinkedData::HTTPCache.size
-    assert n >= 3
     inv_n = LinkedData::HTTPCache.invalidate_all_entries
     assert_equal n, inv_n
     n = LinkedData::HTTPCache.size
