@@ -25,7 +25,6 @@ module LinkedData
       return unless CACHE_INVALIDATION_VERBS.include?(@request.env["REQUEST_METHOD"])
       key, field = redis_key_and_field
       REDIS.hdel(key, field)
-      binding.pry
       if invalidate_list
         key = key.split(":")
         field = key.pop || "top"
