@@ -187,6 +187,8 @@ module Sinatra
 
       ##
       # Given a virtual id, return the acronym (uses a Redis lookup)
+      # Population of redis data available here:
+      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
       # @param virtual_id [Integer] the ontology version ID
       def acronym_from_virtual_id(virtual_id)
         REDIS.get("old_to_new:acronym_from_virtual:#{virtual_id}")
@@ -194,6 +196,8 @@ module Sinatra
 
       ##
       # Given a version id, return the acronym (uses a Redis lookup)
+      # Population of redis data available here:
+      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
       # @param version_id [Integer] the ontology version ID
       def acronym_from_version_id(version_id)
         virtual = REDIS.get("old_to_new:virtual_from_version:#{version_id}")
@@ -202,6 +206,8 @@ module Sinatra
 
       ##
       # Given an acronym, return the virtual id (uses a Redis lookup)
+      # Population of redis data available here:
+      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
       # @param acronym [String] the ontology acronym
       def virtual_id_from_acronym(acronym)
         virtual_id = REDIS.get("old_to_new:virtual_from_acronym:#{virtual_id}")
@@ -211,6 +217,8 @@ module Sinatra
 
       ##
       # Given a virtual id, return the ontology URI (uses a Redis lookup)
+      # Population of redis data available here:
+      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
       # @param virtual_id [Integer] the ontology virtual ID
       def ontology_uri_from_virtual_id(virtual_id)
         acronym = acronym_from_virtual_id(virtual_id)
@@ -219,6 +227,8 @@ module Sinatra
 
       ##
       # Given an ontology id URI, get the virtual id (uses a Redis lookup)
+      # Population of redis data available here:
+      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
       # @param uri [String] ontology id in URI form
       def virtual_id_from_uri(uri)
         acronym = acronym_from_ontology_uri(uri)
