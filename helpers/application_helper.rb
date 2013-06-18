@@ -5,7 +5,6 @@ module Sinatra
   module Helpers
     module ApplicationHelper
       SERIALIZER = LinkedData::Serializer
-      REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
 
       ##
       # Escape text for use in html
@@ -171,10 +170,33 @@ module Sinatra
       end
 
       ##
-      # Given an acronym, get the ontology URI (http://data.bioontology.org/ontologies/BRO)
+      # Given an acronym (BRO), get the ontology URI (http://data.bioontology.org/ontologies/BRO)
       # @param acronym [String] the ontology acronym
       def ontology_uri_from_acronym(acronym)
-        return REDIS.get("ont_id:uri:#{acronym}") || acronym
+        @ontology_uri_acronym_map ||= ontology_uri_acronym_map
+        @ontology_uri_acronym_map[acronym]
+      end
+
+      ##
+      # Given a URI (http://data.bioontology.org/ontologies/BRO), get the ontology acronym (BRO)
+      # @param uri [String] the ontology uri
+      def acronym_from_ontology_uri(uri)
+        @acronym_ontology_uri_map ||= acronym_ontology_uri_map
+        @acronym_ontology_uri_map[uri.to_s]
+      end
+
+      private
+
+      def ontology_uri_acronym_map
+        map = {}
+        LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.acronym] = o.id.to_s}
+        map
+      end
+
+      def acronym_ontology_uri_map
+        map = {}
+        LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.id.to_s] = o.acronym}
+        map
       end
 
     end
