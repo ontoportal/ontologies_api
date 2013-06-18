@@ -136,7 +136,7 @@ module Sinatra
             if o.to_s.start_with?("http://")
               o
             else
-              ont = Ontology.find(o).first
+              ont = Ontology.find(o).first rescue nil
               if ont.nil?
                 nil
               else
