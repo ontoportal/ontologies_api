@@ -177,42 +177,52 @@ module Sinatra
       # what is produced by the `shorten_uri` method and should match Resource Index localConceptId output.
       # In fact, doing localConceptId.split("/") should give you the parameters for this method.
       def uri_from_short_id(version_id, short_id)
-        uri = REDIS.get("ri:#{version_id}:#{short_id}")
+        uri = REDIS.get("ri:short_id_from_uri:#{version_id}:#{short_id}")
         if uri.nil? && short_id.include?(":")
           try_again_id = short_id.split(":").last
-          uri = REDIS.get("ri:#{version_id}:#{try_again_id}")
+          uri = REDIS.get("ri:short_id_from_uri:#{version_id}:#{try_again_id}")
         end
         uri
       end
 
       ##
+      # Given a virtual id, return the acronym (uses a Redis lookup)
+      # @param virtual_id [Integer] the ontology version ID
+      def acronym_from_virtual_id(virtual_id)
+        REDIS.get("ri:acronym_from_virtual:#{virtual_id}")
+      end
+
+      ##
       # Given a version id, return the acronym (uses a Redis lookup)
-      # @param version_id [Number] the ontology version ID
+      # @param version_id [Integer] the ontology version ID
       def acronym_from_version_id(version_id)
-        REDIS.hmget("ri:#{version_id}", "acronym").first
+        virtual = REDIS.get("ri:virtual_from_version:#{version_id}")
+        acronym_from_virtual_id(virtual)
       end
 
       ##
       # Given an acronym, return the virtual id (uses a Redis lookup)
       # @param acronym [String] the ontology acronym
       def virtual_id_from_acronym(acronym)
-        uri = ontology_uri_from_acronym(acronym)
-        return virtual_id_from_uri(uri)
+        virtual_id = REDIS.get("ri:virtual_from_acronym:#{virtual_id}")
+        virtual_id.to_i unless virtual_id.nil?
+        virtual_id
       end
 
       ##
       # Given a virtual id, return the ontology URI (uses a Redis lookup)
-      # @param virtual_id [Number] the ontology virtual ID
+      # @param virtual_id [Integer] the ontology virtual ID
       def ontology_uri_from_virtual_id(virtual_id)
-        REDIS.get("ont_id:uri_from_virtual:#{virtual_id}")
+        acronym = acronym_from_virtual_id(virtual_id)
+        ontology_uri_from_acronym(acronym)
       end
 
       ##
-      # Given an ontology id URI, get the virtual id
+      # Given an ontology id URI, get the virtual id (uses a Redis lookup)
+      # @param uri [String] ontology id in URI form
       def virtual_id_from_uri(uri)
-        virtual_id = REDIS.get("ont_id:virtual:#{uri}")
-        virtual_id = virtual_id.to_i unless virtual_id.nil?
-        virtual_id
+        acronym = acronym_from_ontology_uri(uri)
+        virtual_id_from_acronym(acronym)
       end
 
     end
