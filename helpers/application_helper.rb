@@ -4,7 +4,6 @@ require 'date'
 module Sinatra
   module Helpers
     module ApplicationHelper
-      SERIALIZER = LinkedData::Serializer
 
       ##
       # Escape text for use in html
@@ -80,7 +79,7 @@ module Sinatra
 
         obj = response.shift
         halt 404 if obj.nil?
-        SERIALIZER.build_response(@env, status: status, ld_object: obj)
+        LinkedData::Serializer.build_response(@env, status: status, ld_object: obj)
       end
 
       ##
@@ -95,7 +94,7 @@ module Sinatra
         end
         status, obj = response.first, response.last if response.length == 2
         status, headers, obj = response.first, response[1], response.last if response.length == 3
-        super(SERIALIZER.build_response(@env, status: status, headers: headers, ld_object: obj))
+        super(LinkedData::Serializer.build_response(@env, status: status, headers: headers, ld_object: obj))
       end
 
       ##
