@@ -26,6 +26,7 @@ module Sinatra
 
         # Add new format if it doesn't exist
         if ont_submission.hasOntologyLanguage.nil?
+          error 422, "You must specify the ontology format using the `hasOntologyLanguage` parameter" if params["hasOntologyLanguage"].nil? || params["hasOntologyLanguage"].empty?
           ont_submission.hasOntologyLanguage = OntologyFormat.find(params["hasOntologyLanguage"]).first
         end
 
