@@ -4,6 +4,7 @@ class SearchController < ApplicationController
     EXACT_MATCH_PARAM = "exactMatch"
     INCLUDE_VIEWS_PARAM = "includeViews"
     REQUIRE_DEFINITIONS_PARAM = "requireDefinitions"
+    INCLUDE_PROPERTIES_PARAM = "includeProperties"
 
     # execute a search query
     get do
@@ -46,7 +47,7 @@ class SearchController < ApplicationController
       if args[EXACT_MATCH_PARAM] == "true"
         query = "prefLabelExact:\"#{q}\""
       else
-        query = get_tokenized_query(q)
+        query = get_tokenized_query(q, args)
       end
 
       if !args[ONTOLOGIES_PARAM]
@@ -70,12 +71,18 @@ class SearchController < ApplicationController
       return query
     end
 
-    def get_tokenized_query(text)
+    def get_tokenized_query(text, args)
       words = text.split
       query = "("
       query << get_single_field_query_param(words, "prefLabel", "AND")
       query << " OR "
       query << get_single_field_query_param(words, "synonym", "AND")
+
+      if args[INCLUDE_PROPERTIES_PARAM] == "true"
+        query << " OR "
+        query << get_single_field_query_param(words, "property", "AND")
+      end
+
       query << ")"
       return query
     end
