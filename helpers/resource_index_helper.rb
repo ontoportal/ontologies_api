@@ -189,14 +189,14 @@ module Sinatra
       # Given a virtual id, return the acronym (uses a Redis lookup)
       # @param virtual_id [Integer] the ontology version ID
       def acronym_from_virtual_id(virtual_id)
-        REDIS.get("ri:acronym_from_virtual:#{virtual_id}")
+        REDIS.get("old_to_new:acronym_from_virtual:#{virtual_id}")
       end
 
       ##
       # Given a version id, return the acronym (uses a Redis lookup)
       # @param version_id [Integer] the ontology version ID
       def acronym_from_version_id(version_id)
-        virtual = REDIS.get("ri:virtual_from_version:#{version_id}")
+        virtual = REDIS.get("old_to_new:virtual_from_version:#{version_id}")
         acronym_from_virtual_id(virtual)
       end
 
@@ -204,7 +204,7 @@ module Sinatra
       # Given an acronym, return the virtual id (uses a Redis lookup)
       # @param acronym [String] the ontology acronym
       def virtual_id_from_acronym(acronym)
-        virtual_id = REDIS.get("ri:virtual_from_acronym:#{virtual_id}")
+        virtual_id = REDIS.get("old_to_new:virtual_from_acronym:#{virtual_id}")
         virtual_id.to_i unless virtual_id.nil?
         virtual_id
       end
