@@ -177,10 +177,11 @@ module Sinatra
       # what is produced by the `shorten_uri` method and should match Resource Index localConceptId output.
       # In fact, doing localConceptId.split("/") should give you the parameters for this method.
       def uri_from_short_id(version_id, short_id)
-        uri = REDIS.get("ri:short_id_from_uri:#{version_id}:#{short_id}")
+        acronym = acronym_from_version_id(version_id)
+        uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{short_id}")
         if uri.nil? && short_id.include?(":")
           try_again_id = short_id.split(":").last
-          uri = REDIS.get("ri:short_id_from_uri:#{version_id}:#{try_again_id}")
+          uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{try_again_id}")
         end
         uri
       end
