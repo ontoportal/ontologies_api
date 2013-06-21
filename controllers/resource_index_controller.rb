@@ -9,6 +9,19 @@ class ResourceIndexController < ApplicationController
 
   namespace "/resource_index" do
 
+
+    # http://rest.bioontology.org/resource_index/ontologies
+    # Return all ontologies
+    get "/ontologies" do
+      options = get_options(params)
+      result = NCBO::ResourceIndex.ontologies(options)
+      error 404, "No ontologies found" if (result.nil? || result.empty?)
+
+      binding.pry
+
+      reply result
+    end
+
     get '/search' do
       options = get_options(params)
       classes = get_classes(params)

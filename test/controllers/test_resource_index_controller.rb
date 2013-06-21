@@ -231,6 +231,15 @@ class TestResourceIndexController < TestCase
     end
   end
 
+  def test_get_ontologies
+    get '/resource_index/ontologies'
+    _response_status(200, last_response)
+    #validate_json(last_response.body, RESOURCE_SCHEMA, true)
+    ontologies = MultiJson.load(last_response.body)
+    assert_instance_of(Array, ontologies)
+    # TODO: Add ontology validations
+  end
+
   def test_get_resources
     get '/resource_index/resources'
     _response_status(200, last_response)
