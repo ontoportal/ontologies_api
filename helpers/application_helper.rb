@@ -174,14 +174,14 @@ module Sinatra
       # Given an acronym (BRO), get the ontology URI (http://data.bioontology.org/ontologies/BRO)
       # @param acronym [String] the ontology acronym
       def ontology_uri_from_acronym(acronym)
-        @ontology_uri_acronym_map[acronym]
+        ontology_uri_acronym_map[acronym]
       end
 
       ##
       # Given a URI (http://data.bioontology.org/ontologies/BRO), get the ontology acronym (BRO)
       # @param uri [String] the ontology uri
       def acronym_from_ontology_uri(uri)
-        @acronym_ontology_uri_map[uri.to_s]
+        acronym_ontology_uri_map[uri.to_s]
       end
 
       private
