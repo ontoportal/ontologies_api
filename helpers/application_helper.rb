@@ -28,12 +28,14 @@ module Sinatra
           if attr_cls && !attr_cls.name_with.is_a?(Proc)
             # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)
-              value = value.map {|e| attr_cls.find(e).include(attr_cls.attributes).first}
+              value = value.map {|e| attr_cls.find(RDF::IRI.new(e)).include(attr_cls.attributes).first}
             else
-              value = attr_cls.find(value).include(attr_cls.attributes).first
+              value = attr_cls.find(RDF::IRI.new(value)).include(attr_cls.attributes).first
             end
           elsif attr_cls
+            # Check to see if the resource exists in the triplestore
             retreived_value = attr_cls.where(value.symbolize_keys).to_a
+
             if retreived_value.empty?
               # Create a new object and save if one didn't exist
               retreived_value = attr_cls.new(value.symbolize_keys)
@@ -172,7 +174,6 @@ module Sinatra
       # Given an acronym (BRO), get the ontology URI (http://data.bioontology.org/ontologies/BRO)
       # @param acronym [String] the ontology acronym
       def ontology_uri_from_acronym(acronym)
-        @ontology_uri_acronym_map ||= ontology_uri_acronym_map
         @ontology_uri_acronym_map[acronym]
       end
 
@@ -180,7 +181,6 @@ module Sinatra
       # Given a URI (http://data.bioontology.org/ontologies/BRO), get the ontology acronym (BRO)
       # @param uri [String] the ontology uri
       def acronym_from_ontology_uri(uri)
-        @acronym_ontology_uri_map ||= acronym_ontology_uri_map
         @acronym_ontology_uri_map[uri.to_s]
       end
 
