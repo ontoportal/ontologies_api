@@ -213,7 +213,7 @@ module Sinatra
       # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
       # @param acronym [String] the ontology acronym
       def virtual_id_from_acronym(acronym)
-        virtual_id = REDIS.get("old_to_new:virtual_from_acronym:#{virtual_id}")
+        virtual_id = REDIS.get("old_to_new:virtual_from_acronym:#{acronym}")
         virtual_id.to_i unless virtual_id.nil?
         virtual_id
       end
