@@ -78,9 +78,6 @@ class TestCase < MiniTest::Unit::TestCase
     Sinatra::Application
   end
 
-  def teardown
-  end
-
   ##
   # Creates a set of Ontology and OntologySubmission objects and stores them in the triplestore
   # @param [Hash] options the options to create ontologies with
