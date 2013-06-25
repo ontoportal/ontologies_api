@@ -3,7 +3,7 @@ require 'json-schema'
 
 class TestResourceIndexController < TestCase
 
-  DEBUG_MESSAGES=false
+  DEBUG_MESSAGES = false
 
   # Populate the ontology dB
   def self.before_suite
@@ -209,7 +209,7 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  ELEMENTS_RANKED_SCHEMA = <<-END_SCHEMA
+  ELEMENTS_SCHEMA = <<-END_SCHEMA
   {
     "type": "array",
     "title": "elements",
@@ -217,7 +217,7 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  ELEMENT_RANKED_SCHEMA = <<-END_SCHEMA
+  ELEMENT_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
     "title": "element",
@@ -247,15 +247,16 @@ class TestResourceIndexController < TestCase
   def test_get_ranked_elements
     #get "/resource_index/ranked_elements?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
-    endpoint='ranked_elements'
     acronym = 'BRO'
     classid1 = 'BRO:Algorithm'
     classid2 = 'BRO:Graph_Algorithm'
     #
     # Note: Using classid1 encounters network timeout exception
     #
-    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid2}"
-    #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
+    #rest_target = "/resource_index/ranked_elements?classes[#{acronym}]=#{classid1},#{classid2}"
+    rest_target = "/resource_index/ranked_elements?classes[#{acronym}]=#{classid2}"
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
     validate_json(last_response.body, PAGE_SCHEMA)
     page = MultiJson.load(last_response.body)
@@ -269,7 +270,6 @@ class TestResourceIndexController < TestCase
   def test_get_search_classes
     #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
-    endpoint='search'
     # 1104 is BRO
     # 1104, BRO:Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm
     # 1104, BRO:Graph_Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm
@@ -279,8 +279,10 @@ class TestResourceIndexController < TestCase
     #
     # Note: Using classid1 encounters network timeout exception for that term
     #
-    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid2}"
-    #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
+    #rest_target = "/resource_index/search?classes[#{acronym}]=#{classid1},#{classid2}"
+    rest_target = "/resource_index/search?classes[#{acronym}]=#{classid2}"
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
     validate_json(last_response.body, PAGE_SCHEMA)
     page = MultiJson.load(last_response.body)
@@ -295,7 +297,9 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_ontologies
-    get '/resource_index/ontologies'
+    rest_target = '/resource_index/ontologies'
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
     validate_json(last_response.body, PAGE_SCHEMA)
     ontology_pages = MultiJson.load(last_response.body)
@@ -306,23 +310,24 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_resources
-    get '/resource_index/resources'
+    rest_target = '/resource_index/resources'
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
     validate_json(last_response.body, RESOURCE_SCHEMA, true)
     resources = MultiJson.load(last_response.body)
     assert_instance_of(Array, resources)
-    # TODO: Add element validations, as in test_get_ranked_elements
   end
 
   def test_get_resource_element
-    resource_id = 'GEO'
+    resource_id = 'AE'
     element_id = 'E-GEOD-19229'
-    get "/resource_index/resources/#{resource_id}/elements/#{element_id}"
+    rest_target = "/resource_index/resources/#{resource_id}/elements/#{element_id}"
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
-    validate_json(last_response.body, RESOURCE_SCHEMA, true)
-    resources = MultiJson.load(last_response.body)
-    assert_instance_of(Array, resources)
-    # TODO: Add element validations, as in test_get_ranked_elements
+    element = MultiJson.load(last_response.body)
+    validate_element(element)
   end
 
 
@@ -348,11 +353,14 @@ private
   end
 
   def validate_ranked_elements(elements)
-    validate_json(MultiJson.dump(elements), ELEMENT_RANKED_SCHEMA, true)
-    elements.each do |e|
-      e["fields"].each_value do |field|
-        validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
-      end
+    validate_json(MultiJson.dump(elements), ELEMENT_SCHEMA, true)
+    elements.each {|e| validate_element(e) }
+  end
+
+  def validate_element(element)
+    validate_json(MultiJson.dump(element), ELEMENT_SCHEMA)
+    element["fields"].each_value do |field|
+      validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
     end
   end
 
