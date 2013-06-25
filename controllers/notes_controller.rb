@@ -1,18 +1,18 @@
 class NotesController < ApplicationController
   ##
   # Ontology notes
-  get "/ontologies/:acronym/notes" do
-    ont = Ontology.find(params["acronym"]).include(note: LinkedData::Models::Note.goo_attrs_to_load(includes_param)).first
-    error 404, "You must provide a valid `acronym` to retrieve notes for an ontology" if ont.nil?
+  get "/ontologies/:ontology/notes" do
+    ont = Ontology.find(params["ontology"]).include(notes: LinkedData::Models::Note.goo_attrs_to_load(includes_param)).first
+    error 404, "You must provide a valid id to retrieve notes for an ontology" if ont.nil?
     reply ont.notes
   end
 
   ##
   # Class notes
   get "/ontologies/:ontology/classes/:cls/notes" do
-    ont = Ontology.find(params["acronym"]).include(:submissions).first
-    error 404, "You must provide a valid `acronym` to retrieve notes for an ontology" if ont.nil?
-    cls = LinkedData::Models::Class.find(params["cls"]).in(ont.latest_submission).first
+    ont = Ontology.find(params["ontology"]).include(:submissions).first
+    error 404, "You must provide a valid id to retrieve notes for an ontology" if ont.nil?
+    cls = LinkedData::Models::Class.find(params["cls"]).in(ont.latest_submission).include(notes: LinkedData::Models::Note.goo_attrs_to_load(includes_param)).first
     error 404, "You must provide a valid class id" if cls.nil?
     reply cls.notes
   end
