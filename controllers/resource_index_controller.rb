@@ -16,10 +16,9 @@ class ResourceIndexController < ApplicationController
       options = get_options(params)
       result = NCBO::ResourceIndex.ontologies(options)
       error 404, "No ontologies found" if (result.nil? || result.empty?)
-
-      binding.pry
-
-      reply result
+      results_array = massage_ontologies(result, options)
+      page = page_object(results_array)
+      reply page
     end
 
     get '/search' do
@@ -30,9 +29,6 @@ class ResourceIndexController < ApplicationController
       result = NCBO::ResourceIndex.find_by_concept(classes, options)
       error 404, "No resources found" if (result.nil? || result.empty?)
       results_array = massage_search(result, options)
-      # Gives you back a page object with some stuff calculated by default. total_result_count is optional,
-      # we won't use it for resource index. The page object is what you will use when you do a `reply`
-      #page = page_object(results_array, total_result_count)
       page = page_object(results_array)
       reply page
     end
@@ -83,6 +79,25 @@ class ResourceIndexController < ApplicationController
     # Data massage methods.
     #
 
+
+    def massage_ontologies(old_response, options)
+      ontologies = []
+      old_response.each do |ont|
+        new = {
+            :ontologyName => ont[:ontologyName],
+            :ontologyURI => ontology_uri_from_virtual_id(ont[:virtualOntologyId])
+        }
+        if new[:ontologyURI].nil?
+          # TODO: log error message
+          # The RI contains an ontology that is not in the new API service, or the
+          # REDIS store doesn't contain the lookup data?
+          #puts "Failed to find RI ontology in REDIS lookup: #{ont[:virtualOntologyId]} - #{ont[:ontologyName]}"
+        else
+          ontologies.push(new)
+        end
+      end
+      return ontologies
+    end
 
     def massage_search(old_response, options)
       resources = {}

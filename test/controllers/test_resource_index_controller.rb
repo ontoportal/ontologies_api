@@ -5,6 +5,47 @@ class TestResourceIndexController < TestCase
 
   DEBUG_MESSAGES=false
 
+  # Populate the ontology dB
+  def self.before_suite
+    test_ontology_acronyms = ["BRO", "NCIt"]
+    acronyms = []
+    LinkedData::Models::Ontology.all {|o| acronyms << o.acronym}
+    @@created_acronyms = []
+    begin
+      @user = LinkedData::Models::User.new(username: "test_user", email: "test_user@example.org", password: "password")
+      @user.save
+      test_ontology_acronyms.each do |acronym|
+        next if acronyms.include?(acronym)
+        ontology_data = {
+            acronym: acronym,
+            name: "#{acronym} ontology",
+            administeredBy: [@user]
+        }
+        ontology = LinkedData::Models::Ontology.new(ontology_data)
+        ontology.save
+        @@created_acronyms << acronym
+      end
+    rescue
+      @@created_acronyms.each do |acronym|
+        ontology = LinkedData::Models::Ontology.find(acronym).first
+        ontology.delete unless ontology.nil?
+      end
+    end
+  end
+
+  def self.after_suite
+    begin
+      @user = nil
+      @@created_acronyms.each do |acronym|
+        ontology = LinkedData::Models::Ontology.find(acronym).first
+        ontology.delete unless ontology.nil?
+      end
+    rescue Exception => e
+      puts "Failure to delete ontology or user"
+    end
+  end
+
+
   # JSON Schema
   # json-schema for description and validation of REST json responses.
   # http://tools.ietf.org/id/draft-zyp-json-schema-03.html
@@ -23,6 +64,28 @@ class TestResourceIndexController < TestCase
       "nextPage": { "type": ["number","null"], "required": true },
       "links": { "type": "object", "required": true },
       "collection": { "type": "array", "required": true }
+    }
+  }
+  END_SCHEMA
+
+  ONTOLOGIES_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "array",
+    "title": "ontologies",
+    "description": "An array of Resource Index ontologies.",
+    "items": { "type": "object" }
+  }
+  END_SCHEMA
+
+  ONTOLOGY_SCHEMA = <<-END_SCHEMA
+  {
+    "type": "object",
+    "title": "ontology",
+    "description": "A Resource Index ontology.",
+    "additionalProperties": false,
+    "properties": {
+      "ontologyName": { "type": "string", "required": true },
+      "ontologyURI": { "type": "string", "format": "uri", "required": true }
     }
   }
   END_SCHEMA
@@ -234,10 +297,12 @@ class TestResourceIndexController < TestCase
   def test_get_ontologies
     get '/resource_index/ontologies'
     _response_status(200, last_response)
-    #validate_json(last_response.body, RESOURCE_SCHEMA, true)
-    ontologies = MultiJson.load(last_response.body)
-    assert_instance_of(Array, ontologies)
-    # TODO: Add ontology validations
+    validate_json(last_response.body, PAGE_SCHEMA)
+    ontology_pages = MultiJson.load(last_response.body)
+    assert_instance_of(Hash, ontology_pages)
+    assert_instance_of(Array, ontology_pages['collection'])
+    validate_json(MultiJson.dump(ontology_pages['collection']), ONTOLOGIES_SCHEMA)
+    validate_json(MultiJson.dump(ontology_pages['collection']), ONTOLOGY_SCHEMA, true)
   end
 
   def test_get_resources
@@ -259,6 +324,10 @@ class TestResourceIndexController < TestCase
     assert_instance_of(Array, resources)
     # TODO: Add element validations, as in test_get_ranked_elements
   end
+
+
+private
+
 
   def _response_status(status, response)
     if DEBUG_MESSAGES
