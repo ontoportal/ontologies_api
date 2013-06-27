@@ -4,6 +4,19 @@ class TestResourceIndexController < TestCase
 
   DEBUG_MESSAGES = true
 
+  # 1104 is BRO
+  # 1104, BRO:Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm
+  # 1104, BRO:Graph_Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm
+  ONT_ID_SHORT = 'BRO'
+  CLASS_ID_SHORT = 'BRO:Graph_Algorithm'
+  ONT_ID_FULL = CGI::escape('http://data.bioontology.org/ontologies/BRO')
+  CLASS_ID_FULL = CGI::escape('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm')
+
+  ONT_ID_SHORT_MISSING = 'MISSING_ONTOLOGY'
+  CLASS_ID_SHORT_MISSING = 'BRO:MissingClass'
+  ONT_ID_FULL_MISSING = CGI::escape('http://data.bioontology.org/ontologies/MISSING_ONTOLOGY')
+  CLASS_ID_FULL_MISSING = CGI::escape('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#MissingClass')
+
   # Populate the ontology dB
   def self.before_suite
     test_ontology_acronyms = ["BRO"]
@@ -255,14 +268,9 @@ class TestResourceIndexController < TestCase
   def test_get_ranked_elements
     #get "/resource_index/ranked_elements?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
-    acronym = 'BRO'
-    classid1 = 'BRO:Algorithm'
-    classid2 = 'BRO:Graph_Algorithm'
-    #
-    # Note: Using classid1 encounters network timeout exception
     #
     #rest_target = "/resource_index/ranked_elements?classes[#{acronym}]=#{classid1},#{classid2}"
-    rest_target = "/resource_index/ranked_elements?classes[#{acronym}]=#{classid2}"
+    rest_target = "/resource_index/ranked_elements?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}"
     puts rest_target if DEBUG_MESSAGES
     get rest_target
     _response_status(200, last_response)
@@ -278,20 +286,13 @@ class TestResourceIndexController < TestCase
   def test_get_search_classes
     #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
-    # 1104 is BRO
-    # 1104, BRO:Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm
-    # 1104, BRO:Graph_Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm
-    #
-    # Note: Using classid1 encounters network timeout exception for that term
     #
     rest_search = "/resource_index/search"
-    ont_idS = 'BRO'
-    class_idS = 'BRO:Graph_Algorithm'
-    ont_idF = CGI::escape('http://data.bioontology.org/ontologies/BRO')
-    class_idF = CGI::escape('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm')
     rest_param_list = [
-        "?classes[#{ont_idS}]=#{class_idS}",
-        "?classes[#{ont_idF}]=#{class_idF}"
+        "?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}",
+        "?classes[#{ONT_ID_FULL}]=#{CLASS_ID_FULL}",
+        "?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_FULL}",
+        "?classes[#{ONT_ID_FULL}]=#{CLASS_ID_SHORT}"
     ]
     rest_param_list.each do |param|
       rest_target = rest_search + param
@@ -308,8 +309,32 @@ class TestResourceIndexController < TestCase
         validate_annotated_elements(a["annotatedElements"])
       end
     end
-
   end
+
+
+  def test_get_search_classes_failures
+    #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
+    #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
+    # 404 should be thrown for any 'missing' ontology or an ontology without a latest_submission.
+    # TODO: Enable the missing class tests when the API can quickly determine whether classes exist or not.
+    # TODO NOTE: The 404 errors are thrown by the resource_index_helper::get_classes method.
+    rest_search = "/resource_index/search"
+    rest_param_list = [
+        "?classes[#{ONT_ID_SHORT_MISSING}]=#{CLASS_ID_SHORT}",
+        "?classes[#{ONT_ID_FULL_MISSING}]=#{CLASS_ID_FULL}",
+        "?classes[#{ONT_ID_SHORT_MISSING}]=#{CLASS_ID_SHORT_MISSING}",  # The missing class is irrelevant
+        "?classes[#{ONT_ID_FULL_MISSING}]=#{CLASS_ID_FULL_MISSING}",    # The missing class is irrelevant
+        #"?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT_MISSING}",
+        #"?classes[#{ONT_ID_FULL}]=#{CLASS_ID_FULL_MISSING}",
+    ]
+    rest_param_list.each do |param|
+      rest_target = rest_search + param
+      puts rest_target if DEBUG_MESSAGES
+      get rest_target
+      _response_status(404, last_response)
+    end
+  end
+
 
   def test_get_ontologies
     rest_target = '/resource_index/ontologies'
