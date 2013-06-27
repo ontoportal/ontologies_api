@@ -1,13 +1,12 @@
 require_relative '../test_case'
-require 'json-schema'
 
 class TestResourceIndexController < TestCase
 
-  DEBUG_MESSAGES = false
+  DEBUG_MESSAGES = true
 
   # Populate the ontology dB
   def self.before_suite
-    test_ontology_acronyms = ["BRO", "NCIt"]
+    test_ontology_acronyms = ["BRO"]
     acronyms = []
     LinkedData::Models::Ontology.all {|o| acronyms << o.acronym}
     @@created_acronyms = []
@@ -24,24 +23,33 @@ class TestResourceIndexController < TestCase
         ontology = LinkedData::Models::Ontology.new(ontology_data)
         ontology.save
         @@created_acronyms << acronym
+        # Create a dummy ontology submission.
+        ont_data = LinkedData::SampleData::Ontology.create_ontologies_and_submissions(ont_count: 1, submission_count: 1)
+        ont_new = ont_data[2][0]
+        ont_new.bring(:submissions)
+        submission = ont_new.submissions.last  # get the last submission, regardless of parsing status
+        submission.bring_remaining
+        submission.submissionStatus = LinkedData::Models::SubmissionStatus.find(LinkedData::Models::SubmissionStatus.parsed_code).first
+        submission.ontology = ontology
+        submission.save
       end
-    rescue
-      @@created_acronyms.each do |acronym|
-        ontology = LinkedData::Models::Ontology.find(acronym).first
-        ontology.delete unless ontology.nil?
-      end
+    rescue Exception => e
+      puts "Failure to create ontology or user in before_suite: delete and recreate triple store.\n"
+      raise e
     end
   end
 
   def self.after_suite
     begin
+      LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
       @user = nil
       @@created_acronyms.each do |acronym|
         ontology = LinkedData::Models::Ontology.find(acronym).first
         ontology.delete unless ontology.nil?
       end
     rescue Exception => e
-      puts "Failure to delete ontology or user"
+      puts "Failure to delete ontology or user in after_suite\n"
+      raise e
     end
   end
 
@@ -273,27 +281,34 @@ class TestResourceIndexController < TestCase
     # 1104 is BRO
     # 1104, BRO:Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm
     # 1104, BRO:Graph_Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm
-    acronym = 'BRO'
-    classid1 = 'BRO:Algorithm'
-    classid2 = 'BRO:Graph_Algorithm'
     #
     # Note: Using classid1 encounters network timeout exception for that term
     #
-    #rest_target = "/resource_index/search?classes[#{acronym}]=#{classid1},#{classid2}"
-    rest_target = "/resource_index/search?classes[#{acronym}]=#{classid2}"
-    puts rest_target if DEBUG_MESSAGES
-    get rest_target
-    _response_status(200, last_response)
-    validate_json(last_response.body, PAGE_SCHEMA)
-    page = MultiJson.load(last_response.body)
-    annotations = page["collection"]
-    assert_instance_of(Array, annotations)
-    validate_json(MultiJson.dump(annotations), SEARCH_RESOURCE_SCHEMA, true)
-    annotations.each do |a|
-      validate_json(MultiJson.dump(a["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
-      # TODO: Resolve why ranked elements is different from annotated elements
-      validate_annotated_elements(a["annotatedElements"])
+    rest_search = "/resource_index/search"
+    ont_idS = 'BRO'
+    class_idS = 'BRO:Graph_Algorithm'
+    ont_idF = CGI::escape('http://data.bioontology.org/ontologies/BRO')
+    class_idF = CGI::escape('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm')
+    rest_param_list = [
+        "?classes[#{ont_idS}]=#{class_idS}",
+        "?classes[#{ont_idF}]=#{class_idF}"
+    ]
+    rest_param_list.each do |param|
+      rest_target = rest_search + param
+      puts rest_target if DEBUG_MESSAGES
+      get rest_target
+      _response_status(200, last_response)
+      validate_json(last_response.body, PAGE_SCHEMA)
+      page = MultiJson.load(last_response.body)
+      annotations = page["collection"]
+      assert_instance_of(Array, annotations)
+      validate_json(MultiJson.dump(annotations), SEARCH_RESOURCE_SCHEMA, true)
+      annotations.each do |a|
+        validate_json(MultiJson.dump(a["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
+        validate_annotated_elements(a["annotatedElements"])
+      end
     end
+
   end
 
   def test_get_ontologies
