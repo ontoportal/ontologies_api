@@ -48,7 +48,7 @@ module Sinatra
           elsif attribute == :created || attribute == :released
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
-          elsif attribute_settings && attribute_settings(attribute)[:enforce] && attribute_settings(attribute)[:enforce].include?(:uri)
+          elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
             value = RDF::IRI.new(value)
           end
