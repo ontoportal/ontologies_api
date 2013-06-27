@@ -20,8 +20,11 @@ module Sinatra
         return if obj.nil?
 
         params.each do |attribute, value|
+          next if value.nil?
+
           attribute = attribute.to_sym
           attr_cls = obj.class.range(attribute)
+          attribute_settings = obj.class.attribute_settings(attribute)
 
           # Try to find dependent Goo objects, but only if the naming is not done via Proc
           # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
@@ -45,7 +48,7 @@ module Sinatra
           elsif attribute == :created || attribute == :released
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
-          elsif obj.class.attribute_settings(attribute)[:enforce] && obj.class.attribute_settings(attribute)[:enforce].include?(:uri)
+          elsif attribute_settings && attribute_settings(attribute)[:enforce] && attribute_settings(attribute)[:enforce].include?(:uri)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
             value = RDF::IRI.new(value)
           end
