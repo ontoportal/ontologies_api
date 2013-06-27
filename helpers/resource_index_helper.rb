@@ -1,6 +1,8 @@
 require 'sinatra/base'
 require 'redis'
 
+require 'pry'
+
 #  @options[:resource_index_location]  = "http://rest.bioontology.org/resource_index/"
 #  @options[:filterNumber]             = true
 #  @options[:isStopWordsCaseSensitive] = false
@@ -49,8 +51,15 @@ module Sinatra
             v.split(',').each do |class_id|
               # Shorten id as necessary
               if class_id.start_with?("http://")
-                format ||= LinkedData::Models::Ontology.find(k.split("/").last).latest_submission.hasOntologyLanguage.acronym.to_s
-                class_id = shorten_uri(class_id, format)
+                ont_code = k.split("/").last
+                ont_model = LinkedData::Models::Ontology.find(ont_code).first
+                if ont_model.is_a? LinkedData::Models::Ontology
+                  submission = ont_model.latest_submission
+                  #next if submission.nil?
+                  submission.bring(hasOntologyLanguage: [:acronym])
+                  ont_format = submission.hasOntologyLanguage.acronym
+                end
+                class_id = shorten_uri(class_id, ont_format)
               end
               classes.push("#{ont_id}/#{class_id}")
             end
