@@ -42,4 +42,4 @@ end
 # ontologies_api-specific gems
 gem 'haml'
 gem 'redcarpet'
-gem 'activesupport'
+gem 'activesupport', '< 4.0'
