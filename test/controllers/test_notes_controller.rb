@@ -60,8 +60,8 @@ class TestNotesController < TestCase
   def test_single_note
     get '/notes'
     notes = MultiJson.load(last_response.body)
-    note = notes.first
-    get note['@id']
+    note = notes["collection"].first
+    get note['@id'] rescue binding.pry
     assert last_response.ok?
     retrieved_note = MultiJson.load(last_response.body)
     assert_equal note["@id"], retrieved_note["@id"]
@@ -89,6 +89,41 @@ class TestNotesController < TestCase
 
     delete new_note["@id"]
     assert last_response.status == 204
+  end
+
+  def test_proposal_lifecycle
+    note = {
+      :subject=>"New Term Proposal: Sleep Study Facility",
+      :creator=>@@user.id.to_s,
+      :created=>"Tue, 15 Jun 2010 07:54:15 -0700",
+      :relatedOntology=>[@@ontology.id.to_s],
+      :proposal=>
+        {
+          :type=>"ProposalNewClass",
+          :contactInfo=>"",
+          :reasonForChange=>"Physiology facility child",
+          :label=>"Sleep Study Facility",
+          :definition=>["A facility or core devoted to sleep studies"],
+          :parent=>nil
+        }
+     }
+
+     post "/notes", MultiJson.dump(note), "CONTENT_TYPE" => "application/json"
+     assert last_response.status == 201
+
+     new_note = MultiJson.load(last_response.body)
+     get new_note["@id"]
+     assert last_response.ok?
+
+     note_changes = {proposal: {label: "New sleed study facility"}}
+     patch new_note["@id"], MultiJson.dump(note_changes), "CONTENT_TYPE" => "application/json"
+     assert last_response.status == 204
+     get new_note["@id"]
+     patched_note = MultiJson.load(last_response.body)
+     assert_equal patched_note["label"], note_changes[:label]
+
+     delete new_note["@id"]
+     assert last_response.status == 204
   end
 
   def test_notes_for_ontology
