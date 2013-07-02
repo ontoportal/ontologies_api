@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   ##
   # Ontology projects
   get "/ontologies/:acronym/projects" do
-    ont = Ontology.find(params["acronym"]).include(:projects).first
+    ont = Ontology.find(params["acronym"]).include(projects: LinkedData::Models::Project.goo_attrs_to_load(includes_param)).first
     error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
     reply ont.projects
   end
