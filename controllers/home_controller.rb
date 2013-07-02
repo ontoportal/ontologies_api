@@ -152,8 +152,8 @@ class HomeController < ApplicationController
       routes = Sinatra::Application.routes["GET"]
       navigable_routes = []
       Sinatra::Application.each_route do |route|
-        if route.verb.eql?("GET") && route[1].empty?
-          navigable_routes << route.path
+        if route.verb.eql?("GET")
+          navigable_routes << route.path.split("?").first
         end
       end
       @navigable_routes = navigable_routes
