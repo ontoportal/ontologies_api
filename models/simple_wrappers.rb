@@ -23,3 +23,5 @@ Review = LinkedData::Models::Review
 User = LinkedData::Models::User
 
 UserRole = LinkedData::Models::Users::Role
+
+ProvisionalClass = LinkedData::Models::ProvisionalClass
