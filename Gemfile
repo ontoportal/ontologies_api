@@ -10,7 +10,7 @@ gem 'rake'
 gem 'rack-accept'
 
 #gem 'rack-post-body-to-params'
-gem 'rack-post-body-to-params', :git => 'https://github.com/palexander/rack-post-body-to-params.git', :branch => 'active_support_4'
+gem 'rack-post-body-to-params'
 
 gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '< 5.0'
