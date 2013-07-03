@@ -193,9 +193,9 @@ module Sinatra
       # Replies 400 if the ontology does not have a parsed submission
       def ontology_from_acronym(acronym)
         ontology = LinkedData::Models::Ontology.find(acronym).first
-        reply 404, "Ontology with acronym `#{acronym}` not found" if ontology.nil?
+        error(404, "Ontology with acronym `#{acronym}` not found") if ontology.nil?
         submission = ontology.latest_submission
-        reply 400, "No parsed submissions for ontology with acronym `#{acronym}`" if submission.nil?
+        error(400, "No parsed submissions for ontology with acronym `#{acronym}`") if submission.nil?
         return ontology
       end
 
