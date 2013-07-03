@@ -161,7 +161,29 @@ class TestMappingsController < TestCase
     end
   end
 
-    #TODO: multiple pages missing
+  def test_mappings_for_ontology_pages
+    ontology = "BRO-TEST-MAP-0"
+    pagesize = 6
+    page = 1
+    next_page = nil
+    begin
+      get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{page}"
+      assert last_response.ok?
+      assert last_response.ok?
+      mappings = MultiJson.load(last_response.body)
+      #pages
+      assert mappings["page"] == page
+      assert mappings["pageCount"] == 4
+      assert mappings["prevPage"] == (page > 1 ? page -1 : nil)
+      assert mappings["nextPage"] == (page < 4 ? page + 1 : nil)
+      next_page = mappings["nextPage"]
+      assert mappings["collection"].length == (page == 4 ? 2 : 6)
+      mappings = mappings["collection"]
+      mappings.each do |mapping|
+        certify_mapping(mapping)
+      end
+      page = next_page
+    end while (next_page)
   end
 
   def test_mappings
