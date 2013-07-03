@@ -3,8 +3,6 @@ require_relative '../test_case'
 class TestMappingsController < TestCase
 
   def self.before_suite
-
-    return
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
@@ -55,6 +53,45 @@ class TestMappingsController < TestCase
       process.new(bro,cno,Logger.new(STDOUT)).start()
     end
 
+  end
+
+  def certify_mapping(mapping)
+    procs = 0
+    if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length == 1
+      assert mapping["process"].length == 1
+      assert (mapping["process"].map { |x| x["name"] }.index "same_uris") != nil
+      procs += 1
+    end
+    labels = []
+    syns = []
+    cuis = []
+    mapping["terms"].each do |term|
+      s = LinkedData::Models::Ontology.find(RDF::URI.new(term["ontology"])).first
+                .latest_submission
+      c = LinkedData::Models::Class.find(RDF::URI.new(term["term"].first)).in(s)
+                               .include(:prefLabel,:synonym, :cui)
+                               .first
+      assert c
+      cuis << c.cui if c.cui
+      labels << transmform_literal(c.prefLabel)
+      syns << c.synonym.map { |x| transmform_literal(x) }
+    end
+    if cuis.length == 2 && cuis.uniq.length == 1
+      assert (mapping["process"].map { |x| x["name"] }.index "cui") != nil
+      procs += 1
+    end
+    if labels.length == 2 && labels.uniq.length == 1
+      if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length > 1
+        assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
+        procs += 1
+      end
+    elsif syns[0].index(labels[1]) || syns[1].index(labels[0])
+      if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length > 1
+        assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
+        procs += 1
+      end
+    end
+    assert procs > 0
   end
 
   def test_mappings_for_class
@@ -119,45 +156,10 @@ class TestMappingsController < TestCase
     assert mappings["collection"].length == 20
     mappings = mappings["collection"]
 
-    processes = Set.new
     mappings.each do |mapping|
-      procs = 0
-      if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length == 1
-        assert mapping["process"].length == 1
-        assert (mapping["process"].map { |x| x["name"] }.index "same_uris") != nil
-        procs += 1
-      end
-      labels = []
-      syns = []
-      cuis = []
-      mapping["terms"].each do |term|
-        s = LinkedData::Models::Ontology.find(RDF::URI.new(term["ontology"])).first
-                  .latest_submission
-        c = LinkedData::Models::Class.find(RDF::URI.new(term["term"].first)).in(s)
-                                 .include(:prefLabel,:synonym, :cui)
-                                 .first
-        assert c
-        cuis << c.cui if c.cui
-        labels << transmform_literal(c.prefLabel)
-        syns << c.synonym.map { |x| transmform_literal(x) }
-      end
-      if cuis.length == 2 && cuis.uniq.length == 1
-        assert (mapping["process"].map { |x| x["name"] }.index "cui") != nil
-        procs += 1
-      end
-      if labels.length == 2 && labels.uniq.length == 1
-        if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length > 1
-          assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
-          procs += 1
-        end
-      elsif syns[0].index(labels[1]) || syns[1].index(labels[0])
-        if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length > 1
-          assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
-          procs += 1
-        end
-      end
-      assert procs > 0
+      certify_mapping(mapping)
     end
+  end
 
     #TODO: multiple pages missing
   end
