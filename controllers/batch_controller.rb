@@ -24,7 +24,8 @@ class BatchController < ApplicationController
         class_ids.map! { |id| RDF::URI.new(id) }
         ont = LinkedData::Models::Ontology.find(RDF::URI.new(ont_id))
                     .include(submissions: [:submissionId]).first
-        error 404, "Ontology #{ont_id} could not be found" if ont.nil?
+        #error 404, "Ontology #{ont_id} could not be found" if ont.nil?
+        next if ont.nil?
         latest = ont.latest_submission
         latest.bring(ontology:[:acronym])
         classes.concat(LinkedData::Models::Class.in(latest).ids(class_ids).include(goo_include.map{|x| x.to_sym}).read_only.all)
