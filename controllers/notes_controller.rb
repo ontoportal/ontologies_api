@@ -34,6 +34,7 @@ class NotesController < ApplicationController
       noteid = params["noteid"]
       note = LinkedData::Models::Note.find(noteid).include(LinkedData::Models::Note.goo_attrs_to_load(includes_param)).first
       error 404, "Note #{noteid} not found" if note.nil?
+      recurse_replies(note) if params["include_threads"]
       reply 200, note
     end
 
