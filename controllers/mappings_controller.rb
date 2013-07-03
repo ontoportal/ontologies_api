@@ -1,14 +1,41 @@
 class MappingsController < ApplicationController
+
   # Get mappings for a class
   get '/ontologies/:ontology/classes/:cls/mappings' do
-    source = params[:source]
-    target = params[:target]
+    acronym = @params[:ontology]
+    cls_id = @params[:cls]
+    ontology = LinkedData::Models::Ontology.find(acronym).first
+    reply 404, "Ontology with acronym `#{acronym}` not found" if ontology.nil?
+    submission = ontology.latest_submission
+    reply 400, "No parsed submissions for ontology with acronym `#{acronym}`" if submission.nil?
+
+    cls = LinkedData::Models::Class.find(RDF::URI.new(cls_id)).in(submission).first
+    reply 404, "Class with id `#{class_id}` not found in ontology `#{acronym}`" if cls.nil?
+
+
+    mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology, term: cls.id ])
+                                 .include(terms: [ :term, ontology: [ :acronym ] ])
+                                 .include(process: [:name, :owner ])
+                                 .all
+
+    reply mappings
   end
 
   # Get mappings for an ontology
   get '/ontologies/:ontology/mappings' do
-    source = params[:source_ontology]
-    target = params[:target_ontology]
+    acronym = @params[:ontology]
+    ontology = LinkedData::Models::Ontology.find(acronym).first
+    reply 404, "Ontology with acronym `#{acronym}` not found" if ontology.nil?
+    submission = ontology.latest_submission
+    reply 400, "No parsed submissions for ontology with acronym `#{acronym}`" if submission.nil?
+
+    page, size = page_params
+    mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology ])
+                                 .include(terms: [ :term, ontology: [ :acronym ] ])
+                                 .include(process: [:name, :owner ])
+                                  .page(page,size)
+                                 .all
+    reply mappings
   end
 
   namespace "/mappings" do

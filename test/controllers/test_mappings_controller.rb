@@ -4,7 +4,8 @@ class TestMappingsController < TestCase
 
   def self.before_suite
 
-    ["BRO-TEST-MAP","CNO-TEST-MAP","FAKE-TEST-MAP"].each do |acr|
+    return
+    ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
       end
@@ -57,18 +58,108 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_for_class
-    ontology = "BRO-TEST-MAP"
+    ontology = "BRO-TEST-MAP-0"
     cls = "http://bioontology.org/ontologies/Activity.owl#IRB"
+    cls= CGI.escape(cls)
     get "/ontologies/#{ontology}/classes/#{cls}/mappings"
     assert last_response.ok?
-    assert_equal '', last_response.body
+    mappings = MultiJson.load(last_response.body)
+    assert mappings.length == 2
+    mapped_to = []
+    mapped_to_data= ["http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf",
+       "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"].sort
+
+    mappings.each do |mapping|
+      assert mapping["process"].first["name"] == "cui"
+      mapping["terms"].each do |term|
+        if term["term"] == ["http://bioontology.org/ontologies/Activity.owl#IRB"]
+          assert term["ontology"] == "http://data.bioontology.org/ontologies/BRO-TEST-MAP-0"
+        end
+        if term["term"] == ["http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf"]
+          assert term["ontology"] == "http://data.bioontology.org/ontologies/FAKE-TEST-MAP-0"
+          mapped_to << term["term"]
+        end
+        if term["term"] ==
+          ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"]
+          assert term["ontology"] == "http://data.bioontology.org/ontologies/CNO-TEST-MAP-0"
+          mapped_to << term["term"]
+        end
+      end
+    end
+    assert mapped_to_data == mapped_to.flatten.sort
+  end
+
+
+  # NOTE: this is the loom transform literal to test round trip mappings
+  # This needs to be changed if equivalent function is changed in:
+  # LinkedData::Mappings:::Loom
+  def transmform_literal(lit)
+    res = []
+    lit.each_char do |c|
+      if (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+        res << c.downcase
+      end
+    end
+    return res.join ''
   end
 
   def test_mappings_for_ontology
-    ontology = "ncit"
+    ontology = "BRO-TEST-MAP-0"
     get "/ontologies/#{ontology}/mappings"
     assert last_response.ok?
-    assert_equal '', last_response.body
+    assert last_response.ok?
+    mappings = MultiJson.load(last_response.body)
+
+    #pages
+    assert mappings["page"] == 1
+    assert mappings["pageCount"] == 1
+    assert mappings["prevPage"] == nil
+    assert mappings["nextPage"] == nil
+
+    assert mappings["collection"].length == 20
+    mappings = mappings["collection"]
+
+    processes = Set.new
+    mappings.each do |mapping|
+      procs = 0
+      if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length == 1
+        assert mapping["process"].length == 1
+        assert (mapping["process"].map { |x| x["name"] }.index "same_uris") != nil
+        procs += 1
+      end
+      labels = []
+      syns = []
+      cuis = []
+      mapping["terms"].each do |term|
+        s = LinkedData::Models::Ontology.find(RDF::URI.new(term["ontology"])).first
+                  .latest_submission
+        c = LinkedData::Models::Class.find(RDF::URI.new(term["term"].first)).in(s)
+                                 .include(:prefLabel,:synonym, :cui)
+                                 .first
+        assert c
+        cuis << c.cui if c.cui
+        labels << transmform_literal(c.prefLabel)
+        syns << c.synonym.map { |x| transmform_literal(x) }
+      end
+      if cuis.length == 2 && cuis.uniq.length == 1
+        assert (mapping["process"].map { |x| x["name"] }.index "cui") != nil
+        procs += 1
+      end
+      if labels.length == 2 && labels.uniq.length == 1
+        if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length > 1
+          assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
+          procs += 1
+        end
+      elsif syns[0].index(labels[1]) || syns[1].index(labels[0])
+        if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length > 1
+          assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
+          procs += 1
+        end
+      end
+      assert procs > 0
+    end
+
+    #TODO: multiple pages missing
   end
 
   def test_mappings
