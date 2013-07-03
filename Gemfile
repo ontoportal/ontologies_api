@@ -8,7 +8,10 @@ gem 'oj'
 gem 'json-schema', '= 2.0.0'
 gem 'rake'
 gem 'rack-accept'
+
+#gem 'rack-post-body-to-params'
 gem 'rack-post-body-to-params'
+
 gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '< 5.0'
 gem 'rack-cache'

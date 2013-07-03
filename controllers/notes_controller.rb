@@ -24,8 +24,7 @@ class NotesController < ApplicationController
   namespace "/notes" do
     # Display all notes
     get "?:include_threads?" do
-      page, size = page_params
-      notes = LinkedData::Models::Note.where.include(LinkedData::Models::Note.goo_attrs_to_load(includes_param)).page(page, size).to_a
+      notes = LinkedData::Models::Note.where.include(LinkedData::Models::Note.goo_attrs_to_load(includes_param)).to_a
       recurse_replies(notes) if params["include_threads"]
       reply notes
     end
