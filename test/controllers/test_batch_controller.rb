@@ -23,7 +23,7 @@ class TestBatchController < TestCase
     call_params = {
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
-        "include" => ["prefLabel","synonym"]
+        "include" => "prefLabel,synonym"
       }
     }
     post "/batch/", call_params
@@ -90,7 +90,7 @@ class TestBatchController < TestCase
     assert last_response.ok?
     data = MultiJson.load(last_response.body)
     classes_response = data["http://www.w3.org/2002/07/owl#Class"]
-    assert classes_response.length = classes.length
+    assert classes_response.length == classes.length
     classes_response.each do |klass|
       assert_instance_of String, klass["prefLabel"]
       assert klass["prefLabel"] == class_ids[klass["@id"]]
