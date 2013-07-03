@@ -2,13 +2,10 @@ class MappingsController < ApplicationController
 
   # Get mappings for a class
   get '/ontologies/:ontology/classes/:cls/mappings' do
-    acronym = @params[:ontology]
-    cls_id = @params[:cls]
+    ontology = ontology_from_acronym(@params[:ontology])
     ontology = LinkedData::Models::Ontology.find(acronym).first
-    reply 404, "Ontology with acronym `#{acronym}` not found" if ontology.nil?
-    submission = ontology.latest_submission
-    reply 400, "No parsed submissions for ontology with acronym `#{acronym}`" if submission.nil?
 
+    cls_id = @params[:cls]
     cls = LinkedData::Models::Class.find(RDF::URI.new(cls_id)).in(submission).first
     reply 404, "Class with id `#{class_id}` not found in ontology `#{acronym}`" if cls.nil?
 
@@ -23,17 +20,12 @@ class MappingsController < ApplicationController
 
   # Get mappings for an ontology
   get '/ontologies/:ontology/mappings' do
-    acronym = @params[:ontology]
-    ontology = LinkedData::Models::Ontology.find(acronym).first
-    reply 404, "Ontology with acronym `#{acronym}` not found" if ontology.nil?
-    submission = ontology.latest_submission
-    reply 400, "No parsed submissions for ontology with acronym `#{acronym}`" if submission.nil?
-
+    ontology = ontology_from_acronym(@params[:ontology])
     page, size = page_params
     mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology ])
                                  .include(terms: [ :term, ontology: [ :acronym ] ])
                                  .include(process: [:name, :owner ])
-                                  .page(page,size)
+                                 .page(page,size)
                                  .all
     reply mappings
   end
@@ -71,6 +63,7 @@ class MappingsController < ApplicationController
 
     # Statistics for an ontology
     get '/ontologies/:ontology' do
+      ontology = ontology_from_acronym(@params[:ontology])
     end
 
     # Classes with lots of mappings
@@ -81,4 +74,13 @@ class MappingsController < ApplicationController
     get '/ontologies/:ontology/users' do
     end
   end
+
+  def ontology_from_acronym(acronym)
+    ontology = LinkedData::Models::Ontology.find(acronym).first
+    reply 404, "Ontology with acronym `#{acronym}` not found" if ontology.nil?
+    submission = ontology.latest_submission
+    reply 400, "No parsed submissions for ontology with acronym `#{acronym}`" if submission.nil?
+    return ontology
+  end
+
 end
