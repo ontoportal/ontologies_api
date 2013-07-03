@@ -1,6 +1,6 @@
 class BatchController < ApplicationController
   namespace "/batch" do
-    post do "/"
+    post do
       fix_batch_params_for_request()
       resource_type = "http://www.w3.org/2002/07/owl#Class"
       unless params.key?(resource_type)
