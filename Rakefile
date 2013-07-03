@@ -40,11 +40,13 @@ namespace :unicorn do
   namespace :start do
     desc "Unicorn start (production settings)"
     task :production do
+      print "Starting unicorn..."
       `bundle exec unicorn -p 80 -c config/unicorn.rb -D -E production`
     end
 
     desc "Unicorn start (development settings)"
     task :development do
+      print "Starting unicorn..."
       `bundle exec unicorn -p 9393 -c config/unicorn.rb`
     end
   end
@@ -65,3 +67,28 @@ namespace :unicorn do
     end
   end
 end
+
+namespace :cache do
+  namespace :clear do
+    desc "Clear HTTP cache (production redis and Rack::Cache)"
+    task :production do
+      require 'ontologies_linked_data'
+      require 'ncbo_annotator'
+      require_relative 'config/environments/production.rb'
+      require_relative 'lib/http_cache'
+      LinkedData::HTTPCache.invalidate_all_entries
+      `rm -rf cache/`
+    end
+
+    desc "Clear HTTP cache (development redis and Rack::Cache)"
+    task :development do
+      require 'ontologies_linked_data'
+      require 'ncbo_annotator'
+      require_relative 'config/environments/development.rb'
+      require_relative 'lib/http_cache'
+      LinkedData::HTTPCache.invalidate_all_entries
+      `rm -rf cache/`
+    end
+  end
+end
+

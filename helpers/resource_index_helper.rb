@@ -1,6 +1,8 @@
 require 'sinatra/base'
 require 'redis'
 
+require 'pry'
+
 #  @options[:resource_index_location]  = "http://rest.bioontology.org/resource_index/"
 #  @options[:filterNumber]             = true
 #  @options[:isStopWordsCaseSensitive] = false
@@ -44,14 +46,22 @@ module Sinatra
             # Use 'k' as an ontology acronym or URI, translate it to an ontology virtual ID.
             ont_id = virtual_id_from_acronym(k)
             ont_id = virtual_id_from_uri(k) if ont_id.nil?
-            next if ont_id.nil?  # TODO: raise an exception?
+            error 404, "Ontology #{k} cannot be found in the resource index." if ont_id.nil?
             # Use 'v' as a CSV list of concepts (class ID)
             v.split(',').each do |class_id|
               # Shorten id as necessary
               if class_id.start_with?("http://")
-                format ||= LinkedData::Models::Ontology.find(k.split("/").last).latest_submission.hasOntologyLanguage.acronym.to_s
-                class_id = shorten_uri(class_id, format)
+                ont_code = k.split("/").last
+                ont_model = LinkedData::Models::Ontology.find(ont_code).first
+                if ont_model.is_a? LinkedData::Models::Ontology
+                  submission = ont_model.latest_submission
+                  error 404, "Ontology #{k} (#{ont_code}) has no latest submission." if submission.nil?
+                  submission.bring(hasOntologyLanguage: [:acronym])
+                  ont_format = submission.hasOntologyLanguage.acronym
+                end
+                class_id = shorten_uri(class_id, ont_format)
               end
+              # TODO: Determine whether class_id exists, throw 404 for invalid classes.
               classes.push("#{ont_id}/#{class_id}")
             end
           end

@@ -5,10 +5,13 @@ gem 'sinatra-contrib'
 gem 'sinatra-advanced-routes'
 gem 'multi_json'
 gem 'oj'
-gem 'json-schema'
+gem 'json-schema', '= 2.0.0'
 gem 'rake'
 gem 'rack-accept'
+
+#gem 'rack-post-body-to-params'
 gem 'rack-post-body-to-params'
+
 gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '< 5.0'
 gem 'rack-cache'
@@ -42,4 +45,4 @@ end
 # ontologies_api-specific gems
 gem 'haml'
 gem 'redcarpet'
-gem 'activesupport'
+gem 'activesupport', '< 4.0'

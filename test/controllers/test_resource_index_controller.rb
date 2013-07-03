@@ -1,13 +1,25 @@
 require_relative '../test_case'
-require 'json-schema'
 
 class TestResourceIndexController < TestCase
 
-  DEBUG_MESSAGES=false
+  DEBUG_MESSAGES = true
+
+  # 1104 is BRO
+  # 1104, BRO:Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm
+  # 1104, BRO:Graph_Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm
+  ONT_ID_SHORT = 'BRO'
+  CLASS_ID_SHORT = 'BRO:Graph_Algorithm'
+  ONT_ID_FULL = CGI::escape('http://data.bioontology.org/ontologies/BRO')
+  CLASS_ID_FULL = CGI::escape('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm')
+
+  ONT_ID_SHORT_MISSING = 'MISSING_ONTOLOGY'
+  CLASS_ID_SHORT_MISSING = 'BRO:MissingClass'
+  ONT_ID_FULL_MISSING = CGI::escape('http://data.bioontology.org/ontologies/MISSING_ONTOLOGY')
+  CLASS_ID_FULL_MISSING = CGI::escape('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#MissingClass')
 
   # Populate the ontology dB
   def self.before_suite
-    test_ontology_acronyms = ["BRO", "NCIt"]
+    test_ontology_acronyms = ["BRO"]
     acronyms = []
     LinkedData::Models::Ontology.all {|o| acronyms << o.acronym}
     @@created_acronyms = []
@@ -24,24 +36,33 @@ class TestResourceIndexController < TestCase
         ontology = LinkedData::Models::Ontology.new(ontology_data)
         ontology.save
         @@created_acronyms << acronym
+        # Create a dummy ontology submission.
+        ont_data = LinkedData::SampleData::Ontology.create_ontologies_and_submissions(ont_count: 1, submission_count: 1)
+        ont_new = ont_data[2][0]
+        ont_new.bring(:submissions)
+        submission = ont_new.submissions.last  # get the last submission, regardless of parsing status
+        submission.bring_remaining
+        submission.submissionStatus = LinkedData::Models::SubmissionStatus.find(LinkedData::Models::SubmissionStatus.parsed_code).first
+        submission.ontology = ontology
+        submission.save
       end
-    rescue
-      @@created_acronyms.each do |acronym|
-        ontology = LinkedData::Models::Ontology.find(acronym).first
-        ontology.delete unless ontology.nil?
-      end
+    rescue Exception => e
+      puts "Failure to create ontology or user in before_suite: delete and recreate triple store.\n"
+      raise e
     end
   end
 
   def self.after_suite
     begin
+      LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
       @user = nil
       @@created_acronyms.each do |acronym|
         ontology = LinkedData::Models::Ontology.find(acronym).first
         ontology.delete unless ontology.nil?
       end
     rescue Exception => e
-      puts "Failure to delete ontology or user"
+      puts "Failure to delete ontology or user in after_suite\n"
+      raise e
     end
   end
 
@@ -209,7 +230,7 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  ELEMENTS_RANKED_SCHEMA = <<-END_SCHEMA
+  ELEMENTS_SCHEMA = <<-END_SCHEMA
   {
     "type": "array",
     "title": "elements",
@@ -217,7 +238,7 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  ELEMENT_RANKED_SCHEMA = <<-END_SCHEMA
+  ELEMENT_SCHEMA = <<-END_SCHEMA
   {
     "type": "object",
     "title": "element",
@@ -247,15 +268,11 @@ class TestResourceIndexController < TestCase
   def test_get_ranked_elements
     #get "/resource_index/ranked_elements?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
-    endpoint='ranked_elements'
-    acronym = 'BRO'
-    classid1 = 'BRO:Algorithm'
-    classid2 = 'BRO:Graph_Algorithm'
     #
-    # Note: Using classid1 encounters network timeout exception
-    #
-    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid2}"
-    #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
+    #rest_target = "/resource_index/ranked_elements?classes[#{acronym}]=#{classid1},#{classid2}"
+    rest_target = "/resource_index/ranked_elements?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}"
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
     validate_json(last_response.body, PAGE_SCHEMA)
     page = MultiJson.load(last_response.body)
@@ -269,33 +286,60 @@ class TestResourceIndexController < TestCase
   def test_get_search_classes
     #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
-    endpoint='search'
-    # 1104 is BRO
-    # 1104, BRO:Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm
-    # 1104, BRO:Graph_Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Algorithm
-    acronym = 'BRO'
-    classid1 = 'BRO:Algorithm'
-    classid2 = 'BRO:Graph_Algorithm'
     #
-    # Note: Using classid1 encounters network timeout exception for that term
-    #
-    get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid2}"
-    #get "/resource_index/#{endpoint}?classes[#{acronym}]=#{classid1},#{classid2}"
-    _response_status(200, last_response)
-    validate_json(last_response.body, PAGE_SCHEMA)
-    page = MultiJson.load(last_response.body)
-    annotations = page["collection"]
-    assert_instance_of(Array, annotations)
-    validate_json(MultiJson.dump(annotations), SEARCH_RESOURCE_SCHEMA, true)
-    annotations.each do |a|
-      validate_json(MultiJson.dump(a["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
-      # TODO: Resolve why ranked elements is different from annotated elements
-      validate_annotated_elements(a["annotatedElements"])
+    rest_search = "/resource_index/search"
+    rest_param_list = [
+        "?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}",
+        "?classes[#{ONT_ID_FULL}]=#{CLASS_ID_FULL}",
+        "?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_FULL}",
+        "?classes[#{ONT_ID_FULL}]=#{CLASS_ID_SHORT}"
+    ]
+    rest_param_list.each do |param|
+      rest_target = rest_search + param
+      puts rest_target if DEBUG_MESSAGES
+      get rest_target
+      _response_status(200, last_response)
+      validate_json(last_response.body, PAGE_SCHEMA)
+      page = MultiJson.load(last_response.body)
+      annotations = page["collection"]
+      assert_instance_of(Array, annotations)
+      validate_json(MultiJson.dump(annotations), SEARCH_RESOURCE_SCHEMA, true)
+      annotations.each do |a|
+        validate_json(MultiJson.dump(a["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
+        validate_annotated_elements(a["annotatedElements"])
+      end
     end
   end
 
+
+  def test_get_search_classes_failures
+    #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
+    #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
+    # 404 should be thrown for any 'missing' ontology or an ontology without a latest_submission.
+    # TODO: Enable the missing class tests when the API can quickly determine whether classes exist or not.
+    # TODO NOTE: The 404 errors are thrown by the resource_index_helper::get_classes method.
+    rest_search = "/resource_index/search"
+    rest_param_list = [
+        "?classes[#{ONT_ID_SHORT_MISSING}]=#{CLASS_ID_SHORT}",
+        "?classes[#{ONT_ID_FULL_MISSING}]=#{CLASS_ID_FULL}",
+        "?classes[#{ONT_ID_SHORT_MISSING}]=#{CLASS_ID_SHORT_MISSING}",  # The missing class is irrelevant
+        "?classes[#{ONT_ID_FULL_MISSING}]=#{CLASS_ID_FULL_MISSING}",    # The missing class is irrelevant
+        #"?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT_MISSING}",
+        #"?classes[#{ONT_ID_FULL}]=#{CLASS_ID_FULL_MISSING}",
+    ]
+    rest_param_list.each do |param|
+      rest_target = rest_search + param
+      puts rest_target if DEBUG_MESSAGES
+      get rest_target
+      _response_status(404, last_response)
+    end
+  end
+
+
   def test_get_ontologies
-    get '/resource_index/ontologies'
+    rest_target = '/resource_index/ontologies'
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
     validate_json(last_response.body, PAGE_SCHEMA)
     ontology_pages = MultiJson.load(last_response.body)
@@ -306,23 +350,24 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_resources
-    get '/resource_index/resources'
+    rest_target = '/resource_index/resources'
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
     validate_json(last_response.body, RESOURCE_SCHEMA, true)
     resources = MultiJson.load(last_response.body)
     assert_instance_of(Array, resources)
-    # TODO: Add element validations, as in test_get_ranked_elements
   end
 
   def test_get_resource_element
-    resource_id = 'GEO'
+    resource_id = 'AE'
     element_id = 'E-GEOD-19229'
-    get "/resource_index/resources/#{resource_id}/elements/#{element_id}"
+    rest_target = "/resource_index/resources/#{resource_id}/elements/#{element_id}"
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
     _response_status(200, last_response)
-    validate_json(last_response.body, RESOURCE_SCHEMA, true)
-    resources = MultiJson.load(last_response.body)
-    assert_instance_of(Array, resources)
-    # TODO: Add element validations, as in test_get_ranked_elements
+    element = MultiJson.load(last_response.body)
+    validate_element(element)
   end
 
 
@@ -348,11 +393,14 @@ private
   end
 
   def validate_ranked_elements(elements)
-    validate_json(MultiJson.dump(elements), ELEMENT_RANKED_SCHEMA, true)
-    elements.each do |e|
-      e["fields"].each_value do |field|
-        validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
-      end
+    validate_json(MultiJson.dump(elements), ELEMENT_SCHEMA, true)
+    elements.each {|e| validate_element(e) }
+  end
+
+  def validate_element(element)
+    validate_json(MultiJson.dump(element), ELEMENT_SCHEMA)
+    element["fields"].each_value do |field|
+      validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
     end
   end
 

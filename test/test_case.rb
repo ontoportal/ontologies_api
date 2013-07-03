@@ -78,9 +78,6 @@ class TestCase < MiniTest::Unit::TestCase
     Sinatra::Application
   end
 
-  def teardown
-  end
-
   ##
   # Creates a set of Ontology and OntologySubmission objects and stores them in the triplestore
   # @param [Hash] options the options to create ontologies with
@@ -113,11 +110,12 @@ class TestCase < MiniTest::Unit::TestCase
   # @param [String] jsonSchemaString a json schema string that will be parsed by MultiJson.load
   # @param [boolean] list set it true for jsonObj array of items to validate against jsonSchemaString
   def validate_json(jsonData, jsonSchemaString, list=false)
+    schemaVer = :draft3
     jsonObj = MultiJson.load(jsonData)
     jsonSchema = MultiJson.load(jsonSchemaString)
     assert(
-        JSON::Validator.validate(jsonSchema, jsonObj, :list => list),
-        JSON::Validator.fully_validate(jsonSchema, jsonObj, :validate_schema => true, :list => list).to_s
+        JSON::Validator.validate(jsonSchema, jsonObj, :list => list, :version => schemaVer),
+        JSON::Validator.fully_validate(jsonSchema, jsonObj, :list => list, :version => schemaVer, :validate_schema => true).to_s
     )
   end
 

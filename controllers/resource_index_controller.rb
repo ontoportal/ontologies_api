@@ -15,7 +15,7 @@ class ResourceIndexController < ApplicationController
     get "/ontologies" do
       options = get_options(params)
       result = NCBO::ResourceIndex.ontologies(options)
-      error 404, "No ontologies found" if (result.nil? || result.empty?)
+      check404(result, "No ontologies found.")
       results_array = massage_ontologies(result, options)
       page = page_object(results_array)
       reply page
@@ -27,7 +27,7 @@ class ResourceIndexController < ApplicationController
       error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
       options[:elementDetails] = true
       result = NCBO::ResourceIndex.find_by_concept(classes, options)
-      error 404, "No resources found" if (result.nil? || result.empty?)
+      check404(result, "No concepts found.")
       results_array = massage_search(result, options)
       page = page_object(results_array)
       reply page
@@ -38,7 +38,7 @@ class ResourceIndexController < ApplicationController
       classes = get_classes(params)
       error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
       result = NCBO::ResourceIndex.ranked_elements(classes, options)
-      error 404, "No resources found" if (result.nil? || result.empty?)
+      check404(result, "No elements found.")
       result.resources.each do |r|
         r[:elements] = massage_elements(r[:elements])
       end
@@ -51,7 +51,7 @@ class ResourceIndexController < ApplicationController
     get "/resources" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
-      error 404, "No resources found" if (result.nil? || result.empty?)
+      check404(result, "No resources found.")
       reply massage_resources(result)
     end
 
@@ -59,21 +59,55 @@ class ResourceIndexController < ApplicationController
     get "/resources/:resources" do
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
-      error 404, "No resources found" if (result.nil? || result.empty?)
+      check404(result, "No resources found.")
       reply massage_resources(result)
     end
 
-    # Return specific elements from specific resources
+    # Return a specific element from a specific resource
     get "/resources/:resources/elements/:elements" do
       options = get_options(params)
-      result = NCBO::ResourceIndex.resources(options)
-      error 404, "No resources found" if (result.nil? || result.empty?)
-      # TODO: Use the element method instead (Paul is fixing bug)
-      #result = NCBO::ResourceIndex.element(params["elements"], params["resources"], options)
-      #binding.pry
-      reply massage_resources(result)
+      result = NCBO::ResourceIndex.element(params["elements"], params["resources"], options)
+      check404(result, "No element found.")
+      # Massage the element data into the required format.
+      element = { "id" => result.id }
+      fields = {}
+      result.text.each do |name, description|
+        # TODO: Parse the text field to translate the term IDs into a list of URIs?
+        #"text"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
+        #
+        # Parse the associated ontologies to return a list of ontology URIs
+        ontIDs = [result.ontoIds[name]].compact  # Wrap Fixnum or Array into Array
+        ontIDs.delete_if {|x| x == 0 }
+        ontIDs.each_with_index do |id, i|  # Try to convert to ontology URIs
+          uri = ontology_uri_from_virtual_id(id)
+          if uri.nil?
+            ontIDs[i] = id.to_s # conform to expected data type for JSON validation
+          else
+            ontIDs[i] = uri
+          end
+        end
+        weight = 0.0
+        result.weights.each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
+        fields[name] = {
+            "text" => description,
+            "associatedOntologies" => ontIDs,
+            "weight" => weight
+        }
+      end
+      element["fields"] = fields
+      reply element
     end
 
+
+    def check404(response, message)
+      error 404, message if response.nil?
+      if response.is_a? Array
+        error 404, message if response.empty?
+      end
+      if response.is_a? Hash
+        error 404, message if response.empty?
+      end
+    end
 
     ##
     # Data massage methods.

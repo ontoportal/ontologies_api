@@ -41,7 +41,6 @@ class TestApplicationHelper < TestCaseHelpers
     @@ontologies.each do |ont|
       ont.bring(:acronym)
       acronym = helper.acronym_from_ontology_uri(ont.id)
-      binding.pry unless acronym == ont.acronym
       assert acronym == ont.acronym
     end
   end

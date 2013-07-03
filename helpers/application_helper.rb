@@ -20,17 +20,20 @@ module Sinatra
         return if obj.nil?
 
         params.each do |attribute, value|
+          next if value.nil?
+
           attribute = attribute.to_sym
           attr_cls = obj.class.range(attribute)
+          attribute_settings = obj.class.attribute_settings(attribute)
 
           # Try to find dependent Goo objects, but only if the naming is not done via Proc
           # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
           if attr_cls && !attr_cls.name_with.is_a?(Proc)
             # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)
-              value = value.map {|e| attr_cls.find(RDF::IRI.new(e)).include(attr_cls.attributes).first}
+              value = value.map {|e| attr_cls.find(uri_as_needed(e)).include(attr_cls.attributes).first}
             else
-              value = attr_cls.find(RDF::IRI.new(value)).include(attr_cls.attributes).first
+              value = attr_cls.find(uri_as_needed(value)).include(attr_cls.attributes).first
             end
           elsif attr_cls
             # Check to see if the resource exists in the triplestore
@@ -38,14 +41,14 @@ module Sinatra
 
             if retreived_value.empty?
               # Create a new object and save if one didn't exist
-              retreived_value = attr_cls.new(value.symbolize_keys)
+              retreived_value = populate_from_params(attr_cls.new, value.symbolize_keys)
               retreived_value.save
             end
             value = retreived_value
-          elsif attribute == :created || attribute == :released
+          elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:date_time)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
-          elsif attribute == :homePage
+          elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
             value = RDF::IRI.new(value)
           end
@@ -196,6 +199,11 @@ module Sinatra
         map = {}
         LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.id.to_s] = o.acronym}
         map
+      end
+
+      def uri_as_needed(id)
+        uri = RDF::URI.new(id)
+        uri.valid? ? uri : id
       end
 
     end
