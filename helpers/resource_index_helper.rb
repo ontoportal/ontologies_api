@@ -71,6 +71,7 @@ module Sinatra
 
       def get_options(params={})
         options = {}
+        options[:request_timeout] = 600  # double the default of 300
         # The ENV["REMOTE_USER"] object (this is a variable that stores a per-request instance of
         # a LinkedData::Models::User object based on the API Key used in the request). The apikey
         # is one of the attributes on the user object.
