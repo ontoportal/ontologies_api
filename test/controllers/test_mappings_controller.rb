@@ -52,7 +52,6 @@ class TestMappingsController < TestCase
       process.new(fake,bro,Logger.new(STDOUT)).start()
       process.new(bro,cno,Logger.new(STDOUT)).start()
     end
-
   end
 
   def certify_mapping(mapping)
@@ -144,7 +143,6 @@ class TestMappingsController < TestCase
     ontology = "BRO-TEST-MAP-0"
     get "/ontologies/#{ontology}/mappings"
     assert last_response.ok?
-    assert last_response.ok?
     mappings = MultiJson.load(last_response.body)
 
     #pages
@@ -161,6 +159,25 @@ class TestMappingsController < TestCase
     end
   end
 
+  def test_mappings_between_ontologies
+    ontologies = "BRO-TEST-MAP-0,FAKE-TEST-MAP-0"
+    get "/mappings/?ontologies=#{ontologies}"
+    assert last_response.ok?
+    mappings = MultiJson.load(last_response.body)
+    #pages
+    assert mappings["page"] == 1
+    assert mappings["pageCount"] == 1
+    assert mappings["prevPage"] == nil
+    assert mappings["nextPage"] == nil
+
+    assert mappings["collection"].length == 11
+    mappings = mappings["collection"]
+
+    mappings.each do |mapping|
+      certify_mapping(mapping)
+    end
+  end
+
   def test_mappings_for_ontology_pages
     ontology = "BRO-TEST-MAP-0"
     pagesize = 6
@@ -168,7 +185,6 @@ class TestMappingsController < TestCase
     next_page = nil
     begin
       get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{page}"
-      assert last_response.ok?
       assert last_response.ok?
       mappings = MultiJson.load(last_response.body)
       #pages
@@ -211,15 +227,10 @@ class TestMappingsController < TestCase
   def test_delete_mapping
   end
 
-  def test_recent_mappings
-    get "/mappings/statistics/recent"
-    assert last_response.ok?
-    assert_equal '', last_response.body
-  end
-
   def test_mappings_statistics_for_ontology
-    ontology = "ncit"
+    ontology = "BRO-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
+    binding.pry
     assert last_response.ok?
     assert_equal '', last_response.body
   end
