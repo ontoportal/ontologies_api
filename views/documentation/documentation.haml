@@ -131,7 +131,7 @@
         The Resource Index contains a collection of annotated resources that can be searched by providing ontology acronyms with a corresponding class id or set of ids
         %ul
           %li
-            Perform search
+            Search
             %ul
               %li
                 Single class
@@ -157,26 +157,62 @@
                   %li
                     example:
                     %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FMEDDRA]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMEDDRA%2F10025044"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FMEDDRA]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMEDDRA%2F10025044
+              %li
+                Search Parameters
+                %ul
+                  %li
+                    Filtering & query behavior
+                    %ul
+                      %li ontologies={ontology_id1,ontology_id2,ontology_id3}
+                      %li semantic_types={semType1,semType2,semType3}
+                      %li max_level={0..N}
+                      %li mapping_types={automatic|manual}
+                      %li resources={resource1,resource2}
+                      %li exclude_numbers={true|false}
+                      %li minimum_match_length={0..N}
+                      %li include_synonyms={true|false}
+                      %li mode={union|intersection}
+                  %li
+                    Stop words
+                    %ul
+                      %li exclude_words={word1,word2,word3}
+                      %li excluded_words_are_case_sensitive={true|false}
           %li
-            Parameters
+            Ontologies
             %ul
               %li
-                Filtering & query behavior
-                %ul
-                  %li ontologies={ontology_id1,ontology_id2,ontology_id3}
-                  %li semantic_types={semType1,semType2,semType3}
-                  %li max_level={0..N}
-                  %li mapping_types={automatic|manual}
-                  %li resources={resource1,resource2}
-                  %li exclude_numbers={true|false}
-                  %li minimum_match_length={0..N}
-                  %li include_synonyms={true|false}
-                  %li mode={union|intersection}
+                <span class="label label-info">GET</span> <code>/resource_index/ontologies</code>
               %li
-                Stop words
-                %ul
-                  %li exclude_words={word1,word2,word3}
-                  %li excluded_words_are_case_sensitive={true|false}
+                example:
+                %a{href: "/resource_index/ontologies"} /resource_index/ontologies
+          %li
+            Resources
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/resources</code>
+              %li
+                example:
+                %a{href: "/resource_index/resources"} /resource_index/resources
+          %li
+            Resource
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/resources/{resource_id}</code>
+              %li
+                example:
+                %a{href: "/resource_index/resources/AE"} /resource_index/resources/AE
+          %li
+            Ranked Elements
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/ranked_elements?classes[ontology_id1]=classid1</code>
+              %li
+                example:
+                %a{href: "/resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
+              %li
+                example:
+                %a{href: "/resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FFMA]=http%3A%2F%2Fsig.uw.edu%2Ffma%23Heart"} /resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FFMA]=http%3A%2F%2Fsig.uw.edu%2Ffma%23Heart
+
 
       %h2#nav_resource_endpoints Resource Endpoints
 
