@@ -17,7 +17,7 @@ class ResourceIndexController < ApplicationController
       result = NCBO::ResourceIndex.ontologies(options)
       check404(result, "No ontologies found.")
       results_array = massage_ontologies(result, options)
-      page = page_object(results_array)
+      page = page_object(results_array) # page_object(array, total_result_count = 0)
       reply page
     end
 
@@ -28,6 +28,9 @@ class ResourceIndexController < ApplicationController
       options[:elementDetails] = true
       result = NCBO::ResourceIndex.find_by_concept(classes, options)
       check404(result, "No concepts found.")
+      #
+      # TODO: Fix the get_annotated_class method (REDIS db failures), called by massage_search
+      #
       results_array = massage_search(result, options)
       page = page_object(results_array)
       reply page
@@ -52,15 +55,25 @@ class ResourceIndexController < ApplicationController
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
       check404(result, "No resources found.")
-      reply massage_resources(result)
+      #reply massage_resources(result)
+      page = page_object(massage_resources(result))
+      reply page
     end
 
     # Return specific resources
     get "/resources/:resources" do
       options = get_options(params)
-      result = NCBO::ResourceIndex.resources(options)
+      #result = NCBO::ResourceIndex.resources(options)
+      result = NCBO::ResourceIndex.resources_hash(options)
       check404(result, "No resources found.")
-      reply massage_resources(result)
+      resources_filtered = []
+      options[:resourceids].each do |r|
+        rid = r.downcase.to_sym
+        resources_filtered.push result[rid]
+      end
+      #reply massage_resources(result)
+      page = page_object(massage_resources(resources_filtered))
+      reply page
     end
 
     # Return a specific element from a specific resource
@@ -139,7 +152,7 @@ class ResourceIndexController < ApplicationController
         elements = {}
         annotations = []
         resource.annotations.each do |a|
-          annotated_class = get_annotated_class_from_concept(a.concept)
+          annotated_class = get_annotated_class(a)
           # NOTE: Skipping nil class_uri values, could mess with paging details
           # The nil values are marginal cases for OBO terms
           next if annotated_class.nil?
@@ -159,14 +172,14 @@ class ResourceIndexController < ApplicationController
       return resources.values
     end
 
-    # @param concept [{:localConceptId => 'version_id/term_id'}]
+    # @param resource_annotation [{:localConceptId => 'version_id/term_id'}]
     # @return nil or annotated_class = { :id => 'term_uri', :ontology => 'ontology_uri'}
-    def get_annotated_class_from_concept(concept)
-      version_id, short_id = concept[:localConceptId].split('/')
+    def get_annotated_class(a)
+      version_id, short_id = a.concept[:localConceptId].split('/')
       class_uri = uri_from_short_id(version_id, short_id)
       return nil if class_uri.nil?
       # undo the comment for testing purposes, only when class_uri.nil?
-      #class_uri = concept[:localConceptId] if class_uri.nil?
+      #class_uri = a.concept[:localConceptId] if class_uri.nil?
       ontology_acronym = acronym_from_version_id(version_id)
       return nil if ontology_acronym.nil?
       ontology_uri = ontology_uri_from_acronym(ontology_acronym)
