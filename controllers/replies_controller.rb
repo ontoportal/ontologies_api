@@ -9,6 +9,14 @@ class RepliesController < ApplicationController
   end
 
   namespace "/replies" do
+
+    # Display all replies
+    get "?:include_threads?" do
+      replies = LinkedData::Models::Notes::Reply.where.include(LinkedData::Models::Notes::Reply.goo_attrs_to_load(includes_param)).to_a
+      reply replies
+    end
+
+
     # Display a single reply
     get "/:replyid" do
       reply_query = LinkedData::Models::Notes::Reply.find(params["replyid"])
