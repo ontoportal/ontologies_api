@@ -143,7 +143,7 @@ class ResourceIndexController < ApplicationController
           ontologies.push(new)
         end
       end
-      return ontologies
+      return ontologies.sort {|a,b| a[:ontologyName].downcase <=> b[:ontologyName].downcase}
     end
 
     def massage_search(old_response, options)
@@ -259,7 +259,7 @@ class ResourceIndexController < ApplicationController
         r.delete :workflowCompletedDate
         r.delete :contexts
       end
-      return resource_array.sort {|a,b| a[:resourceId] <=> b[:resourceId]}
+      return resource_array.sort {|a,b| a[:resourceId].downcase <=> b[:resourceId].downcase}
     end
 
   end # namespace "/resource_index"
