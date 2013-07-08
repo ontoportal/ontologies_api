@@ -38,7 +38,7 @@ class NotesController < ApplicationController
       reply 200, note
     end
 
-    # Create a note with the given noteid
+    # Create a note with the given parameters
     post do
       note = note_from_params
 
