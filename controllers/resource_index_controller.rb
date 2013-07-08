@@ -259,7 +259,7 @@ class ResourceIndexController < ApplicationController
         r.delete :workflowCompletedDate
         r.delete :contexts
       end
-      return resource_array
+      return resource_array.sort {|a,b| a[:resourceId] <=> b[:resourceId]}
     end
 
   end # namespace "/resource_index"
