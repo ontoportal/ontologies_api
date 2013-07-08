@@ -9,8 +9,8 @@ gem 'json-schema', '= 2.0.0'
 gem 'rake'
 gem 'rack-accept'
 
-#gem 'rack-post-body-to-params'
 gem 'rack-post-body-to-params'
+#gem 'rack-post-body-to-params', :git => 'https://github.com/palexander/rack-post-body-to-params.git', :branch => 'active_support_4'
 
 gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '< 5.0'
@@ -46,3 +46,4 @@ end
 gem 'haml'
 gem 'redcarpet'
 gem 'activesupport', '< 4.0'
+
