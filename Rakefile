@@ -40,13 +40,13 @@ namespace :unicorn do
   namespace :start do
     desc "Unicorn start (production settings)"
     task :production do
-      print "Starting unicorn..."
+      print "Starting unicorn...\n"
       `bundle exec unicorn -p 80 -c config/unicorn.rb -D -E production`
     end
 
     desc "Unicorn start (development settings)"
     task :development do
-      print "Starting unicorn..."
+      print "Starting unicorn...\n"
       `bundle exec unicorn -p 9393 -c config/unicorn.rb`
     end
   end
