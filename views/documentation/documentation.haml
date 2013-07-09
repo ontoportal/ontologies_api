@@ -137,7 +137,7 @@
                 Single class
                 %ul
                   %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=classid1</code>
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=class_id1</code>
                   %li
                     example:
                     %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
@@ -145,7 +145,7 @@
                 Multiple classes, single ontology
                 %ul
                   %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=classid1,classid2</code>
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=class_id1,class_id2</code>
                   %li
                     example:
                     %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006
@@ -153,10 +153,10 @@
                 Multiple classes, multiple ontologies
                 %ul
                   %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=classid1&classes[ontology_acronym2]=classid1,classid2</code>
+                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=class_id1&classes[ontology_id2]=class_id1,class_id2</code>
                   %li
                     example:
-                    %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FMEDDRA]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMEDDRA%2F10025044"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FMEDDRA]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FMEDDRA%2F10025044
+                    %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NEMO]=http%3A%2F%2Fpurl.bioontology.org%2FNEMO%2Fontology%2FNEMO.owl%23NEMO_7571000"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NEMO]=http%3A%2F%2Fpurl.bioontology.org%2FNEMO%2Fontology%2FNEMO.owl%23NEMO_7571000
               %li
                 Search Parameters
                 %ul
@@ -181,6 +181,8 @@
             Ontologies
             %ul
               %li
+                All ontologies:
+              %li
                 <span class="label label-info">GET</span> <code>/resource_index/ontologies</code>
               %li
                 example:
@@ -189,23 +191,29 @@
             Resources
             %ul
               %li
-                <span class="label label-info">GET</span> <code>/resource_index/resources</code>
+                All resources:
+                %ul
+                  %li
+                    <span class="label label-info">GET</span> <code>/resource_index/resources</code>
+                  %li
+                    example:
+                    %a{href: "/resource_index/resources"} /resource_index/resources
               %li
-                example:
-                %a{href: "/resource_index/resources"} /resource_index/resources
-          %li
-            Resource
-            %ul
-              %li
-                <span class="label label-info">GET</span> <code>/resource_index/resources/{resource_id}</code>
-              %li
-                example:
-                %a{href: "/resource_index/resources/AE"} /resource_index/resources/AE
+                Specific resources:
+                %ul
+                  %li
+                    <span class="label label-info">GET</span> <code>/resource_index/resources/{resource_id1,...,resource_idN}</code>
+                  %li
+                    example:
+                    %a{href: "/resource_index/resources/AE"} /resource_index/resources/AE
+                  %li
+                    example:
+                    %a{href: "/resource_index/resources/AE,CARY"} /resource_index/resources/AE,CARY
           %li
             Ranked Elements
             %ul
               %li
-                <span class="label label-info">GET</span> <code>/resource_index/ranked_elements?classes[ontology_id1]=classid1</code>
+                <span class="label label-info">GET</span> <code>/resource_index/ranked_elements?classes[ontology_id1]=class_id1</code>
               %li
                 example:
                 %a{href: "/resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
