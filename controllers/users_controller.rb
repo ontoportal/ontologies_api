@@ -1,5 +1,15 @@
 class UsersController < ApplicationController
   namespace "/users" do
+    post "/authenticate" do
+      user_id = params["user"]
+      user_password = params["password"]
+      user = User.find(user_id).include(User.goo_attrs_to_load + [:passwordHash]).first
+      authenticated = user.authenticate(user_password) unless user.nil?
+      error 401, "Username/password combination invalid" unless authenticated
+      user.show_apikey = true
+      reply user
+    end
+
     # Display all users
     get do
       reply User.where.include(User.goo_attrs_to_load(includes_param)).to_a
