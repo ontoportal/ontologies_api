@@ -354,9 +354,12 @@ class TestResourceIndexController < TestCase
     puts rest_target if DEBUG_MESSAGES
     get rest_target
     _response_status(200, last_response)
-    validate_json(last_response.body, RESOURCE_SCHEMA, true)
-    resources = MultiJson.load(last_response.body)
-    assert_instance_of(Array, resources)
+    validate_json(last_response.body, PAGE_SCHEMA)
+    resources_pages = MultiJson.load(last_response.body)
+    assert_instance_of(Hash, resources_pages)
+    assert_instance_of(Array, resources_pages['collection'])
+    validate_json(MultiJson.dump(resources_pages['collection']), RESOURCES_SCHEMA)
+    validate_json(MultiJson.dump(resources_pages['collection']), RESOURCE_SCHEMA, true)
   end
 
   def test_get_resource_element

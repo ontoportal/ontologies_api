@@ -63,15 +63,13 @@ class ResourceIndexController < ApplicationController
     # Return specific resources
     get "/resources/:resources" do
       options = get_options(params)
-      #result = NCBO::ResourceIndex.resources(options)
       result = NCBO::ResourceIndex.resources_hash(options)
       check404(result, "No resources found.")
       resources_filtered = []
       options[:resourceids].each do |r|
         rid = r.downcase.to_sym
-        resources_filtered.push result[rid]
+        resources_filtered.push result[rid] if result.keys.include? rid
       end
-      #reply massage_resources(result)
       page = page_object(massage_resources(resources_filtered))
       reply page
     end
@@ -143,7 +141,7 @@ class ResourceIndexController < ApplicationController
           ontologies.push(new)
         end
       end
-      return ontologies
+      return ontologies.sort {|a,b| a[:ontologyName].downcase <=> b[:ontologyName].downcase}
     end
 
     def massage_search(old_response, options)
@@ -259,7 +257,7 @@ class ResourceIndexController < ApplicationController
         r.delete :workflowCompletedDate
         r.delete :contexts
       end
-      return resource_array
+      return resource_array.sort {|a,b| a[:resourceId].downcase <=> b[:resourceId].downcase}
     end
 
   end # namespace "/resource_index"

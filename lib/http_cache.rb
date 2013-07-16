@@ -7,7 +7,7 @@ module LinkedData
     REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
     @@redis_available = nil
     CACHE_INVALIDATION_VERBS = Set.new(["POST", "PUT", "PATCH", "DELETE"])
-    CACHE_MAX_AGE = 2592000 # 2592000 == 30 days
+    CACHE_MAX_AGE = 60
 
     def initialize(options = {})
       @env = options[:env]

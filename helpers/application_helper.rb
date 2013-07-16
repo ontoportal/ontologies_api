@@ -28,7 +28,7 @@ module Sinatra
 
           # Try to find dependent Goo objects, but only if the naming is not done via Proc
           # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
-          if attr_cls && !attr_cls.name_with.is_a?(Proc)
+          if attr_cls && !value.is_a?(Hash)
             # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)
               value = value.map {|e| attr_cls.find(uri_as_needed(e)).include(attr_cls.attributes).first}
@@ -186,7 +186,7 @@ module Sinatra
       def acronym_from_ontology_uri(uri)
         acronym_ontology_uri_map[uri.to_s]
       end
-      
+
       ##
       # Given an ontology acronym returns the ontology model.
       # Replies 404 if the ontology does not exist
@@ -214,6 +214,7 @@ module Sinatra
       end
 
       def uri_as_needed(id)
+        id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix
         uri = RDF::URI.new(id)
         uri.valid? ? uri : id
       end

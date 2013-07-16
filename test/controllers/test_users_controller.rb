@@ -93,4 +93,11 @@ class TestUsersController < TestCase
     assert last_response.status == 404
   end
 
+  def test_authentication
+    post "/users/authenticate", {user: @@usernames.first, password: "pass_word"}
+    assert last_response.ok?
+    user = MultiJson.load(last_response.body)
+    assert user["username"].eql?(@@usernames.first)
+  end
+
 end

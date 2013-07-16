@@ -124,6 +124,14 @@ class HomeController < ApplicationController
       routes_by_file.each do |file, routes|
         cls_name = file.split("/").last.gsub(".rb", "").classify.gsub("Controller", "").singularize
         cls = LinkedData::Models.const_get(cls_name) rescue nil
+
+        # Check sub-modules for classes (IE LinkedData::Models::Notes for LinkedData::Models::Notes::Reply)
+        if cls.nil?
+          LinkedData::Models.constants.each do |const|
+            sub_cls = LinkedData::Models.const_get(const).const_get(cls_name) rescue nil
+            cls = sub_cls unless sub_cls.nil?
+          end
+        end
         next if cls.nil?
         routes.each do |route|
           next if route.verb == "HEAD"

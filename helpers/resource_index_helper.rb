@@ -46,7 +46,9 @@ module Sinatra
             # Use 'k' as an ontology acronym or URI, translate it to an ontology virtual ID.
             ont_id = virtual_id_from_acronym(k)
             ont_id = virtual_id_from_uri(k) if ont_id.nil?
-            error 404, "Ontology #{k} cannot be found in the resource index." if ont_id.nil?
+            msg = "Ontology #{k} cannot be found in the resource index. "
+            msg += "See #{LinkedData.settings.rest_url_prefix}ontologies for details."
+            error 404, msg if ont_id.nil?
             # Use 'v' as a CSV list of concepts (class ID)
             v.split(',').each do |class_id|
               # Shorten id as necessary
@@ -71,6 +73,7 @@ module Sinatra
 
       def get_options(params={})
         options = {}
+        options[:debug] = true
         options[:request_timeout] = 600  # double the default of 300
         # The ENV["REMOTE_USER"] object (this is a variable that stores a per-request instance of
         # a LinkedData::Models::User object based on the API Key used in the request). The apikey
@@ -95,54 +98,64 @@ module Sinatra
         options[:limit] = limit unless limit.nil?
         #
         #* elements={element1,...,elementN}
-        element = [params["elements"]].compact
-        options[:elementid] = element unless element.nil? || element.empty?
+        if params["elements"].is_a? String
+          elements = params["elements"].split(',')
+          options[:elementid] = elements unless elements.empty?
+        end
         #
         #* resources={resource1,...,resourceN}
-        resource = [params["resources"]].compact
-        options[:resourceids] = resource unless resource.nil? || resource.empty?
+        if params["resources"].is_a? String
+          resources = params["resources"].split(',')
+          options[:resourceids] = resources unless resources.empty?
+        end
         #
         #* ontologies={acronym1|URL1,acronym2|URL2,...,acronymN|URLn}
-        ontologies = [params["ontologies"]].compact
-        ontologies.map! {|acronym| virtual_id_from_acronym(acronym) }
-        options[:ontologiesToExpand]       = ontologies
-        options[:ontologiesToKeepInResult] = ontologies
+        if params['ontologies'].is_a? String
+          ontologies = params['ontologies'].split(',')
+          ontologies.map! {|acronym| virtual_id_from_acronym(acronym) }
+          options[:ontologiesToExpand]       = ontologies unless ontologies.empty?
+          options[:ontologiesToKeepInResult] = ontologies unless ontologies.empty?
+        end
         #
         #* semantic_types={semType1,semType2,semType3}
-        semanticTypes = [params["semantic_types"]].compact
-        options[:semanticTypes] = semanticTypes unless semanticTypes.nil? || semanticTypes.empty?
+        if params['semantic_types'].is_a? String
+          semanticTypes = params['semantic_types'].split(',')
+          options[:semanticTypes] = semanticTypes unless semanticTypes.empty?
+        end
         #
         #* max_level={0..N}
-        options[:levelMax] = params["max_level"] if params.key?("max_level")
+        options[:levelMax] = params['max_level'] if params.key?('max_level')
         #
         #* mapping_types={automatic,manual}
-        mapping_types = [params["mapping_types"]].compact
-        options[:mappingTypes] = mapping_types unless mapping_types.empty?
+        if params['mapping_types'].is_a? String
+          mapping_types = params['mapping_types'].split(',')
+          options[:mappingTypes] = mapping_types unless mapping_types.empty?
+        end
         #
         #* exclude_numbers={true|false}
-        options[:filterNumber] = params["exclude_numbers"] if params.key?("exclude_numbers")
+        options[:filterNumber] = params['exclude_numbers'] if params.key?('exclude_numbers')
         #
         #* minimum_match_length={0..N}
-        options[:minTermSize] = params["minimum_match_length"] if params.key?("minimum_match_length")
+        options[:minTermSize] = params['minimum_match_length'] if params.key?('minimum_match_length')
         #
         #* include_synonyms={true|false}
-        options[:withSynonyms] = params["include_synonyms"] if params.key?("include_synonyms")
+        options[:withSynonyms] = params['include_synonyms'] if params.key?('include_synonyms')
         #
         #* include_offsets={true|false}
         # TODO: code this one!
 
         #
         #* mode={union|intersection}
-        options[:mode] = params["mode"] if params.key?("mode")
+        options[:mode] = params['mode'] if params.key?('mode')
         #
         # Stop words
         #
         #* exclude_words={word1,word2,word3}
         #* excluded_words_are_case_sensitive={true|false}
-        exclude_words = [params["exclude_words"]].compact
+        exclude_words = [params['exclude_words']].compact
         options[:stopWords] = exclude_words
         options[:withDefaultStopWords] = false if not exclude_words.empty?
-        case_sensitive = params["excluded_words_are_case_sensitive"]
+        case_sensitive = params['excluded_words_are_case_sensitive']
         options[:isStopWordsCaseSensitive] = case_sensitive unless case_sensitive.nil?
 
         return options
@@ -152,32 +165,32 @@ module Sinatra
       # Takes a URI and shortens it (takes off everything except the last fragment) according to NCBO rules.
       # Only OBO format has special processing.
       # The format can be obtained by doing ont.latest_submission.hasOntologyLanguage.acronym.to_s
-      def shorten_uri(uri, ont_format = "")
+      def shorten_uri(uri, ont_format = '')
         uri = uri.to_s
-        if ont_format.eql?("OBO")
-          if uri.start_with?("http://purl.org/obo/owl/")
-            last_fragment = uri.split("/").last.split("#")
+        if ont_format.eql?('OBO')
+          if uri.start_with?('http://purl.org/obo/owl/')
+            last_fragment = uri.split('/').last.split('#')
             prefix = last_fragment[0]
             mod_code = last_fragment[1]
-          elsif uri.start_with?("http://purl.obolibrary.org/obo/")
-            last_fragment = uri.split("/").last.split("_")
+          elsif uri.start_with?('http://purl.obolibrary.org/obo/')
+            last_fragment = uri.split('/').last.split('_')
             prefix = last_fragment[0]
             mod_code = last_fragment[1]
-          elsif uri.start_with?("http://www.cellcycleontology.org/ontology/owl/")
-            last_fragment = uri.split("/").last.split("#")
+          elsif uri.start_with?('http://www.cellcycleontology.org/ontology/owl/')
+            last_fragment = uri.split('/').last.split('#')
             prefix = last_fragment[0]
             mod_code = last_fragment[1]
-          elsif uri.start_with?("http://purl.bioontology.org/ontology/")
-            last_fragment = uri.split("/")
+          elsif uri.start_with?('http://purl.bioontology.org/ontology/')
+            last_fragment = uri.split('/')
             prefix = last_fragment[-2]
             mod_code = last_fragment[-1]
           end
           short_id = "#{prefix}:#{mod_code}"
         else
           # Everything other than OBO
-          uri_parts = uri.split("/")
+          uri_parts = uri.split('/')
           short_id = uri_parts.last
-          short_id = short_id.split("#").last if short_id.include?("#")
+          short_id = short_id.split('#').last if short_id.include?('#')
         end
         short_id
       end
@@ -192,8 +205,8 @@ module Sinatra
       def uri_from_short_id(version_id, short_id)
         acronym = acronym_from_version_id(version_id)
         uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{short_id}")
-        if uri.nil? && short_id.include?(":")
-          try_again_id = short_id.split(":").last
+        if uri.nil? && short_id.include?(':')
+          try_again_id = short_id.split(':').last
           uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{try_again_id}")
         end
         uri
