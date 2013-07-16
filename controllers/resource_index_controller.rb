@@ -15,8 +15,10 @@ class ResourceIndexController < ApplicationController
     get "/ontologies" do
       options = get_options(params)
       result = NCBO::ResourceIndex.ontologies(options)
-      check404(result, "No ontologies found.")
+      check404(result, "No ontologies found by resource index client.")
+      LOGGER.info("/resource_index/ontologies: #ontologies in resource index = #{result.length}")
       results_array = massage_ontologies(result, options)
+      check500(results_array, "Failed to resolve resource index data with triple store data.")
       page = page_object(results_array) # page_object(array, total_result_count = 0)
       reply page
     end
@@ -120,23 +122,34 @@ class ResourceIndexController < ApplicationController
       end
     end
 
+    def check500(response, message)
+      error 500, message if response.nil?
+      if response.is_a? Array
+        error 500, message if response.empty?
+      end
+      if response.is_a? Hash
+        error 500, message if response.empty?
+      end
+    end
+
     ##
     # Data massage methods.
     #
 
 
     def massage_ontologies(old_response, options)
+      goo_map = ontology_uri_acronym_map  # from application_helper.rb (LinkedData lookup)
       ontologies = []
       old_response.each do |ont|
+        acronym = acronym_from_virtual_id(ont[:virtualOntologyId])  # from resource_index_helper (REDIS lookup)
         new = {
             :ontologyName => ont[:ontologyName],
-            :ontologyURI => ontology_uri_from_virtual_id(ont[:virtualOntologyId])
+            :ontologyURI => goo_map[acronym]
         }
         if new[:ontologyURI].nil?
-          # TODO: log error message
           # The RI contains an ontology that is not in the new API service, or the
-          # REDIS store doesn't contain the lookup data?
-          #puts "Failed to find RI ontology in REDIS lookup: #{ont[:virtualOntologyId]} - #{ont[:ontologyName]}"
+          # GOO/REDIS store doesn't contain the lookup data?
+          LOGGER.info("/resource_index/ontologies: failed lookup of ontology URI for #{ont[:virtualOntologyId]} - #{ont[:ontologyName]}")
         else
           ontologies.push(new)
         end

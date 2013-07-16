@@ -199,8 +199,6 @@ module Sinatra
         return ontology
       end
 
-      private
-
       def ontology_uri_acronym_map
         map = {}
         LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.acronym] = o.id.to_s}
@@ -212,6 +210,8 @@ module Sinatra
         LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.id.to_s] = o.acronym}
         map
       end
+
+      private
 
       def uri_as_needed(id)
         id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix
