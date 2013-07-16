@@ -3,6 +3,7 @@ require_relative '../test_case'
 class TestMappingsController < TestCase
 
   def self.before_suite
+    return
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
@@ -230,9 +231,14 @@ class TestMappingsController < TestCase
   def test_mappings_statistics_for_ontology
     ontology = "BRO-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
-    binding.pry
     assert last_response.ok?
-    assert_equal '', last_response.body
+    stats = MultiJson.load(last_response.body)
+    assert stats == {"CNO-TEST-MAP-0"=>9, "FAKE-TEST-MAP-0"=>11}
+    ontology = "FAKE-TEST-MAP-0"
+    get "/mappings/statistics/ontologies/#{ontology}"
+    assert last_response.ok?
+    stats = MultiJson.load(last_response.body)
+    assert stats == {"BRO-TEST-MAP-0"=>11, "CNO-TEST-MAP-0"=>10}
   end
 
   def test_mappings_popular_classes
