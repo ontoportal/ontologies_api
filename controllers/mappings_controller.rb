@@ -80,6 +80,16 @@ class MappingsController < ApplicationController
     get '/recent' do
     end
 
+    get '/ontologies/' do
+      counts = {}
+      onts = LinkedData::Models::Ontology.where.include(:acronym).all
+      onts.each do |o|
+        counts[o.acronym] = LinkedData::Models::Mapping.where(terms: [ontology: o])
+                               .count
+      end
+      reply counts
+    end
+
     # Statistics for an ontology
     get '/ontologies/:ontology' do
       ontology = ontology_from_acronym(@params[:ontology])

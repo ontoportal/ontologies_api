@@ -228,6 +228,13 @@ class TestMappingsController < TestCase
   def test_delete_mapping
   end
 
+  def test_mappings_statistics
+    get "/mappings/statistics/ontologies/"
+    assert last_response.ok?
+    stats = MultiJson.load(last_response.body)
+    assert stats == {"BRO-TEST-MAP-0"=>20, "CNO-TEST-MAP-0"=>19, "FAKE-TEST-MAP-0"=>21}
+  end
+
   def test_mappings_statistics_for_ontology
     ontology = "BRO-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
