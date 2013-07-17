@@ -3,8 +3,7 @@ class MappingsController < ApplicationController
   # Get mappings for a class
   get '/ontologies/:ontology/classes/:cls/mappings' do
     ontology = ontology_from_acronym(@params[:ontology])
-    ontology = LinkedData::Models::Ontology.find(acronym).first
-
+    submission = ontology.latest_submission
     cls_id = @params[:cls]
     cls = LinkedData::Models::Class.find(RDF::URI.new(cls_id)).in(submission).first
     reply 404, "Class with id `#{class_id}` not found in ontology `#{acronym}`" if cls.nil?
