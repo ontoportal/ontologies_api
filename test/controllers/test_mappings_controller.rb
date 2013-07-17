@@ -216,7 +216,7 @@ class TestMappingsController < TestCase
       get "/mappings/#{m_id}"
       assert last_response.status == 200
       mapping = MultiJson.load(last_response.body)
-      if mapping["process"].select { |x| x["name"] == "REST Mapping" }.length >  1
+      if mapping["process"].select { |x| x["name"] == "REST Mapping" }.length > 0
         next #skip manual mappings
       end
       certify_mapping(mapping)
