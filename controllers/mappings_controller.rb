@@ -33,25 +33,9 @@ class MappingsController < ApplicationController
   namespace "/mappings" do
     # Display all mappings
     get do
-      ontology_uris = ontologies_param
-      ontologies = []
-      ontology_uris.each do |id|
-        ontologies << Ontology.find(RDF::URI.new(id)).first
-      end
-      ontologies.each do |o|
-        error(400, "Ontology #{o.id.to_s} does not have a parsed submission") if o.latest_submission.nil?
-      end
-      if ontologies.length != 2
-        error(400, "/mappings/ endpoint only supports filtering on two ontologies")
-      end
-      page, size = page_params
-      mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontologies.first ])
-                                 .and(terms: [ontology: ontologies[1] ])
-                                 .include(terms: [ :term, ontology: [ :acronym ] ])
-                                 .include(process: [:name, :owner ])
-                                 .page(page,size)
-                                 .all
-      reply mappings
+      #calls to retrieve all mappings should not be allowed
+      #users can do this by traversing all ontologies
+      error(405,"To traverse all mappings one should traverse all mappings by ontology. See")
     end
 
     # Display a single mapping
@@ -60,14 +44,65 @@ class MappingsController < ApplicationController
 
     # Create a new mapping
     post do
+      error(400, "Input does not contain terms") if !params[:terms]
+      error(400, "Input does not contain at least 2 terms") if params[:terms].length < 2
+      error(400, "Input does not contain mapping relation") if !params[:relation]
+      error(400, "Input does not contain user creator ID") if !params[:creator]
+      ontologies = {}
+      params[:terms].each do |term|
+        if !term[:term] || !term[:ontology]
+          error(400,"Every term must have at least one term ID and a ontology ID or acronym")
+        end
+        if !term[:term].is_a?(Array)
+          error(400,"Term IDs must be contain in Arrays")
+        end
+        o = term[:ontology]
+        o =  o.start_with?("http://") ? o : ontology_uri_from_acronym(o)
+        o = LinkedData::Models::Ontology.find(RDF::URI.new(o))
+                                        .include(submissions: [:submissionId, :submissionStatus]).first
+        error(400, "Ontology with ID `#{term[:ontology]}` not found") if o.nil?
+        term[:term].each do |id|
+          error(400, "Term ID #{id} is not valid, it must be an HTTP URI") if !id.start_with?("http://")
+          submission = o.latest_submission
+          error(400, "Ontology with id #{term[:ontology]} does not have parsed valid submission") if !submission
+          c = LinkedData::Models::Class.find(RDF::URI.new(id)).in(o.latest_submission)
+          error(400, "Class ID `#{id}` not found in `#{submission.id.to_s}`") if c.nil?
+        end
+      end
+      user_id = params[:creator].start_with?("http://") ? params[:creator].split("/")[-1] : params[:creator]
+      user_creator = LinkedData::Models::User.find(user_id).include(:username).first
+      error(400, "User with id `#{params[:creator]}` not found") if user_creator.nil?
+      process = LinkedData::Models::MappingProcess.new(:creator => user_creator, :name => "REST Mapping")
+      process.relation = RDF::URI.new(params[:relation])
+      process.date = DateTime.now
+      process_fields = [:source,:source_name, :comment]
+      process_fields.each do |att|
+        process.send("#{att}=",params[att]) if params[att]
+      end
+      process.save
+      term_mappings = []
+      params[:terms].each do |term|
+        ont_acronym = term[:ontology].start_with?("http://") ? term[:ontology].split("/")[-1] : term[:ontology]
+        term_mappings << LinkedData::Mappings.create_term_mapping(term[:term].map {|x| RDF::URI.new(x) },ont_acronym)
+      end
+      mapping_id = LinkedData::Mappings.create_mapping(term_mappings)
+      LinkedData::Mappings.connect_mapping_process(mapping_id, process)
+      mapping = LinkedData::Models::Mapping.find(mapping_id)
+                  .include(terms: [:ontology, :term ])
+                  .include(process: LinkedData::Models::MappingProcess.attributes)
+                  .first
+      reply(201,mapping)
     end
 
     # Update via delete/create for an existing submission of an mapping
     put '/:mapping' do
+      reply(405, "post is not supported for mappings")
     end
 
     # Update an existing submission of an mapping
     patch '/:mapping' do
+      #reply not supported
+      reply(405, "patch is not supported for mappings")
     end
 
     # Delete a mapping
