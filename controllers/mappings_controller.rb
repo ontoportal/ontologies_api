@@ -64,10 +64,13 @@ class MappingsController < ApplicationController
 
     # Update via delete/create for an existing submission of an mapping
     put '/:mapping' do
+      reply(405, "post is not supported for mappings")
     end
 
     # Update an existing submission of an mapping
     patch '/:mapping' do
+      #reply not supported
+      reply(405, "patch is not supported for mappings")
     end
 
     # Delete a mapping
