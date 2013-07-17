@@ -204,9 +204,9 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings
+    #not supported
     get '/mappings'
-    assert last_response.ok?
-    assert_equal '', last_response.body
+    assert !last_response.ok?
   end
 
   def test_get_single_mapping
