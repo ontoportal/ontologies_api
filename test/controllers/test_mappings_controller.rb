@@ -289,7 +289,57 @@ class TestMappingsController < TestCase
   end
 
   def test_delete_mapping
-    delete "/groups/#{acronym}"
+    mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Pattern_Recognition",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Pattern_Inference_Algorithm",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Pattern_Inference_Algorithm" ]
+    mapping_ont_a = ["BRO-TEST-MAP-0","BRO-TEST-MAP-0","BRO-TEST-MAP-0"]
+
+
+    mapping_term_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000202",
+      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
+      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203" ]
+    mapping_ont_b = ["CNO-TEST-MAP-0","CNO-TEST-MAP-0","CNO-TEST-MAP-0"]
+
+    relations = [ "http://www.w3.org/2004/02/skos/core#exactMatch",
+                  "http://www.w3.org/2004/02/skos/core#closeMatch",
+                  "http://www.w3.org/2004/02/skos/core#relatedMatch" ]
+
+    3.times do |i|
+      terms = []
+      terms << { ontology: mapping_ont_a[i], term: [mapping_term_a[i]] }
+      terms << { ontology: mapping_ont_b[i], term: [mapping_term_b[i]] }
+      mapping = { terms: terms, 
+                  comment: "comment for mapping test #{i}",
+                  relation: relations[i],
+                  creator: "http://data.bioontology.org/users/tim" 
+      }
+      post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
+      assert last_response.status == 201
+      response = MultiJson.load(last_response.body)
+      mapping_id = CGI.escape(response["@id"])
+      delete "/mappings/#{mapping_id}"
+      assert last_response.status == 204
+      get "/mappings/#{mapping_id}"
+      assert last_response.status == 404
+    end
+
+    #delete a loom mapping
+    #nothing should happen
+    LinkedData::Models::Mapping.all.each do |m|
+      m_id = CGI.escape(m.id.to_s)
+      get "/mappings/#{m_id}"
+      assert last_response.status == 200
+      mapping = MultiJson.load(last_response.body)
+      if mapping["process"].select { |x| x["name"] == "REST Mapping" }.length >  0
+        next #skip manual mappings
+      end
+      delete "/mappings/#{m_id}"
+      assert last_response.status == 400
+      get "/mappings/#{m_id}"
+      assert last_response.status == 200
+      break #one is enough for testing 
+    end
+
   end
 
   def test_mappings_statistics
