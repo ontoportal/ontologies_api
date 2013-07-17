@@ -117,6 +117,37 @@ class MappingsController < ApplicationController
 
     # Delete a mapping
     delete '/:mapping' do
+      mapping_id = RDF::URI.new(params[:mapping])
+      mapping = LinkedData::Models::Mapping.find(mapping_id)
+                  .include(terms: [:ontology, :term ])
+                  .include(process: LinkedData::Models::MappingProcess.attributes)
+                  .first
+      if mapping.nil?
+        error(404, "Mapping with id `#{mapping_id.to_s}` not found")
+      else
+        deleted = false
+        disconnected = 0
+        mapping.process.each do |p|
+          if p.date
+            disconnected += 1
+            mapping_updated = LinkedData::Mappings.disconnect_mapping_process(mapping.id,p)
+            if mapping_updated.process.length == 0
+              deleted = true
+              LinkedData::Mappings.delete_mapping(mapping_updated)
+              break
+            end
+          end
+        end
+        if deleted
+          reply(204,"Mapping deleted")
+        else
+          if disconnected > 0
+            reply(204,"REST processes disconected from mapping")
+          else
+            reply(400, "This mapping only contains automatic processes. Nothing has been deleted")
+          end
+        end
+      end
     end
   end
 
