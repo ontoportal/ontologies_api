@@ -33,25 +33,9 @@ class MappingsController < ApplicationController
   namespace "/mappings" do
     # Display all mappings
     get do
-      ontology_uris = ontologies_param
-      ontologies = []
-      ontology_uris.each do |id|
-        ontologies << Ontology.find(RDF::URI.new(id)).first
-      end
-      ontologies.each do |o|
-        error(400, "Ontology #{o.id.to_s} does not have a parsed submission") if o.latest_submission.nil?
-      end
-      if ontologies.length != 2
-        error(400, "/mappings/ endpoint only supports filtering on two ontologies")
-      end
-      page, size = page_params
-      mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontologies.first ])
-                                 .and(terms: [ontology: ontologies[1] ])
-                                 .include(terms: [ :term, ontology: [ :acronym ] ])
-                                 .include(process: [:name, :owner ])
-                                 .page(page,size)
-                                 .all
-      reply mappings
+      #calls to retrieve all mappings should not be allowed
+      #users can do this by traversing all ontologies
+      error(405,"To traverse all mappings one should traverse all mappings by ontology. See")
     end
 
     # Display a single mapping
