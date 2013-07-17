@@ -3,6 +3,7 @@ require_relative '../test_case'
 class TestMappingsController < TestCase
 
   def self.before_suite
+    return
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
@@ -52,6 +53,20 @@ class TestMappingsController < TestCase
       process.new(fake,bro,Logger.new(STDOUT)).start()
       process.new(bro,cno,Logger.new(STDOUT)).start()
     end
+  end
+
+  def delete_manual_mapping
+    manual_mapping = LinkedData::Models::Mapping.where(process: [name: "REST Mapping"])
+                               .include(process: [:name])
+                               .all
+    manual_mapping.each do |m|
+      m.process.each do |p|
+        updated = LinkedData::Mappings.disconnect_mapping_process(m.id,p)
+        if updated.process.length == 0
+          LinkedData::Mappings.delete_mapping(m)
+        end
+      end
+    end 
   end
 
   def certify_mapping(mapping)
@@ -140,6 +155,7 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_for_ontology
+    delete_manual_mapping()
     ontology = "BRO-TEST-MAP-0"
     get "/ontologies/#{ontology}/mappings"
     assert last_response.ok?
@@ -160,6 +176,7 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_between_ontologies
+    delete_manual_mapping()
     ontologies = "BRO-TEST-MAP-0,FAKE-TEST-MAP-0"
     get "/mappings/?ontologies=#{ontologies}"
     assert last_response.ok?
@@ -179,6 +196,7 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_for_ontology_pages
+    delete_manual_mapping()
     ontology = "BRO-TEST-MAP-0"
     pagesize = 6
     page = 1
@@ -342,6 +360,7 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_statistics
+    delete_manual_mapping()
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
@@ -349,6 +368,7 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_statistics_for_ontology
+    delete_manual_mapping()
     ontology = "BRO-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
