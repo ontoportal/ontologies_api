@@ -40,6 +40,16 @@ class MappingsController < ApplicationController
 
     # Display a single mapping
     get '/:mapping' do
+      mapping_id = RDF::URI.new(params[:mapping])
+      mapping = LinkedData::Models::Mapping.find(mapping_id)
+                  .include(terms: [:ontology, :term ])
+                  .include(process: LinkedData::Models::MappingProcess.attributes)
+                  .first
+      if mapping
+        reply(200,mapping)
+      else
+        error(404, "Mapping with id `#{mapping_id.to_s}` not found")
+      end
     end
 
     # Create a new mapping

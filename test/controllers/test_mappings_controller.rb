@@ -209,11 +209,20 @@ class TestMappingsController < TestCase
     assert_equal '', last_response.body
   end
 
-  def test_mapping
-    mapping = "test_mapping"
-    get "/mappings/#{mapping}"
-    assert last_response.ok?
-    assert_equal '', last_response.body
+  def test_get_single_mapping
+    count = 0
+    LinkedData::Models::Mapping.all.each do |m|
+      m_id = CGI.escape(m.id.to_s)
+      get "/mappings/#{m_id}"
+      assert last_response.status == 200
+      mapping = MultiJson.load(last_response.body)
+      if mapping["process"].select { |x| x["name"] == "REST Mapping" }.length >  1
+        next #skip manual mappings
+      end
+      certify_mapping(mapping)
+      count += 1
+    end
+    assert count > 10
   end
 
   def test_create_mapping
