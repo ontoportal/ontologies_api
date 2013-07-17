@@ -17,10 +17,9 @@ class ResourceIndexController < ApplicationController
       result = NCBO::ResourceIndex.ontologies(options)
       check404(result, "No ontologies found by resource index client.")
       LOGGER.info("/resource_index/ontologies: #ontologies in resource index = #{result.length}")
-      results_array = massage_ontologies(result, options)
-      check500(results_array, "Failed to resolve resource index data with triple store data.")
-      page = page_object(results_array) # page_object(array, total_result_count = 0)
-      reply page
+      ontology_array = massage_ontologies(result, options)
+      check500(ontology_array, "Failed to resolve resource index data with triple store data.")
+      reply ontology_array
     end
 
     get '/search' do
@@ -33,8 +32,8 @@ class ResourceIndexController < ApplicationController
       #
       # TODO: Fix the get_annotated_class method (REDIS db failures), called by massage_search
       #
-      results_array = massage_search(result, options)
-      page = page_object(results_array)
+      search_array = massage_search(result, options)
+      page = page_object(search_array)
       reply page
     end
 
@@ -57,9 +56,7 @@ class ResourceIndexController < ApplicationController
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
       check404(result, "No resources found.")
-      #reply massage_resources(result)
-      page = page_object(massage_resources(result))
-      reply page
+      reply massage_resources(result)
     end
 
     # Return specific resources
@@ -72,8 +69,7 @@ class ResourceIndexController < ApplicationController
         rid = r.downcase.to_sym
         resources_filtered.push result[rid] if result.keys.include? rid
       end
-      page = page_object(massage_resources(resources_filtered))
-      reply page
+      reply massage_resources(resources_filtered)
     end
 
     # Return a specific element from a specific resource
@@ -138,23 +134,22 @@ class ResourceIndexController < ApplicationController
 
 
     def massage_ontologies(old_response, options)
-      goo_map = ontology_uri_acronym_map  # from application_helper.rb (LinkedData lookup)
-      ontologies = []
+      ri_ontology_acronyms = []
       old_response.each do |ont|
         acronym = acronym_from_virtual_id(ont[:virtualOntologyId])  # from resource_index_helper (REDIS lookup)
-        new = {
-            :ontologyName => ont[:ontologyName],
-            :ontologyURI => goo_map[acronym]
-        }
-        if new[:ontologyURI].nil?
+        if acronym.nil?
           # The RI contains an ontology that is not in the new API service, or the
           # GOO/REDIS store doesn't contain the lookup data?
           LOGGER.info("/resource_index/ontologies: failed lookup of ontology URI for #{ont[:virtualOntologyId]} - #{ont[:ontologyName]}")
         else
-          ontologies.push(new)
+          ri_ontology_acronyms.push(acronym)
         end
       end
-      return ontologies.sort {|a,b| a[:ontologyName].downcase <=> b[:ontologyName].downcase}
+      # Triple Store ontologies - not equivalent to resource index ontologies.
+      linked_ontologies = LinkedData::Models::Ontology.where.include(:acronym, :name).all
+      # Return only the triple store ontologies with data in the resource index
+      linked_ontologies.delete_if {|ont| not ri_ontology_acronyms.include? ont.acronym  }
+      return linked_ontologies
     end
 
     def massage_search(old_response, options)
