@@ -3,6 +3,7 @@ require_relative '../test_case'
 class TestMappingsController < TestCase
 
   def self.before_suite
+    return
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
@@ -216,15 +217,70 @@ class TestMappingsController < TestCase
   end
 
   def test_create_mapping
-  end
+    mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools" ]
+    mapping_ont_a = ["BRO-TEST-MAP-0","BRO-TEST-MAP-0","BRO-TEST-MAP-0"]
 
-  def test_update_replace_mapping
-  end
 
-  def test_update_patch_mapping
+    mapping_term_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000202",
+      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
+      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000205" ]
+    mapping_ont_b = ["CNO-TEST-MAP-0","CNO-TEST-MAP-0","CNO-TEST-MAP-0"]
+
+    relations = [ "http://www.w3.org/2004/02/skos/core#exactMatch",
+                  "http://www.w3.org/2004/02/skos/core#closeMatch",
+                  "http://www.w3.org/2004/02/skos/core#relatedMatch" ]
+
+    3.times do |i|
+      terms = []
+      terms << { ontology: mapping_ont_a[i], term: [mapping_term_a[i]] }
+      terms << { ontology: mapping_ont_b[i], term: [mapping_term_b[i]] }
+      mapping = { terms: terms, 
+                  comment: "comment for mapping test #{i}",
+                  relation: relations[i],
+                  creator: "http://data.bioontology.org/users/tim" 
+      }
+
+      post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
+      assert last_response.status == 201
+      response = MultiJson.load(last_response.body)
+      assert response["process"].first["comment"] == "comment for mapping test #{i}"
+      assert response["process"].first["creator"] == "http://data.bioontology.org/users/tim"
+      assert response["process"].first["relation"] == relations[i]
+      response["terms"].each do |term|
+       if term["ontology"].split("/")[-1] == mapping_ont_a[i]
+         assert term["term"] == [mapping_term_a[i]] 
+       elsif term["ontology"].split("/")[-1] == mapping_ont_b[i]
+         assert term["term"] == [mapping_term_b[i]]
+       else
+         assert 1==0, "uncontrolled mapping response in post"
+       end
+      end
+    end
+
+    #repeating the process should always bring two processes per mapping
+    terms = []
+    terms << { ontology: mapping_ont_a[2], term: [mapping_term_a[2]] }
+    terms << { ontology: mapping_ont_b[2], term: [mapping_term_b[2]] }
+    mapping = { terms: terms, 
+                comment: "comment for mapping test XX",
+                relation: "http://bogus.relation.com/predicate",
+                creator: "http://data.bioontology.org/users/tim" } 
+    n = LinkedData::Models::Mapping.where.count
+    post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
+    
+    #number of mappings does not change only process has been added
+    assert n == LinkedData::Models::Mapping.where.count
+
+    assert last_response.status == 201
+    response = MultiJson.load(last_response.body)
+    assert response["process"].length > 1
+    response["process"].select { |x| x["relation"] == "http://bogus.relation.com/predicate" }.length > 0
   end
 
   def test_delete_mapping
+    delete "/groups/#{acronym}"
   end
 
   def test_mappings_statistics
