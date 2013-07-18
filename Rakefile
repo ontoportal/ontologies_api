@@ -94,7 +94,11 @@ end
 
 desc "Deploy"
 task :deploy do
+  print 'Deploying ontologies_api\n'
+  print 'Doing pull\n'
   `git pull`
+  print 'Updating bundle\n'
   `bundle update`
+  print 'Restarting unicorn\n'
   `rake unicorn:stop && rake unicorn:start:production`
 end
