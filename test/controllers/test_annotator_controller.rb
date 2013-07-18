@@ -75,8 +75,7 @@ eos
         assert ann["mappings"].length == 1
         assert ann["mappings"].first["@id"] == 
             "http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Article"
-        assert ann["mappings"].first["links"]["ontology"]
-          "http://data.bioontology.org/ontologies/OntoMATEST-0"
+        assert ann["mappings"].first["links"]["ontology"]["OntoMATEST-0"]
       elsif ann["annotatedClass"]["@id"] == 
           "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"
         step_in_here += 1
