@@ -58,4 +58,43 @@ eos
     hhh = annotations[5]["hierarchy"].sort {|x| x["distance"]}.map { |x| x["annotatedClass"]["@id"] }
     assert hhh == ["http://purl.obolibrary.org/obo/MCBCC_0000256#ChemicalsAndDrugs"]
   end
+
+  def test_annotate_with_mappings
+    text = "Aggregate Human Data chromosomal mutation Aggregate Human Data chromosomal deletion Aggregate Human Data Resource Federal Funding Resource receptor antagonists chromosomal mutation"
+
+    params = {text: text,mappings: "all"}
+    get "/annotator", params
+    assert last_response.ok?
+    annotations = MultiJson.load(last_response.body)
+
+    step_in_here = 0
+    annotations.each do |ann|
+      if ann["annotatedClass"]["@id"] == 
+          "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
+        step_in_here += 1
+        assert ann["mappings"].length == 1
+        assert ann["mappings"].first["@id"] == 
+            "http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Article"
+        assert ann["mappings"].first["links"]["ontology"]
+          "http://data.bioontology.org/ontologies/OntoMATEST-0"
+      elsif ann["annotatedClass"]["@id"] == 
+          "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"
+        step_in_here += 1
+        assert ann["mappings"].length == 2
+        ann["mappings"].each do |map|
+          if map["@id"] =="http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Maux_de_rein"
+            assert map["links"]["ontology"]["OntoMATEST-0"]
+          elsif map["@id"] == "http://purl.obolibrary.org/obo/MCBCC_0000344#PapillaryInvasiveDuctalTumor"
+            assert map["links"]["ontology"]["MCCLTEST-0"]
+          else
+            assert 1==0
+          end
+        end
+      else
+        ann["mappings"].length == 0
+      end
+    end
+    assert step_in_here == 2
+  end
+
 end
