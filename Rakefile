@@ -92,3 +92,9 @@ namespace :cache do
   end
 end
 
+desc "Deploy"
+task :deploy do
+  `git pull`
+  `bundle update`
+  `rake unicorn:stop && rake unicorn:start:production`
+end
