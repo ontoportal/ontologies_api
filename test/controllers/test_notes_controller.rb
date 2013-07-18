@@ -60,8 +60,8 @@ class TestNotesController < TestCase
   def test_single_note
     get '/notes'
     notes = MultiJson.load(last_response.body)
-    note = notes["collection"].first
-    get note['@id'] rescue binding.pry
+    note = notes.first
+    get note['@id']
     assert last_response.ok?
     retrieved_note = MultiJson.load(last_response.body)
     assert_equal note["@id"], retrieved_note["@id"]
