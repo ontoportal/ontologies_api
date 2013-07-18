@@ -94,6 +94,47 @@ eos
       end
     end
     assert step_in_here == 2
+
+  end
+
+  def test_annotate_mappings_with_ontologies
+
+    text = "Aggregate Human Data chromosomal mutation Aggregate Human Data chromosomal deletion Aggregate Human Data Resource Federal Funding Resource receptor antagonists chromosomal mutation"
+
+    ontologies = "http://data.bioontology.org/ontologies/OntoMATEST-0," +
+                 "http://data.bioontology.org/ontologies/BROTEST-0"
+    params = {text: text,mappings: "all", ontologies: ontologies }
+    get "/annotator", params
+    assert last_response.ok?
+    annotations = MultiJson.load(last_response.body)
+
+    step_in_here = 0
+    annotations.each do |ann|
+      if ann["annotatedClass"]["@id"] == 
+          "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
+        step_in_here += 1
+        assert ann["mappings"].length == 1
+        assert ann["mappings"].first["@id"] == 
+            "http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Article"
+        assert ann["mappings"].first["links"]["ontology"]["OntoMATEST-0"]
+      elsif ann["annotatedClass"]["@id"] == 
+          "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"
+        step_in_here += 1
+        assert ann["mappings"].length == 1
+        ann["mappings"].each do |map|
+          if map["@id"] =="http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Maux_de_rein"
+            assert map["links"]["ontology"]["OntoMATEST-0"]
+          else
+            assert 1==0
+          end
+        end
+      else
+        assert ann["annotatedClass"]["links"]["ontology"]["BROTEST-0"] || 
+               ann["annotatedClass"]["links"]["ontology"]["OntoMATEST-0"]
+        ann["mappings"].length == 0
+      end
+    end
+    assert step_in_here == 2
   end
 
 end
