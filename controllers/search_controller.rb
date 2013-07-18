@@ -8,6 +8,17 @@ class SearchController < ApplicationController
 
     # execute a search query
     get do
+      process_search()
+    end
+
+    post do
+      process_search()
+    end
+
+    private
+
+    def process_search(params = nil)
+      params ||= @params
       q = params["q"]
       globalParams = @params.dup
       query = get_query(q, globalParams)
@@ -36,8 +47,6 @@ class SearchController < ApplicationController
       page = page_object(docs, total_found)
       reply 200, page
     end
-
-    private
 
     def get_query(q, args={})
       raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if q.nil? || q.strip.empty?
