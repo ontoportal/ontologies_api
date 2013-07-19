@@ -92,8 +92,12 @@ class NotesController < ApplicationController
 
       if proposal_params
         proposal = instance_from_params(LinkedData::Models::Notes::Proposal, proposal_params)
-        proposal.save
-        note.proposal = proposal
+        if proposal.valid?
+          proposal.save
+          note.proposal = proposal
+        else
+          error 422, proposal.errors
+        end
       end
 
       note
