@@ -41,12 +41,17 @@ class TestClassesController < TestCase
       get call
       assert last_response.ok?
       page_response = MultiJson.load(last_response.body)
-      #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
-      #more testing needs to be done here
+      page_response["collection"].each do |item|
+        assert_instance_of String, item["prefLabel"]
+        assert_instance_of String, item["@id"]
+        assert_instance_of Hash, item["@context"]
+        assert_instance_of Hash, item["links"]
+      end
       assert last_response.ok?
       count_terms = count_terms + page_response["collection"].length
     end while page_response["nextPage"]
-    assert count_terms == 488
+    #bnodes thing got fixed. changed to 486.
+    assert count_terms == 486
   end
 
   def test_single_cls
