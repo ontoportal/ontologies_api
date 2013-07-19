@@ -119,7 +119,7 @@ class TestClassesController < TestCase
     #first submission was not parsed
     get "/ontologies/#{ont.acronym}/classes/roots?ontology_submission_id=3"
 
-    assert_equal 400, last_response.status
+    assert_equal 404, last_response.status
     assert last_response.body["has not been parsed"]
   end
 
