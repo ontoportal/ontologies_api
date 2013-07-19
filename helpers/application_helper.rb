@@ -219,10 +219,20 @@ module Sinatra
         map
       end
 
+      ##
+      # Create a URI if the id is a URI, otherwise return unmodified
       def uri_as_needed(id)
-        id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix
+        id = replace_url_prefix(id)
         uri = RDF::URI.new(id)
         uri.valid? ? uri : id
+      end
+
+      ##
+      # If the setting is enabled, replace the URL prefix with the proper id prefix
+      # EX: http://stagedata.bioontology.org/ontologies/BRO would become http://data.bioontology.org/ontologies/BRO
+      def replace_url_prefix(id)
+        id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix
+        id
       end
 
     end
