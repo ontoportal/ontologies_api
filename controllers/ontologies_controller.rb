@@ -4,6 +4,7 @@ class OntologiesController < ApplicationController
     ##
     # Display all ontologies
     get do
+      check_last_modified_collection(Ontology)
       onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
       reply onts
     end
@@ -11,7 +12,9 @@ class OntologiesController < ApplicationController
     ##
     # Display the most recent submission of the ontology
     get '/:acronym' do
-      ont = Ontology.find(params["acronym"]).include(Ontology.goo_attrs_to_load(includes_param)).first
+      ont = Ontology.find(params["acronym"]).first
+      check_last_modified(ont)
+      ont.bring(Ontology.goo_attrs_to_load(includes_param))
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       reply ont
     end
@@ -19,7 +22,9 @@ class OntologiesController < ApplicationController
     ##
     # Ontology latest submission
     get "/:acronym/latest_submission" do
-      ont = Ontology.find(params["acronym"]).include(:acronym, :submissions).first
+      ont = Ontology.find(params["acronym"]).first
+      check_last_modified(ont)
+      ont.bring(:acronym, :submissions)
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       latest = ont.latest_submission
       latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
