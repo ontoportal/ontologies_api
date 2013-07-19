@@ -145,20 +145,21 @@ class ClassesController < ApplicationController
               .include(:acronym)
               .include(submissions: [:submissionId, submissionStatus: [:code], ontology: [:acronym]])
               .first
+      error(404, "Ontology '#{@params["ontology"]}' not found.") if ont.nil?
       submission = nil
       if @params.include? "ontology_submission_id"
         submission = ont.submission(@params[:ontology_submission_id])
-        error 400, "You must provide an existing submission ID for the #{@params["acronym"]} ontology" if submission.nil?
+        error 404, "You must provide an existing submission ID for the #{@params["acronym"]} ontology" if submission.nil?
       else
         submission = ont.latest_submission
       end
-      error 400,  "Ontology #{@params["ontology"]} submission not found." if submission.nil?
+      error 404,  "Ontology #{@params["ontology"]} submission not found." if submission.nil?
       status = submission.submissionStatus
       if !status.parsed?
-        error 400,  "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
+        error 404,  "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
       end
       if submission.nil?
-        error 400, "Ontology #{@params["acronym"]} does not have any submissions" if submission.nil?
+        error 404, "Ontology #{@params["acronym"]} does not have any submissions" if submission.nil?
       end
       return ont, submission
     end

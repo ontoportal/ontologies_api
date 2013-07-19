@@ -22,14 +22,14 @@ class RepliesController < ApplicationController
       reply_query = LinkedData::Models::Notes::Reply.find(params["replyid"])
       reply_query = reply_query.include(LinkedData::Models::Notes::Reply.goo_attrs_to_load(includes_param))
       _reply = reply_query.first
-      error 404, "Reply #{replyid} not found" if _reply.nil?
+      error 404, "Reply #{params["replyid"]} not found" if _reply.nil?
       reply 200, _reply
     end
 
     # Create a reply with the given noteid
     post do
-      noteid = params["note"]
-      note = LinkedData::Models::Note.find(RDF::IRI.new(noteid)).include(LinkedData::Models::Note.attributes).first
+      noteid = params["parent"]
+      note = LinkedData::Models::Note.find(uri_as_needed(noteid)).include(LinkedData::Models::Note.attributes).first
 
       _reply = instance_from_params(LinkedData::Models::Notes::Reply, params)
 

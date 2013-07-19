@@ -41,12 +41,17 @@ class TestClassesController < TestCase
       get call
       assert last_response.ok?
       page_response = MultiJson.load(last_response.body)
-      #TODO when fixed https://github.com/ncbo/ontologies_linked_data/issues/32
-      #more testing needs to be done here
+      page_response["collection"].each do |item|
+        assert_instance_of String, item["prefLabel"]
+        assert_instance_of String, item["@id"]
+        assert_instance_of Hash, item["@context"]
+        assert_instance_of Hash, item["links"]
+      end
       assert last_response.ok?
       count_terms = count_terms + page_response["collection"].length
     end while page_response["nextPage"]
-    assert count_terms == 488
+    #bnodes thing got fixed. changed to 486.
+    assert count_terms == 486
   end
 
   def test_single_cls
@@ -114,7 +119,7 @@ class TestClassesController < TestCase
     #first submission was not parsed
     get "/ontologies/#{ont.acronym}/classes/roots?ontology_submission_id=3"
 
-    assert_equal 400, last_response.status
+    assert_equal 404, last_response.status
     assert last_response.body["has not been parsed"]
   end
 
@@ -287,6 +292,37 @@ class TestClassesController < TestCase
         assert children.length > 0 and children.include? cls_id
       end
     end
+  end
+
+  def test_calls_not_found
+    escaped_cls= CGI.escape("http://my.bogus.inexistent.class/that/this/is")
+
+    #404 on ontology
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}/children"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}/parents"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}/ancestors"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}/descendants"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}"
+    assert last_response.status == 404
+
+    #404 on class id
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/children"
+    assert last_response.status == 404
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/parents"
+    assert last_response.status == 404
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/ancestors"
+    assert last_response.status == 404
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/descendants"
+    assert last_response.status == 404
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}"
+    assert last_response.status == 404
   end
 
   def test_children_for_cls_round_trip

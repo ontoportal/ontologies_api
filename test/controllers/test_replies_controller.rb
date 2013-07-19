@@ -56,7 +56,7 @@ class TestRepliesController < TestCase
     reply = {
       creator: @@user.id.to_s,
       body: "Testing body for reply",
-      note: @@note.id.to_s
+      parent: @@note.id.to_s
     }
     post "/replies", MultiJson.dump(reply), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201

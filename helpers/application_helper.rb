@@ -28,7 +28,15 @@ module Sinatra
 
           # Try to find dependent Goo objects, but only if the naming is not done via Proc
           # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
-          if attr_cls && !value.is_a?(Hash)
+          if attr_cls == LinkedData::Models::Class
+            value = value.is_a?(Array) ? value : [value]
+            new_value = []
+            value.each do |cls|
+              sub = LinkedData::Models::Ontology.find(uri_as_needed(cls["ontology"])).first.latest_submission
+              new_value << LinkedData::Models::Class.find(cls["class"]).in(sub).first
+            end
+            value = new_value
+          elsif attr_cls && !value.is_a?(Hash)
             # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)
               value = value.map {|e| attr_cls.find(uri_as_needed(e)).include(attr_cls.attributes).first}
@@ -210,8 +218,6 @@ module Sinatra
         LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.id.to_s] = o.acronym}
         map
       end
-
-      private
 
       def uri_as_needed(id)
         id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix

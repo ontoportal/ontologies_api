@@ -8,9 +8,13 @@ class AnnotatorController < ApplicationController
       ontologies = ontologies_param_to_acronyms
       semantic_types = semantic_types_param
       max_level = params["max_level"].to_i || 0
+      mapping_types = params["mappings"]
+      if mapping_types
+        mapping_types = mapping_types.is_a?(Array) ? mapping_types : []
+      end
       exclude_nums = params["exclude_numbers"].eql?("true")
       annotator = Annotator::Models::NcboAnnotator.new
-      annotations = annotator.annotate(text, ontologies, semantic_types, exclude_nums, max_level)
+      annotations = annotator.annotate(text, ontologies, semantic_types, exclude_nums, max_level,expand_with_mappings=mapping_types)
       reply 200, annotations
     end
 
