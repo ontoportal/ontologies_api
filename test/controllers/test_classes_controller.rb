@@ -289,6 +289,37 @@ class TestClassesController < TestCase
     end
   end
 
+  def test_calls_not_found
+    escaped_cls= CGI.escape("http://my.bogus.inexistent.class/that/this/is")
+
+    #404 on ontology
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}/children"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}/parents"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}/ancestors"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}/descendants"
+    assert last_response.status == 404
+    get "/ontologies/NO-ONT-ZZZZZZ/classes/#{escaped_cls}"
+    assert last_response.status == 404
+
+    #404 on class id
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/children"
+    assert last_response.status == 404
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/parents"
+    assert last_response.status == 404
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/ancestors"
+    assert last_response.status == 404
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/descendants"
+    assert last_response.status == 404
+    get "/ontologies/#{ont.acronym}/classes/#{escaped_cls}"
+    assert last_response.status == 404
+  end
+
   def test_children_for_cls_round_trip
 
     clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data',
