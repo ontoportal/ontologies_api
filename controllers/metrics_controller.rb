@@ -7,6 +7,12 @@ class MetricsController < ApplicationController
 
   # Display metrics for ontology
   get "/ontologies/:ontology/metrics" do
+    ont = Ontology.find(params["ontology"]).first
+    error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
+    sub = ont.latest_submission
+    error 404, "The ontology with acronym `#{acr}` does not have any parsed submissions" if sub.nil?
+    sub.bring(metrics: LinkedData::Models::Metrics.attributes)
+    reply sub.metrics
   end
 
 end
