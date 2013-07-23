@@ -13,8 +13,7 @@ class TestMetricsController < TestCase
 
   def test_all_metrics
     get '/metrics'
-    assert last_response.ok?
-    assert_equal '', last_response.body
+    assert last_response.status == 405
   end
 
   def test_single_metrics

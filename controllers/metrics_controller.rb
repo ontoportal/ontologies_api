@@ -1,8 +1,14 @@
 class MetricsController < ApplicationController
   namespace "/metrics" do
+
     # Display all metrics
     get do
+      error 405, 
+        "Unsupported endpoint. " +
+        "Metrics can only be retrieved from ontologies." +
+        " See `/ontologies/{acronym}/metrics`"
     end
+
   end
 
   # Display metrics for ontology
