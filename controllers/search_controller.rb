@@ -67,7 +67,7 @@ class SearchController < ApplicationController
         end
         acronyms = onts.map {|o| o.acronym}
       else
-        acronyms = params[ONTOLOGIES_PARAM].split(",").map {|o| o.strip}
+        acronyms = ontologies_param_to_acronyms
       end
 
       query << " AND "
