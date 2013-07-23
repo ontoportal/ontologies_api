@@ -75,8 +75,7 @@ namespace :cache do
       require 'ontologies_linked_data'
       require 'ncbo_annotator'
       require_relative 'config/environments/production.rb'
-      require_relative 'lib/http_cache'
-      LinkedData::HTTPCache.invalidate_all_entries
+      LinkedData::HTTPCache.invalidate_all
       `rm -rf cache/`
     end
 
@@ -85,8 +84,7 @@ namespace :cache do
       require 'ontologies_linked_data'
       require 'ncbo_annotator'
       require_relative 'config/environments/development.rb'
-      require_relative 'lib/http_cache'
-      LinkedData::HTTPCache.invalidate_all_entries
+      LinkedData::HTTPCache.invalidate_all
       `rm -rf cache/`
     end
   end
