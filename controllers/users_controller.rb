@@ -17,20 +17,21 @@ class UsersController < ApplicationController
 
     # Display a single user
     get '/:username' do
-      reply User.find(params[:username]).include(User.goo_attrs_to_load(includes_param)).first
+      user = User.find(params[:username]).first
+      check_last_modified(user)
+      error 404, "Cannot find user with username `params['username']`" if user.nil?
+      user.bring(*User.goo_attrs_to_load(includes_param))
+      reply user
+    end
+
+    # Create user
+    post do
+      create_user
     end
 
     # Users get created via put because clients can assign an id (POST is only used where servers assign ids)
     put '/:username' do
-      user = User.find(params["username"]).first
-      error 409, "User with username `#{params["username"]}` already exists" unless user.nil?
-      user = instance_from_params(User, params)
-      if user.valid?
-        user.save
-      else
-        error 422, user.errors
-      end
-      reply 201, user
+      create_user
     end
 
     # Update an existing submission of an user
@@ -51,5 +52,19 @@ class UsersController < ApplicationController
       halt 204
     end
 
+    private
+
+    def create_user
+      params ||= @params
+      user = User.find(params["username"]).first
+      error 409, "User with username `#{params["username"]}` already exists" unless user.nil?
+      user = instance_from_params(User, params)
+      if user.valid?
+        user.save
+      else
+        error 422, user.errors
+      end
+      reply 201, user
+    end
   end
 end

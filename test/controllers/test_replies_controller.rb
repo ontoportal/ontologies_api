@@ -3,6 +3,9 @@ require_relative '../test_case'
 class TestRepliesController < TestCase
 
   def self.before_suite
+    count, acronyms, ontologies = self.new("before_suite").create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: false)
+    @@ontology = ontologies.first
+
     @@reply_user = "test_reply_user"
     _delete_user
     @@user = LinkedData::Models::User.new(
@@ -15,7 +18,8 @@ class TestRepliesController < TestCase
     @@note = LinkedData::Models::Note.new({
       creator: @@user,
       subject: "Test subject note",
-      body: "Test body for note"
+      body: "Test body for note",
+      relatedOntology: [@@ontology]
     })
     @@note.save
 
@@ -33,7 +37,7 @@ class TestRepliesController < TestCase
   end
 
   def self.after_suite
-    @@note.delete
+    @@note.delete if @@note.persistent?
     _delete_user
   end
 

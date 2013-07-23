@@ -1,5 +1,6 @@
 class OntologySubmissionsController < ApplicationController
   get "/submissions" do
+    check_last_modified_collection(LinkedData::Models::OntologySubmission)
     includes = OntologySubmission.goo_attrs_to_load(includes_param)
     includes.concat([:submissionId, ontology: Ontology.goo_attrs_to_load])
     submissions = OntologySubmission.where.include(includes).to_a
@@ -20,7 +21,9 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display all submissions of an ontology
     get do
-      ont = Ontology.find(params["acronym"]).include(submissions: OntologySubmission.goo_attrs_to_load(includes_param)).first
+      ont = Ontology.find(params["acronym"]).include(:acronym).first
+      check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
+      ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
       reply ont.submissions
     end
 
@@ -35,7 +38,9 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display a submission
     get '/:ontology_submission_id' do
-      ont = Ontology.find(params["acronym"]).include(:submissions).first
+      ont = Ontology.find(params["acronym"]).include(:acronym).first
+      check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
+      ont.bring(:submissions)
       ont_submission = ont.submission(params["ontology_submission_id"])
       error 404, "`submissionId` not found" if ont_submission.nil?
       ont_submission.bring(*OntologySubmission.goo_attrs_to_load(includes_param))

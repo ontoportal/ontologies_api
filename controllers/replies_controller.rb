@@ -2,6 +2,7 @@ class RepliesController < ApplicationController
 
   # Display all replies for a note
   get "/notes/:noteid/replies" do
+    check_last_modified_collection(LinkedData::Models::Notes::Reply)
     noteid = LinkedData::Models::Note.id_prefix + params["noteid"]
     note = LinkedData::Models::Note.find(RDF::IRI.new(noteid)).include(:reply).first
     error 404, "Note `#{noteid}` not found" if note.nil?
@@ -12,6 +13,7 @@ class RepliesController < ApplicationController
 
     # Display all replies
     get "?:include_threads?" do
+      check_last_modified_collection(LinkedData::Models::Notes::Reply)
       replies = LinkedData::Models::Notes::Reply.where.include(LinkedData::Models::Notes::Reply.goo_attrs_to_load(includes_param)).to_a
       reply replies
     end
@@ -19,10 +21,10 @@ class RepliesController < ApplicationController
 
     # Display a single reply
     get "/:replyid" do
-      reply_query = LinkedData::Models::Notes::Reply.find(params["replyid"])
-      reply_query = reply_query.include(LinkedData::Models::Notes::Reply.goo_attrs_to_load(includes_param))
-      _reply = reply_query.first
+      _reply = LinkedData::Models::Notes::Reply.find(params["replyid"]).first
       error 404, "Reply #{params["replyid"]} not found" if _reply.nil?
+      check_last_modified(_reply)
+      _reply.bring(*LinkedData::Models::Notes::Reply.goo_attrs_to_load(includes_param))
       reply 200, _reply
     end
 

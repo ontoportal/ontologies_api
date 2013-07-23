@@ -32,10 +32,10 @@ class TestNotesController < TestCase
   end
 
   def self.after_suite
-    self.new("after_suite").delete_ontologies_and_submissions
     notes = LinkedData::Models::Note.where(creator: @@user)
     notes.each {|n| n.delete}
     _delete_user
+    self.new("after_suite").delete_ontologies_and_submissions
   end
 
   def _ontology_and_class
@@ -71,7 +71,8 @@ class TestNotesController < TestCase
     note = {
       creator: @@user.id.to_s,
       body: "Testing body",
-      subject: "Testing subject"
+      subject: "Testing subject",
+      relatedOntology: [@@ontology.id.to_s]
     }
     post "/notes", MultiJson.dump(note), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201

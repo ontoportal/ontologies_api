@@ -2,7 +2,7 @@ require_relative '../test_case'
 
 class TestReviewsController < TestCase
 
-  DEBUG_MESSAGES = false
+  DEBUG_MESSAGES = true
 
   # JSON Schema
   # This could be in the Review model, see
@@ -92,47 +92,44 @@ class TestReviewsController < TestCase
   end
 
   def test_review_get
-    _reviews_get_success(@ont, @user, true)
+    _reviews_get_success(@review.id)
   end
 
   def test_review_create_success
     # Ensure it doesn't exist first (undo the setup creation)
-    _reviews_delete(@ont.acronym, @user.username)
-    put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
-    _response_status(201, last_response)
-    _reviews_get_success(@ont, @user, true)
-  end
-
-  def test_review_create_conflict
-    # Fail PUT for any review that already exists.
-    put "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
-    _response_status(409, last_response)
-    # The existing project should remain valid
-    _reviews_get_success(@ont, @user, true)
+    _reviews_delete(@review.id)
+    post "/reviews", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
+    review_id = MultiJson.load(last_response.body)["@id"]
+    # _response_status(201, last_response)
+    # _reviews_get_success(review_id, true)
   end
 
   def test_review_create_failure
     # Ensure the review doesn't exist.
-    _reviews_delete(@ont.acronym, @user.username)
+    _reviews_delete(@review.id)
     # Fail PUT for any review with required missing data.
     username = 'user_name_does_not_exist'
     @review_params[:creator] = username
-    put "/ontologies/#{@ont.acronym}/reviews/#{username}", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
+    post "/reviews", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
     _response_status(422, last_response)
-    _reviews_get_failure(@ont.acronym, username)
   end
 
   def test_review_update_success
-    # Use patch for existing reviews (it is created in the setup)
+    get "/reviews"
+    reviews = MultiJson.load(last_response.body)
+    review_id = reviews.first["@id"]
     @review_params[:qualityRating] = @review_params[:qualityRating] + 1
-    patch "/ontologies/#{@ont.acronym}/reviews/#{@user.username}", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
+    patch review_id, MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
     _response_status(204, last_response)
-    _reviews_get_success(@ont, @user, true)
+    _reviews_get_success(review_id)
   end
 
   def test_delete_review
-    _reviews_delete(@ont.acronym, @user.username)
-    _reviews_get_failure(@ont.acronym, @user.username)
+    get "/reviews"
+    reviews = MultiJson.load(last_response.body)
+    review_id = reviews.first["@id"]
+    delete review_id
+    _reviews_get_failure(review_id)
   end
 
   def _response_status(status, response)
@@ -146,8 +143,8 @@ class TestReviewsController < TestCase
   # Issues DELETE for a review of an ontology by a user, tests for a 204 response.
   # @param [String] acronym review ontology acronym
   # @param [String] username review username
-  def _reviews_delete(acronym, username)
-    delete "/ontologies/#{acronym}/reviews/#{username}"
+  def _reviews_delete(id)
+    delete id.to_s
     _response_status(204, last_response)
   end
 
@@ -156,8 +153,8 @@ class TestReviewsController < TestCase
   # @param [String] acronym review ontology acronym
   # @param [String] username review username
   # @param [boolean] validate_data verify response body json content
-  def _reviews_get_success(ont, user, validate_data=false)
-    get "/ontologies/#{ont.acronym}/reviews/#{user.username}"
+  def _reviews_get_success(id, validate_data=false)
+    get id.to_s
     _response_status(200, last_response)
     if validate_data
       # Assume we have JSON data in the response body.
@@ -174,8 +171,8 @@ class TestReviewsController < TestCase
   # Issues GET for an ontology review by a user, tests for a 404 response.
   # @param [String] acronym review ontology acronym
   # @param [String] username review username
-  def _reviews_get_failure(acronym, username)
-    get "/ontologies/#{acronym}/reviews/#{username}"
+  def _reviews_get_failure(id)
+    get id
     _response_status(404, last_response)
   end
 end

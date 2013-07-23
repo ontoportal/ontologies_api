@@ -89,6 +89,9 @@ class TestProjectsController < TestCase
     put "/projects/#{@p.acronym}", MultiJson.dump(@projectParams), "CONTENT_TYPE" => "application/json"
     _response_status(201, last_response)
     _project_get_success(@p.acronym, true)
+    delete "/projects/#{@p.acronym}"
+    post "/projects", MultiJson.dump(@projectParams.merge(acronym: @p.acronym)), "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 201
   end
 
   def test_project_create_conflict

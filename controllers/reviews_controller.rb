@@ -2,36 +2,63 @@ class ReviewsController < ApplicationController
 
   MODEL = LinkedData::Models::Review
 
-  namespace "/reviews" do
-    # Return an array of all reviews.
+  namespace "/ontologies/:acronym/reviews" do
+    # Return an array of reviews for an ontology acronym.
     get do
-      reply MODEL.where.include(MODEL.goo_attrs_to_load(includes_param)).to_a
+      check_last_modified_collection(MODEL)
+      ont = LinkedData::Models::Ontology.find(params["acronym"]).include(reviews: MODEL.goo_attrs_to_load(includes_param)).first
+      reply ont.reviews
     end
   end
 
-  # Handle ontology-specific reviews
-  namespace "/ontologies/:acronym/reviews" do
-
-    # Return an array of reviews for an ontology acronym.
+  namespace "/reviews" do
+    # Return an array of all reviews.
     get do
-      reply MODEL.where(:ontologyReviewed => { :acronym => params[:acronym] }).include(MODEL.goo_attrs_to_load(includes_param)).to_a
+      check_last_modified_collection(MODEL)
+      reply MODEL.where.include(MODEL.goo_attrs_to_load(includes_param)).to_a
     end
 
-    # Return an array of reviews by a user for an ontology.
-    get '/:username' do
-      reviews = MODEL.where(:ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}).include(MODEL.goo_attrs_to_load(includes_param)).to_a
-      if reviews.empty?
-        error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}."
-      end
-      reply 200, reviews
+    get '/:review_id' do
+      review = MODEL.find(params["review_id"]).first
+      error 404, "Review #{params['review_id']} not found" if review.nil?
+      check_last_modified(review)
+      review.bring(*MODEL.goo_attrs_to_load(includes_param))
+      reply review
     end
 
-    # Create a new review for an ontology by a user.
-    put '/:username' do
-      reviews = MODEL.where(:ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}).include(MODEL.attributes).to_a
-      if not reviews.empty?
-        error 409, "Reviews already exist for ontology:#{params[:acronym]}, by user:#{params[:username]}. Update using PATCH instead of PUT."
+    # Create a new review
+    post do
+      create_review
+    end
+
+    # Update an existing review
+    patch '/:review_id' do
+      review = MODEL.find(params["review_id"]).first
+      error 404, "Review #{params['review_id']} not found" if review.nil?
+      populate_from_params(review, params)
+
+      if review.valid?
+        review.save
+        halt 204
+      else
+        error 422, review.errors
       end
+    end
+
+    delete "/:review_id" do
+      review = MODEL.find(params["review_id"]).first
+      error 404, "Review #{params['review_id']} not found" if review.nil?
+      review.delete
+      halt 204
+    end
+
+    private
+
+    def create_review
+      params ||= @params
+      review = MODEL.find(params["review_id"]).first if params["review_id"]
+      error 409, "Reviews already exist for ontology: #{params[:acronym]}, by user: #{params[:username]}. Update using PATCH instead of PUT." unless review.nil?
+
       review = instance_from_params(MODEL, params)
       if review.valid?
         review.save
@@ -40,38 +67,6 @@ class ReviewsController < ApplicationController
         error 422, review.errors
       end
     end
-
-    # Update an existing submission of a review by a user.
-    patch '/:username' do
-      reviews = MODEL.where(:ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}).include(MODEL.attributes).to_a
-      if reviews.empty?
-        error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}.  Use PUT, not PATCH, to submit new reviews."
-      end
-      if reviews.length != 1
-        error 500, "Internal error - too many reviews for ontology:#{params[:acronym]}, by user:#{params[:username]}."
-      end
-      review = populate_from_params(reviews[0], params)
-      if review.valid?
-        review.save
-        halt 204
-      else
-        error 422, review.errors
-      end
-    end
-
-    # Delete a review for an ontology by a user.
-    delete '/:username' do
-      reviews = MODEL.where(:ontologyReviewed => {:acronym=>params[:acronym]}, :creator => {:username=>params[:username]}).to_a
-      if reviews.empty?
-        error 404, "No reviews found for ontology:#{params[:acronym]}, by user:#{params[:username]}."
-      else
-        # Note: reviews.length should always be 1, but use iteration to clear all the possible items
-        # because the 4store triple store does not explicitly constrain triples to unique values.
-        reviews.each {|r| r.delete }
-        halt 204
-      end
-    end
-
   end
 end
 

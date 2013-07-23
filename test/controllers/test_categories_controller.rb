@@ -79,6 +79,17 @@ class TestCategoriesController < TestCase
     get "/categories/#{acronym}"
     assert last_response.ok?
     assert MultiJson.load(last_response.body)["acronym"].eql?(acronym)
+
+    delete "/categories/#{acronym}"
+
+    post "/categories", MultiJson.dump(@test_cat), "CONTENT_TYPE" => "application/json"
+
+    assert last_response.status == 201
+    assert MultiJson.load(last_response.body)["acronym"].eql?(acronym)
+
+    get "/categories/#{acronym}"
+    assert last_response.ok?
+    assert MultiJson.load(last_response.body)["acronym"].eql?(acronym)
   end
 
   def test_update_patch_category

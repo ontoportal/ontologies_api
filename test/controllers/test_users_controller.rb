@@ -53,6 +53,16 @@ class TestUsersController < TestCase
     user = {email: "#{@@username}@example.org", password: "pass_the_word"}
     put "/users/#{@@username}", MultiJson.dump(user), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201
+    created_user = MultiJson.load(last_response.body)
+    assert created_user["username"].eql?(@@username)
+
+    get "/users/#{@@username}"
+    assert last_response.ok?
+    assert MultiJson.load(last_response.body)["username"].eql?(@@username)
+
+    delete created_user["@id"]
+    post "/users", MultiJson.dump(user.merge(username: @@username)), "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 201
     assert MultiJson.load(last_response.body)["username"].eql?(@@username)
 
     get "/users/#{@@username}"
