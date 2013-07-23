@@ -264,6 +264,7 @@ module Sinatra
       # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
       # @param uri [String] ontology id in URI form
       def virtual_id_from_uri(uri)
+        uri = replace_url_prefix(uri)
         acronym = acronym_from_ontology_uri(uri)
         virtual_id_from_acronym(acronym)
       end
