@@ -16,10 +16,11 @@ module Sinatra
 
       ##
       # Check to see if the current object's segment has a last modified, set via sinatra
-      def check_last_modified_segment(inst)
+      def check_last_modified_segment(cls, segment_prefix)
         return unless cache_enabled?
-        cache_headers(inst.class)
-        last_modified inst.segment_last_modified || inst.cache_write
+        cache_headers(cls)
+        cache_segment = cls.cache_segment(segment_prefix)
+        last_modified cls.segment_last_modified(cache_segment) || cls.cache_segment_write(cache_segment)
       end
 
       ##
