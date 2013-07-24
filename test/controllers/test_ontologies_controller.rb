@@ -14,13 +14,18 @@ class TestOntologiesController < TestCase
     self.new("after_suite").delete_ontologies_and_submissions()
   end
 
+  def teardown
+    self.class._delete_onts
+    self.class._create_onts
+  end
+
   def self._set_vars
     @@acronym = "TST"
     @@name = "Test Ontology"
     @@file_params = {
       name: @@name,
       hasOntologyLanguage: "OWL",
-      administeredBy: "tim"
+      administeredBy: ["tim"]
     }
 
     @@view_acronym = 'TST_VIEW'
@@ -28,7 +33,7 @@ class TestOntologiesController < TestCase
     @@view_file_params = {
         name: @@view_name,
         hasOntologyLanguage: "OWL",
-        administeredBy: "tom"
+        administeredBy: ["tom"]
     }
   end
 
@@ -89,9 +94,17 @@ class TestOntologiesController < TestCase
     assert ont["acronym"] = ontology
   end
 
-  def test_create_new_ontology_same_acronym
+  def test_create_ontology
     self.class._delete_onts
-    self.class._create_onts
+    put "/ontologies/#{@@acronym}", @@file_params
+    assert last_response.status == 201
+
+    delete "/ontologies/#{@@acronym}"
+    post "/ontologies/", @@file_params.merge(acronym: @@acronym)
+    assert last_response.status == 201
+  end
+
+  def test_create_new_ontology_same_acronym
     put "/ontologies/#{@@acronym}", :name => @@name
     assert last_response.status == 409
   end
@@ -103,8 +116,6 @@ class TestOntologiesController < TestCase
   end
 
   def test_patch_ontology
-    self.class._delete_onts
-    self.class._create_onts
     name = "Test new name"
     new_name = {name: name}
     patch "/ontologies/#{@@acronym}", MultiJson.dump(new_name), "CONTENT_TYPE" => "application/json"

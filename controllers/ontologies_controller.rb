@@ -13,9 +13,9 @@ class OntologiesController < ApplicationController
     # Display the most recent submission of the ontology
     get '/:acronym' do
       ont = Ontology.find(params["acronym"]).first
-      check_last_modified(ont)
-      ont.bring(Ontology.goo_attrs_to_load(includes_param))
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
+      check_last_modified(ont)
+      ont.bring(*Ontology.goo_attrs_to_load(includes_param))
       reply ont
     end
 
@@ -23,31 +23,24 @@ class OntologiesController < ApplicationController
     # Ontology latest submission
     get "/:acronym/latest_submission" do
       ont = Ontology.find(params["acronym"]).first
+      error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       check_last_modified(ont)
       ont.bring(:acronym, :submissions)
-      error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       latest = ont.latest_submission
       latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
       reply latest
     end
 
     ##
-    # Ontologies get created via put because clients can assign an id (POST is only used where servers assign ids)
+    # Create an ontology
+    post do
+      create_ontology
+    end
+
+    ##
+    # Create an ontology with constructed URL
     put '/:acronym' do
-      ont = Ontology.find(params["acronym"]).first
-      if ont.nil?
-        ont = instance_from_params(Ontology, params)
-      else
-        error 409, "Ontology already exists, to add a new submission, please POST to: /ontologies/#{params["acronym"]}/submission. To modify the resource, use PATCH."
-      end
-
-      if ont.valid?
-        ont.save
-      else
-        error 422, ont.errors
-      end
-
-      reply 201, ont
+      create_ontology
     end
 
     ##
@@ -86,5 +79,25 @@ class OntologiesController < ApplicationController
     # get '/:acronym/properties' do
     #   error 500, "Not implemented"
     # end
+
+    private
+
+    def create_ontology
+      params ||= @params
+      ont = Ontology.find(params["acronym"]).first
+      if ont.nil?
+        ont = instance_from_params(Ontology, params)
+      else
+        error 409, "Ontology already exists, to add a new submission, please POST to: /ontologies/#{params["acronym"]}/submission. To modify the resource, use PATCH."
+      end
+
+      if ont.valid?
+        ont.save
+      else
+        error 422, ont.errors
+      end
+
+      reply 201, ont
+    end
   end
 end

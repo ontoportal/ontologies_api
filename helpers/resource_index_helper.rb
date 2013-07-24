@@ -38,16 +38,22 @@ module Sinatra
 
       def get_classes(params)
         # Assume request signature of the form:
-        # classes[acronym1|URI1][classid1,classid2,classid3]&classes[acronym2|URI2][classid1,classid2]
+        # classes[acronym1|URI1]=classid1,classid2,classid3&classes[acronym2|URI2]=classid1,classid2
         classes = []
         if params.key?("classes")
+          if not params["classes"].kind_of?(Hash)
+            msg = "Malformed classes parameter. Try:\n"
+            msg += "classes[ontAcronymA]=classA1,classA2,classA3&classes[ontAcronymB]=classB1,classB2\n"
+            msg += "See #{LinkedData.settings.rest_url_prefix}documentation for details.\n"
+            error 400, msg
+          end
           class_hash = params["classes"]
           class_hash.each do |k,v|
             # Use 'k' as an ontology acronym or URI, translate it to an ontology virtual ID.
             ont_id = virtual_id_from_acronym(k)
             ont_id = virtual_id_from_uri(k) if ont_id.nil?
             msg = "Ontology #{k} cannot be found in the resource index. "
-            msg += "See #{LinkedData.settings.rest_url_prefix}ontologies for details."
+            msg += "See #{LinkedData.settings.rest_url_prefix}resource_index/ontologies for details."
             error 404, msg if ont_id.nil?
             # Use 'v' as a CSV list of concepts (class ID)
             v.split(',').each do |class_id|
@@ -258,6 +264,7 @@ module Sinatra
       # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
       # @param uri [String] ontology id in URI form
       def virtual_id_from_uri(uri)
+        uri = replace_url_prefix(uri)
         acronym = acronym_from_ontology_uri(uri)
         virtual_id_from_acronym(acronym)
       end

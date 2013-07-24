@@ -69,6 +69,17 @@ class TestGroupsController < TestCase
     get "/groups/#{acronym}"
     assert last_response.ok?
     assert MultiJson.load(last_response.body)["acronym"].eql?(acronym)
+
+    delete "/groups/#{acronym}"
+    post "/groups", MultiJson.dump(@test_group), "CONTENT_TYPE" => "application/json"
+
+    assert last_response.status == 201
+    assert MultiJson.load(last_response.body)["acronym"].eql?(acronym)
+
+    get "/groups/#{acronym}"
+    assert last_response.ok?
+    assert MultiJson.load(last_response.body)["acronym"].eql?(acronym)
+
   end
 
   def test_update_patch_group

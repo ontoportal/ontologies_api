@@ -2,6 +2,7 @@ class ProvisionalClassesController < ApplicationController
   ##
   # Ontology provisional classes
   get "/ontologies/:ontology/provisional_classes" do
+    check_last_modified_collection(LinkedData::Models::ProvisonalClass)
     ont = Ontology.find(params["ontology"]).include(provisionalClasses: LinkedData::Models::ProvisonalClass.goo_attrs_to_load(includes_param)).first
     error 404, "You must provide a valid id to retrieve provisional classes for an ontology" if ont.nil?
     reply ont.provisionalClasses
@@ -10,12 +11,14 @@ class ProvisionalClassesController < ApplicationController
   namespace "/provisional_classes" do
     # Display all provisional_classes
     get do
+      check_last_modified_collection(LinkedData::Models::ProvisonalClass)
       prov_class = ProvisionalClass.where.include(ProvisionalClass.goo_attrs_to_load(includes_param)).to_a
       reply prov_class
     end
 
     # Display a single provisional_class
     get '/:provisional_class_id' do
+      check_last_modified_collection(LinkedData::Models::ProvisonalClass)
       id = params["provisional_class_id"]
       pc = ProvisionalClass.find(id).include(ProvisionalClass.goo_attrs_to_load(includes_param)).first
       error 404, "Provisional class #{id} not found" if pc.nil?

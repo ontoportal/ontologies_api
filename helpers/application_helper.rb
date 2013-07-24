@@ -208,14 +208,20 @@ module Sinatra
       end
 
       def ontology_uri_acronym_map
+        cached_map = naive_expiring_cache_read(__method__)
+        return cached_map if cached_map
         map = {}
         LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.acronym] = o.id.to_s}
+        naive_expiring_cache_write(__method__, map)
         map
       end
 
       def acronym_ontology_uri_map
+        cached_map = naive_expiring_cache_read(__method__)
+        return cached_map if cached_map
         map = {}
         LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.id.to_s] = o.acronym}
+        naive_expiring_cache_write(__method__, map)
         map
       end
 
@@ -274,6 +280,21 @@ module Sinatra
         return ont, submission
       end
 
+
+      private
+
+      def naive_expiring_cache_write(key, object, timeout = 60)
+        @naive_expiring_cache ||= {}
+        @naive_expiring_cache[key] = {timeout: Time.now + timeout, object: object}
+      end
+
+      def naive_expiring_cache_read(key)
+        return if @naive_expiring_cache.nil?
+        object = @naive_expiring_cache[key]
+        return if object.nil?
+        return if Time.now > object[:timeout]
+        return object[:object]
+      end
 
     end
   end
