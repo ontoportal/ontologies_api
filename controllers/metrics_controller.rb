@@ -3,6 +3,7 @@ class MetricsController < ApplicationController
 
     # Display all metrics
     get do
+      check_last_modified_collection(LinkedData::Models::Metrics)
       submissions = retrieve_latest_submissions
       submissions = submissions.values
       LinkedData::Models::OntologySubmission.where.models(submissions)
