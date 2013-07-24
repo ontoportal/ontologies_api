@@ -3,10 +3,12 @@ class MetricsController < ApplicationController
 
     # Display all metrics
     get do
-      error 405, 
-        "Unsupported endpoint. " +
-        "Metrics can only be retrieved from ontologies." +
-        " See `/ontologies/{acronym}/metrics`"
+      submissions = retrieve_latest_submissions
+      submissions = submissions.values
+      LinkedData::Models::OntologySubmission.where.models(submissions)
+                         .include(metrics: (LinkedData::Models::Metrics.attributes << :submission))
+                               .all
+      reply submissions.select { |s| !s.metrics.nil? }.map { |s| s.metrics }
     end
 
   end
