@@ -232,18 +232,34 @@ class ResourceIndexController < ApplicationController
       if with_fields
         fields = {}
         e[:text].each do |name, description|
-          # TODO: Parse the text field to translate the term IDs into a list of URIs?
-          #"text"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
-          #
           # Parse the associated ontologies to return a list of ontology URIs
           ontIDs = [e[:ontoIds][name]].compact  # Wrap Fixnum or Array into Array
-          ontIDs.delete_if {|x| x == 0 }
+          ontIDs.delete_if {|x| x <= 0 }
           ontIDs.each_with_index do |id, i|     # Try to convert to ontology URIs
             uri = ontology_uri_from_virtual_id(id)
-            if uri.nil?
-              ontIDs[i] = id.to_s # conform to expected data type for JSON validation
-            else
-              ontIDs[i] = uri
+            next if uri.nil?
+            # ontIDs[i] = id.to_s # conform to data type for JSON validation
+            ontIDs[i] = uri
+          end
+          associatedClasses = []
+          if ! ontIDs.empty?
+            # Parse the text field to translate the term IDs into a list of URIs?
+            # "text"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
+            if description.include? '> '
+              description.split('> ').each do |term|
+                ont_id, term_short_id = term.split('/')
+                ont_uri = ontology_uri_from_virtual_id(ont_id)
+                next if ont_uri.nil?
+                ont_acronym = acronym_from_virtual_id(ont_id)
+                next if ont_acronym.nil?
+                term_uri = uri_from_short_id_with_acronym(ont_acronym, term_short_id)
+                next if term_uri.nil?
+                ontology = LinkedData::Models::Ontology.read_only(id: RDF::IRI.new(ont_uri), acronym: ont_acronym)
+                submission = LinkedData::Models::OntologySubmission.read_only(id: RDF::IRI.new(ont_uri+"/submissions/latest"), ontology: ontology)
+                term_model = LinkedData::Models::Class.read_only(id: RDF::IRI.new(term_uri), submission: submission)
+                associatedClasses.push term_model
+              end
+              description = uri_list.join("> ") # put humpty back together again :D
             end
           end
           weight = 0.0
@@ -251,6 +267,7 @@ class ResourceIndexController < ApplicationController
           fields[name] = {
             "text" => description,
             "associatedOntologies" => ontIDs,
+            "associatedClasses" => associatedClasses,
             "weight" => weight
           }
         end

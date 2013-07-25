@@ -202,6 +202,27 @@ module Sinatra
       end
 
       ##
+      # Using the combination of the short_id (EX: "TM122581") and ontology acronym,
+      # this will do a Redis lookup and give you the full URI. The short_id is based on
+      # what is produced by the `shorten_uri` method and should match Resource Index localConceptId output.
+      # In fact, doing localConceptId.split("/") should give you the parameters for this method.
+      # Population of redis data available here:
+      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_classes.rb
+      def uri_from_short_id_with_acronym(acronym, short_id)
+        uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{short_id}")
+        if uri.nil? && short_id.include?(':')
+          try_again_id = short_id.split(':').last
+          uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{try_again_id}")
+        end
+        uri
+      end
+
+      # Alias for uri_from_short_id
+      def uri_from_short_id_with_version(version_id, short_id)
+        uri_from_short_id(version_id, short_id)
+      end
+
+      ##
       # Using the combination of the short_id (EX: "TM122581") and version_id (EX: "42389"),
       # this will do a Redis lookup and give you the full URI. The short_id is based on
       # what is produced by the `shorten_uri` method and should match Resource Index localConceptId output.
@@ -210,12 +231,7 @@ module Sinatra
       # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_classes.rb
       def uri_from_short_id(version_id, short_id)
         acronym = acronym_from_version_id(version_id)
-        uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{short_id}")
-        if uri.nil? && short_id.include?(':')
-          try_again_id = short_id.split(':').last
-          uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{try_again_id}")
-        end
-        uri
+        uri_from_short_id_with_acronym(acronym, short_id)
       end
 
       ##
