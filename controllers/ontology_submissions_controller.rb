@@ -1,19 +1,10 @@
 class OntologySubmissionsController < ApplicationController
   get "/submissions" do
+
     check_last_modified_collection(LinkedData::Models::OntologySubmission)
-    includes = OntologySubmission.goo_attrs_to_load(includes_param)
-    includes.concat([:submissionId, ontology: Ontology.goo_attrs_to_load])
-    submissions = OntologySubmission.where.include(includes).to_a
+    #using appplication_helper method
+    reply retrieve_latest_submissions.values
 
-    # Figure out latest parsed submissions using all submissions
-    latest_submissions = {}
-    submissions.each do |sub|
-      next unless sub.submissionStatus.parsed?
-      latest_submissions[sub.ontology.acronym] ||= sub
-      latest_submissions[sub.ontology.acronym] = sub if sub.submissionId > latest_submissions[sub.ontology.acronym].submissionId
-    end
-
-    reply latest_submissions.values
   end
 
   namespace "/ontologies/:acronym/submissions" do

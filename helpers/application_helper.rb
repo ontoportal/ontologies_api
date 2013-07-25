@@ -208,14 +208,20 @@ module Sinatra
       end
 
       def ontology_uri_acronym_map
+        cached_map = naive_expiring_cache_read(__method__)
+        return cached_map if cached_map
         map = {}
         LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.acronym] = o.id.to_s}
+        naive_expiring_cache_write(__method__, map)
         map
       end
 
       def acronym_ontology_uri_map
+        cached_map = naive_expiring_cache_read(__method__)
+        return cached_map if cached_map
         map = {}
         LinkedData::Models::Ontology.where.include(:acronym).all.each {|o| map[o.id.to_s] = o.acronym}
+        naive_expiring_cache_write(__method__, map)
         map
       end
 
@@ -233,6 +239,61 @@ module Sinatra
       def replace_url_prefix(id)
         id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix
         id
+      end
+
+      def retrieve_latest_submissions
+        includes = OntologySubmission.goo_attrs_to_load(includes_param)
+        includes.concat([:submissionId, ontology: Ontology.goo_attrs_to_load])
+        submissions = OntologySubmission.where.include(includes).to_a
+
+        # Figure out latest parsed submissions using all submissions
+        latest_submissions = {}
+        submissions.each do |sub|
+          next unless sub.submissionStatus.parsed?
+          latest_submissions[sub.ontology.acronym] ||= sub
+          latest_submissions[sub.ontology.acronym] = sub if sub.submissionId > latest_submissions[sub.ontology.acronym].submissionId
+        end
+        return latest_submissions
+      end
+
+      def get_ontology_and_submission
+        ont = Ontology.find(@params["ontology"])
+              .include(:acronym)
+              .include(submissions: [:submissionId, submissionStatus: [:code], ontology: [:acronym]])
+                .first
+        error(404, "Ontology '#{@params["ontology"]}' not found.") if ont.nil?
+        submission = nil
+        if @params.include? "ontology_submission_id"
+          submission = ont.submission(@params[:ontology_submission_id])
+          error 404, "You must provide an existing submission ID for the #{@params["acronym"]} ontology" if submission.nil?
+        else
+          submission = ont.latest_submission
+        end
+        error 404,  "Ontology #{@params["ontology"]} submission not found." if submission.nil?
+        status = submission.submissionStatus
+        if !status.parsed?
+          error 404,  "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
+        end
+        if submission.nil?
+          error 404, "Ontology #{@params["acronym"]} does not have any submissions" if submission.nil?
+        end
+        return ont, submission
+      end
+
+
+      private
+
+      def naive_expiring_cache_write(key, object, timeout = 60)
+        @naive_expiring_cache ||= {}
+        @naive_expiring_cache[key] = {timeout: Time.now + timeout, object: object}
+      end
+
+      def naive_expiring_cache_read(key)
+        return if @naive_expiring_cache.nil?
+        object = @naive_expiring_cache[key]
+        return if object.nil?
+        return if Time.now > object[:timeout]
+        return object[:object]
       end
 
     end
