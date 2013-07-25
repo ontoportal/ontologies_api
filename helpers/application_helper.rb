@@ -92,6 +92,10 @@ module Sinatra
 
         obj = response.shift
         halt 404 if obj.nil?
+
+        # Security check
+        check_access(obj) if LinkedData.settings.enable_security
+
         LinkedData::Serializer.build_response(@env, status: status, ld_object: obj)
       end
 
