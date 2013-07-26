@@ -270,6 +270,9 @@ module Sinatra
         return ont, submission
       end
 
+      def current_user
+        env["REMOTE_USER"]
+      end
 
       private
 
