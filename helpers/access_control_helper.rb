@@ -10,7 +10,7 @@ module Sinatra
       def check_access(obj)
         return obj unless LinkedData.settings.enable_security
         if obj.is_a?(Enumerable)
-          if obj.first.access_based_on?
+          if obj.first.is_a?(LinkedData::Models::Base) && obj.first.access_based_on?
             check_access(obj.first)
           else
             filter_access(obj)
