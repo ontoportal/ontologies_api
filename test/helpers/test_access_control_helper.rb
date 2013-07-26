@@ -45,7 +45,6 @@ class TestAccessControlHelper < TestCaseHelpers
     LinkedData.settings.enable_security = @@old_security_setting
     _delete_users
     self.new("after_suite").delete_ontologies_and_submissions
-    @@note.delete if class_variable_defined?("@@note")
   end
 
   def self._delete_users
@@ -55,6 +54,7 @@ class TestAccessControlHelper < TestCaseHelpers
   def test_filtered_list
     get "/ontologies", apikey: @@user.apikey
     onts = MultiJson.load(last_response.body)
+    assert last_response.ok?
     assert onts.length == 4
     assert onts.any? {|o| o["@id"] == @@ont.id.to_s}
     refute onts.any? {|o| o["@id"] == @@restricted_ont.id.to_s}
@@ -62,6 +62,12 @@ class TestAccessControlHelper < TestCaseHelpers
 
   def test_direct_access
     get "/ontologies/#{@@restricted_ont.acronym}", apikey: @@user.apikey
+    assert last_response.status == 403
+  end
+
+  def test_write_access
+    params = {apikey: @@user2.apikey, name: "New test name"}
+    patch "/ontologies/#{@@restricted_ont.acronym}", MultiJson.dump(params), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 403
   end
 
