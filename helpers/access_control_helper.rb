@@ -3,6 +3,7 @@ require 'sinatra/base'
 module Sinatra
   module Helpers
     module AccessControlHelper
+
       ##
       # For a given object, check the access control settings. If they are restricted, handle appropriately.
       # For a list, this will filter out results. For single objects, if will throw an error if access is denied.
@@ -21,6 +22,16 @@ module Sinatra
           end
         end
         obj
+      end
+
+      ##
+      # For a given object, check if the current user has permission to perform writes.
+      def check_write_access(obj)
+        return obj unless LinkedData.settings.enable_security
+        if obj.write_restricted?
+          writable = obj.writable?(env["REMOTE_USER"])
+          error 403, "Access denied for this resource" unless writable
+        end
       end
 
       ##
