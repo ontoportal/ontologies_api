@@ -3,9 +3,6 @@ require_relative '../test_case_helpers'
 class TestAccessControlHelper < TestCaseHelpers
 
   def self.before_suite
-    @@old_security_setting = LinkedData.settings.enable_security
-    LinkedData.settings.enable_security = true
-
     self.new("before_suite").delete_ontologies_and_submissions
 
     @@usernames = ["user1", "user2", "user3", "admin"]
@@ -39,6 +36,11 @@ class TestAccessControlHelper < TestCaseHelpers
     @@ont.bring_remaining
     @@user = @@ont.administeredBy.first
     @@user.bring_remaining
+    @@old_security_setting = LinkedData.settings.enable_security
+
+    @@ont_patch = onts.shift.bring_remaining
+
+    LinkedData.settings.enable_security = true
   end
 
   def self.after_suite
@@ -65,7 +67,51 @@ class TestAccessControlHelper < TestCaseHelpers
     assert last_response.status == 403
   end
 
-  def test_write_access
+  def test_allow_post_writes
+    begin
+      acronym = "SECURE_ONT"
+      params = {apikey: @@user2.apikey, acronym: acronym, name: "New test name", administeredBy: [@@user2.id.to_s]}
+      post "/ontologies", MultiJson.dump(params), "CONTENT_TYPE" => "application/json"
+      assert last_response.status == 201
+    ensure
+      ont = LinkedData::Models::Ontology.find(acronym).first
+      ont.delete(user: @@user2) if ont
+      ont = LinkedData::Models::Ontology.find(acronym).first
+      assert ont.nil?
+    end
+  end
+
+  def test_delete_access
+    begin
+      acronym = "SECURE_ONT_DELETE"
+      params = {apikey: @@user2.apikey, acronym: acronym, name: "New test name", administeredBy: [@@user2.id.to_s]}
+      post "/ontologies", MultiJson.dump(params), "CONTENT_TYPE" => "application/json"
+      assert last_response.status == 201
+      delete "/ontologies/#{acronym}?apikey=#{@@user.apikey}"
+      assert last_response.status == 403
+      delete "/ontologies/#{acronym}?apikey=#{@@user2.apikey}"
+      assert last_response.status == 204
+    ensure
+      ont = LinkedData::Models::Ontology.find(acronym).first
+      ont.delete(user: @@user2) if ont
+      ont = LinkedData::Models::Ontology.find(acronym).first
+      assert ont.nil?
+    end
+  end
+
+  def test_save_security_load_attributes
+    # We should make sure that attributes that are needed for security checks don't get overridden
+    params = {apikey: @@user.apikey, administeredBy: [@@user2.id.to_s]}
+    ont_url = "/ontologies/#{@@ont_patch.acronym}"
+    patch ont_url, MultiJson.dump(params), "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 204
+    get ont_url, apikey: @@user2.apikey
+    assert last_response.ok?
+    ont = MultiJson.load(last_response.body)
+    assert ont["administeredBy"].include?(@@user2.id.to_s)
+  end
+
+  def test_write_access_denied
     params = {apikey: @@user2.apikey, name: "New test name"}
     patch "/ontologies/#{@@restricted_ont.acronym}", MultiJson.dump(params), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 403
