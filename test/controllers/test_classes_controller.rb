@@ -2,11 +2,11 @@ require_relative '../test_case'
 
 class TestClassesController < TestCase
 
-  def self.before_suite 
-    options = {ont_count: 1, 
-               submission_count: 3, 
-               submissions_to_process: [1, 2], 
-               process_submission: true, 
+  def self.before_suite
+    options = {ont_count: 1,
+               submission_count: 3,
+               submissions_to_process: [1, 2],
+               process_submission: true,
                random_submission_count: false}
     return LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
   end
