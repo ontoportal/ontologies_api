@@ -75,7 +75,7 @@ class TestClassesController < TestCase
         # (a) serializer embed issue
         # (b) goo is not running properly the transitive query
         item["ancestors"].each do |anc|
-          assert_instance_of String, item["anc"]
+          assert_instance_of String, anc["prefLabel"]
         end
         if item["@id"]["Ontology_Development_and_Management"]
           item["ancestors"].length > 2 #make sure transitive is working
