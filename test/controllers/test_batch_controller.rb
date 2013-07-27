@@ -92,8 +92,7 @@ class TestBatchController < TestCase
     classes_response = data["http://www.w3.org/2002/07/owl#Class"]
     assert classes_response.length == classes.length
     classes_response.each do |klass|
-      # TODO: It looks like MCCL doesn't have labels, this shouldn't break this test, though
-      # assert_instance_of String, klass["prefLabel"]
+      assert_instance_of String, klass["prefLabel"]
       assert klass["prefLabel"] == class_ids[klass["@id"]]
     end
   end
