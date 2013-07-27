@@ -46,6 +46,9 @@ class TestReviewsController < TestCase
 
   def setup
     super
+    delete_goo_models(LinkedData::Models::Review.all)
+    delete_goo_models(LinkedData::Models::Ontology.all)
+    delete_goo_models(LinkedData::Models::User.all)
     @user = LinkedData::Models::User.new(username: "test_user", email: "test_user@example.org", password: "password")
     @user.save
     @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: [@user])
