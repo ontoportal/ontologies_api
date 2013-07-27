@@ -28,7 +28,7 @@ module Sinatra
       # For a given object, check if the current user has permission to perform writes.
       def check_write_access(obj)
         return obj unless LinkedData.settings.enable_security
-        if obj.write_restricted?
+        if obj.is_a?(LinkedData::Models::Base) && obj.write_restricted?
           writable = obj.writable?(env["REMOTE_USER"])
           error 403, "Access denied for this resource" unless writable
         end
@@ -40,6 +40,7 @@ module Sinatra
       #       constructing the page to allow for consistent number of results per page.
       def filter_access(enumerable)
         return enumerable unless LinkedData.settings.enable_security
+        return enumerable unless enumerable.first.is_a?(LinkedData::Models::Base)
         LinkedData::Security::AccessControl.filter_unreadable(enumerable, env["REMOTE_USER"])
         enumerable
       end
