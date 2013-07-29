@@ -41,6 +41,7 @@ module Sinatra
       def filter_access(enumerable)
         return enumerable unless LinkedData.settings.enable_security
         return enumerable unless enumerable.first.is_a?(LinkedData::Models::Base)
+        enumerable = enumerable.dup if enumerable.frozen?
         LinkedData::Security::AccessControl.filter_unreadable(enumerable, env["REMOTE_USER"])
         enumerable
       end
