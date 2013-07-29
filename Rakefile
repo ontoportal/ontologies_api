@@ -92,7 +92,7 @@ end
 
 namespace :deploy do
   desc "Deploy production"
-  task :production
+  task :production do
     puts 'Deploying ontologies_api'
     puts 'Doing pull'
     `git pull`
