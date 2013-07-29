@@ -90,13 +90,17 @@ namespace :cache do
   end
 end
 
-desc "Deploy"
-task :deploy do
-  puts 'Deploying ontologies_api\n'
-  puts 'Doing pull\n'
-  `git pull`
-  puts 'Updating bundle\n'
-  `bundle update`
-  puts 'Restarting unicorn\n'
-  `rake unicorn:stop && rake unicorn:start:production`
+namespace :deploy do
+  desc "Deploy production"
+  task :production
+    puts 'Deploying ontologies_api'
+    puts 'Doing pull'
+    `git pull`
+    puts 'Updating bundle'
+    `bundle update`
+    puts 'Restarting unicorn'
+    `rake unicorn:stop && rake unicorn:start:production`
+    puts 'Clearing cache'
+    `bundle exec rake cache:clear:production`
+  end
 end
