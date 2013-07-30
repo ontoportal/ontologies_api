@@ -44,12 +44,15 @@ class MappingsController < ApplicationController
         error(400, "/mappings/ endpoint only supports filtering on two ontologies")
       end
       page, size = page_params
+
       mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontologies.first ])
-                                 .and(terms: [ontology: ontologies[1] ])
-                                 .include(terms: [ :term, ontology: [ :acronym ] ])
-                                 .include(process: [:name, :owner ])
-                                 .page(page,size)
-                                 .all
+      if ontologies.length > 1
+        mappings.and(terms: [ontology: ontologies[1] ])
+      end
+      mappings = mappings.include(terms: [ :term, ontology: [ :acronym ] ])
+                  .include(process: [:name, :owner ])
+                  .page(page,size)
+                  .all
       reply mappings
     end
 
