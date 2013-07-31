@@ -135,7 +135,6 @@ class ResourceIndexController < ApplicationController
     # Data massage methods.
     #
 
-
     def massage_ontologies(old_response, options)
       ri_ontology_acronyms = []
       old_response.each do |ont|
@@ -149,7 +148,8 @@ class ResourceIndexController < ApplicationController
         end
       end
       # Triple Store ontologies - not equivalent to resource index ontologies.
-      linked_ontologies = LinkedData::Models::Ontology.where.include(:acronym, :name).all
+      ont_attributes = LinkedData::Models::Ontology.goo_attrs_to_load()
+      linked_ontologies = LinkedData::Models::Ontology.where.include(ont_attributes).all
       # Return only the triple store ontologies with data in the resource index
       linked_ontologies.delete_if {|ont| not ri_ontology_acronyms.include? ont.acronym  }
       return linked_ontologies
