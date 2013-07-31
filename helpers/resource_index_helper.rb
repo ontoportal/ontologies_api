@@ -84,7 +84,7 @@ module Sinatra
         # The ENV["REMOTE_USER"] object (this is a variable that stores a per-request instance of
         # a LinkedData::Models::User object based on the API Key used in the request). The apikey
         # is one of the attributes on the user object.
-        user = ENV["REMOTE_USER"]
+        user = current_user
         if user.nil?
           # Fallback to APIKEY from config/env/dev
           options[:apikey] = LinkedData.settings.apikey
