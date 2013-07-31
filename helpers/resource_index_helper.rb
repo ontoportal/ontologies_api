@@ -36,10 +36,11 @@ module Sinatra
     module ResourceIndexHelper
       REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
 
-      def classes_error()
-        msg = "Malformed classes parameter. Try:\n"
+      def classes_error(params)
+        msg = "Malformed parameters. Try:\n"
         msg += "classes[ontAcronymA]=classA1,classA2,classA3&classes[ontAcronymB]=classB1,classB2\n"
-        msg += "See #{LinkedData.settings.rest_url_prefix}documentation for details.\n"
+        msg += "See #{LinkedData.settings.rest_url_prefix}documentation for details.\n\n"
+        msg += "Parameters:  #{params.to_s}"
         error 400, msg
       end
 
@@ -48,7 +49,7 @@ module Sinatra
         # classes[acronym1|URI1]=classid1,classid2,classid3&classes[acronym2|URI2]=classid1,classid2
         classes = []
         if params.key?("classes")
-          classes_error if not params["classes"].kind_of?(Hash)
+          classes_error(params) if not params["classes"].kind_of? Hash
           class_hash = params["classes"]
           class_hash.each do |k,v|
             # Use 'k' as an ontology acronym or URI, translate it to an ontology virtual ID.
@@ -57,7 +58,7 @@ module Sinatra
             msg = "Ontology #{k} cannot be found in the resource index. "
             msg += "See #{LinkedData.settings.rest_url_prefix}resource_index/ontologies for details."
             error 404, msg if ont_id.nil?
-            classes_error if not v.kind_of? String
+            classes_error(params) if not v.kind_of? String
             # Use 'v' as a CSV list of concepts (class ID)
             v.split(',').each do |class_id|
               # Shorten id as necessary
