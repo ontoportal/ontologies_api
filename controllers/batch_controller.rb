@@ -28,7 +28,7 @@ class BatchController < ApplicationController
         next if ont.nil?
         latest = ont.latest_submission
         latest.bring(ontology:[:acronym])
-        classes.concat(LinkedData::Models::Class.in(latest).ids(class_ids).include(goo_include.map{|x| x.to_sym}).read_only.all)
+        classes.concat(LinkedData::Models::Class.in(latest).ids(class_ids).include(goo_include).all)
       end
       reply({ resource_type => classes })
     end

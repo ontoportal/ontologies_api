@@ -10,7 +10,6 @@ class ClassesController < ApplicationController
       page_data = LinkedData::Models::Class.in(submission)
                                 .include(ld)
                                 .page(page,size)
-                                .read_only
                                 .all
       reply page_data
     end

@@ -2,11 +2,11 @@ require_relative '../test_case'
 
 class TestClassesController < TestCase
 
-  def self.before_suite 
-    options = {ont_count: 1, 
-               submission_count: 3, 
-               submissions_to_process: [1, 2], 
-               process_submission: true, 
+  def self.before_suite
+    options = {ont_count: 1,
+               submission_count: 3,
+               submissions_to_process: [1, 2],
+               process_submission: true,
                random_submission_count: false}
     return LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
   end
@@ -75,7 +75,7 @@ class TestClassesController < TestCase
         # (a) serializer embed issue
         # (b) goo is not running properly the transitive query
         item["ancestors"].each do |anc|
-          assert_instance_of String, item["anc"]
+          assert_instance_of String, anc["prefLabel"]
         end
         if item["@id"]["Ontology_Development_and_Management"]
           item["ancestors"].length > 2 #make sure transitive is working

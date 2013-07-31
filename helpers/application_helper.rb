@@ -92,6 +92,10 @@ module Sinatra
 
         obj = response.shift
         halt 404 if obj.nil?
+
+        # Security check
+        check_access(obj) if LinkedData.settings.enable_security
+
         LinkedData::Serializer.build_response(@env, status: status, ld_object: obj)
       end
 
@@ -143,23 +147,9 @@ module Sinatra
           ontologies = params["ontologies"].split(",").map {|o| o.strip}
           # When they aren't URIs, make them URIs
           ontologies.map! {|o| o.start_with?("http://") ? o : ontology_uri_from_acronym(o)}
-          # Extra safe, do a Goo lookup for any remaining
-          ontologies.map! do |o|
-            if o.to_s.start_with?("http://")
-              o
-            else
-              ont = Ontology.find(o).first rescue nil
-              if ont.nil?
-                nil
-              else
-                ont.id.to_s
-              end
-            end
-          end
           if ontologies.include? nil
             error 404, "The ontologies parameter `[#{params["ontologies"]}]` includes non-existent acronyms. Notice that acronyms are case sensitive."
           end
-          ontologies.compact!
           return ontologies
         end
         Array.new
@@ -280,6 +270,9 @@ module Sinatra
         return ont, submission
       end
 
+      def current_user
+        env["REMOTE_USER"]
+      end
 
       private
 

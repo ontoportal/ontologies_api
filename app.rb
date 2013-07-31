@@ -63,6 +63,7 @@ end
 use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
+use LinkedData::Security::AccessDenied
 
 if LinkedData.settings.enable_http_cache
   require 'rack/cache'

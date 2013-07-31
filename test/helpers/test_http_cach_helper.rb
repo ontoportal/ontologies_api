@@ -3,7 +3,7 @@ require_relative '../test_case_helpers'
 class TestHTTPCacheHelper < TestCaseHelpers
 
   def self.before_suite
-    raise Exception, "Redis is unavailable, caching will not function" if LinkedData::HTTPCache::REDIS.ping.nil?
+    raise Exception, "Redis is unavailable, caching will not function" if LinkedData::HTTPCache.redis.ping.nil?
     self.new("before_suite").delete_ontologies_and_submissions
     ontologies = self.new("before_suite")._ontologies
     @@ontology = ontologies.shift
@@ -47,6 +47,7 @@ class TestHTTPCacheHelper < TestCaseHelpers
   end
 
   def self._delete_user
+    return unless class_variable_defined?("@@note_user")
     u = LinkedData::Models::User.find(@@note_user).first
     u.delete unless u.nil?
   end
