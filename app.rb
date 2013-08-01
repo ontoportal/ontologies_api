@@ -60,6 +60,9 @@ if [:development].include?(settings.environment) && !LinkedData.settings.enable_
 end
 
 # Use middleware (ORDER IS IMPORTANT)
+if Goo.queries_debug?
+  use Goo::Debug
+end
 use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
