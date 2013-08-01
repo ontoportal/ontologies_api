@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'redis'
+require 'recursive-open-struct'
 
 require 'pry'
 
@@ -36,17 +37,23 @@ module Sinatra
     module ResourceIndexHelper
       REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
 
+      # Old REST service used for resolving class URIs into short IDs.
+      REST_URL = 'http://rest.bioontology.org/bioportal'
+
+      def classes_error(params)
+        msg = "Malformed parameters. Try:\n"
+        msg += "classes[ontAcronymA]=classA1,classA2,classA3&classes[ontAcronymB]=classB1,classB2\n"
+        msg += "See #{LinkedData.settings.rest_url_prefix}documentation for details.\n\n"
+        msg += "Parameters:  #{params.to_s}"
+        error 400, msg
+      end
+
       def get_classes(params)
         # Assume request signature of the form:
         # classes[acronym1|URI1]=classid1,classid2,classid3&classes[acronym2|URI2]=classid1,classid2
         classes = []
         if params.key?("classes")
-          if not params["classes"].kind_of?(Hash)
-            msg = "Malformed classes parameter. Try:\n"
-            msg += "classes[ontAcronymA]=classA1,classA2,classA3&classes[ontAcronymB]=classB1,classB2\n"
-            msg += "See #{LinkedData.settings.rest_url_prefix}documentation for details.\n"
-            error 400, msg
-          end
+          classes_error(params) if not params["classes"].kind_of? Hash
           class_hash = params["classes"]
           class_hash.each do |k,v|
             # Use 'k' as an ontology acronym or URI, translate it to an ontology virtual ID.
@@ -55,19 +62,12 @@ module Sinatra
             msg = "Ontology #{k} cannot be found in the resource index. "
             msg += "See #{LinkedData.settings.rest_url_prefix}resource_index/ontologies for details."
             error 404, msg if ont_id.nil?
+            classes_error(params) if not v.kind_of? String
             # Use 'v' as a CSV list of concepts (class ID)
             v.split(',').each do |class_id|
-              # Shorten id as necessary
+              # Shorten id, if necessary
               if class_id.start_with?("http://")
-                ont_code = k.split("/").last
-                ont_model = LinkedData::Models::Ontology.find(ont_code).first
-                if ont_model.is_a? LinkedData::Models::Ontology
-                  submission = ont_model.latest_submission
-                  error 404, "Ontology #{k} (#{ont_code}) has no latest submission." if submission.nil?
-                  submission.bring(hasOntologyLanguage: [:acronym])
-                  ont_format = submission.hasOntologyLanguage.acronym
-                end
-                class_id = shorten_uri(class_id, ont_format)
+                class_id = shorten_uri(class_id, ont_id)
               end
               # TODO: Determine whether class_id exists, throw 404 for invalid classes.
               classes.push("#{ont_id}/#{class_id}")
@@ -81,16 +81,7 @@ module Sinatra
         options = {}
         options[:debug] = true
         options[:request_timeout] = 600  # double the default of 300
-        # The ENV["REMOTE_USER"] object (this is a variable that stores a per-request instance of
-        # a LinkedData::Models::User object based on the API Key used in the request). The apikey
-        # is one of the attributes on the user object.
-        user = ENV["REMOTE_USER"]
-        if user.nil?
-          # Fallback to APIKEY from config/env/dev
-          options[:apikey] = LinkedData.settings.apikey
-        else
-          options[:apikey] = user.apikey
-        end
+        options[:apikey] = get_apikey
         #
         # Generic parameters that can apply to any endpoint.
         #
@@ -171,10 +162,29 @@ module Sinatra
       # Takes a URI and shortens it (takes off everything except the last fragment) according to NCBO rules.
       # Only OBO format has special processing.
       # The format can be obtained by doing ont.latest_submission.hasOntologyLanguage.acronym.to_s
-      def shorten_uri(uri, ont_format = '')
-        uri = uri.to_s
-        if ont_format.eql?('OBO')
-          if uri.start_with?('http://purl.org/obo/owl/')
+      def shorten_uri(cls_uri, ont_virtual_id=nil)
+
+        # Note: hopefully this is obsolete code to get the ontology format (copied from )
+        #ont_code = k.split("/").last
+        #ont_model = LinkedData::Models::Ontology.find(ont_code).first
+        #if ont_model.is_a? LinkedData::Models::Ontology
+        #  submission = ont_model.latest_submission
+        #  error 404, "Ontology #{k} (#{ont_code}) has no latest submission." if submission.nil?
+        #  submission.bring(hasOntologyLanguage: [:acronym])
+        #  ont_format = submission.hasOntologyLanguage.acronym
+        #end
+
+        uri = cls_uri.to_s
+        begin
+          # Try to get the short ID from the rest service.
+          cls = get_rest_concept(ont_virtual_id, uri)
+          return cls.id
+        rescue
+          if uri.start_with?('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#')
+            last_fragment = uri.split('/').last.split('#')
+            prefix = 'BRO'
+            mod_code = last_fragment[1]
+          elsif uri.start_with?('http://purl.org/obo/owl/')
             last_fragment = uri.split('/').last.split('#')
             prefix = last_fragment[0]
             mod_code = last_fragment[1]
@@ -190,15 +200,37 @@ module Sinatra
             last_fragment = uri.split('/')
             prefix = last_fragment[-2]
             mod_code = last_fragment[-1]
+          else
+            # Everything else
+            uri_parts = uri.split('/')
+            prefix = nil
+            short_id = uri_parts.last
+            short_id = short_id.split('#').last if short_id.include?('#')
           end
-          short_id = "#{prefix}:#{mod_code}"
-        else
-          # Everything other than OBO
-          uri_parts = uri.split('/')
-          short_id = uri_parts.last
-          short_id = short_id.split('#').last if short_id.include?('#')
+          short_id = "#{prefix}:#{mod_code}" if not prefix.nil?
+          return short_id
         end
-        short_id
+      end
+
+      ##
+      # Using the combination of the short_id (EX: "TM122581") and ontology acronym,
+      # this will do a Redis lookup and give you the full URI. The short_id is based on
+      # what is produced by the `shorten_uri` method and should match Resource Index localConceptId output.
+      # In fact, doing localConceptId.split("/") should give you the parameters for this method.
+      # Population of redis data available here:
+      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_classes.rb
+      def uri_from_short_id_with_acronym(acronym, short_id)
+        uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{short_id}")
+        if uri.nil? && short_id.include?(':')
+          try_again_id = short_id.split(':').last
+          uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{try_again_id}")
+        end
+        uri
+      end
+
+      # Alias for uri_from_short_id
+      def uri_from_short_id_with_version(version_id, short_id)
+        uri_from_short_id(version_id, short_id)
       end
 
       ##
@@ -210,12 +242,7 @@ module Sinatra
       # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_classes.rb
       def uri_from_short_id(version_id, short_id)
         acronym = acronym_from_version_id(version_id)
-        uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{short_id}")
-        if uri.nil? && short_id.include?(':')
-          try_again_id = short_id.split(':').last
-          uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{try_again_id}")
-        end
-        uri
+        uri_from_short_id_with_acronym(acronym, short_id)
       end
 
       ##
@@ -267,6 +294,46 @@ module Sinatra
         uri = replace_url_prefix(uri)
         acronym = acronym_from_ontology_uri(uri)
         virtual_id_from_acronym(acronym)
+      end
+
+
+      def get_json(path)
+        apikey = "apikey=#{get_apikey}"
+        begin
+          json_response = open("#{REST_URL}#{path}&#{apikey}", { "Accept" => "application/json" }).read
+        rescue OpenURI::HTTPError => http_error
+          raise http_error
+        rescue Exception => e
+          #binding.pry
+          raise e
+        end
+        return ::JSON.parse(json_response, :symbolize_names => true)
+      end
+
+      def get_json_as_object(json_data)
+        if json_data.kind_of? Array
+          return json_data.map {|e| RecursiveOpenStruct.new(e)}
+        elsif json_data.kind_of? Hash
+          return RecursiveOpenStruct.new(json_data)
+        end
+        json
+      end
+
+      def get_rest_concept(virtual_ontology_id, cls_uri)
+        path = "/virtual/ontology/#{virtual_ontology_id}?conceptid=#{CGI.escape(cls_uri)}"
+        json_data = get_json(path)
+        get_json_as_object(json_data[:success][:data][0][:classBean])
+      end
+
+      def get_apikey()
+        user = current_user
+        if user.nil?
+          # Fallback to APIKEY from config/env/dev
+          apikey = LinkedData.settings.apikey
+        else
+          apikey = user.apikey
+        end
+        return apikey
       end
 
     end

@@ -1,5 +1,6 @@
 
 require 'ncbo_resource_index_client'
+require 'set'
 
 class ResourceIndexController < ApplicationController
 
@@ -43,8 +44,9 @@ class ResourceIndexController < ApplicationController
       error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
       result = NCBO::ResourceIndex.ranked_elements(classes, options)
       check404(result, "No elements found.")
+      # result.resources.delete_if {|r| r[:elements].empty? }
       result.resources.each do |r|
-        r[:elements] = massage_elements(r[:elements])
+        r[:elements] = massage_elements(r[:elements]) if not r[:elements].empty?
       end
       # TODO: Massage additional components (result.concepts)?
       page = page_object(result.resources)
@@ -77,33 +79,34 @@ class ResourceIndexController < ApplicationController
       options = get_options(params)
       result = NCBO::ResourceIndex.element(params["elements"], params["resources"], options)
       check404(result, "No element found.")
-      # Massage the element data into the required format.
-      element = { "id" => result.id }
-      fields = {}
-      result.text.each do |name, description|
-        # TODO: Parse the text field to translate the term IDs into a list of URIs?
-        #"text"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
-        #
-        # Parse the associated ontologies to return a list of ontology URIs
-        ontIDs = [result.ontoIds[name]].compact  # Wrap Fixnum or Array into Array
-        ontIDs.delete_if {|x| x == 0 }
-        ontIDs.each_with_index do |id, i|  # Try to convert to ontology URIs
-          uri = ontology_uri_from_virtual_id(id)
-          if uri.nil?
-            ontIDs[i] = id.to_s # conform to expected data type for JSON validation
-          else
-            ontIDs[i] = uri
-          end
-        end
-        weight = 0.0
-        result.weights.each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
-        fields[name] = {
-            "text" => description,
-            "associatedOntologies" => ontIDs,
-            "weight" => weight
-        }
-      end
-      element["fields"] = fields
+      element = massage_element(result, options[:elementDetails])
+      #element = { "id" => result.id }
+      #fields = {}
+      #result.text.each do |name, description|
+      #  # TODO: Parse the text field to translate the term IDs into a list of URIs?
+      #  #"text"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
+      #  #
+      #  # Parse the associated ontologies to return a list of ontology URIs
+      #  ontIDs = [result.ontoIds[name]].compact  # Wrap Fixnum or Array into Array
+      #  ontIDs.delete_if {|x| x == 0 }
+      #  ontIDs.each_with_index do |id, i|  # Try to convert to ontology URIs
+      #    uri = ontology_uri_from_virtual_id(id)
+      #    if uri.nil?
+      #      ontIDs[i] = id.to_s # conform to expected data type for JSON validation
+      #    else
+      #      ontIDs[i] = uri
+      #    end
+      #  end
+      #  weight = 0.0
+      #  result.weights.each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
+      #  fields[name] = {
+      #      "associatedClasses" => [],
+      #      "associatedOntologies" => ontIDs,
+      #      "text" => description,
+      #      "weight" => weight
+      #  }
+      #end
+      #element["fields"] = fields
       reply element
     end
 
@@ -132,7 +135,6 @@ class ResourceIndexController < ApplicationController
     # Data massage methods.
     #
 
-
     def massage_ontologies(old_response, options)
       ri_ontology_acronyms = []
       old_response.each do |ont|
@@ -146,7 +148,8 @@ class ResourceIndexController < ApplicationController
         end
       end
       # Triple Store ontologies - not equivalent to resource index ontologies.
-      linked_ontologies = LinkedData::Models::Ontology.where.include(:acronym, :name).all
+      ont_attributes = LinkedData::Models::Ontology.goo_attrs_to_load()
+      linked_ontologies = LinkedData::Models::Ontology.where.include(ont_attributes).all
       # Return only the triple store ontologies with data in the resource index
       linked_ontologies.delete_if {|ont| not ri_ontology_acronyms.include? ont.acronym  }
       return linked_ontologies
@@ -228,36 +231,87 @@ class ResourceIndexController < ApplicationController
     end
 
     def massage_element(e, with_fields=true)
-      element = { "id" => e[:localElementId] }
+      # Designed to handle e data as ranked element or resource element
+      if e.class == NCBO::ResourceIndex::Element
+        # This is a resource element
+        id = e.id
+      else
+        # This is a ranked element
+        id = e[:localElementId]
+      end
+      element = {}
+      element['id'] = id
       if with_fields
-        fields = {}
-        e[:text].each do |name, description|
-          # TODO: Parse the text field to translate the term IDs into a list of URIs?
-          #"text"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
-          #
-          # Parse the associated ontologies to return a list of ontology URIs
-          ontIDs = [e[:ontoIds][name]].compact  # Wrap Fixnum or Array into Array
-          ontIDs.delete_if {|x| x == 0 }
-          ontIDs.each_with_index do |id, i|     # Try to convert to ontology URIs
-            uri = ontology_uri_from_virtual_id(id)
-            if uri.nil?
-              ontIDs[i] = id.to_s # conform to expected data type for JSON validation
-            else
-              ontIDs[i] = uri
-            end
-          end
-          weight = 0.0
-          e[:weights].each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
-          fields[name] = {
-            "text" => description,
-            "associatedOntologies" => ontIDs,
-            "weight" => weight
-          }
+        if e.class == NCBO::ResourceIndex::Element
+          # This is a resource element
+          text = e.text
+          ontoIds = e.ontoIds
+          weights = e.weights
+        else
+          # This is a ranked element
+          text = e[:text]
+          ontoIds = e[:ontoIds]
+          weights = e[:weights]
         end
-        element["fields"] = fields
+        element['fields'] = massage_element_fields(text, ontoIds, weights) if with_fields
       end
       return element
     end
+
+    def massage_element_fields(text, ontoIds, weights)
+      fields = {}
+      text.each do |name, description|
+        # Parse the associated ontologies to return a list of ontology URIs
+        ontIDs = [ontoIds[name]].compact  # Wrap Fixnum or Array into Array
+        associatedOntologies = ontologyIDs2URIs(ontIDs)
+        associatedClasses = termIDs2classes(description, associatedOntologies)
+        weight = 0.0
+        weights.each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
+        fields[name] = {
+            "associatedClasses" => associatedClasses,
+            "associatedOntologies" => associatedOntologies,
+            "text" => description,
+            "weight" => weight
+        }
+      end
+      return fields
+    end
+
+    def ontologyIDs2URIs(ontIDs)
+      ontURIs = []
+      ontIDs.delete_if {|x| x <= 0 }
+      ontIDs.each do |id|     # Try to convert to ontology URIs
+        uri = ontology_uri_from_virtual_id(id)
+        next if uri.nil?
+        # ontIDs[i] = id.to_s # conform to data type for JSON validation
+        ontURIs.push uri
+      end
+      return ontURIs
+    end
+
+    def termIDs2classes(description, associatedOntologies)
+      associatedClasses = []
+      # Parse the 'description' field to translate the term IDs into a list of URIs?
+      # "description"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
+      if description.include? '> '
+        description.split('> ').each do |term|
+          ont_id, term_short_id = term.split('/')
+          ont_uri = ontology_uri_from_virtual_id(ont_id)
+          next if ont_uri.nil?
+          associatedOntologies.push ont_uri unless associatedOntologies.include? ont_uri
+          ont_acronym = acronym_from_virtual_id(ont_id)
+          next if ont_acronym.nil?
+          term_uri = uri_from_short_id_with_acronym(ont_acronym, term_short_id)
+          next if term_uri.nil?
+          ontology = LinkedData::Models::Ontology.read_only(id: RDF::IRI.new(ont_uri), acronym: ont_acronym)
+          submission = LinkedData::Models::OntologySubmission.read_only(id: RDF::IRI.new(ont_uri+"/submissions/latest"), ontology: ontology)
+          term_model = LinkedData::Models::Class.read_only(id: RDF::IRI.new(term_uri), submission: submission)
+          associatedClasses.push term_model
+        end
+      end
+      return associatedClasses
+    end
+
 
     def massage_resources(resource_array)
       # Remove resource content

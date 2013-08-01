@@ -105,8 +105,12 @@ class TestResourceIndexController < TestCase
     "description": "A Resource Index ontology.",
     "additionalProperties": false,
     "properties": {
-      "ontologyName": { "type": "string", "required": true },
-      "ontologyURI": { "type": "string", "format": "uri", "required": true }
+      "acronym": { "type": "string", "required": true },
+      "name": { "type": "string", "required": true },
+      "@id": { "type": "string", "format": "uri", "required": true },
+      "@type": { "type": "string", "format": "uri", "required": true },
+      "links": { "type": "object", "required": true },
+      "@context": { "type": "object", "required": true }
     }
   }
   END_SCHEMA
@@ -246,7 +250,7 @@ class TestResourceIndexController < TestCase
     "additionalProperties": false,
     "properties": {
       "id": { "type": "string", "required": true },
-      "fields": { "type": "object", "required": true }
+      "fields": { "type": "object" }
     }
   }
   END_SCHEMA
@@ -258,30 +262,13 @@ class TestResourceIndexController < TestCase
     "description": "A Resource Index element field.",
     "additionalProperties": false,
     "properties": {
+      "associatedClasses": { "type": "array", "items": { "type": "string", "format": "uri" }, "required": true },
+      "associatedOntologies": { "type": "array", "items": { "type": "string", "format": "uri" }, "required": true },
       "text": { "type": "string", "required": true },
-      "associatedOntologies": { "type": "array", "items": { "type": "string" }, "required": true },
       "weight": { "type": "number", "required": true }
     }
   }
   END_SCHEMA
-
-  def test_get_ranked_elements
-    #get "/resource_index/ranked_elements?{classes}"  # such that {classes} is of the form:
-    #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
-    #
-    #rest_target = "/resource_index/ranked_elements?classes[#{acronym}]=#{classid1},#{classid2}"
-    rest_target = "/resource_index/ranked_elements?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}"
-    puts rest_target if DEBUG_MESSAGES
-    get rest_target
-    _response_status(200, last_response)
-    validate_json(last_response.body, PAGE_SCHEMA)
-    page = MultiJson.load(last_response.body)
-    resources = page["collection"]
-    refute_empty(resources, "ERROR: empty resources for ranked elements")
-    validate_json(MultiJson.dump(resources), RANKED_ELEMENT_SCHEMA, true)
-    # TODO: Resolve why ranked elements is different from annotated elements
-    resources.each { |r| validate_ranked_elements(r["elements"]) }
-  end
 
   def test_get_search_classes
     #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
@@ -296,9 +283,7 @@ class TestResourceIndexController < TestCase
     ]
     rest_param_list.each do |param|
       rest_target = rest_search + param
-      puts rest_target if DEBUG_MESSAGES
-      get rest_target
-      _response_status(200, last_response)
+      last_response = _get_response(rest_target)
       validate_json(last_response.body, PAGE_SCHEMA)
       page = MultiJson.load(last_response.body)
       annotations = page["collection"]
@@ -329,46 +314,62 @@ class TestResourceIndexController < TestCase
     ]
     rest_param_list.each do |param|
       rest_target = rest_search + param
-      puts rest_target if DEBUG_MESSAGES
-      get rest_target
-      _response_status(404, last_response)
+      last_response = _get_response(rest_target, 404)
     end
   end
 
 
   def test_get_ontologies
     rest_target = '/resource_index/ontologies'
-    puts rest_target if DEBUG_MESSAGES
-    get rest_target
-    _response_status(200, last_response)
-    validate_json(last_response.body, PAGE_SCHEMA)
-    ontology_pages = MultiJson.load(last_response.body)
-    assert_instance_of(Hash, ontology_pages)
-    assert_instance_of(Array, ontology_pages['collection'])
-    validate_json(MultiJson.dump(ontology_pages['collection']), ONTOLOGIES_SCHEMA)
-    validate_json(MultiJson.dump(ontology_pages['collection']), ONTOLOGY_SCHEMA, true)
+    last_response = _get_response(rest_target)
+    # Note: ontologies is no longer a paged response
+    #validate_json(last_response.body, PAGE_SCHEMA)
+    #ontology_pages = MultiJson.load(last_response.body)
+    #assert_instance_of(Hash, ontology_pages)
+    #ontology_list = ontology_pages['collection']
+    ontology_list = MultiJson.load(last_response.body)
+    assert_instance_of(Array, ontology_list)
+    ontology_json = MultiJson.dump(ontology_list)
+    validate_json(ontology_json, ONTOLOGIES_SCHEMA)
+    validate_json(ontology_json, ONTOLOGY_SCHEMA, true)
+    # Note: there is no validation for the links or @context content.
   end
 
   def test_get_resources
     rest_target = '/resource_index/resources'
-    puts rest_target if DEBUG_MESSAGES
-    get rest_target
-    _response_status(200, last_response)
+    last_response = _get_response(rest_target)
+    # Note: resources is no longer a paged response
+    #validate_json(last_response.body, PAGE_SCHEMA)
+    #resources_pages = MultiJson.load(last_response.body)
+    #assert_instance_of(Hash, resources_pages)
+    #resources_list = resources_pages['collection']
+    resources_list = MultiJson.load(last_response.body)
+    assert_instance_of(Array, resources_list)
+    resources_json = MultiJson.dump(resources_list)
+    validate_json(resources_json, RESOURCES_SCHEMA)
+    validate_json(resources_json, RESOURCE_SCHEMA, true)
+  end
+
+  def test_get_ranked_elements
+    #get "/resource_index/ranked_elements?{classes}"  # such that {classes} is of the form:
+    #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
+    #
+    #rest_target = "/resource_index/ranked_elements?classes[#{acronym}]=#{classid1},#{classid2}"
+    rest_target = "/resource_index/ranked_elements?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}"
+    last_response = _get_response(rest_target)
     validate_json(last_response.body, PAGE_SCHEMA)
-    resources_pages = MultiJson.load(last_response.body)
-    assert_instance_of(Hash, resources_pages)
-    assert_instance_of(Array, resources_pages['collection'])
-    validate_json(MultiJson.dump(resources_pages['collection']), RESOURCES_SCHEMA)
-    validate_json(MultiJson.dump(resources_pages['collection']), RESOURCE_SCHEMA, true)
+    page = MultiJson.load(last_response.body)
+    resources = page["collection"]
+    refute_empty(resources, "ERROR: empty resources for ranked elements")
+    validate_json(MultiJson.dump(resources), RANKED_ELEMENT_SCHEMA, true)
+    resources.each { |r| validate_ranked_elements(r['elements']) if not r['elements'].empty? }
   end
 
   def test_get_resource_element
     resource_id = 'AE'
     element_id = 'E-GEOD-19229'
     rest_target = "/resource_index/resources/#{resource_id}/elements/#{element_id}"
-    puts rest_target if DEBUG_MESSAGES
-    get rest_target
-    _response_status(200, last_response)
+    last_response = _get_response(rest_target)
     element = MultiJson.load(last_response.body)
     validate_element(element)
   end
@@ -376,6 +377,13 @@ class TestResourceIndexController < TestCase
 
 private
 
+
+  def _get_response(rest_target, expected_status=200)
+    puts rest_target if DEBUG_MESSAGES
+    get rest_target
+    _response_status(expected_status, last_response)
+    return last_response
+  end
 
   def _response_status(status, response)
     if DEBUG_MESSAGES
@@ -402,8 +410,11 @@ private
 
   def validate_element(element)
     validate_json(MultiJson.dump(element), ELEMENT_SCHEMA)
-    element["fields"].each_value do |field|
-      validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
+    # fields are optional
+    if element.include? 'fields'
+      element["fields"].each_value do |field|
+        validate_json(MultiJson.dump(field), ELEMENT_FIELD_SCHEMA)
+      end
     end
   end
 
