@@ -27,7 +27,21 @@ class ResourceIndexController < ApplicationController
       options = get_options(params)
       classes = get_classes(params)
       error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
-      options[:elementDetails] = true
+      options[:elementDetails] = true  # So this is always true, regardless of URI parameters.
+
+      #if options.include? :elementid
+      #  result = NCBO::ResourceIndex.element_annotations(options[:elementid], classes, options[:resourceids])
+      #  #
+      #  # TODO: evaluate whether this result is similar to the find_by_concept result.
+      #  #
+      #  binding.pry
+      #  #
+      #  #
+      #  #
+      #else
+      #  result = NCBO::ResourceIndex.find_by_concept(classes, options)
+      #end
+
       result = NCBO::ResourceIndex.find_by_concept(classes, options)
       check404(result, "No concepts found.")
       #
