@@ -29,20 +29,22 @@ class ResourceIndexController < ApplicationController
       error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
       options[:elementDetails] = true  # So this is always true, regardless of URI parameters.
 
-      #if options.include? :elementid
-      #  result = NCBO::ResourceIndex.element_annotations(options[:elementid], classes, options[:resourceids])
-      #  #
-      #  # TODO: evaluate whether this result is similar to the find_by_concept result.
-      #  #
-      #  binding.pry
-      #  #
-      #  #
-      #  #
-      #else
-      #  result = NCBO::ResourceIndex.find_by_concept(classes, options)
-      #end
 
-      result = NCBO::ResourceIndex.find_by_concept(classes, options)
+      if options.include? :elementid
+        #
+        # TODO: evaluate whether this result is similar to the find_by_concept result.
+        #
+        binding.pry
+        #
+        #
+        #
+        result = NCBO::ResourceIndex.element_annotations(options[:elementid], classes, options[:resourceids])
+      else
+        result = NCBO::ResourceIndex.find_by_concept(classes, options)
+      end
+      #result = NCBO::ResourceIndex.find_by_concept(classes, options)
+
+
       check404(result, "No concepts found.")
       #
       # TODO: Fix the get_annotated_class method (REDIS db failures), called by massage_search
@@ -65,6 +67,29 @@ class ResourceIndexController < ApplicationController
       # TODO: Massage additional components (result.concepts)?
       page = page_object(result.resources)
       reply page
+    end
+
+    get '/element_annotations' do
+      options = get_options(params)
+      error 404, "You must provide valid `elements` to retrieve the annotations" if not options.include? :elementid
+      classes = get_classes(params)
+      error 404, "You must provide valid `classes` to retrieve the annotations" if classes.empty?
+      options[:elementDetails] = true  # So this is always true, regardless of URI parameters.
+      #
+      # TODO: evaluate whether this result is similar to the find_by_concept result.
+      #
+      binding.pry
+      #
+      #
+      annotations = []
+      options[:elementid].each do |e|
+        options[:resourceids].each do |r|
+          response = NCBO::ResourceIndex.element_annotations(e, classes, r, options)
+          annotations.concat response.annotations  # TODO: check this is OK??
+          #annotations.push massage_search_annotation(response.annotations, annotated_class)
+        end
+      end
+      reply annotations
     end
 
     # Return all resources

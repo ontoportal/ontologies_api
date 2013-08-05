@@ -17,6 +17,12 @@ class TestResourceIndexController < TestCase
   ONT_ID_FULL_MISSING = CGI::escape('http://data.bioontology.org/ontologies/MISSING_ONTOLOGY')
   CLASS_ID_FULL_MISSING = CGI::escape('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#MissingClass')
 
+  RESOURCE_ID = 'AE'
+  ELEMENT_ID = 'E-GEOD-19229'
+  #resource_id = 'PM'  # PubMed
+  #element_id = '10866208'
+
+
   # Populate the ontology dB
   def self.before_suite
     test_ontology_acronyms = ["BRO"]
@@ -366,14 +372,20 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_resource_element
-    resource_id = 'AE'
-    element_id = 'E-GEOD-19229'
-    rest_target = "/resource_index/resources/#{resource_id}/elements/#{element_id}"
+    rest_target = "/resource_index/resources/#{RESOURCE_ID}/elements/#{ELEMENT_ID}"
     last_response = _get_response(rest_target)
     element = MultiJson.load(last_response.body)
     validate_element(element)
   end
 
+  def test_get_resource_element_annotations
+    resource_id = 'PM'  # PubMed
+    element_id = '10866208'
+    rest_target = "/resource_index/element_annotations?elements=#{element_id}&resources=#{resource_id}&classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}"
+    last_response = _get_response(rest_target)
+    element = MultiJson.load(last_response.body)
+    validate_element(element)
+  end
 
 private
 
