@@ -28,23 +28,7 @@ class ResourceIndexController < ApplicationController
       classes = get_classes(params)
       error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
       options[:elementDetails] = true  # So this is always true, regardless of URI parameters.
-
-
-      if options.include? :elementid
-        #
-        # TODO: evaluate whether this result is similar to the find_by_concept result.
-        #
-        binding.pry
-        #
-        #
-        #
-        result = NCBO::ResourceIndex.element_annotations(options[:elementid], classes, options[:resourceids])
-      else
-        result = NCBO::ResourceIndex.find_by_concept(classes, options)
-      end
-      #result = NCBO::ResourceIndex.find_by_concept(classes, options)
-
-
+      result = NCBO::ResourceIndex.find_by_concept(classes, options)
       check404(result, "No concepts found.")
       #
       # TODO: Fix the get_annotated_class method (REDIS db failures), called by massage_search
@@ -76,9 +60,8 @@ class ResourceIndexController < ApplicationController
       error 404, "You must provide valid `classes` to retrieve the annotations" if classes.empty?
       options[:elementDetails] = true  # So this is always true, regardless of URI parameters.
       #
-      # TODO: evaluate whether this result is similar to the find_by_concept result.
       #
-      binding.pry
+      #binding.pry
       #
       #
       annotations = []
