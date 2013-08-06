@@ -5,6 +5,8 @@ class HomeController < ApplicationController
   namespace "/" do
 
     get do
+      expires 86400, :public
+      last_modified @@root_last_modified ||= Time.now.httpdate
       routes = routes_list
       routes_hash = {}
       context = {}
