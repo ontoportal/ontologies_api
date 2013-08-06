@@ -27,8 +27,10 @@ class OntologiesController < ApplicationController
       check_last_modified(ont)
       ont.bring(:acronym, :submissions)
       latest = ont.latest_submission
-      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
-      reply latest
+      if latest
+        latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+      end
+      reply latest || {}
     end
 
     ##
