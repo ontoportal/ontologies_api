@@ -1,6 +1,6 @@
 
 require 'ncbo_resource_index_client'
-require 'set'
+#require 'set'
 
 class ResourceIndexController < ApplicationController
 
@@ -58,18 +58,19 @@ class ResourceIndexController < ApplicationController
       error 404, "You must provide valid `elements` to retrieve the annotations" if not options.include? :elementid
       classes = get_classes(params)
       error 404, "You must provide valid `classes` to retrieve the annotations" if classes.empty?
-      options[:elementDetails] = true  # So this is always true, regardless of URI parameters.
-      #
-      #
-      #binding.pry
-      #
-      #
       annotations = []
-      options[:elementid].each do |e|
-        options[:resourceids].each do |r|
-          response = NCBO::ResourceIndex.element_annotations(e, classes, r, options)
-          annotations.concat response.annotations  # TODO: check this is OK??
-          #annotations.push massage_search_annotation(response.annotations, annotated_class)
+      elements = options[:elementid]
+      resources = options[:resourceids]
+      apikey = options[:apikey]
+      RI = NCBO::ResourceIndex.new({:apikey => apikey}) # ensure we use default options (it breaks otherwise!)
+      elements.each do |elementId|  # usually just one elementId
+        resources.each do |resourceId|  # usually just one resourceId
+          element = RI.element_annotations(elementId, classes, resourceId)
+          element.annotations.each do |a|
+            annotated_class = get_annotated_class(a)
+            next if annotated_class.nil?
+            annotations.push massage_annotation(a, annotated_class, elementId)
+          end
         end
       end
       reply annotations
@@ -102,33 +103,6 @@ class ResourceIndexController < ApplicationController
       result = NCBO::ResourceIndex.element(params["elements"], params["resources"], options)
       check404(result, "No element found.")
       element = massage_element(result, options[:elementDetails])
-      #element = { "id" => result.id }
-      #fields = {}
-      #result.text.each do |name, description|
-      #  # TODO: Parse the text field to translate the term IDs into a list of URIs?
-      #  #"text"=> "1351/D020224> 1351/D019295> 1351/D008969> 1351/D001483> 1351/D017398> 1351/D000465> 1351/D005796> 1351/D008433> 1351/D009690> 1351/D005091",
-      #  #
-      #  # Parse the associated ontologies to return a list of ontology URIs
-      #  ontIDs = [result.ontoIds[name]].compact  # Wrap Fixnum or Array into Array
-      #  ontIDs.delete_if {|x| x == 0 }
-      #  ontIDs.each_with_index do |id, i|  # Try to convert to ontology URIs
-      #    uri = ontology_uri_from_virtual_id(id)
-      #    if uri.nil?
-      #      ontIDs[i] = id.to_s # conform to expected data type for JSON validation
-      #    else
-      #      ontIDs[i] = uri
-      #    end
-      #  end
-      #  weight = 0.0
-      #  result.weights.each {|hsh| weight = hsh[:weight] if hsh[:name] == name}
-      #  fields[name] = {
-      #      "associatedClasses" => [],
-      #      "associatedOntologies" => ontIDs,
-      #      "text" => description,
-      #      "weight" => weight
-      #  }
-      #end
-      #element["fields"] = fields
       reply element
     end
 
@@ -191,7 +165,7 @@ class ResourceIndexController < ApplicationController
           element = massage_element(a.element, options[:elementDetails])
           el_id = element["id"]
           elements[el_id] = element["fields"] unless elements.include?(el_id)
-          annotations.push massage_search_annotation(a, annotated_class)
+          annotations.push massage_annotation(a, annotated_class) # no elementId argument required here.
         end
         # TODO: add search option to exclude 0-element resources?
         resources[resource.resource] = {
@@ -225,7 +199,28 @@ class ResourceIndexController < ApplicationController
       return annotated_class
     end
 
-    def massage_search_annotation(a, annotated_class)
+    def massage_annotation(a, annotated_class, elementId=nil)
+      # annotations is a hash of annotation hashes,
+      # this method will modify it directly (by reference).
+      annotationTypeMap = {
+          "mgrepContext" => "direct",
+          "mappingContext" => "mapping",
+          "isaContext" => "hierarchy"
+      }
+      elementId = a.element[:localElementId] if elementId.nil?
+      annotation = {
+          :annotatedClass => annotated_class,
+          :annotationType => annotationTypeMap[ a.context[:contextType] ],
+          :elementField => a.context[:contextName],
+          :elementId => elementId,
+          :from => a.context[:from],
+          :to => a.context[:to],
+          #:score => a.score
+      }
+      return annotation
+    end
+
+    def massage_element_annotation(a, annotated_class, elementId=nil)
       # annotations is a hash of annotation hashes,
       # this method will modify it directly (by reference).
       annotationTypeMap = {
@@ -237,14 +232,13 @@ class ResourceIndexController < ApplicationController
           :annotatedClass => annotated_class,
           :annotationType => annotationTypeMap[ a.context[:contextType] ],
           :elementField => a.context[:contextName],
-          :elementId => a.element[:localElementId],
+          :elementId => elementId,
           :from => a.context[:from],
           :to => a.context[:to],
           #:score => a.score
       }
       return annotation
     end
-
     def massage_elements(element_array)
       # TODO: change this to use map! instead of each loop?
       elements = []

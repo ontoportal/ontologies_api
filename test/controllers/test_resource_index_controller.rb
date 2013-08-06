@@ -111,6 +111,7 @@ class TestResourceIndexController < TestCase
     "description": "A Resource Index ontology.",
     "additionalProperties": false,
     "properties": {
+      "administeredBy": { "type": "array" },
       "acronym": { "type": "string", "required": true },
       "name": { "type": "string", "required": true },
       "@id": { "type": "string", "format": "uri", "required": true },
@@ -144,7 +145,7 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  SEARCH_ANNOTATIONS_SCHEMA = <<-END_SCHEMA
+  ANNOTATIONS_SCHEMA = <<-END_SCHEMA
   {
     "type": "array",
     "title": "annotations",
@@ -153,7 +154,7 @@ class TestResourceIndexController < TestCase
   }
   END_SCHEMA
 
-  SEARCH_ANNOTATION_SCHEMA = <<-END_SCHEMA
+  ANNOTATION_SCHEMA = <<-END_SCHEMA
   {
       "type": "object",
       "title": "annotation",
@@ -296,7 +297,7 @@ class TestResourceIndexController < TestCase
       assert_instance_of(Array, annotations)
       validate_json(MultiJson.dump(annotations), SEARCH_RESOURCE_SCHEMA, true)
       annotations.each do |a|
-        validate_json(MultiJson.dump(a["annotations"]), SEARCH_ANNOTATION_SCHEMA, true)
+        validate_json(MultiJson.dump(a["annotations"]), ANNOTATION_SCHEMA, true)
         validate_annotated_elements(a["annotatedElements"])
       end
     end
@@ -379,12 +380,14 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_resource_element_annotations
-    resource_id = 'PM'  # PubMed
-    element_id = '10866208'
-    rest_target = "/resource_index/element_annotations?elements=#{element_id}&resources=#{resource_id}&classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}"
+    #resource_id = 'PM'  # PubMed
+    #element_id = '10866208'
+    element_id = "NCT00357513"
+    resource_id = "CT"
+    classes = "classes[BRO]=BRO:Graph_Algorithm"
+    rest_target = "/resource_index/element_annotations?elements=#{element_id}&resources=#{resource_id}&#{classes}"
     last_response = _get_response(rest_target)
-    element = MultiJson.load(last_response.body)
-    validate_element(element)
+    validate_json(last_response.body, ANNOTATION_SCHEMA, true)
   end
 
 private

@@ -148,7 +148,10 @@
                     <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=class_id1</code>
                   %li
                     example:
-                    %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
+                    %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
+                  %li
+                    example (with short IDs):
+                    %a{href: "/resource_index/search?classes[SNOMEDCT]=2092003"} /resource_index/search?classes[SNOMEDCT]=2092003
               %li
                 Multiple classes, single ontology
                 %ul
@@ -157,6 +160,9 @@
                   %li
                     example:
                     %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006
+                  %li
+                    example (with short IDs):
+                    %a{href: "/resource_index/search?classes[SNOMEDCT]=2092003,162573006"} /resource_index/search?classes[SNOMEDCT]=2092003,162573006
               %li
                 Multiple classes, multiple ontologies
                 %ul
@@ -165,6 +171,9 @@
                   %li
                     example:
                     %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NEMO]=http%3A%2F%2Fpurl.bioontology.org%2FNEMO%2Fontology%2FNEMO.owl%23NEMO_7571000"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NEMO]=http%3A%2F%2Fpurl.bioontology.org%2FNEMO%2Fontology%2FNEMO.owl%23NEMO_7571000
+                  %li
+                    example (with short IDs):
+                    %a{href: "/resource_index/search?classes[SNOMEDCT]=2092003&classes[NEMO]=NEMO:NEMO_7571000"} /resource_index/search?classes[SNOMEDCT]=2092003&classes[NEMO]=NEMO:NEMO_7571000
               %li
                 Search Parameters
                 %ul
