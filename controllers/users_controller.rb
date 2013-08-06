@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
     # Display all users
     get do
+      check_last_modified_collection(User)
       reply User.where.include(User.goo_attrs_to_load(includes_param)).to_a
     end
 
