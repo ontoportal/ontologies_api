@@ -1,10 +1,16 @@
 class OntologySubmissionsController < ApplicationController
   get "/submissions" do
-
     check_last_modified_collection(LinkedData::Models::OntologySubmission)
     #using appplication_helper method
     reply retrieve_latest_submissions.values
+  end
 
+  ##
+  # Create a new submission for an existing ontology
+  post "/submissions" do
+    ont = Ontology.find(uri_as_needed(params["ontology"])).include(Ontology.goo_attrs_to_load).first
+    error 422, "You must provide a valid `acronym` to create a new submission" if ont.nil?
+    reply 201, create_submission(ont)
   end
 
   namespace "/ontologies/:acronym/submissions" do
