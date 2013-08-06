@@ -5,6 +5,7 @@ class ClassesController < ApplicationController
     # Display a page for all classes
     get do
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       page_data = LinkedData::Models::Class.in(submission)
@@ -17,6 +18,7 @@ class ClassesController < ApplicationController
     # Get root classes
     get '/roots' do
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       include_childrenCount = load_attrs.include?(:childrenCount)
       roots = submission.roots(load_attrs, include_childrenCount)
@@ -26,6 +28,7 @@ class ClassesController < ApplicationController
     # Display a single class
     get '/:cls' do
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission, LinkedData::Models::Class.goo_attrs_to_load(includes_param))
       reply cls
     end
@@ -33,6 +36,7 @@ class ClassesController < ApplicationController
     # Get a paths_to_root view
     get '/:cls/paths_to_root' do
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission, LinkedData::Models::Class.goo_attrs_to_load(includes_param))
       reply cls.paths_to_root
     end
@@ -44,6 +48,7 @@ class ClassesController < ApplicationController
       env["rack.request.query_hash"] = params
 
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
       root_tree = cls.tree
 
@@ -65,6 +70,7 @@ class ClassesController < ApplicationController
     # Get all ancestors for given class
     get '/:cls/ancestors' do
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
 
       #I really want ancestors: [ user options ]
       load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
@@ -78,6 +84,7 @@ class ClassesController < ApplicationController
     # Get all descendants for given class
     get '/:cls/descendants' do
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
@@ -92,6 +99,7 @@ class ClassesController < ApplicationController
     # Get all children of given class
     get '/:cls/children' do
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       cls = get_class(submission)
       error 404 if cls.nil?
@@ -106,6 +114,7 @@ class ClassesController < ApplicationController
     # Get all parents of given class
     get '/:cls/parents' do
       ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
