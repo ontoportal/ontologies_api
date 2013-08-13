@@ -170,9 +170,6 @@ class MappingsController < ApplicationController
   end
 
   namespace "/mappings/statistics" do
-    # List recent mappings
-    get '/recent' do
-    end
 
     get '/ontologies/' do
       counts = {}
