@@ -51,3 +51,5 @@ test/data/ontology_files/repo/**/*
 config/environments/console.rb
 
 config/environments/stage.rb
+
+config/environments/benchmark.rb
