@@ -161,13 +161,7 @@ class MappingsController < ApplicationController
   namespace "/mappings/statistics" do
 
     get '/ontologies/' do
-      counts = {}
-      onts = LinkedData::Models::Ontology.where.include(:acronym).all
-      onts.each do |o|
-        counts[o.acronym] = LinkedData::Models::Mapping.where(terms: [ontology: o])
-                               .count
-      end
-      reply counts
+      reply LinkedData::Mappings.mapping_counts_per_ontology()
     end
 
     # Statistics for an ontology
