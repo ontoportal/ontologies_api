@@ -21,7 +21,6 @@ gem 'recursive-open-struct'
 
 # HTTP server
 gem 'unicorn'
-gem 'thin'
 
 # Debugging
 gem 'pry', :group => :development
