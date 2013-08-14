@@ -3,6 +3,7 @@ require_relative '../test_case'
 class TestMappingsController < TestCase
 
   def self.before_suite
+    return
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
@@ -70,7 +71,7 @@ class TestMappingsController < TestCase
 
   def certify_mapping(mapping)
     procs = 0
-    if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length == 1
+    if mapping["classes"].map { |x| x["@id"] }.flatten.uniq.length == 1
       assert mapping["process"].length == 1
       assert (mapping["process"].map { |x| x["name"] }.index "same_uris") != nil
       procs += 1
@@ -78,10 +79,11 @@ class TestMappingsController < TestCase
     labels = []
     syns = []
     cuis = []
-    mapping["terms"].each do |term|
-      s = LinkedData::Models::Ontology.find(RDF::URI.new(term["ontology"])).first
+    mapping["classes"].each do |term|
+      ont_acr = term["links"]["ontology"].split("/")[-1]
+      s = LinkedData::Models::Ontology.find(ont_acr).first
                 .latest_submission
-      c = LinkedData::Models::Class.find(RDF::URI.new(term["term"].first)).in(s)
+      c = LinkedData::Models::Class.find(RDF::URI.new(term["@id"])).in(s)
                                .include(:prefLabel,:synonym, :cui)
                                .first
       assert c
@@ -94,12 +96,12 @@ class TestMappingsController < TestCase
       procs += 1
     end
     if labels.length == 2 && labels.uniq.length == 1
-      if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length > 1
+      if mapping["classes"].map { |x| x["@id"] }.flatten.uniq.length > 1
         assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
         procs += 1
       end
     elsif syns[0].index(labels[1]) || syns[1].index(labels[0])
-      if mapping["terms"].map { |x| x["term"]}.flatten.uniq.length > 1
+      if mapping["classes"].map { |x| x["@id"] }.flatten.uniq.length > 1
         assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
         procs += 1
       end
