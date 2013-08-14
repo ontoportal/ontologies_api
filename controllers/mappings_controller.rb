@@ -184,18 +184,7 @@ class MappingsController < ApplicationController
     # Statistics for an ontology
     get '/ontologies/:ontology' do
       ontology = ontology_from_acronym(@params[:ontology])
-      counts = {}
-      other = LinkedData::Models::Ontology
-                                 .where(term_mappings: [ mappings: [  terms: [ ontology: ontology ]]])
-                                 .include(:acronym)
-                                 .all
-      other.each do |o|
-        next if o.acronym == ontology.acronym
-        counts[o.acronym] = LinkedData::Models::Mapping.where(terms: [ontology: o])
-                               .and(terms: [ontology: ontology])
-                               .count
-      end
-      reply counts
+      reply LinkedData::Mappings.mapping_counts_for_ontology(ontology)
     end
 
     # Classes with lots of mappings
