@@ -14,7 +14,7 @@ class MappingsController < ApplicationController
                                  .include(process: [:name, :owner ])
                                  .all
 
-    reply mappings
+    reply convert_mappings_classes(mappings)
   end
 
   # Get mappings for an ontology
@@ -26,7 +26,7 @@ class MappingsController < ApplicationController
                                  .include(process: [:name, :owner ])
                                  .page(page,size)
                                  .all
-    reply mappings
+    reply convert_mappings_classes(mappings)
   end
 
   namespace "/mappings" do
@@ -53,7 +53,7 @@ class MappingsController < ApplicationController
                   .include(process: [:name, :owner ])
                   .page(page,size)
                   .all
-      reply mappings
+      reply convert_mappings_classes(mappings)
     end
 
     # Display a single mapping
@@ -64,7 +64,7 @@ class MappingsController < ApplicationController
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
       if mapping
-        reply(200,mapping)
+        reply(200,convert_mappings_classes([mapping]).first)
       else
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       end
@@ -120,17 +120,6 @@ class MappingsController < ApplicationController
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
       reply(201,mapping)
-    end
-
-    # Update via delete/create for an existing submission of an mapping
-    put '/:mapping' do
-      reply(405, "post is not supported for mappings")
-    end
-
-    # Update an existing submission of an mapping
-    patch '/:mapping' do
-      #reply not supported
-      reply(405, "patch is not supported for mappings")
     end
 
     # Delete a mapping
