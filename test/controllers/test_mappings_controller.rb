@@ -65,7 +65,7 @@ class TestMappingsController < TestCase
           LinkedData::Mappings.delete_mapping(m)
         end
       end
-    end 
+    end
   end
 
   def certify_mapping(mapping)
@@ -96,7 +96,8 @@ class TestMappingsController < TestCase
     end
     if labels.length == 2 && labels.uniq.length == 1
       if mapping["classes"].map { |x| x["@id"] }.flatten.uniq.length > 1
-        assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
+        processes = mapping["process"].map { |x| x["name"] }
+        assert processes.index("loom") != nil || processes.index("cui") != nil
         procs += 1
       end
     elsif syns[0].index(labels[1]) || syns[1].index(labels[0])
@@ -115,25 +116,24 @@ class TestMappingsController < TestCase
     get "/ontologies/#{ontology}/classes/#{cls}/mappings"
     assert last_response.ok?
     mappings = MultiJson.load(last_response.body)
-    assert mappings.length == 2
+    assert_equal 2, mappings.length
     mapped_to = []
     mapped_to_data= ["http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf",
        "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"].sort
 
     mappings.each do |mapping|
       assert mapping["process"].first["name"] == "cui"
-      mapping["terms"].each do |term|
-        if term["term"] == ["http://bioontology.org/ontologies/Activity.owl#IRB"]
-          assert term["ontology"] == "http://data.bioontology.org/ontologies/BRO-TEST-MAP-0"
+      mapping["classes"].each do |cls|
+        if cls["@id"] == "http://bioontology.org/ontologies/Activity.owl#IRB"
+          assert cls["links"]["ontology"].split("/").last == "BRO-TEST-MAP-0"
         end
-        if term["term"] == ["http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf"]
-          assert term["ontology"] == "http://data.bioontology.org/ontologies/FAKE-TEST-MAP-0"
-          mapped_to << term["term"]
+        if cls["@id"] == "http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf"
+          assert cls["links"]["ontology"].split("/").last == "FAKE-TEST-MAP-0"
+          mapped_to << cls["@id"]
         end
-        if term["term"] ==
-          ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"]
-          assert term["ontology"] == "http://data.bioontology.org/ontologies/CNO-TEST-MAP-0"
-          mapped_to << term["term"]
+        if cls["@id"] == "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"
+          assert cls["links"]["ontology"].split("/").last == "CNO-TEST-MAP-0"
+          mapped_to << cls["@id"]
         end
       end
     end
@@ -167,7 +167,7 @@ class TestMappingsController < TestCase
     assert mappings["prevPage"] == nil
     assert mappings["nextPage"] == nil
 
-    assert mappings["collection"].length == 20
+    assert_equal 14, mappings["collection"].length
     mappings = mappings["collection"]
 
     mappings.each do |mapping|
@@ -187,7 +187,7 @@ class TestMappingsController < TestCase
     assert mappings["prevPage"] == nil
     assert mappings["nextPage"] == nil
 
-    assert mappings["collection"].length == 11
+    assert_equal 8, mappings["collection"].length
     mappings = mappings["collection"]
 
     mappings.each do |mapping|
@@ -207,11 +207,11 @@ class TestMappingsController < TestCase
       mappings = MultiJson.load(last_response.body)
       #pages
       assert mappings["page"] == page
-      assert mappings["pageCount"] == 4
-      assert mappings["prevPage"] == (page > 1 ? page -1 : nil)
-      assert mappings["nextPage"] == (page < 4 ? page + 1 : nil)
+      assert mappings["pageCount"] == 3
+      assert mappings["prevPage"] == (page > 1 ? page - 1 : nil)
+      assert mappings["nextPage"] == (page < 3 ? page + 1 : nil)
       next_page = mappings["nextPage"]
-      assert mappings["collection"].length == (page == 4 ? 2 : 6)
+      assert_equal (page == 3 ? 2 : 6), mappings["collection"].length
       mappings = mappings["collection"]
       mappings.each do |mapping|
         certify_mapping(mapping)
@@ -262,10 +262,10 @@ class TestMappingsController < TestCase
       terms = []
       terms << { ontology: mapping_ont_a[i], term: [mapping_term_a[i]] }
       terms << { ontology: mapping_ont_b[i], term: [mapping_term_b[i]] }
-      mapping = { terms: terms, 
+      mapping = { terms: terms,
                   comment: "comment for mapping test #{i}",
                   relation: relations[i],
-                  creator: "http://data.bioontology.org/users/tim" 
+                  creator: "http://data.bioontology.org/users/tim"
       }
 
       post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
@@ -274,14 +274,14 @@ class TestMappingsController < TestCase
       assert response["process"].first["comment"] == "comment for mapping test #{i}"
       assert response["process"].first["creator"] == "http://data.bioontology.org/users/tim"
       assert response["process"].first["relation"] == relations[i]
-      response["terms"].each do |term|
-       if term["ontology"].split("/")[-1] == mapping_ont_a[i]
-         assert term["term"] == [mapping_term_a[i]] 
-       elsif term["ontology"].split("/")[-1] == mapping_ont_b[i]
-         assert term["term"] == [mapping_term_b[i]]
-       else
-         assert 1==0, "uncontrolled mapping response in post"
-       end
+      response["classes"].each do |cls|
+        if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]
+          assert cls["@id"] == mapping_term_a[i]
+        elsif cls["links"]["ontology"].split("/")[-1] == mapping_ont_b[i]
+          assert cls["@id"] == mapping_term_b[i]
+        else
+          assert 1==0, "uncontrolled mapping response in post"
+        end
       end
     end
 
@@ -289,13 +289,13 @@ class TestMappingsController < TestCase
     terms = []
     terms << { ontology: mapping_ont_a[2], term: [mapping_term_a[2]] }
     terms << { ontology: mapping_ont_b[2], term: [mapping_term_b[2]] }
-    mapping = { terms: terms, 
+    mapping = { terms: terms,
                 comment: "comment for mapping test XX",
                 relation: "http://bogus.relation.com/predicate",
-                creator: "http://data.bioontology.org/users/tim" } 
+                creator: "http://data.bioontology.org/users/tim" }
     n = LinkedData::Models::Mapping.where.count
     post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
-    
+
     #number of mappings does not change only process has been added
     assert n == LinkedData::Models::Mapping.where.count
 
@@ -325,10 +325,10 @@ class TestMappingsController < TestCase
       terms = []
       terms << { ontology: mapping_ont_a[i], term: [mapping_term_a[i]] }
       terms << { ontology: mapping_ont_b[i], term: [mapping_term_b[i]] }
-      mapping = { terms: terms, 
+      mapping = { terms: terms,
                   comment: "comment for mapping test #{i}",
                   relation: relations[i],
-                  creator: "http://data.bioontology.org/users/tim" 
+                  creator: "http://data.bioontology.org/users/tim"
       }
       post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
       assert last_response.status == 201
@@ -354,7 +354,7 @@ class TestMappingsController < TestCase
       assert last_response.status == 400
       get "/mappings/#{m_id}"
       assert last_response.status == 200
-      break #one is enough for testing 
+      break #one is enough for testing
     end
 
   end
@@ -364,7 +364,9 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    assert stats == {"BRO-TEST-MAP-0"=>20, "CNO-TEST-MAP-0"=>19, "FAKE-TEST-MAP-0"=>21}
+    assert_equal 13, stats["BRO-TEST-MAP-0"]
+    assert_equal 13, stats["CNO-TEST-MAP-0"]
+    assert_equal 11, stats["FAKE-TEST-MAP-0"]
   end
 
   def test_mappings_statistics_for_ontology
@@ -373,12 +375,14 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    assert stats == {"CNO-TEST-MAP-0"=>9, "FAKE-TEST-MAP-0"=>11}
+    assert_equal 6, stats["CNO-TEST-MAP-0"]
+    assert_equal 8, stats["FAKE-TEST-MAP-0"]
     ontology = "FAKE-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    assert stats == {"BRO-TEST-MAP-0"=>11, "CNO-TEST-MAP-0"=>10}
+    assert_equal 8, stats["BRO-TEST-MAP-0"]
+    assert_equal 10, stats["CNO-TEST-MAP-0"]
   end
 
   def test_mappings_popular_classes
