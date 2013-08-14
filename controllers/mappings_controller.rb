@@ -64,7 +64,7 @@ class MappingsController < ApplicationController
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
       if mapping
-        reply(200,convert_mappings_classes([mapping]).first)
+        reply convert_mappings_classes([mapping]).first
       else
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       end
@@ -119,7 +119,7 @@ class MappingsController < ApplicationController
                   .include(terms: [:ontology, :term ])
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
-      reply(201,mapping)
+      reply(201, convert_mappings_classes([mapping]).first)
     end
 
     # Delete a mapping
