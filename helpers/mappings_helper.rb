@@ -12,6 +12,7 @@ module Sinatra
             next unless term_mapping.loaded_attributes.include?(:term)
             term_mapping.term.each do |term|
               unless @submissions[term_mapping.ontology]
+                term_mapping.ontology.bring(:acronym) if term_mapping.ontology.bring?(:acronym)
                 ont = term_mapping.ontology
                 submission = LinkedData::Models::OntologySubmission.read_only(id: ont.id.to_s + "/submissions/latest", ontology: ont)
                 @submissions[term_mapping.ontology] = submission
@@ -33,6 +34,7 @@ module Sinatra
           end
           mapping.instance_variable_set("@classes", classes)
         end
+        mappings
       end
     end
   end
