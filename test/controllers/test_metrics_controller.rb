@@ -47,7 +47,7 @@ class TestMetricsController < TestCase
 
   def test_metrics_with_submission_id
     ontology = 'TEST-ONT-0'
-    get "/ontologies/#{ontology}/submission/1/metrics"
+    get "/ontologies/#{ontology}/submissions/1/metrics"
     assert last_response.ok?
     metrics = MultiJson.load(last_response.body)
     @@data.each do |k,v|

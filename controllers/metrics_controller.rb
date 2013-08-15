@@ -22,11 +22,15 @@ class MetricsController < ApplicationController
     reply sub.metrics
   end
 
-  get "/ontologies/:ontology/submission/:submissionId/metrics" do 
+  get "/ontologies/:ontology/submissions/:submissionId/metrics" do 
     ont, sub = get_ontology_and_submission
     ont = Ontology.find(params["ontology"]).first
     sub.bring(metrics: LinkedData::Models::Metrics.attributes)
-    reply sub.metrics
+    if sub.metrics.nil?
+      error(404) 
+    else
+      reply sub.metrics
+    end
   end
 
 end
