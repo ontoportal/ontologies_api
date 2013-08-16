@@ -28,7 +28,11 @@ class MetricsController < ApplicationController
     ont, sub = get_ontology_and_submission
     ont = Ontology.find(params["ontology"]).first
     sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
-    reply sub.metrics
+    if sub.metrics.nil?
+      error(404)
+    else
+      reply sub.metrics
+    end
   end
 
 end
