@@ -197,6 +197,23 @@ module Sinatra
         return ontology
       end
 
+      ##
+      # From user params, return the ontology models.
+      # Replies 404 if the ontology does not exist
+      # Replies 400 if the ontology does not have a parsed submission
+      def ontology_objects_from_params(params = nil)
+        ontologies = ontologies_param(params)
+        ontology_objs = []
+        ontologies.each do |ontology_id|
+          ontology = LinkedData::Models::Ontology.find(uri_as_needed(ontology_id)).first
+          error(404, "Ontology `#{ontology_id}` not found") if ontology.nil?
+          submission = ontology.latest_submission
+          error(400, "No parsed submissions for ontology with acronym `#{acronym}`") if submission.nil?
+          ontology_objs << ontology
+        end
+        ontology_objs
+      end
+
       def ontology_uri_acronym_map
         cached_map = naive_expiring_cache_read(__method__)
         return cached_map if cached_map
@@ -233,7 +250,6 @@ module Sinatra
 
       def retrieve_latest_submissions
         includes = OntologySubmission.goo_attrs_to_load(includes_param)
-        includes.concat([:submissionId, ontology: Ontology.goo_attrs_to_load])
         submissions = OntologySubmission.where.include(includes).to_a
 
         # Figure out latest parsed submissions using all submissions

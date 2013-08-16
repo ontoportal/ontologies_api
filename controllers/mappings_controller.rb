@@ -32,17 +32,11 @@ class MappingsController < ApplicationController
   namespace "/mappings" do
     # Display all mappings
     get do
-      ontology_uris = ontologies_param
-      ontologies = []
-      ontology_uris.each do |id|
-        ontologies << Ontology.find(RDF::URI.new(id)).first
-      end
-      ontologies.each do |o|
-        error(400, "Ontology #{o.id.to_s} does not have a parsed submission") if o.latest_submission.nil?
-      end
+      ontologies = ontology_objects_from_params
       if ontologies.length != 2
         error(400, "/mappings/ endpoint only supports filtering on two ontologies")
       end
+
       page, size = page_params
 
       mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontologies.first ])
@@ -160,12 +154,14 @@ class MappingsController < ApplicationController
 
   namespace "/mappings/statistics" do
 
-    get '/ontologies/' do
+    get '/ontologies' do
+      expires 86400, :public
       reply LinkedData::Mappings.mapping_counts_per_ontology()
     end
 
     # Statistics for an ontology
     get '/ontologies/:ontology' do
+      expires 86400, :public
       ontology = ontology_from_acronym(@params[:ontology])
       reply LinkedData::Mappings.mapping_counts_for_ontology(ontology)
     end
