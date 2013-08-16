@@ -2,20 +2,20 @@ require_relative '../test_case'
 
 class TestMetricsController < TestCase
 
-  def self.before_suite 
+  def self.before_suite
     @@data = {"classes"=>486,
-"avg_children"=>5,
-"max_children"=>65,
-"classes_one_child"=>14,
-"classes_25_children"=>2,
-"classes_with_no_definition"=>11,
+"averageChildCount"=>5,
+"maxChildren"=>65,
+"classesWithOneChild"=>14,
+"classesWithMoreThan25Children"=>2,
+"classesWithNoDefinition"=>11,
 "individuals"=>80,
 "properties"=>63,
-"max_depth"=>8 }
-    options = {ont_count: 2, 
-               submission_count: 3, 
-               submissions_to_process: [1, 2], 
-               process_submission: true, 
+"maxDepth"=>8 }
+    options = {ont_count: 2,
+               submission_count: 3,
+               submissions_to_process: [1, 2],
+               process_submission: true,
                random_submission_count: false}
    LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
   end
@@ -31,7 +31,7 @@ class TestMetricsController < TestCase
       @@data.each do |k,v|
         assert m[k] == v
       end
-      assert m["@id"] == m["submission"].first["@id"] + "/metrics"
+      assert m["@id"] == m["submission"].first + "/metrics" rescue binding.pry
     end
   end
 
@@ -47,7 +47,7 @@ class TestMetricsController < TestCase
 
   def test_metrics_with_submission_id
     ontology = 'TEST-ONT-0'
-    get "/ontologies/#{ontology}/submission/1/metrics"
+    get "/ontologies/#{ontology}/submissions/1/metrics"
     assert last_response.ok?
     metrics = MultiJson.load(last_response.body)
     @@data.each do |k,v|

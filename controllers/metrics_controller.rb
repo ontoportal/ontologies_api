@@ -3,12 +3,14 @@ class MetricsController < ApplicationController
 
     # Display all metrics
     get do
-      check_last_modified_collection(LinkedData::Models::Metrics)
+      check_last_modified_collection(LinkedData::Models::Metric)
       submissions = retrieve_latest_submissions
       submissions = submissions.values
+
+      metrics_include = LinkedData::Models::Metric.goo_attrs_to_load(includes_param)
       LinkedData::Models::OntologySubmission.where.models(submissions)
-                         .include(metrics: (LinkedData::Models::Metrics.attributes << :submission))
-                               .all
+                         .include(metrics: metrics_include).all
+
       reply submissions.select { |s| !s.metrics.nil? }.map { |s| s.metrics }
     end
 
@@ -18,14 +20,14 @@ class MetricsController < ApplicationController
   get "/ontologies/:ontology/metrics" do
     ont, sub = get_ontology_and_submission
     ont = Ontology.find(params["ontology"]).first
-    sub.bring(metrics: LinkedData::Models::Metrics.attributes)
+    sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
     reply sub.metrics
   end
 
-  get "/ontologies/:ontology/submission/:submissionId/metrics" do 
+  get "/ontologies/:ontology/submissions/:submissionId/metrics" do
     ont, sub = get_ontology_and_submission
     ont = Ontology.find(params["ontology"]).first
-    sub.bring(metrics: LinkedData::Models::Metrics.attributes)
+    sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
     reply sub.metrics
   end
 
