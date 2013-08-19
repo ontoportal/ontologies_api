@@ -5,7 +5,7 @@ class TestMetricsController < TestCase
   def self.before_suite
     @@data = {"classes"=>486,
 "averageChildCount"=>5,
-"maxChildren"=>65,
+"maxChildCount"=>65,
 "classesWithOneChild"=>14,
 "classesWithMoreThan25Children"=>2,
 "classesWithNoDefinition"=>11,
