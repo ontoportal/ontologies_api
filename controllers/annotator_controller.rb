@@ -1,8 +1,16 @@
 class AnnotatorController < ApplicationController
   namespace "/annotator" do
 
-    # execute an annotator query
+    post do
+      process_annotation
+    end
+
     get do
+      process_annotation
+    end
+
+    # execute an annotator query
+    def process_annotation()
       text = params["text"]
       raise error 400, "A text to be annotated must be supplied using the argument text=<text to be annotated>" if text.nil? || text.strip.empty?
       ontologies = ontologies_param_to_acronyms

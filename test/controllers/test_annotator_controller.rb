@@ -164,6 +164,45 @@ eos
     assert step_in_here == 2
   end
 
+  def test_long_annotation_post
+    classes = TestAnnotatorController.all_classes(@@ontologies)
+    classes = classes[0..500]
+    text = []
+    classes.each do |cls|
+      text << cls.prefLabel
+    end
+    text = text.join(" ")
+
+    params = { text: text }
+    post "/annotator", params
+    assert last_response.ok?
+    annotations = MultiJson.load(last_response.body)
+    classes.each do |cls|
+      if cls.prefLabel.length > 2
+        annotations.map { |x| x["annotatedClass"]["@id"] == cls.id.to_s }.length > 0
+      end
+    end
+    assert annotations.length >= classes.length
+  end
+  
+  #TODO: this method is duplicated in NCBO_ANNOTATOR
+  def self.all_classes(ontologies)
+    classes = []
+    ontologies.each do |ontology|
+      last = ontology.latest_submission
+      page = 1
+      size = 500
+      paging = LinkedData::Models::Class.in(last)
+                            .include(:prefLabel, :synonym, :definition)
+                            .page(page, size)
+      begin
+        page_classes = paging.page(page,size).all
+        page = page_classes.next? ? page + 1 : nil
+        classes += page_classes
+      end while !page.nil?
+    end
+    return classes
+  end
 
   #TODO: this method is duplicated in NCBO_ANNOTATOR
   def self.mapping_test_set
