@@ -2,10 +2,23 @@ require_relative '../test_case'
 
 class TestAnnotatorController < TestCase
 
-  def setup
-  end
+  def self.before_suite
+    @@redis = Redis.new(:host => LinkedData.settings.redis_host, :port => LinkedData.settings.redis_port)
+    db_size = @@redis.dbsize
+    if db_size > 2000
+      puts "   This test cannot be run. You are probably pointing to the wrong redis backend. "
+      return
+    end
 
-  def teardown
+    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
+    @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
+    annotator = Annotator::Models::NcboAnnotator.new
+    annotator.create_term_cache_from_ontologies(@@ontologies)
+    mapping_test_set
+  end
+  
+  def self.after_suite
+    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
   end
 
   def test_annotate
@@ -135,6 +148,40 @@ eos
       end
     end
     assert step_in_here == 2
+  end
+
+
+  #TODO: this method is duplicated in NCBO_ANNOTATOR
+  def self.mapping_test_set
+    terms_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Resource",
+               "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data",
+               "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource",
+               "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"]
+    onts_a = ["BROTEST-0","BROTEST-0","BROTEST-0","BROTEST-0"]
+    terms_b = ["http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#La_mastication_de_produit",
+               "http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Article",
+               "http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Maux_de_rein",
+               "http://purl.obolibrary.org/obo/MCBCC_0000344#PapillaryInvasiveDuctalTumor"]
+    onts_b = ["OntoMATEST-0","OntoMATEST-0","OntoMATEST-0", "MCCLTEST-0"]
+
+    user_creator = LinkedData::Models::User.where.include(:username).page(1,100).first
+    if user_creator.nil?
+      u = LinkedData::Models::User.new(username: "tim", email: "tim@example.org", password: "password")
+      u.save
+      user_creator = LinkedData::Models::User.where.include(:username).page(1,100).first
+    end
+    process = LinkedData::Models::MappingProcess.new(:creator => user_creator, :name => "TEST Mapping Annotator")
+    process.date = DateTime.now 
+    process.relation = RDF::URI.new("http://bogus.relation.com/predicate")
+    process.save
+
+    4.times do |i|
+      term_mappings = []
+      term_mappings << LinkedData::Mappings.create_term_mapping([RDF::URI.new(terms_a[i])], onts_a[i])
+      term_mappings << LinkedData::Mappings.create_term_mapping([RDF::URI.new(terms_b[i])], onts_b[i])
+      mapping_id = LinkedData::Mappings.create_mapping(term_mappings)
+      LinkedData::Mappings.connect_mapping_process(mapping_id, process)
+    end
   end
 
 end
