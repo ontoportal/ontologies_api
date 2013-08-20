@@ -192,12 +192,36 @@ eos
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
     assert annotations.length == 3
-    params = { text: text , stop_words: ["resource", "deletion"]}
+    params = { text: text , stopWords: ["resOUrce", "DeletioN"]}
     post "/annotator", params
     annotations = MultiJson.load(last_response.body)
     assert annotations.length == 1 
     assert annotations.first["annotatedClass"]["@id"] == 
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
+  end
+
+  def test_minterm_size
+    classes = TestAnnotatorController.all_classes(@@ontologies)
+    classes = classes[0..500]
+    text = []
+    not_show = []
+    classes.each do |cls|
+      text << cls.prefLabel
+      if (cls.prefLabel.length < 10 && cls.prefLabel.length > 2)
+        not_show << cls
+      end
+    end
+    text = text.join(" ")
+    assert not_show.length > 0
+
+    params = { text: text , minTermSize: 10}
+    post "/annotator", params
+    assert last_response.ok?
+    annotations = MultiJson.load(last_response.body)
+    not_show.each do |cls|
+      annotations.map { |x| x["annotatedClass"]["@id"] == cls }.length == 0
+    end
+    assert annotations.length > 0
   end
   
   #TODO: this method is duplicated in NCBO_ANNOTATOR

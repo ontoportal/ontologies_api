@@ -21,12 +21,22 @@ class AnnotatorController < ApplicationController
         mapping_types = mapping_types.is_a?(Array) ? mapping_types : []
       end
       exclude_nums = params["exclude_numbers"].eql?("true")
-      stop_words = params["stop_words"]
+      stop_words = params["stopWords"]
+      min_term_size = params["minTermSize"]
+      if min_term_size
+        min_term_size = min_term_size.to_i
+      end
       annotator = Annotator::Models::NcboAnnotator.new
       unless stop_words.nil?
         annotator.stop_words = stop_words
       end
-      annotations = annotator.annotate(text, ontologies, semantic_types, exclude_nums, max_level,expand_with_mappings=mapping_types)
+      annotations = annotator.annotate(text, 
+                                       ontologies, 
+                                       semantic_types, 
+                                       exclude_nums, 
+                                       max_level,
+                                       expand_with_mappings=mapping_types,
+                                       min_term_size)
       reply 200, annotations
     end
 
