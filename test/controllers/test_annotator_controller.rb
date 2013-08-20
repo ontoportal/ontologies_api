@@ -184,6 +184,21 @@ eos
     end
     assert annotations.length >= classes.length
   end
+
+  def test_stop_words
+    text = "Resource Aggregate Human Data deletion"
+    params = { text: text }
+    post "/annotator", params
+    assert last_response.ok?
+    annotations = MultiJson.load(last_response.body)
+    assert annotations.length == 3
+    params = { text: text , stop_words: ["resource", "deletion"]}
+    post "/annotator", params
+    annotations = MultiJson.load(last_response.body)
+    assert annotations.length == 1 
+    assert annotations.first["annotatedClass"]["@id"] == 
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
+  end
   
   #TODO: this method is duplicated in NCBO_ANNOTATOR
   def self.all_classes(ontologies)
