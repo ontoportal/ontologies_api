@@ -385,18 +385,4 @@ class TestMappingsController < TestCase
     assert_equal 10, stats["CNO-TEST-MAP-0"]
   end
 
-  def test_mappings_popular_classes
-    ontology = "ncit"
-    get "/mappings/statistics/ontologies/#{ontology}/popular_classes"
-    assert last_response.ok?
-    assert_equal '', last_response.body
-  end
-
-  def test_mappings_users
-    ontology = "ncit"
-    get "/mappings/statistics/ontologies/#{ontology}/users"
-    assert last_response.ok?
-    assert_equal '', last_response.body
-  end
-
 end
