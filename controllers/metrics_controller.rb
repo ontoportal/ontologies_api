@@ -18,21 +18,21 @@ class MetricsController < ApplicationController
 
   # Display metrics for ontology
   get "/ontologies/:ontology/metrics" do
+    check_last_modified_collection(LinkedData::Models::Metric)
     ont, sub = get_ontology_and_submission
     ont = Ontology.find(params["ontology"]).first
+    error 404, "Ontology #{params['ontology']} not found" unless ont
     sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
-    reply sub.metrics
+    reply sub.metrics || {}
   end
 
   get "/ontologies/:ontology/submissions/:submissionId/metrics" do
+    check_last_modified_collection(LinkedData::Models::Metric)
     ont, sub = get_ontology_and_submission
     ont = Ontology.find(params["ontology"]).first
+    error 404, "Ontology #{params['ontology']} not found" unless ont
     sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
-    if sub.metrics.nil?
-      error(404)
-    else
-      reply sub.metrics
-    end
+    reply sub.metrics || {}
   end
 
 end
