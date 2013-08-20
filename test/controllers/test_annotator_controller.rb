@@ -100,18 +100,18 @@ eos
           "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
         step_in_here += 1
         assert ann["mappings"].length == 1
-        assert ann["mappings"].first["@id"] == 
+        assert ann["mappings"].first["annotatedClass"]["@id"] == 
             "http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Article"
-        assert ann["mappings"].first["links"]["ontology"]["OntoMATEST-0"]
+        assert ann["mappings"].first["annotatedClass"]["links"]["ontology"]["OntoMATEST-0"]
       elsif ann["annotatedClass"]["@id"] == 
           "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"
         step_in_here += 1
         assert ann["mappings"].length == 2
         ann["mappings"].each do |map|
-          if map["@id"] =="http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Maux_de_rein"
-            assert map["links"]["ontology"]["OntoMATEST-0"]
-          elsif map["@id"] == "http://purl.obolibrary.org/obo/MCBCC_0000344#PapillaryInvasiveDuctalTumor"
-            assert map["links"]["ontology"]["MCCLTEST-0"]
+          if map["annotatedClass"]["@id"] =="http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Maux_de_rein"
+            assert map["annotatedClass"]["links"]["ontology"]["OntoMATEST-0"]
+          elsif map["annotatedClass"]["@id"] == "http://purl.obolibrary.org/obo/MCBCC_0000344#PapillaryInvasiveDuctalTumor"
+            assert map["annotatedClass"]["links"]["ontology"]["MCCLTEST-0"]
           else
             assert 1==0
           end
@@ -141,16 +141,16 @@ eos
           "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
         step_in_here += 1
         assert ann["mappings"].length == 1
-        assert ann["mappings"].first["@id"] == 
+        assert ann["mappings"].first["annotatedClass"]["@id"] == 
             "http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Article"
-        assert ann["mappings"].first["links"]["ontology"]["OntoMATEST-0"]
+        assert ann["mappings"].first["annotatedClass"]["links"]["ontology"]["OntoMATEST-0"]
       elsif ann["annotatedClass"]["@id"] == 
           "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource"
         step_in_here += 1
         assert ann["mappings"].length == 1
         ann["mappings"].each do |map|
-          if map["@id"] =="http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Maux_de_rein"
-            assert map["links"]["ontology"]["OntoMATEST-0"]
+          if map["annotatedClass"]["@id"] =="http://www.semanticweb.org/associatedmedicine/lavima/2011/10/Ontology1.owl#Maux_de_rein"
+            assert map["annotatedClass"]["links"]["ontology"]["OntoMATEST-0"]
           else
             assert 1==0
           end
