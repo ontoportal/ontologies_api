@@ -60,9 +60,9 @@ class TestClassesController < TestCase
     page_response = nil
     count_terms = 0
     begin
-      call = "/ontologies/#{ont.acronym}/classes?include=ancestors"
+      call = "/ontologies/#{ont.acronym}/classes?include=ancestors,prefLabel"
       if page_response
-        call <<  "?page=#{page_response['nextPage']}"
+        call << "&page=#{page_response['nextPage']}"
       end
       get call
       assert last_response.ok?
