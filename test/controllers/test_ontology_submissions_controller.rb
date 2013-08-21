@@ -48,6 +48,10 @@ class TestOntologySubmissionsController < TestCase
 
   def self._delete_onts
     ont = Ontology.find(@@acronym).first
+    subs = OntologySubmission.where(ontology: ont).all
+    subs.each do |s|
+      s.delete
+    end
     ont.delete unless ont.nil?
   end
 
