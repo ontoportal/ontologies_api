@@ -30,8 +30,14 @@ class TestResourceIndexController < TestCase
     LinkedData::Models::Ontology.all {|o| acronyms << o.acronym}
     @@created_acronyms = []
     begin
-      @user = LinkedData::Models::User.new(username: "test_user", email: "test_user@example.org", password: "password")
-      @user.save
+      @user = LinkedData::Models::User.find("test_user").first
+      if @user.nil?
+        @user = LinkedData::Models::User.new(
+            username: "test_user",
+            email: "test_user@example.org",
+            password: "password")
+        @user.save
+      end
       test_ontology_acronyms.each do |acronym|
         next if acronyms.include?(acronym)
         ontology_data = {
@@ -49,6 +55,7 @@ class TestResourceIndexController < TestCase
         submission = ont_new.submissions.last  # get the last submission, regardless of parsing status
         submission.bring_remaining
         submission.submissionStatus = LinkedData::Models::SubmissionStatus.find(LinkedData::Models::SubmissionStatus.parsed_code).first
+        submission.uploadFilePath = "test/data/uploaded_ontologies/BROTEST-0/1/BRO_v3.2.owl"
         submission.ontology = ontology
         submission.save
       end
