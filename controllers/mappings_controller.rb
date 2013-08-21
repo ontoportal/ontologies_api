@@ -58,6 +58,8 @@ class MappingsController < ApplicationController
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
       if mapping
+        onts = mapping.terms.map {|t| t.ontology }
+        LinkedData::Models::Ontology.where.models(onts).include(:acronym).all
         reply convert_mappings_classes([mapping]).first
       else
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")

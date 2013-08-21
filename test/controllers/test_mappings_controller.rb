@@ -3,6 +3,24 @@ require_relative '../test_case'
 class TestMappingsController < TestCase
 
   def self.before_suite
+
+    @@redis = Redis.new(:host => LinkedData.settings.redis_host, :port => LinkedData.settings.redis_port)
+    db_size = @@redis.dbsize
+    if db_size > 2000
+      puts "   This test cannot be run. You are probably pointing to the wrong redis backend. "
+      return
+    end
+    LinkedData::Models::TermMapping.all.each do |m|
+      m.delete
+    end
+    LinkedData::Models::Mapping.all.each do |m|
+      m.delete
+    end
+    LinkedData::Models::MappingProcess.all.each do |m|
+      m.delete
+    end
+    @@redis.del "mappings:*"
+
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
@@ -39,6 +57,7 @@ class TestMappingsController < TestCase
       ont_count: 1,
       submission_count: 1
     })
+
 
     mappings = [LinkedData::Mappings::CUI,
              LinkedData::Mappings::SameURI,
@@ -167,7 +186,7 @@ class TestMappingsController < TestCase
     assert mappings["prevPage"] == nil
     assert mappings["nextPage"] == nil
 
-    assert_equal 14, mappings["collection"].length
+    assert_equal 20, mappings["collection"].length
     mappings = mappings["collection"]
 
     mappings.each do |mapping|
@@ -187,7 +206,7 @@ class TestMappingsController < TestCase
     assert mappings["prevPage"] == nil
     assert mappings["nextPage"] == nil
 
-    assert_equal 8, mappings["collection"].length
+    assert_equal 11, mappings["collection"].length
     mappings = mappings["collection"]
 
     mappings.each do |mapping|
@@ -207,11 +226,11 @@ class TestMappingsController < TestCase
       mappings = MultiJson.load(last_response.body)
       #pages
       assert mappings["page"] == page
-      assert mappings["pageCount"] == 3
+      assert mappings["pageCount"] == 4
       assert mappings["prevPage"] == (page > 1 ? page - 1 : nil)
-      assert mappings["nextPage"] == (page < 3 ? page + 1 : nil)
+      assert mappings["nextPage"] == (page < 4 ? page + 1 : nil)
       next_page = mappings["nextPage"]
-      assert_equal (page == 3 ? 2 : 6), mappings["collection"].length
+      assert_equal (page == 4 ? 2 : 6), mappings["collection"].length
       mappings = mappings["collection"]
       mappings.each do |mapping|
         certify_mapping(mapping)
@@ -364,9 +383,11 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    assert_equal 13, stats["BRO-TEST-MAP-0"]
-    assert_equal 13, stats["CNO-TEST-MAP-0"]
-    assert_equal 11, stats["FAKE-TEST-MAP-0"]
+    data = {"BRO-TEST-MAP-0"=>16,
+       "CNO-TEST-MAP-0"=>14,
+        "FAKE-TEST-MAP-0"=>12,
+         "TEST-ONT-0"=>0}
+    assert_equal data, stats
   end
 
   def test_mappings_statistics_for_ontology
@@ -375,13 +396,13 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    assert_equal 6, stats["CNO-TEST-MAP-0"]
-    assert_equal 8, stats["FAKE-TEST-MAP-0"]
+    assert_equal 9, stats["CNO-TEST-MAP-0"]
+    assert_equal 11, stats["FAKE-TEST-MAP-0"]
     ontology = "FAKE-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    assert_equal 8, stats["BRO-TEST-MAP-0"]
+    assert_equal 11, stats["BRO-TEST-MAP-0"]
     assert_equal 10, stats["CNO-TEST-MAP-0"]
   end
 
