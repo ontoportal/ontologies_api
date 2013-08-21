@@ -3,6 +3,16 @@ require_relative '../test_case'
 class TestMetricsController < TestCase
 
   def self.before_suite
+    if OntologySubmission.all.count > 100
+      puts "this test is going to wipe out all submission and ontologies. probably this is not a test env."
+      return
+    end
+    OntologySubmission.all.each do |s|
+      s.delete
+    end
+    Ontology.all.each do |s|
+      s.delete
+    end
     @@data = {"classes"=>486,
 "averageChildCount"=>5,
 "maxChildCount"=>65,
