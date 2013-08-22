@@ -56,10 +56,13 @@ class TestProvisionalClassesController < TestCase
   end
 
   def test_single_provisional_class
-    provisional_class = 'test_provisional_class'
-    get "/provisional_classes/#{provisional_class}"
+    get '/provisional_classes'
+    pcs = MultiJson.load(last_response.body)
+    pc = pcs.first
+    get pc['@id']
     assert last_response.ok?
-    assert_equal '', last_response.body
+    retrieved_pc = MultiJson.load(last_response.body)
+    assert_equal pc["@id"], retrieved_pc["@id"]
   end
 
   def test_provisional_class_lifecycle
