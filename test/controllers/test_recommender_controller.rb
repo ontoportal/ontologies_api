@@ -28,7 +28,7 @@ eos
     rec = recommendations[0]
 
     assert_instance_of(Hash, rec)
-    assert_equal("BROTEST-0", rec['ontology']['acronym'])
+    assert_equal("MCCLTEST-0", rec['ontology']['acronym'])
     assert rec['numTermsMatched'] > 0
     assert rec['numTermsTotal'] > 0
     assert rec['numTermsTotal'] >= rec['numTermsMatched']
