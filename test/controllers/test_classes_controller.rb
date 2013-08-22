@@ -74,11 +74,14 @@ class TestClassesController < TestCase
         ##TODO: this test is at the moment failing due to:
         # (a) serializer embed issue
         # (b) goo is not running properly the transitive query
+        if item["@id"]["Ontology_Development_and_Management"]
+          assert item["ancestors"].map {|x| x["@id"]}.uniq.length, 5
+          assert item["ancestors"].select { |x| x["@id"]["Software_Development_Resource"] }.length == 1
+          assert item["ancestors"].select { |x| x["@id"]["Interactive_Tool"] }.length == 1
+          assert item["ancestors"].select { |x| x["@id"]["owl#Resource"] }.length == 1
+        end
         item["ancestors"].each do |anc|
           assert_instance_of String, anc["prefLabel"]
-        end
-        if item["@id"]["Ontology_Development_and_Management"]
-          item["ancestors"].length > 2 #make sure transitive is working
         end
       end
       assert last_response.ok?

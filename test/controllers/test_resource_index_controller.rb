@@ -22,6 +22,17 @@ class TestResourceIndexController < TestCase
   #resource_id = 'PM'  # PubMed
   #element_id = '10866208'
 
+  def self._user( action, username = 'resource_index_user' )
+    if action == 'create'
+      test_user = User.new( username: username, email: "#{username}@example.org", password: 'password')
+      test_user.save if test_user.valid?
+      @@user = test_user.valid? ? test_user : User.find(username).first
+    else
+      @@user = nil
+      user = User.find(username).first
+      user.delete unless user.nil?
+    end
+  end
 
   # Populate the ontology dB
   def self.before_suite
@@ -30,20 +41,13 @@ class TestResourceIndexController < TestCase
     LinkedData::Models::Ontology.all {|o| acronyms << o.acronym}
     @@created_acronyms = []
     begin
-      @user = LinkedData::Models::User.find("test_user").first
-      if @user.nil?
-        @user = LinkedData::Models::User.new(
-            username: "test_user",
-            email: "test_user@example.org",
-            password: "password")
-        @user.save
-      end
+      _user('create')
       test_ontology_acronyms.each do |acronym|
         next if acronyms.include?(acronym)
         ontology_data = {
             acronym: acronym,
             name: "#{acronym} ontology",
-            administeredBy: [@user]
+            administeredBy: [@@user]
         }
         ontology = LinkedData::Models::Ontology.new(ontology_data)
         ontology.save
@@ -68,7 +72,7 @@ class TestResourceIndexController < TestCase
   def self.after_suite
     begin
       LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
-      @user = nil
+      _user('delete')
       @@created_acronyms.each do |acronym|
         ontology = LinkedData::Models::Ontology.find(acronym).first
         ontology.delete unless ontology.nil?
