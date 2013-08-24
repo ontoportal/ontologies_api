@@ -19,7 +19,11 @@ class TestMappingsController < TestCase
     LinkedData::Models::MappingProcess.all.each do |m|
       m.delete
     end
-    @@redis.del "mappings:*"
+
+    mappings = @@redis.keys.select { |x| x["mappings:"] }
+    if mappings.length > 0
+      @@redis.del(mappings)
+    end
 
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|

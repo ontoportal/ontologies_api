@@ -9,7 +9,11 @@ class TestAnnotatorController < TestCase
       puts "   This test cannot be run. You are probably pointing to the wrong redis backend. "
       return
     end
-    @@redis.del "mappings:*"
+
+    mappings = @@redis.keys.select { |x| x["mappings:"] }
+    if mappings.length > 0
+      @@redis.del(mappings)
+    end
 
     LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
     @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
