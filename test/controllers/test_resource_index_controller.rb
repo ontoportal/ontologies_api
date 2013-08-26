@@ -58,7 +58,7 @@ class TestResourceIndexController < TestCase
         ont_new.bring(:submissions)
         submission = ont_new.submissions.last  # get the last submission, regardless of parsing status
         submission.bring_remaining
-        submission.submissionStatus = LinkedData::Models::SubmissionStatus.find(LinkedData::Models::SubmissionStatus.parsed_code).first
+        submission.set_ready
         submission.uploadFilePath = "test/data/uploaded_ontologies/BROTEST-0/1/BRO_v3.2.owl"
         submission.ontology = ontology
         submission.save
