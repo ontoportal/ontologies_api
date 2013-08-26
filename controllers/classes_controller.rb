@@ -8,10 +8,14 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = ld.delete(:properties)
       page_data = LinkedData::Models::Class.in(submission)
                                 .include(ld)
                                 .page(page,size)
                                 .all
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+      end
       reply page_data
     end
 
@@ -20,8 +24,12 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = load_attrs.delete(:properties)
       include_childrenCount = load_attrs.include?(:childrenCount)
       roots = submission.roots(load_attrs, include_childrenCount)
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
+      end
       reply roots
     end
 
@@ -29,7 +37,12 @@ class ClassesController < ApplicationController
     get '/:cls' do
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
-      cls = get_class(submission, LinkedData::Models::Class.goo_attrs_to_load(includes_param))
+      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = ld.delete(:properties)
+      cls = get_class(submission, ld)
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(cls).include(:unmapped).all
+      end
       reply cls
     end
 
@@ -37,7 +50,12 @@ class ClassesController < ApplicationController
     get '/:cls/paths_to_root' do
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
-      cls = get_class(submission, LinkedData::Models::Class.goo_attrs_to_load(includes_param))
+      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = ld.delete(:properties)
+      cls = get_class(submission, ld)
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(cls).include(:unmapped).all
+      end
       reply cls.paths_to_root
     end
 
@@ -75,9 +93,13 @@ class ClassesController < ApplicationController
       #I really want ancestors: [ user options ]
       load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       load_attrs = [ ancestors: load_attrs ]
+      unmapped = load_attrs.delete(:properties)
       cls = get_class(submission,load_attrs=load_attrs)
       error 404 if cls.nil?
       ancestors = cls.ancestors
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(ancestors).include(:unmapped).all
+      end
       reply ancestors
     end
 
@@ -89,10 +111,14 @@ class ClassesController < ApplicationController
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = ld.delete(:properties)
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       page_data_query = LinkedData::Models::Class.where(ancestors: cls).in(submission).include(ld)
       page_data_query.aggregate(*aggregates) unless aggregates.empty?
       page_data = page_data_query.page(page,size).all
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+      end
       reply page_data
     end
 
@@ -104,10 +130,14 @@ class ClassesController < ApplicationController
       cls = get_class(submission)
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = ld.delete(:properties)
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
       page_data_query.aggregate(*aggregates) unless aggregates.empty?
       page_data = page_data_query.page(page,size).all
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+      end
       reply page_data
     end
 
@@ -117,6 +147,7 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = ld.delete(:properties)
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       parents_query = LinkedData::Models::Class.where(children: cls).in(submission).include(ld)
       parents_query.aggregate(*aggregates) unless aggregates.empty?
@@ -124,6 +155,9 @@ class ClassesController < ApplicationController
       if parents.nil?
         reply []
       else
+        if unmapped
+          LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+        end
         reply parents
       end
     end
