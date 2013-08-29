@@ -76,7 +76,6 @@ class TestOntologySubmissionsController < TestCase
   def test_create_new_submission_file
     post "/ontologies/#{@@acronym}/submissions", @@file_params
     assert last_response.status == 201
-
     get "/ontologies/#{@@acronym}"
     ont = MultiJson.load(last_response.body)
     assert ont["acronym"].eql?(@@acronym)
@@ -94,7 +93,10 @@ class TestOntologySubmissionsController < TestCase
     assert last_response.status == 200
 
     max = 25
-    while (ont["submissionStatus"] == "UPLOADED" and max > 0)
+    status_uploaded = "http://data.bioontology.org/submission_statuses/UPLOADED"
+    status_rdf = "http://data.bioontology.org/submission_statuses/RDF"
+
+    while (ont["submissionStatus"].length == 1 and ont["submissionStatus"].include?(status_uploaded) and max > 0)
       get "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}?include=all"
       assert last_response.status == 200
       ont = MultiJson.load(last_response.body)
@@ -102,8 +104,7 @@ class TestOntologySubmissionsController < TestCase
       sleep(1.5)
     end
     assert max > 0
-    #EVENTUALLY HAS TO ASSERT AGAINST READY
-    assert ont["submissionStatus"] == "RDF"
+    assert ont["submissionStatus"].include?(status_rdf)
 
     #we should be able to get roots
     get "/ontologies/#{@@acronym}/classes/roots"
