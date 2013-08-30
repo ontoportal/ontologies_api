@@ -29,10 +29,13 @@ class TestSearchController < TestCase
 
   def test_search_ontology_filter
     acronym = "MCCLTEST-0"
-    get "/search?q=receptor&ontologies=#{acronym}"
+    get "/search?q=cell%20li*&ontologies=#{acronym}"
     assert last_response.ok?
-
     results = MultiJson.load(last_response.body)
+
+    doc = results["collection"][0]
+    assert_equal "cell line", doc["prefLabel"]
+    assert_equal "http://localhost:9393/ontologies/MCCLTEST-0", doc["links"]["ontology"]
 
     results["collection"].each do |doc|
       acr = doc["links"]["ontology"].split('/')[-1]

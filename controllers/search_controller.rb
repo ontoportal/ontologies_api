@@ -70,8 +70,10 @@ class SearchController < ApplicationController
         acronyms = ontologies_param_to_acronyms
       end
 
-      query << " AND "
-      query << get_single_field_query_param(acronyms, "submissionAcronym", "OR")
+      if acronyms && !acronyms.empty?
+        query << " AND "
+        query << get_quoted_field_query_param(acronyms, "submissionAcronym", "OR")
+      end
 
       if args[REQUIRE_DEFINITIONS_PARAM] == "true"
         query << " AND definition:[* TO *]"
@@ -83,20 +85,20 @@ class SearchController < ApplicationController
     def get_tokenized_query(text, args)
       words = text.split
       query = "("
-      query << get_single_field_query_param(words, "prefLabel", "AND")
+      query << get_non_quoted_field_query_param(words, "prefLabel")
       query << " OR "
-      query << get_single_field_query_param(words, "synonym", "AND")
+      query << get_non_quoted_field_query_param(words, "synonym")
 
       if args[INCLUDE_PROPERTIES_PARAM] == "true"
         query << " OR "
-        query << get_single_field_query_param(words, "property", "AND")
+        query << get_non_quoted_field_query_param(words, "property")
       end
 
       query << ")"
       return query
     end
 
-    def get_single_field_query_param(words, fieldName, clause)
+    def get_quoted_field_query_param(words, fieldName, clause)
       query = "#{fieldName}:"
 
       if (words.length > 1)
@@ -113,6 +115,12 @@ class SearchController < ApplicationController
       if (words.length > 1)
         query << ")"
       end
+      return query
+    end
+
+    def get_non_quoted_field_query_param(words, fieldName)
+      query = "#{fieldName}:"
+      query << words.join(" ")
       return query
     end
 
