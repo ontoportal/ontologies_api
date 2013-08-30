@@ -41,7 +41,7 @@ class ClassesController < ApplicationController
       unmapped = ld.delete(:properties)
       cls = get_class(submission, ld)
       if unmapped
-        LinkedData::Models::Class.in(submission).models(cls).include(:unmapped).all
+        LinkedData::Models::Class.in(submission).models([cls]).include(:unmapped).all
       end
       reply cls
     end
