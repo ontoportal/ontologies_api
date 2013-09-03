@@ -71,10 +71,26 @@ class OntologiesController < ApplicationController
     end
 
     ##
-    # Download an ontology
-    # get '/:acronym/download' do
-    #   error 500, "Not implemented"
-    # end
+    # Download the latest submission for an ontology
+    get '/:acronym/download' do
+      ont = Ontology.find(params["acronym"]).first
+      error 422, "You must provide an existing `acronym` to download" if ont.nil?
+      #submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath]
+      #ont = Ontology.find(params["acronym"]).include(:submissions => submission_attributes).first
+      # A list of submission arrays in order of most recent submission
+      #submissions = ont.submissions.sort {|a,b| a.submissionId <=> b.submissionId}.reverse
+      # check submission status?
+      #submissions.each do |sub|
+      #  sub.submissionStatus is OK?
+      #end
+      #latest_submission = submissions.first
+      latest_submission = ont.latest_submission  # Should resolve to latest successfully loaded submission
+      latest_submission.bring(:uploadFilePath)
+      #binding.pry
+      #file_path = '/data/src/ncbo/ontAPI/test/data/ontology_files/BRO_v3.1.owl'
+      file_path = latest_submission.uploadFilePath
+      send_file file_path, :filename => File.basename(file_path)
+    end
 
     ##
     # Properties for given ontology
