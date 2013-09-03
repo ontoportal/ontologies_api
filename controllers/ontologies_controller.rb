@@ -85,11 +85,16 @@ class OntologiesController < ApplicationController
       #end
       #latest_submission = submissions.first
       latest_submission = ont.latest_submission  # Should resolve to latest successfully loaded submission
-      latest_submission.bring(:uploadFilePath)
+      error 404, "There is no latest submission loaded for download" if latest_submission.nil?
       #binding.pry
       #file_path = '/data/src/ncbo/ontAPI/test/data/ontology_files/BRO_v3.1.owl'
+      latest_submission.bring(:uploadFilePath)
       file_path = latest_submission.uploadFilePath
-      send_file file_path, :filename => File.basename(file_path)
+      if File.readable? file_path
+        send_file file_path, :filename => File.basename(file_path)
+      else
+        error 500, "Cannot read latest submission upload file: #{file_path}"
+      end
     end
 
     ##
