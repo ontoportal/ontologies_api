@@ -111,7 +111,11 @@ module Sinatra
         end
         status, obj = response.first, response.last if response.length == 2
         status, headers, obj = response.first, response[1], response.last if response.length == 3
-        super(LinkedData::Serializer.build_response(@env, status: status, headers: headers, ld_object: obj))
+        if obj.is_a?(Rack::File) # Avoid the serializer when returning files
+          super(response)
+        else
+          super(LinkedData::Serializer.build_response(@env, status: status, headers: headers, ld_object: obj))
+        end
       end
 
       ##
@@ -275,10 +279,10 @@ module Sinatra
           submission = ont.submission(@params[:ontology_submission_id])
           error 404, "You must provide an existing submission ID for the #{@params["acronym"]} ontology" if submission.nil?
         else
-          submission = ont.latest_submission
+          submission = ont.latest_submission(status: [:RDF])
         end
         error 404,  "Ontology #{@params["ontology"]} submission not found." if submission.nil?
-        if !submission.ready?
+        if !submission.ready?(status: [:RDF])
           error 404,  "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
         end
         if submission.nil?
