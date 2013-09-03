@@ -117,7 +117,7 @@ class OntologySubmissionsController < ApplicationController
       ont = Ontology.find(params['acronym']).include(:submissions => submission_attributes).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
       submission = nil
-      submissions.each do |sub|
+      ont.submissions.each do |sub|
         # check submission status?
         #next if not sub.submissionStatus == OK?
         if sub.submissionId == params['ontology_submission_id']
