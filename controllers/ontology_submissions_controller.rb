@@ -120,7 +120,7 @@ class OntologySubmissionsController < ApplicationController
       ont.submissions.each do |sub|
         # check submission status?
         #next if not sub.submissionStatus == OK?
-        if sub.submissionId == params['ontology_submission_id']
+        if sub.submissionId == params['ontology_submission_id'].to_i
           submission = sub
           break
         end
