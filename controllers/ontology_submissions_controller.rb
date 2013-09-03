@@ -112,9 +112,29 @@ class OntologySubmissionsController < ApplicationController
 
     ##
     # Download a submission
-    # get '/:ontology_submission_id/download' do
-    #   error 500, "Not implemented"
-    # end
+    get '/:ontology_submission_id/download' do
+      submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath]
+      ont = Ontology.find(params['acronym']).include(:submissions => submission_attributes).first
+      error 422, "You must provide an existing `acronym` to download" if ont.nil?
+      # A list of submission arrays in order of most recent submission
+      #submissions = ont.submissions.sort {|a,b| a.submissionId <=> b.submissionId}.reverse
+      # check submission status?
+      submission = nil
+      submissions.each do |sub|
+        #next if not sub.submissionStatus == OK?
+        submission = sub if sub.submissionId == params['ontology_submission_id']
+      end
+      error 404, "There is no such submission for download" if submission.nil?
+      #binding.pry
+      #file_path = '/data/src/ncbo/ontAPI/test/data/ontology_files/BRO_v3.1.owl'
+      submission.bring(:uploadFilePath)
+      file_path = submission.uploadFilePath
+      if File.readable? file_path
+        send_file file_path, :filename => File.basename(file_path)
+      else
+        error 500, "Cannot read submission upload file: #{file_path}"
+      end
+    end
 
     ##
     # Properties for given submission
