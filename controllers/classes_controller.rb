@@ -51,11 +51,7 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties)
       cls = get_class(submission, ld)
-      if unmapped
-        LinkedData::Models::Class.in(submission).models(cls).include(:unmapped).all
-      end
       reply cls.paths_to_root
     end
 
@@ -89,17 +85,9 @@ class ClassesController < ApplicationController
     get '/:cls/ancestors' do
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
-
-      #I really want ancestors: [ user options ]
-      load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      load_attrs = [ ancestors: load_attrs ]
-      unmapped = load_attrs.delete(:properties)
-      cls = get_class(submission,load_attrs=load_attrs)
+      cls = get_class(submission,load_attrs=[:ancestors])
       error 404 if cls.nil?
       ancestors = cls.ancestors
-      if unmapped
-        LinkedData::Models::Class.in(submission).models(ancestors).include(:unmapped).all
-      end
       reply ancestors
     end
 
@@ -110,15 +98,9 @@ class ClassesController < ApplicationController
       page, size = page_params
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
-      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties)
-      aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
-      page_data_query = LinkedData::Models::Class.where(ancestors: cls).in(submission).include(ld)
-      page_data_query.aggregate(*aggregates) unless aggregates.empty?
+      page_data_query = LinkedData::Models::Class.where(ancestors: cls)
+                          .in(submission).include(:prefLabel)
       page_data = page_data_query.page(page,size).all
-      if unmapped
-        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
-      end
       reply page_data
     end
 
