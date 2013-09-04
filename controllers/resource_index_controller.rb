@@ -317,7 +317,7 @@ class ResourceIndexController < ApplicationController
           associatedOntologies.push ont_uri unless associatedOntologies.include? ont_uri
           ont_acronym = acronym_from_virtual_id(ont_id)
           next if ont_acronym.nil?
-          term_uri = uri_from_short_id_with_acronym(ont_acronym, term_short_id)
+          term_uri = uri_from_short_id(ont_acronym, term_short_id)
           next if term_uri.nil?
           ontology = LinkedData::Models::Ontology.read_only(id: RDF::IRI.new(ont_uri), acronym: ont_acronym)
           submission = LinkedData::Models::OntologySubmission.read_only(id: RDF::IRI.new(ont_uri+"/submissions/latest"), ontology: ontology)

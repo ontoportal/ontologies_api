@@ -17,8 +17,6 @@ gem 'minitest', '< 5.0'
 gem 'rack-cache'
 gem 'redis'
 
-gem 'recursive-open-struct'
-
 # HTTP server
 gem 'unicorn'
 

@@ -1,8 +1,5 @@
 require 'sinatra/base'
-require 'redis'
-require 'recursive-open-struct'
-
-require 'pry'
+require 'ncbo_resolver'
 
 #  @options[:resource_index_location]  = "http://rest.bioontology.org/resource_index/"
 #  @options[:filterNumber]             = true
@@ -35,7 +32,7 @@ require 'pry'
 module Sinatra
   module Helpers
     module ResourceIndexHelper
-      REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
+      NCBO::Resolver.configure(redis_host: LinkedData.settings.redis_host, redis_port: LinkedData.settings.redis_port)
 
       # Old REST service used for resolving class URIs into short IDs.
       REST_URL = 'http://rest.bioontology.org/bioportal'
@@ -67,7 +64,7 @@ module Sinatra
             v.split(',').each do |class_id|
               # Shorten id, if necessary
               if class_id.start_with?("http://")
-                class_id = shorten_uri(class_id, ont_id)
+                class_id = short_id_from_uri(class_id, ont_id)
               end
               # TODO: Determine whether class_id exists, throw 404 for invalid classes.
               classes.push("#{ont_id}/#{class_id}")
@@ -159,126 +156,59 @@ module Sinatra
       end
 
       ##
-      # Takes a URI and shortens it (takes off everything except the last fragment) according to NCBO rules.
-      # Only OBO format has special processing.
-      # The format can be obtained by doing ont.latest_submission.hasOntologyLanguage.acronym.to_s
-      def shorten_uri(cls_uri, ont_virtual_id=nil)
-
-        # Note: hopefully this is obsolete code to get the ontology format (copied from )
-        #ont_code = k.split("/").last
-        #ont_model = LinkedData::Models::Ontology.find(ont_code).first
-        #if ont_model.is_a? LinkedData::Models::Ontology
-        #  submission = ont_model.latest_submission
-        #  error 404, "Ontology #{k} (#{ont_code}) has no latest submission." if submission.nil?
-        #  submission.bring(hasOntologyLanguage: [:acronym])
-        #  ont_format = submission.hasOntologyLanguage.acronym
-        #end
-
-        uri = cls_uri.to_s
-        begin
-          # Try to get the short ID from the rest service.
-          cls = get_rest_concept(ont_virtual_id, uri)
-          return cls.id
-        rescue
-          if uri.start_with?('http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#')
-            last_fragment = uri.split('/').last.split('#')
-            prefix = 'BRO'
-            mod_code = last_fragment[1]
-          elsif uri.start_with?('http://purl.org/obo/owl/')
-            last_fragment = uri.split('/').last.split('#')
-            prefix = last_fragment[0]
-            mod_code = last_fragment[1]
-          elsif uri.start_with?('http://purl.obolibrary.org/obo/')
-            last_fragment = uri.split('/').last.split('_')
-            prefix = last_fragment[0]
-            mod_code = last_fragment[1]
-          elsif uri.start_with?('http://www.cellcycleontology.org/ontology/owl/')
-            last_fragment = uri.split('/').last.split('#')
-            prefix = last_fragment[0]
-            mod_code = last_fragment[1]
-          elsif uri.start_with?('http://purl.bioontology.org/ontology/')
-            last_fragment = uri.split('/')
-            prefix = last_fragment[-2]
-            mod_code = last_fragment[-1]
-          else
-            # Everything else
-            uri_parts = uri.split('/')
-            prefix = nil
-            short_id = uri_parts.last
-            short_id = short_id.split('#').last if short_id.include?('#')
-          end
-          short_id = "#{prefix}:#{mod_code}" if not prefix.nil?
-          return short_id
-        end
+      # Takes a URI and shortens it using a lookup from redis (populated using ncbo_resolver)
+      def short_id_from_uri(cls_uri, ont_virtual_id)
+        acronym = NCBO::Resolver::Ontologies.acronym_from_id(ont_virtual_id)
+        NCBO::Resolver::Classes.short_id_from_uri(acronym, cls_uri)
       end
 
       ##
-      # Using the combination of the short_id (EX: "TM122581") and ontology acronym,
+      # Using the combination of the short_id (EX: "TM122581") and version_id (EX: "42389") OR acronym,
       # this will do a Redis lookup and give you the full URI. The short_id is based on
-      # what is produced by the `shorten_uri` method and should match Resource Index localConceptId output.
+      # what is produced by the `short_id_from_uri` method and should match Resource Index localConceptId output.
       # In fact, doing localConceptId.split("/") should give you the parameters for this method.
       # Population of redis data available here:
-      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_classes.rb
-      def uri_from_short_id_with_acronym(acronym, short_id)
-        uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{short_id}")
-        if uri.nil? && short_id.include?(':')
-          try_again_id = short_id.split(':').last
-          uri = REDIS.get("old_to_new:uri_from_short_id:#{acronym}:#{try_again_id}")
+      # https://github.com/ncbo/ncbo_resolver
+      def uri_from_short_id(id, short_id)
+        if id.to_i > 0
+          acronym = NCBO::Resolver::Ontologies.acronym_from_id(id)
+        else
+          acronym = id
         end
-        uri
-      end
-
-      # Alias for uri_from_short_id
-      def uri_from_short_id_with_version(version_id, short_id)
-        uri_from_short_id(version_id, short_id)
-      end
-
-      ##
-      # Using the combination of the short_id (EX: "TM122581") and version_id (EX: "42389"),
-      # this will do a Redis lookup and give you the full URI. The short_id is based on
-      # what is produced by the `shorten_uri` method and should match Resource Index localConceptId output.
-      # In fact, doing localConceptId.split("/") should give you the parameters for this method.
-      # Population of redis data available here:
-      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_classes.rb
-      def uri_from_short_id(version_id, short_id)
-        acronym = acronym_from_version_id(version_id)
-        uri_from_short_id_with_acronym(acronym, short_id)
+        NCBO::Resolver::Classes.uri_from_short_id(acronym, short_id)
       end
 
       ##
       # Given a virtual id, return the acronym (uses a Redis lookup)
       # Population of redis data available here:
-      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
+      # https://github.com/ncbo/ncbo_resolver
       # @param virtual_id [Integer] the ontology version ID
       def acronym_from_virtual_id(virtual_id)
-        REDIS.get("old_to_new:acronym_from_virtual:#{virtual_id}")
+        NCBO::Resolver::Ontologies.acronym_from_virtual_id(virtual_id)
       end
 
       ##
       # Given a version id, return the acronym (uses a Redis lookup)
       # Population of redis data available here:
-      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
+      # https://github.com/ncbo/ncbo_resolver
       # @param version_id [Integer] the ontology version ID
       def acronym_from_version_id(version_id)
-        virtual = REDIS.get("old_to_new:virtual_from_version:#{version_id}")
-        acronym_from_virtual_id(virtual)
+        NCBO::Resolver::Ontologies.acronym_from_version_id(version_id)
       end
 
       ##
       # Given an acronym, return the virtual id (uses a Redis lookup)
       # Population of redis data available here:
-      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
+      # https://github.com/ncbo/ncbo_resolver
       # @param acronym [String] the ontology acronym
       def virtual_id_from_acronym(acronym)
-        virtual_id = REDIS.get("old_to_new:virtual_from_acronym:#{acronym}")
-        virtual_id.to_i unless virtual_id.nil?
-        virtual_id
+        NCBO::Resolver::Ontologies.virtual_id_from_acronym(acronym)
       end
 
       ##
       # Given a virtual id, return the ontology URI (uses a Redis lookup)
       # Population of redis data available here:
-      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
+      # https://github.com/ncbo/ncbo_resolver
       # @param virtual_id [Integer] the ontology virtual ID
       def ontology_uri_from_virtual_id(virtual_id)
         acronym = acronym_from_virtual_id(virtual_id)
@@ -288,41 +218,12 @@ module Sinatra
       ##
       # Given an ontology id URI, get the virtual id (uses a Redis lookup)
       # Population of redis data available here:
-      # https://github.com/ncbo/ncbo_migration/blob/master/id_mappings_ontology.rb
+      # https://github.com/ncbo/ncbo_resolver
       # @param uri [String] ontology id in URI form
       def virtual_id_from_uri(uri)
-        uri = replace_url_prefix(uri)
+        uri = replace_url_prefix(uri) rescue binding.pry
         acronym = acronym_from_ontology_uri(uri)
         virtual_id_from_acronym(acronym)
-      end
-
-
-      def get_json(path)
-        apikey = "apikey=#{get_apikey}"
-        begin
-          json_response = open("#{REST_URL}#{path}&#{apikey}", { "Accept" => "application/json" }).read
-        rescue OpenURI::HTTPError => http_error
-          raise http_error
-        rescue Exception => e
-          #binding.pry
-          raise e
-        end
-        return ::JSON.parse(json_response, :symbolize_names => true)
-      end
-
-      def get_json_as_object(json_data)
-        if json_data.kind_of? Array
-          return json_data.map {|e| RecursiveOpenStruct.new(e)}
-        elsif json_data.kind_of? Hash
-          return RecursiveOpenStruct.new(json_data)
-        end
-        json
-      end
-
-      def get_rest_concept(virtual_ontology_id, cls_uri)
-        path = "/virtual/ontology/#{virtual_ontology_id}?conceptid=#{CGI.escape(cls_uri)}"
-        json_data = get_json(path)
-        get_json_as_object(json_data[:success][:data][0][:classBean])
       end
 
       def get_apikey()
