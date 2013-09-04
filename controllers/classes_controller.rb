@@ -88,6 +88,7 @@ class ClassesController < ApplicationController
       cls = get_class(submission,load_attrs=[:ancestors])
       error 404 if cls.nil?
       ancestors = cls.ancestors
+      LinkedData::Models::Class.in(submission).models(ancestors).include(:prefLabel).all
       reply ancestors
     end
 
