@@ -42,6 +42,7 @@ else
   gem 'ncbo_resource_index_client', :git => 'https://github.com/ncbo/resource_index_ruby_client.git'
   gem 'ncbo_annotator', :git => 'https://github.com/ncbo/ncbo_annotator.git'
   gem 'ncbo_cron', :git => 'https://github.com/ncbo/ncbo_cron.git'
+  gem 'ncbo_resolver', git: "https://github.com/ncbo/ncbo_resolver.git"
 end
 
 # ontologies_api-specific gems
