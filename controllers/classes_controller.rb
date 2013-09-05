@@ -13,7 +13,7 @@ class ClassesController < ApplicationController
                                 .include(ld)
                                 .page(page,size)
                                 .all
-      if unmapped
+      if unmapped && page_data.length > 0
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
       reply page_data
@@ -27,7 +27,7 @@ class ClassesController < ApplicationController
       unmapped = load_attrs.delete(:properties)
       include_childrenCount = load_attrs.include?(:childrenCount)
       roots = submission.roots(load_attrs, include_childrenCount)
-      if unmapped
+      if unmapped && roots.length > 0
         LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
       end
       reply roots
@@ -138,7 +138,7 @@ class ClassesController < ApplicationController
       if parents.nil?
         reply []
       else
-        if unmapped
+        if unmapped && page_data.length > 0
           LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
         end
         reply parents
