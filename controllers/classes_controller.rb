@@ -131,6 +131,9 @@ class ClassesController < ApplicationController
       cls = get_class(submission)
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = ld.delete(:properties)
+      if ld.include?(:children)
+        error 400, "The parents call does not allow children attribute to be included" 
+      end
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       parents_query = LinkedData::Models::Class.where(children: cls).in(submission).include(ld)
       parents_query.aggregate(*aggregates) unless aggregates.empty?
