@@ -37,7 +37,7 @@ class TestUsersController < TestCase
     get '/users'
     assert last_response.ok?
     users = MultiJson.load(last_response.body)
-    users.any? {|u| u[:username].eql?("fred")}
+    assert users.any? {|u| u["username"].eql?("fred")}
     assert users.length >= @@usernames.length
   end
 
@@ -93,6 +93,8 @@ class TestUsersController < TestCase
   def test_delete_user
     delete "/users/ben"
     assert last_response.status == 204
+
+    @@usernames.delete("ben")
 
     get "/users/ben"
     assert last_response.status == 404
