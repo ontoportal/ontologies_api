@@ -255,7 +255,8 @@ module Sinatra
       def retrieve_latest_submissions
         includes = OntologySubmission.goo_attrs_to_load(includes_param)
         includes << :submissionStatus if !includes.include?(:submissionStatus)
-        submissions = OntologySubmission.where.include(includes).to_a
+        submissions = OntologySubmission.where(submissionStatus: [ code: "RDF"])
+                        .include(includes).to_a
 
 
         # Figure out latest parsed submissions using all submissions
