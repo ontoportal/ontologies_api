@@ -44,7 +44,7 @@ class TestAccessControlHelper < TestCaseHelpers
   end
 
   def self.after_suite
-    LinkedData.settings.enable_security = @@old_security_setting
+    LinkedData.settings.enable_security = @@old_security_setting if class_variable_defined?("@@old_security_setting")
     _delete_users
     self.new("after_suite").delete_ontologies_and_submissions
   end
