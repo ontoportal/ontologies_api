@@ -38,10 +38,22 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+
+      load_children = ld.delete :children
+      if !load_children
+        load_children = ld.select { |x| x.instance_of?(Hash) && x.include?(:children) }
+        if load_children
+          ld = ld.select { |x| !(x.instance_of?(Hash) && x.include?(:children)) }
+        end
+      end
+
       unmapped = ld.delete(:properties)
       cls = get_class(submission, ld)
       if unmapped
         LinkedData::Models::Class.in(submission).models([cls]).include(:unmapped).all
+      end
+      if load_children
+        LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
       end
       reply cls
     end
@@ -152,6 +164,13 @@ class ClassesController < ApplicationController
 
     def get_class(submission,load_attrs=nil)
       load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      load_children = load_attrs.delete :children
+      if !load_children
+        load_children = load_attrs.select { |x| x.instance_of?(Hash) && x.include?(:children) }
+        if load_children
+          load_attrs = load_attrs.select { |x| !(x.instance_of?(Hash) && x.include?(:children)) }
+        end
+      end
       cls_uri = RDF::URI.new(params[:cls])
       if !cls_uri.valid?
         error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
@@ -161,6 +180,9 @@ class ClassesController < ApplicationController
       cls = cls.include(load_attrs) if load_attrs && load_attrs.length > 0
       cls.aggregate(*aggregates) unless aggregates.empty?
       cls = cls.first
+      if load_children
+        LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
+      end
       if cls.nil?
         error 404,
            "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
