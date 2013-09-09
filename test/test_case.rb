@@ -60,6 +60,11 @@ class AppUnit < MiniTest::Unit
     begin
       suite.before_suite if suite.respond_to?(:before_suite)
       super(suite, type)
+    rescue Exception => e
+      puts e.message
+      puts e.backtrace.join("\n\t")
+      puts "Traced from:"
+      raise e
     ensure
       suite.after_suite if suite.respond_to?(:after_suite)
     end
