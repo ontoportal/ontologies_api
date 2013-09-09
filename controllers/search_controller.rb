@@ -1,10 +1,10 @@
 class SearchController < ApplicationController
   namespace "/search" do
     ONTOLOGIES_PARAM = "ontologies"
-    EXACT_MATCH_PARAM = "exactMatch"
-    INCLUDE_VIEWS_PARAM = "includeViews"
-    REQUIRE_DEFINITIONS_PARAM = "requireDefinitions"
-    INCLUDE_PROPERTIES_PARAM = "includeProperties"
+    EXACT_MATCH_PARAM = "exact_match"
+    INCLUDE_VIEWS_PARAM = "include_views"
+    REQUIRE_DEFINITIONS_PARAM = "require_definition"
+    INCLUDE_PROPERTIES_PARAM = "include_properties"
 
     # execute a search query
     get do
