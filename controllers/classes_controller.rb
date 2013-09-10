@@ -180,12 +180,12 @@ class ClassesController < ApplicationController
       cls = cls.include(load_attrs) if load_attrs && load_attrs.length > 0
       cls.aggregate(*aggregates) unless aggregates.empty?
       cls = cls.first
-      if load_children
-        LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
-      end
       if cls.nil?
         error 404,
            "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
+      end
+      if load_children
+        LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
       end
       return cls
     end
