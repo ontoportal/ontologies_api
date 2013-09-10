@@ -45,17 +45,17 @@ class TestSearchController < TestCase
 
   def test_search_other_filters
     acronym = "MCCLTEST-0"
-    get "/search?q=receptor%20antagonists&ontologies=#{acronym}&exactMatch=true"
+    get "/search?q=receptor%20antagonists&ontologies=#{acronym}&exact_match=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     assert_equal results["collection"].length, 1
 
-    get "search?q=data&requireDefinitions=true"
+    get "search?q=data&require_definition=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     assert results["collection"].length == 46
 
-    get "search?q=data&requireDefinitions=false"
+    get "search?q=data&require_definition=false"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     assert results["collection"].length > 46
