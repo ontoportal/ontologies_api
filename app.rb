@@ -17,6 +17,7 @@ require 'ncbo_cron'
 # Require middleware
 require 'rack/accept'
 require 'rack/post-body-to-params'
+require_relative 'lib/rack/slow_requests'
 
 # Logging setup
 require_relative "config/logging"
@@ -64,6 +65,7 @@ end
 if Goo.queries_debug?
   use Goo::Debug
 end
+use Rack::SlowRequests, log_path: File.expand_path("../logs/", __FILE__)
 use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
