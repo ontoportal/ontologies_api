@@ -115,6 +115,8 @@ class MappingsController < ApplicationController
                   .include(terms: [:ontology, :term ])
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
+      onts = mapping.terms.map { |x| x.ontology }
+      LinkedData::Models::Ontology.where.models(onts).include(:acronym).all
       reply(201, mapping)
     end
 
