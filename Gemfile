@@ -16,6 +16,7 @@ gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '< 5.0'
 gem 'rack-cache'
 gem 'redis'
+gem 'cube-ruby', require: 'cube'
 
 # HTTP server
 gem 'unicorn'

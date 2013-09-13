@@ -18,6 +18,7 @@ require 'ncbo_cron'
 require 'rack/accept'
 require 'rack/post-body-to-params'
 require_relative 'lib/rack/slow_requests'
+require_relative 'lib/rack/cube_reporter'
 
 # Logging setup
 require_relative "config/logging"
