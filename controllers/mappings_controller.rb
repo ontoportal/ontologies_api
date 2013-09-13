@@ -14,7 +14,7 @@ class MappingsController < ApplicationController
                                  .include(process: [:name, :owner ])
                                  .all
 
-    reply convert_mappings_classes(mappings)
+    reply mappings
   end
 
   # Get mappings for an ontology
@@ -26,7 +26,7 @@ class MappingsController < ApplicationController
                                  .include(process: [:name, :owner ])
                                  .page(page,size)
                                  .all
-    reply convert_mappings_classes(mappings)
+    reply mappings
   end
 
   namespace "/mappings" do
@@ -47,7 +47,7 @@ class MappingsController < ApplicationController
                   .include(process: [:name, :owner ])
                   .page(page,size)
                   .all
-      reply convert_mappings_classes(mappings)
+      reply mappings
     end
 
     # Display a single mapping
@@ -60,7 +60,7 @@ class MappingsController < ApplicationController
       if mapping
         onts = mapping.terms.map {|t| t.ontology }
         LinkedData::Models::Ontology.where.models(onts).include(:acronym).all
-        reply convert_mappings_classes([mapping]).first
+        reply mapping
       else
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       end
@@ -115,7 +115,7 @@ class MappingsController < ApplicationController
                   .include(terms: [:ontology, :term ])
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
-      reply(201, convert_mappings_classes([mapping]).first)
+      reply(201, mapping)
     end
 
     # Delete a mapping
