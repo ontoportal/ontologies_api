@@ -30,6 +30,7 @@ use Rack::Static,
 
 # Setup the environment
 environment = settings.environment.nil? ? :development : settings.environment
+require_relative "config/config"
 require_relative "config/environments/#{environment}.rb"
 
 # Development-specific options
