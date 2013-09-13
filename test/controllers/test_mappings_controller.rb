@@ -344,7 +344,7 @@ class TestMappingsController < TestCase
       if date
         assert date >= date_x
       end
-      date = date_x 
+      date = date_x
     end
   end
 
