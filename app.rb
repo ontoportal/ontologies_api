@@ -67,7 +67,13 @@ end
 if Goo.queries_debug?
   use Goo::Debug
 end
-use Rack::SlowRequests, log_path: File.expand_path("../logs/", __FILE__)
+
+# Monitoring middleware
+if LinkedData::OntologiesAPI.settings.enable_monitoring
+  use Rack::CubeReporter
+  use Rack::SlowRequests, log_path: LinkedData::OntologiesAPI.settings.slow_request_log
+end
+
 use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
