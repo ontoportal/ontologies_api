@@ -16,17 +16,20 @@ class TestApplicationHelper < TestCaseHelpers
   end
 
   def test_ontologies_param
-    params = {"ontologies" => "TEST-ONT-0,TEST-ONT-0-1"}
-    ontologies = helper.ontologies_param(params)
-    assert ontologies == ["http://data.bioontology.org/ontologies/TEST-ONT-0", "http://data.bioontology.org/ontologies/TEST-ONT-0-1"]
+    ids = @@ontologies.map {|o| o.id.to_s}
+    acronyms = @@ontologies.map {|o| o.id.to_s.split("/").last}
+    params = {"ontologies" => acronyms.join(",")}
+    ontologies = ontologies_param(params)
+    assert ontologies == ids
 
-    params = {"ontologies" => "http://data.bioontology.org/ontologies/TEST-ONT-0,http://data.bioontology.org/ontologies/TEST-ONT-0-1"}
-    ontologies = helper.ontologies_param(params)
-    assert ontologies == ["http://data.bioontology.org/ontologies/TEST-ONT-0", "http://data.bioontology.org/ontologies/TEST-ONT-0-1"]
+    params = {"ontologies" => ids.join(",")}
+    ontologies = ontologies_param(params)
+    assert ontologies == ids
 
-    params = {"ontologies" => "http://data.bioontology.org/ontologies/TEST-ONT-0,TEST-ONT-0-1"}
-    ontologies = helper.ontologies_param(params)
-    assert ontologies == ["http://data.bioontology.org/ontologies/TEST-ONT-0", "http://data.bioontology.org/ontologies/TEST-ONT-0-1"]
+    id_acronym = ids + acronyms
+    params = {"ontologies" => id_acronym.join(",")}
+    ontologies = ontologies_param(params)
+    assert ontologies == (ids + ids)
   end
 
   def test_ontology_uri_from_acronym
