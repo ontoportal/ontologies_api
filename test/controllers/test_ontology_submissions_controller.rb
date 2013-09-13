@@ -26,6 +26,8 @@ class TestOntologySubmissionsController < TestCase
       released: DateTime.now.to_s,
       contact: {name: "test_name", email: "test@example.org"}
     }
+    @@status_uploaded = "http://data.bioontology.org/submission_statuses/UPLOADED"
+    @@status_rdf = "http://data.bioontology.org/submission_statuses/RDF"
   end
 
   def self._create_user
@@ -75,7 +77,7 @@ class TestOntologySubmissionsController < TestCase
 
   def test_create_new_submission_file
     post "/ontologies/#{@@acronym}/submissions", @@file_params
-    assert last_response.status == 201
+    assert(last_response.status == 201, msg=last_response.errors)
     get "/ontologies/#{@@acronym}"
     ont = MultiJson.load(last_response.body)
     assert ont["acronym"].eql?(@@acronym)
@@ -85,18 +87,14 @@ class TestOntologySubmissionsController < TestCase
     post "/ontologies/#{@@acronym}/submissions", @@file_params
     assert last_response.status == 201
     sub = MultiJson.load(last_response.body)
-
     get "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}?include=all"
     ont = MultiJson.load(last_response.body)
     assert ont["ontology"]["acronym"].eql?(@@acronym)
     post "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}/parse"
     assert last_response.status == 200
-
+    # Wait for the ontology parsing process to complete
     max = 25
-    status_uploaded = "http://data.bioontology.org/submission_statuses/UPLOADED"
-    status_rdf = "http://data.bioontology.org/submission_statuses/RDF"
-
-    while (ont["submissionStatus"].length == 1 and ont["submissionStatus"].include?(status_uploaded) and max > 0)
+    while (ont["submissionStatus"].length == 1 and ont["submissionStatus"].include?(@@status_uploaded) and max > 0)
       get "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}?include=all"
       assert last_response.status == 200
       ont = MultiJson.load(last_response.body)
@@ -104,9 +102,8 @@ class TestOntologySubmissionsController < TestCase
       sleep(1.5)
     end
     assert max > 0
-    assert ont["submissionStatus"].include?(status_rdf)
-
-    #we should be able to get roots
+    assert ont["submissionStatus"].include?(@@status_rdf)
+    # Try to get roots
     get "/ontologies/#{@@acronym}/classes/roots"
     assert last_response.status == 200
     roots = MultiJson.load(last_response.body)
@@ -115,7 +112,7 @@ class TestOntologySubmissionsController < TestCase
 
   def test_create_new_ontology_submission
     post "/ontologies/#{@@acronym}/submissions", @@file_params
-    assert last_response.status == 201
+    assert(last_response.status == 201, msg=last_response.errors)
   end
 
   def test_patch_ontology_submission
@@ -145,10 +142,22 @@ class TestOntologySubmissionsController < TestCase
   end
 
   def test_download_submission
-    # not implemented yet
+    num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+    assert onts.length == 1
+    ont = onts.first
+    assert ont.submissions.length == 1
+    sub = ont.submissions.first
+    # Download the specific submission
+    get "/ontologies/#{sub.ontology.acronym}/submissions/#{sub.submissionId}/download"
+    assert(last_response.status == 200, msg='failed download for specific submission')
+    # Download the same submission, as the latest submission (the generic ontology download)
+    get "/ontologies/#{sub.ontology.acronym}/download"
+    assert(last_response.status == 200, msg='failed download for latest submission')
   end
 
   def test_ontology_submission_properties
     # not implemented yet
   end
+
+
 end

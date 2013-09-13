@@ -135,7 +135,7 @@ class TestOntologiesController < TestCase
   end
 
   def test_download_ontology
-    # not implemented yet
+    # see test_ontologies_submissions_controller
   end
 
   def test_ontology_properties
