@@ -50,6 +50,16 @@ class MappingsController < ApplicationController
       reply mappings
     end
 
+    get "/recent" do
+      size = params[:size] || 5
+      if size > 50
+        error 422, "Recent mappings only processes calls under 50"
+      else
+        mappings = LinkedData::Mappings.recent_user_mappings(size)
+        reply mappings
+      end
+    end
+
     # Display a single mapping
     get '/:mapping' do
       mapping_id = RDF::URI.new(params[:mapping])

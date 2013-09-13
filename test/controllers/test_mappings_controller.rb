@@ -266,6 +266,8 @@ class TestMappingsController < TestCase
   end
 
   def test_create_mapping
+    delete_manual_mapping
+
     mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools" ]
@@ -306,6 +308,7 @@ class TestMappingsController < TestCase
           assert 1==0, "uncontrolled mapping response in post"
         end
       end
+      sleep(1.2) # to ensure different in times in dates. Later test on recent mappings
     end
 
     #repeating the process should always bring two processes per mapping
@@ -326,6 +329,23 @@ class TestMappingsController < TestCase
     response = MultiJson.load(last_response.body)
     assert response["process"].length > 1
     response["process"].select { |x| x["relation"] == "http://bogus.relation.com/predicate" }.length > 0
+
+    #recent mappings can be tested here
+    rest_mappings = LinkedData::Models::Mapping.where.include(process: [:date]).all
+                        .select { |x| x.process.first.date }
+    get "/mappings/recent/"
+    assert last_response.status == 200
+    response = MultiJson.load(last_response.body)
+    assert (response.length == 4)
+    date = nil
+    response.each do |x|
+      assert rest_mappings.map { |x| x.id.to_s }.include?(response.first["@id"])
+      date_x = DateTime.iso8601(response.first["process"].first["date"])
+      if date
+        assert date >= date_x
+      end
+      date = date_x 
+    end
   end
 
   def test_delete_mapping
