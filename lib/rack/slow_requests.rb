@@ -14,7 +14,7 @@ module Rack
       if finish - start > SLOW_QUERY
         # Fire off a thread so we don't slow down the request
         Thread.new do
-          open("#{@log_path}/slow_requests.log", "a") do |f|
+          open(@log_path, "a") do |f|
             f.puts "#{finish - start} #{env["REQUEST_METHOD"].to_s.upcase} #{env["REQUEST_URI"].to_s}"
           end
         end
