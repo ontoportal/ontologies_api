@@ -91,7 +91,9 @@ class OntologySubmissionsController < ApplicationController
         logger_for_parsing = CustomLogger.new(log_file)
         logger_for_parsing.level = Logger::DEBUG
         begin
-          submission.process_submission(logger_for_parsing, process_rdf=true, index_search=true, run_metrics=true)
+          submission.process_submission(logger_for_parsing,
+                                        process_rdf: true, index_search: true,
+                                        run_metrics: true, reasoning: true)
         rescue => e
           if submission.valid?
             submission.save
