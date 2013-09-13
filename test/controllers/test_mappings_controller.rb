@@ -387,8 +387,8 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    data = {"BRO-TEST-MAP-0"=>13, 
-            "CNO-TEST-MAP-0"=>11, 
+    data = {"BRO-TEST-MAP-0"=>13,
+            "CNO-TEST-MAP-0"=>11,
             "FAKE-TEST-MAP-0"=>12}
     assert_equal data, stats
   end
