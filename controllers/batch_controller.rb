@@ -14,7 +14,15 @@ class BatchController < ApplicationController
       goo_include = LinkedData::Models::Class.goo_attrs_to_load(incl)
       class_id_by_ontology = {}
       collection.each do |class_input|
-        class_id_by_ontology[class_input["ontology"]] = [] unless class_id_by_ontology.include? class_input["ontology"]
+        unless class_input.instance_of?(Hash)
+          error 422, "The collection param needs to be { 'class' : CLS_ID, 'ontology' : ont_id }"
+        end
+        unless class_input.include?("ontology") and class_input.include?("class")
+          error 422, "The collection param needs to be { 'class' : CLS_ID, 'ontology' : ont_id }"
+        end
+        unless class_id_by_ontology.include? class_input["ontology"]
+          class_id_by_ontology[class_input["ontology"]] = [] 
+        end
         class_id_by_ontology[class_input["ontology"]] << class_input["class"]
       end
       classes = []
