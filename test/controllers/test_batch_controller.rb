@@ -38,6 +38,24 @@ class TestBatchController < TestCase
     end
   end
 
+  def test_class_wrong_params
+    bro = @@ontologies.map { |x| x.id.to_s }.select { |y| y.include? "BRO"}.first
+    assert bro, "BRO is not found to execute batch test."
+    class_ids = {
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Information_Resource" => "Information Resource",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource" => "Data Resource"
+    }
+    collection = class_ids.keys
+    call_params = {
+      "http://www.w3.org/2002/07/owl#Class" => {
+        "collection" => collection,
+        "include" => "prefLabel,synonym"
+      }
+    }
+    post "/batch/", call_params
+    assert last_response.status = 422
+  end
+
   def test_class_batch_multiple
     bro = @@ontologies.map { |x| x.id.to_s }.select { |y| y.include? "BRO"}.first
     mccl = @@ontologies.map { |x| x.id.to_s }.select { |y| y.include? "MCCL"}.first
