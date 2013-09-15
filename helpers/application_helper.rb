@@ -26,6 +26,9 @@ module Sinatra
           attr_cls = obj.class.range(attribute)
           attribute_settings = obj.class.attribute_settings(attribute)
 
+          not_hash_or_array = !value.is_a?(Hash) && !value.is_a?(Array)
+          not_array_of_hashes = value.is_a?(Array) && !value.first.is_a?(Hash)
+
           # Try to find dependent Goo objects, but only if the naming is not done via Proc
           # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
           if attr_cls == LinkedData::Models::Class
@@ -36,7 +39,7 @@ module Sinatra
               new_value << LinkedData::Models::Class.find(cls["class"]).in(sub).first
             end
             value = new_value
-          elsif attr_cls && !value.is_a?(Hash) || (attr_cls && value.is_a?(Array) && !value.first.is_a?(Hash))
+          elsif attr_cls && not_hash_or_array || (attr_cls && not_array_of_hashes)
             # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)
               value = value.map {|e| attr_cls.find(uri_as_needed(e)).include(attr_cls.attributes).first}
