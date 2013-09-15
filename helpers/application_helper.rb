@@ -239,6 +239,7 @@ module Sinatra
       ##
       # Create a URI if the id is a URI, otherwise return unmodified
       def uri_as_needed(id)
+        return id unless id.is_a?(String)
         id = replace_url_prefix(id)
         uri = RDF::URI.new(id)
         uri.valid? ? uri : id
