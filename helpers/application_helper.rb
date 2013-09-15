@@ -36,7 +36,7 @@ module Sinatra
               new_value << LinkedData::Models::Class.find(cls["class"]).in(sub).first
             end
             value = new_value
-          elsif attr_cls && !value.is_a?(Hash) && (value.is_a?(Array) && !value.first.is_a?(Hash))
+          elsif attr_cls && !value.is_a?(Hash) || (attr_cls && value.is_a?(Array) && !value.first.is_a?(Hash))
             # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)
               value = value.map {|e| attr_cls.find(uri_as_needed(e)).include(attr_cls.attributes).first}
