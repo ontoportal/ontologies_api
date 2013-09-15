@@ -45,7 +45,11 @@ module Sinatra
             end
           elsif attr_cls
             # Check to see if the resource exists in the triplestore
-            retreived_value = attr_cls.where(value.symbolize_keys).to_a
+            if value.is_a?(Array)
+              retreived_value = value.map {|e| attr_cls.where(e.symbolize_keys).to_a}
+            else
+              retreived_value = attr_cls.where(value.symbolize_keys).to_a
+            end
 
             if retreived_value.empty?
               # Create a new object and save if one didn't exist
