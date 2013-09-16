@@ -20,7 +20,7 @@ module Sinatra
         return if obj.nil?
 
         params.each do |attribute, value|
-          next if value.nil?
+          next if value.nil? || (value.is_a?(String) && value.empty?)
 
           attribute = attribute.to_sym
           attr_cls = obj.class.range(attribute)
@@ -49,17 +49,24 @@ module Sinatra
           elsif attr_cls
             # Check to see if the resource exists in the triplestore
             if value.is_a?(Array)
-              retreived_value = value.map {|e| attr_cls.where(e.symbolize_keys).to_a}
+              retrieved_value = []
+              value.each {|e| retrieved_value += attr_cls.where(e.symbolize_keys).to_a}
             else
-              retreived_value = attr_cls.where(value.symbolize_keys).to_a
+              retrieved_value = attr_cls.where(value.symbolize_keys).to_a
             end
 
-            if retreived_value.empty?
+            if retrieved_value.empty?
               # Create a new object and save if one didn't exist
-              retreived_value = populate_from_params(attr_cls.new, value.symbolize_keys)
-              retreived_value.save
+              if value.is_a?(Array)
+                retrieved_value = []
+                value.each {|e| populate_from_params(attr_cls.new, e.symbolize_keys)}
+                retrieved_value.each {|e| e.save}
+              else
+                retrieved_value = populate_from_params(attr_cls.new, value.symbolize_keys)
+                retrieved_value.save
+              end
             end
-            value = retreived_value
+            value = retrieved_value
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:date_time)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
