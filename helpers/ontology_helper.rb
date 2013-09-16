@@ -20,7 +20,6 @@ module Sinatra
         ont_submission = instance_from_params(OntologySubmission, params)
         ont_submission.ontology = ont
         ont_submission.submissionId = submission_id
-        ont_submission.pullLocation = params["pullLocation"].nil? ? nil : RDF::IRI.new(params["pullLocation"])
         ont_submission.uploadFilePath = file_location
 
         # Add new format if it doesn't exist
