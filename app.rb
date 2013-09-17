@@ -70,7 +70,11 @@ end
 
 # Monitoring middleware
 if LinkedData::OntologiesAPI.settings.enable_monitoring
-  use Rack::CubeReporter
+  cube_settings = {
+    cube_host: LinkedData::OntologiesAPI.settings.cube_host,
+    cube_port: LinkedData::OntologiesAPI.settings.cube_port
+  }
+  use Rack::CubeReporter, cube_settings
   use Rack::SlowRequests, log_path: LinkedData::OntologiesAPI.settings.slow_request_log
 end
 
