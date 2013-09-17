@@ -7,15 +7,22 @@ gem 'multi_json'
 gem 'oj'
 gem 'json-schema', '= 2.0.0'
 gem 'rake'
+gem 'activesupport', '< 4.0'
+
+# Rack middleware
 gem 'rack-accept'
-
 gem 'rack-post-body-to-params'
-#gem 'rack-post-body-to-params', :git => 'https://github.com/palexander/rack-post-body-to-params.git', :branch => 'active_support_4'
+gem 'rack-cache'
+gem 'redis-rack-cache'
 
+# Data access (caching)
+gem 'redis'
+
+# Testing
 gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '< 5.0'
-gem 'rack-cache'
-gem 'redis'
+
+# Monitoring
 gem 'cube-ruby', require: 'cube'
 
 # HTTP server
@@ -30,6 +37,10 @@ gem 'rack-mini-profiler', :group => :profiling
 # Code reloading
 gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/shotgun.git', :branch => 'ncbo'
 
+# Templating
+gem 'haml'
+gem 'redcarpet'
+
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gemfile_local = File.expand_path("../Gemfile.local", __FILE__)
 if File.exists?(gemfile_local)
@@ -43,9 +54,3 @@ else
   gem 'ncbo_cron', :git => 'https://github.com/ncbo/ncbo_cron.git'
   gem 'ncbo_resolver', git: "https://github.com/ncbo/ncbo_resolver.git"
 end
-
-# ontologies_api-specific gems
-gem 'haml'
-gem 'redcarpet'
-gem 'activesupport', '< 4.0'
-
