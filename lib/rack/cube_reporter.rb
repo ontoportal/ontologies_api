@@ -17,8 +17,21 @@ module Rack
       start = Time.now
       data = @app.call(env)
       finish = Time.now
-      cache_hit = data[1]["X-Rack-Cache"] && data[1]["X-Rack-Cache"].eql?("fresh")
-      @cube.send "ontologies_api_request", DateTime.now, duration_ms: ((finish - start)*1000).ceil, path: env["REQUEST_PATH"], cache_hit: cache_hit
+      cache_hit = !data[1]["X-Rack-Cache"].nil? && data[1]["X-Rack-Cache"].eql?("fresh")
+      user = env["REMOTE_USER"]
+      apikey = user.apikey if user
+      username = user.username if user
+      req_data = {
+        duration_ms: ((finish - start)*1000).ceil,
+        path: env["REQUEST_PATH"],
+        cache_hit: cache_hit,
+        user: {
+          apikey: apikey,
+          username: username,
+          user_agent: env["HTTP_USER_AGENT"]
+        }
+      }
+      @cube.send "ontologies_api_request", DateTime.now, req_data
       data
     end
 
