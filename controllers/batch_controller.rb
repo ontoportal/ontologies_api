@@ -26,22 +26,35 @@ class BatchController < ApplicationController
         class_id_by_ontology[class_input["ontology"]] << class_input["class"]
       end
       classes = []
-      class_id_by_ontology.each do |ont_id,class_ids|
-        ont_id = ont_id.sub(LinkedData.settings.rest_url_prefix, Goo.id_prefix)
-        class_ids.uniq!
-        class_ids.map! { |id| RDF::URI.new(id) }
-        ont = LinkedData::Models::Ontology.find(RDF::URI.new(ont_id))
-                    .include(submissions: [:submissionId]).first
-        #error 404, "Ontology #{ont_id} could not be found" if ont.nil?
-        next if ont.nil?
-        begin
-          latest = ont.latest_submission
-        rescue
-          LOGGER.error("Unable to retrieve latest submission for #{ont.id.to_s}in BatchController.")
-          next
+      mutex = Mutex.new
+      class_id_by_ontology.keys.each_slice(4) do |ont_ids|
+        threads = []
+        ont_ids.each do |ont_id|
+          threads << Thread.new do
+            ont_id = ont_id.sub(LinkedData.settings.rest_url_prefix, Goo.id_prefix)
+            class_ids = class_id_by_ontology[ont_id]
+            class_ids.uniq!
+            class_ids.map! { |id| RDF::URI.new(id) }
+            ont = LinkedData::Models::Ontology.find(RDF::URI.new(ont_id))
+                        .include(submissions: [:submissionId])
+                        .include(:acronym).first
+            #error 404, "Ontology #{ont_id} could not be found" if ont.nil?
+            next if ont.nil?
+            begin
+              latest = ont.latest_submission
+            rescue
+              LOGGER.error(
+                "Unable to retrieve latest submission for #{ont.id.to_s}in BatchController.")
+              next
+            end
+            latest.bring(ontology: [:acronym])
+            ont_classes = LinkedData::Models::Class.in(latest)
+                          .ids(class_ids)
+                          .include(goo_include).all
+            mutex.synchronize { classes.concat(ont_classes) }
+          end
         end
-        latest.bring(ontology:[:acronym])
-        classes.concat(LinkedData::Models::Class.in(latest).ids(class_ids).include(goo_include).all)
+        threads.each{|t| t.join}
       end
       reply({ resource_type => classes })
     end
