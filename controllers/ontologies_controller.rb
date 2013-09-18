@@ -5,9 +5,13 @@ class OntologiesController < ApplicationController
     # Display all ontologies
     get do
       check_last_modified_collection(Ontology)
-      # Remove filter, so the BioPortal UI can display views.
-      #onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
-      onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
+      allow_views = params['include_views'] ||= false
+      if allow_views
+        onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
+      else
+        onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
+      end
+      binding.pry
       reply onts
     end
 

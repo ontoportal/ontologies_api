@@ -82,6 +82,10 @@
           %td pagesize
           %td {integer representing the size of the returned page}
           %td For calls that are paged, this will indicate the size of the page you want to retrieve.
+        %tr
+          %td include_views
+          %td {boolean representing whether or not to include ontology views (default is false)}
+          %td For calls that involve ontologies, include_views='true' will include ontology views.
 
       %h2#nav_non_rest Search, Annotation, and Resource Index Endpoints
 
