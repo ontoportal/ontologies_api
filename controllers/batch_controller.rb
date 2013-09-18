@@ -31,11 +31,10 @@ class BatchController < ApplicationController
         threads = []
         ont_ids.each do |ont_id|
           threads << Thread.new do
-            ont_id = ont_id.sub(LinkedData.settings.rest_url_prefix, Goo.id_prefix)
             class_ids = class_id_by_ontology[ont_id]
             class_ids.uniq!
             class_ids.map! { |id| RDF::URI.new(id) }
-            ont = LinkedData::Models::Ontology.find(RDF::URI.new(ont_id))
+            ont = LinkedData::Models::Ontology.find(RDF::URI.new(replace_url_prefix(ont_id)))
                         .include(submissions: [:submissionId])
                         .include(:acronym).first
             #error 404, "Ontology #{ont_id} could not be found" if ont.nil?
