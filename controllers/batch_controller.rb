@@ -34,7 +34,12 @@ class BatchController < ApplicationController
                     .include(submissions: [:submissionId]).first
         #error 404, "Ontology #{ont_id} could not be found" if ont.nil?
         next if ont.nil?
-        latest = ont.latest_submission
+        begin
+          latest = ont.latest_submission
+        rescue
+          LOGGER.error("Unable to retrieve latest submission for #{ont.id.to_s}in BatchController.")
+          next
+        end
         latest.bring(ontology:[:acronym])
         classes.concat(LinkedData::Models::Class.in(latest).ids(class_ids).include(goo_include).all)
       end
