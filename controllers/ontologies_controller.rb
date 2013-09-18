@@ -11,7 +11,6 @@ class OntologiesController < ApplicationController
       else
         onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
       end
-      binding.pry
       reply onts
     end
 
