@@ -43,7 +43,7 @@ class BatchController < ApplicationController
               latest = ont.latest_submission
             rescue
               LOGGER.error(
-                "Unable to retrieve latest submission for #{ont.id.to_s}in BatchController.")
+                "Unable to retrieve latest submission for #{ont.id.to_s} in BatchController.")
               next
             end
             latest.bring(ontology: [:acronym])
