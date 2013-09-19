@@ -32,17 +32,12 @@ class OntologiesController < ApplicationController
       check_last_modified(ont)
       ont.bring(:acronym, :submissions)
       latest = nil
-      begin
-        latest = ont.latest_submission
-      rescue ArgumentError => e
-        LOGGER.warn("Ontology #{params['acronym']} error returnning latest")
-        LOGGER.warn(e)
-      end
-      if latest
+      latest = ont.latest_submission
+      if latest.nil?
+        error(400, "The ontology #{params["acronym"]} does not have any submissions")
+      else
         latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
         reply latest
-      else
-        reply(message: "Ontology #{params['acronym']} has no submissions")
       end
     end
 
