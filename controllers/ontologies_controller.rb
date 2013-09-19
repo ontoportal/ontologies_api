@@ -42,7 +42,7 @@ class OntologiesController < ApplicationController
         latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
         reply latest
       else
-        reply {}
+        reply(message: "Ontology #{params['acronym']} has no submissions")
       end
     end
 
