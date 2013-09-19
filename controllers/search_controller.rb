@@ -22,6 +22,8 @@ class SearchController < ApplicationController
       q = params["q"]
       globalParams = @params.dup
       query = get_query(q, globalParams)
+      #puts query
+
       params = get_params(globalParams)
       docs = Array.new
 
@@ -42,6 +44,9 @@ class SearchController < ApplicationController
         doc[:submission] = submission
         instance = LinkedData::Models::Class.read_only(doc)
         docs.push(instance)
+
+        #TODO: this is a termporary sort until we find a better solution for wildcard queries
+        docs.sort! {|a, b| a[:prefLabel].downcase <=> b[:prefLabel].downcase} if (q[-1] == '*')
       end
       #need to return a Page object
       page = page_object(docs, total_found)
@@ -53,8 +58,10 @@ class SearchController < ApplicationController
       query = ""
       acronyms = []
 
-      if args[EXACT_MATCH_PARAM] == "true"
+      if (args[EXACT_MATCH_PARAM] == "true")
         query = "prefLabelExact:\"#{q}\""
+      elsif (q[-1] == '*')
+        query = "prefLabelExact:#{q}"
       else
         query = get_tokenized_query(q, args)
       end
@@ -68,6 +75,7 @@ class SearchController < ApplicationController
         acronyms = onts.map {|o| o.acronym}
       else
         acronyms = ontologies_param_to_acronyms
+        #acronyms = params["ontologies"].split(",").map {|o| o.strip}
       end
 
       if acronyms && !acronyms.empty?
