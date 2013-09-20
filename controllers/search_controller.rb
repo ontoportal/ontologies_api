@@ -22,16 +22,7 @@ class SearchController < ApplicationController
       q = params["q"]
       globalParams = @params.dup
       query = get_query(q, globalParams)
-
-
-
-
-      puts query
-
-
-
-
-
+      #puts query
       params = get_params(globalParams)
       docs = Array.new
 
