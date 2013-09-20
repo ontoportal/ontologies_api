@@ -267,17 +267,27 @@ module Sinatra
         id
       end
 
-      def retrieve_latest_submissions
+      def retrieve_latest_submissions(options = {})
+        status = (options[:status] || "RDF").to_s.upcase
+        include_ready = status.eql?("READY") ? true : false
+        status = "RDF" if status.eql?("READY")
+        any = true if status.eql?("ANY")
+        include_views = options[:include_views] || false
         includes = OntologySubmission.goo_attrs_to_load(includes_param)
-        includes << :submissionStatus if !includes.include?(:submissionStatus)
-        submissions = OntologySubmission.where(submissionStatus: [ code: "RDF"])
-                        .include(includes).to_a
+        includes << :submissionStatus unless includes.include?(:submissionStatus)
+        if any
+          submissions_query = OntologySubmission.where
+        else
+          submissions_query = OntologySubmission.where(submissionStatus: [ code: status])
+        end
 
+        submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
+        submissions = submissions_query.include(includes).to_a
 
         # Figure out latest parsed submissions using all submissions
         latest_submissions = {}
         submissions.each do |sub|
-          next unless sub.ready?
+          next if include_ready && !sub.ready?
           latest_submissions[sub.ontology.acronym] ||= sub
           latest_submissions[sub.ontology.acronym] = sub if sub.submissionId > latest_submissions[sub.ontology.acronym].submissionId
         end
