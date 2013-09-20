@@ -22,7 +22,15 @@ class SearchController < ApplicationController
       q = params["q"]
       globalParams = @params.dup
       query = get_query(q, globalParams)
-      #puts query
+
+
+
+
+      puts query
+
+
+
+
 
       params = get_params(globalParams)
       docs = Array.new
@@ -56,7 +64,7 @@ class SearchController < ApplicationController
     def get_query(q, args={})
       raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if q.nil? || q.strip.empty?
       query = ""
-      acronyms = []
+      onts = nil
 
       if (args[EXACT_MATCH_PARAM] == "true")
         query = "prefLabelExact:\"#{q}\""
@@ -66,17 +74,22 @@ class SearchController < ApplicationController
         query = get_tokenized_query(q, args)
       end
 
-      if !args[ONTOLOGIES_PARAM]
+      if args[ONTOLOGIES_PARAM]
+        onts = ontology_objects_from_params()
+      else
         if args[INCLUDE_VIEWS_PARAM] == "true"
           onts = Ontology.where.include(:acronym).to_a
         else
           onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include([:acronym]).to_a
         end
-        acronyms = onts.map {|o| o.acronym}
-      else
-        acronyms = ontologies_param_to_acronyms
-        #acronyms = params["ontologies"].split(",").map {|o| o.strip}
       end
+
+      onts.each do |ont|
+        ont.bring(:viewingRestriction) if ont.bring?(:viewingRestriction)
+        ont.bring(:acronym) if ont.bring?(:acronym)
+      end
+      onts = filter_access(onts)
+      acronyms = onts.map {|o| o.acronym}
 
       if acronyms && !acronyms.empty?
         query << " AND "
