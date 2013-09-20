@@ -29,13 +29,16 @@ class OntologiesController < ApplicationController
     get "/:acronym/latest_submission" do
       ont = Ontology.find(params["acronym"]).first
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
+      include_status = params["include_status"]
       check_last_modified(ont)
       ont.bring(:acronym, :submissions)
-      latest = ont.latest_submission
-      if latest
-        latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+      if include_status
+        latest = ont.latest_submission(status: include_status.to_sym)
+      else
+        latest = ont.latest_submission(status: :any)
       end
-      reply latest || {}
+      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
+      reply(latest || {})
     end
 
     ##
