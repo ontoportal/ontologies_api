@@ -68,7 +68,7 @@ class SearchController < ApplicationController
 
       if args[ONTOLOGIES_PARAM]
         onts = ontology_objects_from_params()
-        Ontology.where.models(onts).include(Ontology.access_control_settings[:access_control_load]).all
+        #Ontology.where.models(onts).include(Ontology.access_control_settings[:access_control_load]).all
       else
         if args[INCLUDE_VIEWS_PARAM] == "true"
           onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
@@ -76,7 +76,7 @@ class SearchController < ApplicationController
           onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
         end
       end
-      onts = filter_access(onts)
+      #onts = filter_access(onts)
       acronyms = onts.map {|o| o.acronym}
 
       if acronyms && !acronyms.empty?
