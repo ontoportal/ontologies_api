@@ -22,15 +22,7 @@ class SearchController < ApplicationController
       q = params["q"]
       globalParams = @params.dup
       query = get_query(q, globalParams)
-
-
-
-
-      puts query
-
-
-
-
+      #puts query
       params = get_params(globalParams)
       docs = Array.new
 
@@ -68,7 +60,6 @@ class SearchController < ApplicationController
       if (args[EXACT_MATCH_PARAM] == "true")
         query = "prefLabelExact:\"#{q}\""
       elsif (q[-1] == '*')
-        q.gsub!(/\s+/, '\ ')
         query = "prefLabelExact:#{q}"
         args["pagesize"] = 500
       else
