@@ -5,9 +5,10 @@ module Sinatra
     module PaginationHelper
       ##
       # Check the request params to get page and pagesize, both are returned
-      def page_params
-        page = @params["page"]     || 1
-        size = @params["pagesize"] || 50
+      def page_params(params=nil)
+        params ||= @params
+        page = params["page"]     || 1
+        size = params["pagesize"] || 50
         begin
           page = Integer(page)
           size = Integer(size)
