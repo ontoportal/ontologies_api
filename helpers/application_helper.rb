@@ -158,8 +158,9 @@ module Sinatra
       ##
       # Look for the ontologies acronym and give back a formatted list of ontolody id uris
       # This can be called without passing an argument and it will use the values from the current request
-      def ontologies_param(params = nil)
+      def ontologies_param(params=nil)
         params ||= @params
+
         if params["ontologies"]
           # Get list
           ontologies = params["ontologies"].split(",").map {|o| o.strip}
@@ -171,6 +172,29 @@ module Sinatra
           return ontologies
         end
         Array.new
+      end
+
+      def restricted_ontologies(params=nil)
+        params ||= @params
+
+        if params["ontologies"]
+          onts = ontology_objects_from_params(params)
+          Ontology.where.models(onts).include(*Ontology.access_control_settings[:access_control_load]).all
+        else
+          if params["include_views"] == "true"
+            onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
+          else
+            onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
+          end
+        end
+        onts = filter_access(onts)
+
+        return onts
+      end
+
+      def restricted_ontologies_to_acronyms(params=nil)
+        onts = restricted_ontologies(params)
+        return onts.map {|o| o.acronym}
       end
 
       def ontologies_param_to_acronyms(params = nil)

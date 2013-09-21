@@ -62,13 +62,14 @@ class SearchController < ApplicationController
       elsif (q[-1] == '*')
         q.gsub!(/\s+/, '\ ')
         query = "prefLabelExact:#{q}"
+        args["pagesize"] = 500
       else
         query = get_tokenized_query(q, args)
       end
 
       if args[ONTOLOGIES_PARAM]
         onts = ontology_objects_from_params()
-        #Ontology.where.models(onts).include(Ontology.access_control_settings[:access_control_load]).all
+        Ontology.where.models(onts).include(*Ontology.access_control_settings[:access_control_load]).all
       else
         if args[INCLUDE_VIEWS_PARAM] == "true"
           onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
@@ -134,10 +135,11 @@ class SearchController < ApplicationController
     end
 
     def get_params(args={})
+      pagenum, pagesize = page_params(args)
       args.delete "q"
       args.delete "page"
       args.delete "pagesize"
-      pagenum, pagesize = page_params()
+      args.delete "ontologies"
 
       if pagenum <= 1
         args["start"] = 0
