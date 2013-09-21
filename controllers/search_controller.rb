@@ -60,6 +60,7 @@ class SearchController < ApplicationController
       if (args[EXACT_MATCH_PARAM] == "true")
         query = "prefLabelExact:\"#{q}\""
       elsif (q[-1] == '*')
+        q.gsub!(/\s+/, '\ ')
         query = "prefLabelExact:#{q}"
       else
         query = get_tokenized_query(q, args)
@@ -67,17 +68,13 @@ class SearchController < ApplicationController
 
       if args[ONTOLOGIES_PARAM]
         onts = ontology_objects_from_params()
+        Ontology.where.models(onts).include(Ontology.access_control_settings[:access_control_load]).all
       else
         if args[INCLUDE_VIEWS_PARAM] == "true"
-          onts = Ontology.where.include(:acronym).to_a
+          onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
         else
-          onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include([:acronym]).to_a
+          onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
         end
-      end
-
-      onts.each do |ont|
-        ont.bring(:viewingRestriction) if ont.bring?(:viewingRestriction)
-        ont.bring(:acronym) if ont.bring?(:acronym)
       end
       onts = filter_access(onts)
       acronyms = onts.map {|o| o.acronym}
