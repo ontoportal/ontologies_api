@@ -26,7 +26,7 @@ class SearchController < ApplicationController
 
 
 
-      puts query
+      #puts query
 
 
 
@@ -80,15 +80,23 @@ class SearchController < ApplicationController
         if args[INCLUDE_VIEWS_PARAM] == "true"
           onts = Ontology.where.include(:acronym).to_a
         else
+
+          # instead of this, just iterate and get rid of views onts list
+
           onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include([:acronym]).to_a
         end
       end
 
-      onts.each do |ont|
-        ont.bring(:viewingRestriction) if ont.bring?(:viewingRestriction)
-        ont.bring(:acronym) if ont.bring?(:acronym)
-      end
-      onts = filter_access(onts)
+
+      #Ontology.where.models(onts).include(:viewingRestriction)
+
+      #onts.each do |ont|
+      #  ont.bring(:viewingRestriction) if ont.bring?(:viewingRestriction)
+      #  ont.bring(:acronym) if ont.bring?(:acronym)
+      #end
+
+      #onts = filter_access(onts)
+
       acronyms = onts.map {|o| o.acronym}
 
       if acronyms && !acronyms.empty?
