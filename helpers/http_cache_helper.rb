@@ -3,7 +3,7 @@ require 'sinatra/base'
 module Sinatra
   module Helpers
     module HTTPCacheHelper
-      REDIS = Redis.new(host: LinkedData.settings.redis_host, port: LinkedData.settings.redis_port)
+      REDIS = Redis.new(host: LinkedData.settings.http_cache_redis_host, port: LinkedData.settings.http_cache_redis_port)
       @@redis_available = nil
 
       ##
