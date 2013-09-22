@@ -32,8 +32,8 @@ require 'ncbo_resolver'
 module Sinatra
   module Helpers
     module ResourceIndexHelper
-      NCBO::Resolver.configure(redis_host: OntologiesAPI.settings.resolver_redis_host,
-                               redis_port: OntologiesAPI.settings.resolver_redis_port)
+      NCBO::Resolver.configure(redis_host: LinkedData::OntologiesAPI.settings.resolver_redis_host,
+                               redis_port: LinkedData::OntologiesAPI.settings.resolver_redis_port)
 
       # Old REST service used for resolving class URIs into short IDs.
       REST_URL = 'http://rest.bioontology.org/bioportal'
