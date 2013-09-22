@@ -177,7 +177,7 @@ module Sinatra
       def restricted_ontologies(params=nil)
         params ||= @params
 
-        if params["ontologies"]
+        if params["ontologies"] && !params["ontologies"].empty?
           onts = ontology_objects_from_params(params)
           Ontology.where.models(onts).include(*Ontology.access_control_settings[:access_control_load]).all
         else
