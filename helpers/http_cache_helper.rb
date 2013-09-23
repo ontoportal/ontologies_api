@@ -5,6 +5,7 @@ module Sinatra
     module HTTPCacheHelper
       REDIS = Redis.new(host: LinkedData::OntologiesAPI.settings.http_redis_host,
                         port: LinkedData::OntologiesAPI.settings.http_redis_port)
+      puts "(API) >> Using HTTP Redis instance at #{LinkedData::OntologiesAPI.settings.http_redis_host}:#{LinkedData::OntologiesAPI.settings.http_redis_port}"
       @@redis_available = nil
 
       ##
