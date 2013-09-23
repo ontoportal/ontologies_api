@@ -19,13 +19,16 @@ class SearchController < ApplicationController
 
     def process_search(params = nil)
       params ||= @params
-      q = params["q"]
-      globalParams = @params.dup
-      query = get_query(q, globalParams)
-      #puts query
-      params = get_params(globalParams)
-      docs = Array.new
 
+      text = params["q"]
+      #query = get_standard_query(text, params)
+      #puts "Standard query: #{query}"
+      query = get_edismax_query(text, params)
+      #puts "Edismax query: #{query}"
+      set_page_params(params)
+      #puts params
+
+      docs = Array.new
       resp = LinkedData::Models::Class.search(query, params)
       total_found = resp["response"]["numFound"]
 
@@ -41,74 +44,104 @@ class SearchController < ApplicationController
         ontology = LinkedData::Models::Ontology.read_only(id: ontology_uri, acronym: doc[:submissionAcronym])
         submission = LinkedData::Models::OntologySubmission.read_only(id: doc[:ontologyId], ontology: ontology)
         doc[:submission] = submission
+        doc[:ontology_rank] = LinkedData::OntologiesAPI.settings.ontology_rank[doc[:submissionAcronym]] || 0
         instance = LinkedData::Models::Class.read_only(doc)
         docs.push(instance)
+      end
 
+      if (text[-1] == '*')
         #TODO: this is a termporary sort until we find a better solution for wildcard queries
-        docs.sort! {|a, b| a[:prefLabel].downcase <=> b[:prefLabel].downcase} if (q[-1] == '*')
+        docs.sort! {|a, b| [a[:prefLabel].downcase, b[:ontology_rank]] <=> [b[:prefLabel].downcase, a[:ontology_rank]]}
+      else
+        docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [b[:score], a[:ontology_rank]]}
       end
       #need to return a Page object
       page = page_object(docs, total_found)
       reply 200, page
     end
 
-    def get_query(q, args={})
-      raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if q.nil? || q.strip.empty?
+    def get_standard_query(text, params={})
+      raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
       query = ""
       onts = nil
 
-      if (args[EXACT_MATCH_PARAM] == "true")
-        query = "prefLabelExact:\"#{q}\""
-      elsif (q[-1] == '*')
-        query = "prefLabelExact:#{q}"
-        args["pagesize"] = 500
+      if (params[EXACT_MATCH_PARAM] == "true")
+        query = "prefLabelExact:\"#{text}\""
+      elsif (text[-1] == '*')
+        text.gsub!(/\s+/, '\ ')
+        query = "prefLabelExact:#{text}"
+        params["pagesize"] = 500
       else
-        query = get_tokenized_query(q, args)
+        query = get_tokenized_standard_query(text, params)
       end
 
-      if args[ONTOLOGIES_PARAM]
-        onts = ontology_objects_from_params()
-        Ontology.where.models(onts).include(*Ontology.access_control_settings[:access_control_load]).all
-      else
-        if args[INCLUDE_VIEWS_PARAM] == "true"
-          onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
-        else
-          onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
-        end
-      end
-      #onts = filter_access(onts)
+      onts = restricted_ontologies(params)
       acronyms = onts.map {|o| o.acronym}
+      query << " AND "
+      query << get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
-      if acronyms && !acronyms.empty?
-        query << " AND "
-        query << get_quoted_field_query_param(acronyms, "submissionAcronym", "OR")
-      end
-
-      if args[REQUIRE_DEFINITIONS_PARAM] == "true"
+      if params[REQUIRE_DEFINITIONS_PARAM] == "true"
         query << " AND definition:[* TO *]"
       end
 
       return query
     end
 
-    def get_tokenized_query(text, args)
+    def get_edismax_query(text, params={})
+      raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
+      query = ""
+      onts = nil
+      params["defType"] = "edismax"
+      params["stopwords"] = "true"
+      params["lowercaseOperators"] = "true"
+      params["fl"] = "*,score"
+
+      if (params[EXACT_MATCH_PARAM] == "true")
+        params["qf"] = "prefLabelExact"
+        query = "\"#{text}\""
+      elsif (text[-1] == '*')
+        params["qf"] = "prefLabelExact"
+        text.gsub!(/\s+/, '\ ')
+        query = text
+        params["pagesize"] = 500
+      else
+        params["qf"] = "prefLabel^1.4 synonym"
+        params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
+        query = "\"#{text}\""
+      end
+
+      onts = restricted_ontologies(params)
+      acronyms = onts.map {|o| o.acronym}
+      filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
+
+      if params[REQUIRE_DEFINITIONS_PARAM] == "true"
+        filter_query << " AND definition:[* TO *]"
+      end
+      params["fq"] = filter_query
+
+      return query
+    end
+
+    private
+
+    def get_tokenized_standard_query(text, params)
       words = text.split
       query = "("
       query << get_non_quoted_field_query_param(words, "prefLabel")
       query << " OR "
       query << get_non_quoted_field_query_param(words, "synonym")
 
-      if args[INCLUDE_PROPERTIES_PARAM] == "true"
+      if params[INCLUDE_PROPERTIES_PARAM] == "true"
         query << " OR "
         query << get_non_quoted_field_query_param(words, "property")
       end
-
       query << ")"
+
       return query
     end
 
-    def get_quoted_field_query_param(words, fieldName, clause)
-      query = "#{fieldName}:"
+    def get_quoted_field_query_param(words, clause, fieldName="")
+      query = fieldName.empty? ? "" : "#{fieldName}:"
 
       if (words.length > 1)
         query << "("
@@ -124,29 +157,31 @@ class SearchController < ApplicationController
       if (words.length > 1)
         query << ")"
       end
+
       return query
     end
 
-    def get_non_quoted_field_query_param(words, fieldName)
-      query = "#{fieldName}:"
+    def get_non_quoted_field_query_param(words, fieldName="")
+      query = fieldName.empty? ? "" : "#{fieldName}:"
       query << words.join(" ")
+
       return query
     end
 
-    def get_params(args={})
-      pagenum, pagesize = page_params(args)
-      args.delete "q"
-      args.delete "page"
-      args.delete "pagesize"
-      args.delete "ontologies"
+    def set_page_params(params={})
+      pagenum, pagesize = page_params(params)
+      params.delete "q"
+      params.delete "page"
+      params.delete "pagesize"
+      params.delete "ontologies"
 
       if pagenum <= 1
-        args["start"] = 0
+        params["start"] = 0
       else
-        args["start"] = pagenum * pagesize - pagesize
+        params["start"] = pagenum * pagesize - pagesize
       end
-      args["rows"] = pagesize
-      return args
+      params["rows"] = pagesize
     end
+
   end
 end
