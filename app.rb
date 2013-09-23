@@ -86,7 +86,7 @@ use LinkedData::Security::AccessDenied
 if LinkedData.settings.enable_http_cache
   require 'rack/cache'
   require 'redis-rack-cache'
-  redis_host_port = "#{LinkedData::OntologiesAPI.settings.http_cache_redis_host}:#{LinkedData::OntologiesAPI.settings.http_cache_redis_port}"
+  redis_host_port = "#{LinkedData::OntologiesAPI.settings.http_redis_host}:#{LinkedData::OntologiesAPI.settings.http_redis_port}"
   use Rack::Cache,
     verbose: true,
     metastore: "redis://#{redis_host_port}/0/metastore",
