@@ -19,6 +19,7 @@ class SearchController < ApplicationController
 
     def process_search(params = nil)
       params ||= @params
+
       text = params["q"]
       #query = get_standard_query(text, params)
       #puts "Standard query: #{query}"
@@ -43,11 +44,16 @@ class SearchController < ApplicationController
         ontology = LinkedData::Models::Ontology.read_only(id: ontology_uri, acronym: doc[:submissionAcronym])
         submission = LinkedData::Models::OntologySubmission.read_only(id: doc[:ontologyId], ontology: ontology)
         doc[:submission] = submission
+        doc[:ontology_rank] = LinkedData::OntologiesAPI.settings.ontology_rank[doc[:submissionAcronym]] || 0
         instance = LinkedData::Models::Class.read_only(doc)
         docs.push(instance)
+      end
 
+      if (text[-1] == '*')
         #TODO: this is a termporary sort until we find a better solution for wildcard queries
-        docs.sort! {|a, b| a[:prefLabel].downcase <=> b[:prefLabel].downcase} if (text[-1] == '*')
+        docs.sort! {|a, b| [a[:prefLabel].downcase, b[:ontology_rank]] <=> [b[:prefLabel].downcase, a[:ontology_rank]]}
+      else
+        docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [b[:score], a[:ontology_rank]]}
       end
       #need to return a Page object
       page = page_object(docs, total_found)
@@ -88,6 +94,7 @@ class SearchController < ApplicationController
       params["defType"] = "edismax"
       params["stopwords"] = "true"
       params["lowercaseOperators"] = "true"
+      params["fl"] = "*,score"
 
       if (params[EXACT_MATCH_PARAM] == "true")
         params["qf"] = "prefLabelExact"
