@@ -6,6 +6,13 @@ class SearchController < ApplicationController
     REQUIRE_DEFINITIONS_PARAM = "require_definition"
     INCLUDE_PROPERTIES_PARAM = "include_properties"
 
+    PREF_LABEL_FIELD_WEIGHT = 1.4
+    SYNONYM_FIELD_WEIGHT = 1
+    PROPERTY_FIELD_WEIGHT = 1
+
+    #TODO: temp var
+    WILDCARD_RESULT_SIZE = 5000
+
     # execute a search query
     get do
       process_search()
@@ -26,7 +33,6 @@ class SearchController < ApplicationController
       query = get_edismax_query(text, params)
       #puts "Edismax query: #{query}"
       set_page_params(params)
-      #puts params
 
       docs = Array.new
       resp = LinkedData::Models::Class.search(query, params)
@@ -50,13 +56,18 @@ class SearchController < ApplicationController
       end
 
       if (text[-1] == '*')
-        #TODO: this is a termporary sort until we find a better solution for wildcard queries
+        #TODO: this is a termporary block until we find a better solution for wildcard queries
         docs.sort! {|a, b| [a[:prefLabel].downcase, b[:ontology_rank]] <=> [b[:prefLabel].downcase, a[:ontology_rank]]}
+        params.delete("start")
+        set_page_params(params)
+        docs = docs[params["start"], params["pagesize"]]
       else
-        docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [b[:score], a[:ontology_rank]]}
+        docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
       end
+
       #need to return a Page object
       page = page_object(docs, total_found)
+
       reply 200, page
     end
 
@@ -68,9 +79,11 @@ class SearchController < ApplicationController
       if (params[EXACT_MATCH_PARAM] == "true")
         query = "prefLabelExact:\"#{text}\""
       elsif (text[-1] == '*')
+        #TODO: This is a termporary solution for wildcard searches
         text.gsub!(/\s+/, '\ ')
         query = "prefLabelExact:#{text}"
-        params["pagesize"] = 500
+        params["start"] = 0
+        params["rows"] = WILDCARD_RESULT_SIZE
       else
         query = get_tokenized_standard_query(text, params)
       end
@@ -100,13 +113,16 @@ class SearchController < ApplicationController
         params["qf"] = "prefLabelExact"
         query = "\"#{text}\""
       elsif (text[-1] == '*')
+        #TODO: This is a termporary solution for wildcard searches
         params["qf"] = "prefLabelExact"
         text.gsub!(/\s+/, '\ ')
         query = text
-        params["pagesize"] = 500
+        # return ALL rows every time because we need to re-sort them
+        params["start"] = 0
+        params["rows"] = WILDCARD_RESULT_SIZE
       else
-        params["qf"] = "prefLabel^1.4 synonym"
-        params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
+        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT}"
+        params["qf"] << " property^#{PROPERTY_FIELD_WEIGHT}" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         query = "\"#{text}\""
       end
 
@@ -170,17 +186,19 @@ class SearchController < ApplicationController
 
     def set_page_params(params={})
       pagenum, pagesize = page_params(params)
-      params.delete "q"
-      params.delete "page"
-      params.delete "pagesize"
-      params.delete "ontologies"
+      params["page"] = pagenum
+      params["pagesize"] = pagesize
+      params.delete("q")
+      params.delete("ontologies")
 
-      if pagenum <= 1
-        params["start"] = 0
-      else
-        params["start"] = pagenum * pagesize - pagesize
+      unless params["start"]
+        if pagenum <= 1
+          params["start"] = 0
+        else
+          params["start"] = pagenum * pagesize - pagesize
+        end
       end
-      params["rows"] = pagesize
+      params["rows"] ||= pagesize
     end
 
   end
