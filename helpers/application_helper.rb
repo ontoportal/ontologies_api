@@ -321,22 +321,32 @@ module Sinatra
       def get_ontology_and_submission
         ont = Ontology.find(@params["ontology"])
               .include(:acronym)
-              .include(submissions: [:submissionId, submissionStatus: [:code], ontology: [:acronym]])
+              .include(submissions:
+                       [:submissionId, submissionStatus: [:code], ontology: [:acronym]])
                 .first
         error(404, "Ontology '#{@params["ontology"]}' not found.") if ont.nil?
         submission = nil
         if @params.include? "ontology_submission_id"
           submission = ont.submission(@params[:ontology_submission_id])
-          error 404, "You must provide an existing submission ID for the #{@params["acronym"]} ontology" if submission.nil?
+          if submission.nil?
+            error 404,
+               "You must provide an existing submission ID for the #{@params["acronym"]} ontology"
+          end
         else
           submission = ont.latest_submission(status: [:RDF])
         end
-        error 404,  "Ontology #{@params["ontology"]} submission not found." if submission.nil?
+        if submission.nil?
+          error 404,  "Ontology #{@params["ontology"]} submission not found."
+        end
         if !submission.ready?(status: [:RDF])
-          error 404,  "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
+          error(404,
+                "Ontology #{@params["ontology"]} submission i"+
+                "#{submission.submissionId} has not been parsed.")
         end
         if submission.nil?
-          error 404, "Ontology #{@params["acronym"]} does not have any submissions" if submission.nil?
+          if submission.nil?
+            error 404, "Ontology #{@params["acronym"]} does not have any submissions"
+          end
         end
         return ont, submission
       end
