@@ -6,7 +6,7 @@ class SearchController < ApplicationController
     REQUIRE_DEFINITIONS_PARAM = "require_definition"
     INCLUDE_PROPERTIES_PARAM = "include_properties"
 
-    PREF_LABEL_FIELD_WEIGHT = 1.4
+    PREF_LABEL_FIELD_WEIGHT = 1.5
     SYNONYM_FIELD_WEIGHT = 1
     PROPERTY_FIELD_WEIGHT = 1
 
