@@ -14,7 +14,8 @@ class MappingsController < ApplicationController
                                  .include(process: [:name, :owner ])
                                  .all
 
-    reply mappings
+    res = filter_mappings_with_no_ontology(mappings)
+    reply res
   end
 
   # Get mappings for an ontology
@@ -26,7 +27,7 @@ class MappingsController < ApplicationController
                                  .include(process: [:name, :owner ])
                                  .page(page,size)
                                  .all
-    reply mappings
+    reply filter_mappings_with_no_ontology(mappings)
   end
 
   namespace "/mappings" do
@@ -47,7 +48,7 @@ class MappingsController < ApplicationController
                   .include(process: [:name, :owner ])
                   .page(page,size)
                   .all
-      reply mappings
+      reply filter_mappings_with_no_ontology(mappings)
     end
 
     get "/recent" do
@@ -56,7 +57,7 @@ class MappingsController < ApplicationController
         error 422, "Recent mappings only processes calls under 50"
       else
         mappings = LinkedData::Mappings.recent_user_mappings(size)
-        reply mappings
+        reply filter_mappings_with_no_ontology(mappings)
       end
     end
 
@@ -70,7 +71,7 @@ class MappingsController < ApplicationController
       if mapping
         onts = mapping.terms.map {|t| t.ontology }
         LinkedData::Models::Ontology.where.models(onts).include(:acronym).all
-        reply mapping
+        reply filter_mappings_with_no_ontology([mapping]).first
       else
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       end
