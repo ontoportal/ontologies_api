@@ -370,6 +370,30 @@ module Sinatra
         return object[:object]
       end
 
+      ##
+      # At the moment we do not remove mappings when archiving
+      # ontologies and some mappings point to inexistent ontologies
+      # #
+      def filter_mappings_with_no_ontology(mappings)
+        result = []
+        mappings.each do |map|
+          count = 0
+          map.terms.each do |t|
+            next if !t.ontology.loaded_attributes.include?:acronym
+            count += 1
+          end
+          if count == map.terms.length
+            result << map
+          end
+        end
+        if mappings.instance_of? Goo::Base::Page
+          return Goo::Base::Page.new(mappings.page_number,
+                              mappings.page_size,
+                              mappings.aggregate,
+                              result)
+        end
+        return result
+      end
     end
   end
 end

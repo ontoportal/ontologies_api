@@ -297,7 +297,7 @@ class TestMappingsController < TestCase
       assert last_response.status == 201
       response = MultiJson.load(last_response.body)
       assert response["process"].first["comment"] == "comment for mapping test #{i}"
-      assert response["process"].first["creator"] == "http://data.bioontology.org/users/tim"
+      assert response["process"].first["creator"]["users/tim"]
       assert response["process"].first["relation"] == relations[i]
       response["classes"].each do |cls|
         if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]
@@ -339,7 +339,8 @@ class TestMappingsController < TestCase
     assert (response.length == 4)
     date = nil
     response.each do |x|
-      assert rest_mappings.map { |x| x.id.to_s }.include?(response.first["@id"])
+      assert rest_mappings.map { |x| x.id.to_s.split("/")[-1] }
+                  .include?(response.first["@id"].to_s.split("/")[-1])
       date_x = DateTime.iso8601(response.first["process"].first["date"])
       if date
         assert date >= date_x
