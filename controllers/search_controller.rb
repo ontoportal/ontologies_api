@@ -21,9 +21,8 @@ class SearchController < ApplicationController
 
     private
 
-    def process_search(params = nil)
+    def process_search(params=nil)
       params ||= @params
-
       text = params["q"]
       #query = get_standard_query(text, params)
       #puts "Standard query: #{query}"
@@ -72,7 +71,6 @@ class SearchController < ApplicationController
     def get_standard_query(text, params={})
       raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
       query = ""
-      onts = nil
 
       if (params[EXACT_MATCH_PARAM] == "true")
         query = "prefLabelExact:\"#{text}\""
@@ -88,8 +86,8 @@ class SearchController < ApplicationController
         query = get_tokenized_standard_query(text, params)
       end
 
-      onts = restricted_ontologies(params)
-      acronyms = onts.map {|o| o.acronym}
+      ontologies = restricted_ontologies(params)
+      acronyms = ontologies.map {|o| o.acronym}
       query << " AND "
       query << get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
@@ -103,7 +101,6 @@ class SearchController < ApplicationController
     def get_edismax_query(text, params={})
       raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
       query = ""
-      onts = nil
       params["defType"] = "edismax"
       params["stopwords"] = "true"
       params["lowercaseOperators"] = "true"
@@ -127,8 +124,8 @@ class SearchController < ApplicationController
         query = "\"#{text}\""
       end
 
-      onts = restricted_ontologies(params)
-      acronyms = onts.map {|o| o.acronym}
+      ontologies = restricted_ontologies(params)
+      acronyms = ontologies.map {|o| o.acronym}
       filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
       if params[REQUIRE_DEFINITIONS_PARAM] == "true"

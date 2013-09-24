@@ -187,7 +187,7 @@ module Sinatra
             onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
           end
         end
-        #onts = filter_access(onts)
+        onts = filter_access(onts)
 
         return onts
       end
