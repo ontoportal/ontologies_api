@@ -14,8 +14,7 @@ class AnnotatorController < ApplicationController
       params ||= @params
       text = params["text"]
       raise error 400, "A text to be annotated must be supplied using the argument text=<text to be annotated>" if text.nil? || text.strip.empty?
-      ontologies = restricted_ontologies(params)
-      acronyms = ontologies.map {|o| o.acronym}
+      acronyms = restricted_ontologies_to_acronyms(params)
       semantic_types = semantic_types_param
       max_level = params["max_level"].to_i || 0
       mapping_types = params["mappings"]

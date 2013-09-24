@@ -86,8 +86,7 @@ class SearchController < ApplicationController
         query = get_tokenized_standard_query(text, params)
       end
 
-      ontologies = restricted_ontologies(params)
-      acronyms = ontologies.map {|o| o.acronym}
+      acronyms = restricted_ontologies_to_acronyms(params)
       query << " AND "
       query << get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
@@ -124,8 +123,7 @@ class SearchController < ApplicationController
         query = "\"#{text}\""
       end
 
-      ontologies = restricted_ontologies(params)
-      acronyms = ontologies.map {|o| o.acronym}
+      acronyms = restricted_ontologies_to_acronyms(params)
       filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
       if params[REQUIRE_DEFINITIONS_PARAM] == "true"
