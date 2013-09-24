@@ -4,12 +4,6 @@ class TestMappingsController < TestCase
 
   def self.before_suite
 
-    @@redis = Redis.new(:host => LinkedData.settings.redis_host, :port => LinkedData.settings.redis_port)
-    db_size = @@redis.dbsize
-    if db_size > 2000
-      puts "   This test cannot be run. You are probably pointing to the wrong redis backend. "
-      return
-    end
     LinkedData::Models::TermMapping.all.each do |m|
       m.delete
     end
@@ -18,11 +12,6 @@ class TestMappingsController < TestCase
     end
     LinkedData::Models::MappingProcess.all.each do |m|
       m.delete
-    end
-
-    mappings = @@redis.keys.select { |x| x["mappings:"] }
-    if mappings.length > 0
-      @@redis.del(mappings)
     end
 
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
