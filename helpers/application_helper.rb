@@ -379,6 +379,7 @@ module Sinatra
         mappings.each do |map|
           count = 0
           map.terms.each do |t|
+            next if !t.loaded_attributes.include?(:ontology)
             next if !t.ontology.loaded_attributes.include?:acronym
             count += 1
           end
