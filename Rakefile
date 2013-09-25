@@ -101,7 +101,8 @@ namespace :deploy do
     puts 'Updating bundle'
     `bundle update`
     puts 'Restarting unicorn'
-    `rake unicorn:stop && rake unicorn:start:production`
+    `sudo env PATH=$PATH rake unicorn:stop`
+    `sudo env PATH=$PATH rake unicorn:start:production`
     puts 'Clearing cache'
     `bundle exec rake cache:clear:production`
   end
