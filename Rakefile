@@ -98,6 +98,8 @@ namespace :deploy do
     puts 'Deploying ontologies_api'
     puts 'Doing pull'
     `git pull`
+    puts "Installing bundle"
+    `bundle install`
     puts 'Updating bundle'
     `bundle update`
     puts 'Restarting unicorn'
@@ -112,6 +114,8 @@ namespace :deploy do
     puts 'Deploying ontologies_api'
     puts 'Doing rsync'
     `rsync -av  ncboprod-rest1:/srv/ncbo/ontologies_api/current/* /srv/ncbo/ontologies_api/current/`
+    puts "Installing bundle"
+    `bundle install`
     puts 'Updating bundle'
     `bundle update`
     puts 'Restarting unicorn'
