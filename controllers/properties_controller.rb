@@ -1,11 +1,11 @@
 class PropertiesController < ApplicationController
 
   namespace "/ontologies/:ontology/properties" do
-    get '/:property/label' do 
+    get '/:property/label' do
       expires 86400, :public
       ont, submission = get_ontology_and_submission
       query_label = <<eso
-SELECT * 
+SELECT *
 FROM #{submission.id.to_ntriples}
 WHERE {
 <#{params[:property]}> <http://www.w3.org/2000/01/rdf-schema#label> ?label }
