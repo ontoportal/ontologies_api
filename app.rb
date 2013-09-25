@@ -17,6 +17,7 @@ require 'ncbo_cron'
 # Require middleware
 require 'rack/accept'
 require 'rack/post-body-to-params'
+require 'rack-timeout'
 require_relative 'lib/rack/slow_requests'
 require_relative 'lib/rack/cube_reporter'
 
@@ -78,6 +79,7 @@ if LinkedData::OntologiesAPI.settings.enable_monitoring
   use Rack::SlowRequests, log_path: LinkedData::OntologiesAPI.settings.slow_request_log
 end
 
+use Rack::Timeout; Rack::Timeout.timeout = 55  # seconds, shorter than unicorn timeout
 use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
