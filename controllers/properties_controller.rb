@@ -2,6 +2,7 @@ class PropertiesController < ApplicationController
 
   namespace "/ontologies/:ontology/properties" do
     get '/:property/label' do 
+      expires 86400, :public
       ont, submission = get_ontology_and_submission
       query_label = <<eso
 SELECT * 
