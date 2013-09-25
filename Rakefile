@@ -106,4 +106,18 @@ namespace :deploy do
     puts 'Clearing cache'
     `bundle exec rake cache:clear:production`
   end
+
+  desc "Deploy production using rsync instead of git pull"
+  task :production_rsync do
+    puts 'Deploying ontologies_api'
+    puts 'Doing rsync'
+    `rsync -av  ncboprod-rest1:/srv/ncbo/ontologies_api/current/* /srv/ncbo/ontologies_api/current/`
+    puts 'Updating bundle'
+    `bundle update`
+    puts 'Restarting unicorn'
+    `sudo env PATH=$PATH rake unicorn:stop`
+    `sudo env PATH=$PATH rake unicorn:start:production`
+    puts 'Clearing cache'
+    `bundle exec rake cache:clear:production`
+  end
 end
