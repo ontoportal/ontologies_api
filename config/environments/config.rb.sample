@@ -23,8 +23,8 @@ Annotator.config do |config|
   config.stop_words_default_file ||= "./config/default_stop_words.txt"
   config.mgrep_host            ||= "localhost"
   config.mgrep_port            ||= 55555
-  config.http_redis_host = "localhost"
-  config.http_redis_port = 6379
+  config.annotator_redis_host = "localhost"
+  config.annotator_redis_port = 6379
 end
 
 LinkedData::OntologiesAPI.config do |config|
