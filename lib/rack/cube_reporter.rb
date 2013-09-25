@@ -25,9 +25,11 @@ module Rack
         duration_ms: ((finish - start)*1000).ceil,
         path: env["REQUEST_PATH"],
         cache_hit: cache_hit,
+        status: data[0],
         user: {
           apikey: apikey,
           username: username,
+          ip: env["REMOTE_ADDR"],
           user_agent: env["HTTP_USER_AGENT"]
         }
       }
