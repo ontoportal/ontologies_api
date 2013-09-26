@@ -26,6 +26,7 @@ class MappingsController < ApplicationController
                                  .include(terms: [ :term, ontology: [ :acronym ] ])
                                  .include(process: [:name, :owner ])
                                  .page(page,size)
+                                 .no_count
                                  .all
     reply filter_mappings_with_no_ontology(mappings)
   end
@@ -47,6 +48,8 @@ class MappingsController < ApplicationController
       mappings = mappings.include(terms: [ :term, ontology: [ :acronym ] ])
                   .include(process: [:name, :owner ])
                   .page(page,size)
+                  .query_options({ "soft-limit" => "150" })
+                  .no_count
                   .all
       reply filter_mappings_with_no_ontology(mappings)
     end
