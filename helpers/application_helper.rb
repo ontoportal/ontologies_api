@@ -244,16 +244,9 @@ module Sinatra
       # Replies 404 if the ontology does not exist
       # Replies 400 if the ontology does not have a parsed submission
       def ontology_objects_from_params(params = nil)
-        ontologies = ontologies_param(params)
-        ontology_objs = []
-        ontologies.each do |ontology_id|
-          ontology = LinkedData::Models::Ontology.find(uri_as_needed(ontology_id)).first
-          error(404, "Ontology `#{ontology_id}` not found") if ontology.nil?
-          submission = ontology.latest_submission
-          error(400, "No parsed submissions for ontology with acronym `#{acronym}`") if submission.nil?
-          ontology_objs << ontology
-        end
-        ontology_objs
+        ontologies = Set.new(ontologies_param(params))
+        all_onts = LinkedData::Models::Ontology.where.include(LinkedData::Models::Ontology.goo_attrs_to_load).to_a
+        all_onts.select {|o| ontologies.include?(o.id.to_s)}
       end
 
       def ontology_uri_acronym_map
