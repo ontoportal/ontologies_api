@@ -39,7 +39,8 @@ class TestProvisionalClassesController < TestCase
   def _ontology_and_class
     count, acronyms, ontologies = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
     ontology = ontologies.first
-    cls = LinkedData::Models::Class.where.include(:prefLabel).in(ontology.latest_submission).read_only.page(1, 1).first
+    sub = ontology.latest_submission(status: :rdf)
+    cls = LinkedData::Models::Class.in(sub).include(:prefLabel).page(1, 1).first
     return ontology, cls
   end
 

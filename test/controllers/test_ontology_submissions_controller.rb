@@ -26,8 +26,8 @@ class TestOntologySubmissionsController < TestCase
       released: DateTime.now.to_s,
       contact: {name: "test_name", email: "test@example.org"}
     }
-    @@status_uploaded = "http://data.bioontology.org/submission_statuses/UPLOADED"
-    @@status_rdf = "http://data.bioontology.org/submission_statuses/RDF"
+    @@status_uploaded = "UPLOADED"
+    @@status_rdf = "RDF"
   end
 
   def self._create_user

@@ -17,7 +17,8 @@ class NotesController < ApplicationController
     ont = Ontology.find(params["ontology"]).include(:submissions, :acronym).first
     error 404, "You must provide a valid id to retrieve notes for an ontology" if ont.nil?
     check_last_modified_segment(LinkedData::Models::Note, [ont.acronym])
-    cls = LinkedData::Models::Class.find(params["cls"]).in(ont.latest_submission).include(notes: LinkedData::Models::Note.goo_attrs_to_load(includes_param)).first
+    sub = ont.latest_submission(status: :rdf)
+    cls = LinkedData::Models::Class.find(params["cls"]).in(sub).include(notes: LinkedData::Models::Note.goo_attrs_to_load(includes_param)).first
     error 404, "You must provide a valid class id" if cls.nil?
     notes = cls.notes
     recurse_replies(notes) if params["include_threads"]
