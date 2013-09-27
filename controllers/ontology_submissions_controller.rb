@@ -119,15 +119,7 @@ class OntologySubmissionsController < ApplicationController
       submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath]
       ont = Ontology.find(params['acronym']).include(:submissions => submission_attributes).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
-      submission = nil
-      ont.submissions.each do |sub|
-        # check submission status?
-        #next if not sub.submissionStatus == OK?
-        if sub.submissionId == params['ontology_submission_id'].to_i
-          submission = sub
-          break
-        end
-      end
+      submission = ont.submission(params['ontology_submission_id'].to_i)
       error 404, "There is no such submission for download" if submission.nil?
       file_path = submission.uploadFilePath
       if File.readable? file_path
