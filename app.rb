@@ -79,7 +79,9 @@ if LinkedData::OntologiesAPI.settings.enable_monitoring
   use Rack::SlowRequests, log_path: LinkedData::OntologiesAPI.settings.slow_request_log
 end
 
-use Rack::Timeout; Rack::Timeout.timeout = 55  # seconds, shorter than unicorn timeout
+if settings.environment == :production
+  use Rack::Timeout; Rack::Timeout.timeout = 55  # seconds, shorter than unicorn timeout
+end
 use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
