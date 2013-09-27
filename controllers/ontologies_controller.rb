@@ -83,19 +83,8 @@ class OntologiesController < ApplicationController
     get '/:acronym/download' do
       ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
-      #submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath]
-      #ont = Ontology.find(params["acronym"]).include(:submissions => submission_attributes).first
-      # A list of submission arrays in order of most recent submission
-      #submissions = ont.submissions.sort {|a,b| a.submissionId <=> b.submissionId}.reverse
-      # check submission status?
-      #submissions.each do |sub|
-      #  sub.submissionStatus is OK?
-      #end
-      #latest_submission = submissions.first
-      latest_submission = ont.latest_submission  # Should resolve to latest successfully loaded submission
+      latest_submission = ont.latest_submission(status: :rdf)  # Should resolve to latest successfully loaded submission
       error 404, "There is no latest submission loaded for download" if latest_submission.nil?
-      #binding.pry
-      #file_path = '/data/src/ncbo/ontAPI/test/data/ontology_files/BRO_v3.1.owl'
       latest_submission.bring(:uploadFilePath)
       file_path = latest_submission.uploadFilePath
       if File.readable? file_path
