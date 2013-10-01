@@ -107,3 +107,5 @@ if settings.environment == :console
   Pry.start binding, :quiet => true
   exit
 end
+
+binding.pry

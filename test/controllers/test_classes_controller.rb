@@ -28,19 +28,16 @@ class TestClassesController < TestCase
     end
   end
 
-  def test_first_default_page_with_all
+  def test_include_all_should_err
     ont = Ontology.find("TEST-ONT-0").include(:acronym).first
     call = "/ontologies/#{ont.acronym}/classes?include=all"
     get call
-    assert last_response.ok?
-    clss = MultiJson.load(last_response.body)
-    assert last_response.ok?
-    assert clss["collection"].length == 50 #default size
-    clss["collection"].each do |cls|
-      assert cls["properties"]
-      assert_instance_of Hash,cls["properties"]
-      assert cls["properties"].include?"http://www.w3.org/2004/02/skos/core#prefLabel"
-    end
+    assert !last_response.ok?
+    assert last_response.status == 422
+    call = "/ontologies/#{ont.acronym}/classes/roots?include=all"
+    get call
+    assert !last_response.ok?
+    assert last_response.status == 422
   end
 
   def test_all_class_pages

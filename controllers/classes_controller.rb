@@ -4,11 +4,12 @@ class ClassesController < ApplicationController
 
     # Display a page for all classes
     get do
+      error 422 if (includes_param && includes_param.include?(:all))
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
+      unmapped = ld.delete(:properties)
       page_data = LinkedData::Models::Class.in(submission)
                                 .include(ld)
                                 .page(page,size)
@@ -21,10 +22,11 @@ class ClassesController < ApplicationController
 
     # Get root classes
     get '/roots' do
+      error 422 if (includes_param && includes_param.include?(:all))
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = load_attrs.delete(:properties) || (includes_param && includes_param.include?(:all))
+      unmapped = load_attrs.delete(:properties)
       include_childrenCount = load_attrs.include?(:childrenCount)
       roots = submission.roots(load_attrs, include_childrenCount)
       if unmapped && roots.length > 0
@@ -60,6 +62,7 @@ class ClassesController < ApplicationController
 
     # Get a paths_to_root view
     get '/:cls/paths_to_root' do
+      error 422 if (includes_param && includes_param.include?(:all))
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
@@ -69,6 +72,7 @@ class ClassesController < ApplicationController
 
     # Get a tree view
     get '/:cls/tree' do
+      error 422 if (includes_param && includes_param.include?(:all))
       # We override include values other than the following, user-provided include ignored
       params["include"] = "prefLabel,childrenCount,children"
       env["rack.request.query_hash"] = params
@@ -119,13 +123,14 @@ class ClassesController < ApplicationController
 
     # Get all children of given class
     get '/:cls/children' do
+      error 422 if (includes_param && includes_param.include?(:all))
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       cls = get_class(submission)
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
+      unmapped = ld.delete(:properties)
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
       page_data_query.aggregate(*aggregates) unless aggregates.empty?
@@ -138,11 +143,12 @@ class ClassesController < ApplicationController
 
     # Get all parents of given class
     get '/:cls/parents' do
+      error 422 if (includes_param && includes_param.include?(:all))
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
+      unmapped = ld.delete(:properties)
       if ld.include?(:children)
         error 400, "The parents call does not allow children attribute to be included"
       end
