@@ -8,12 +8,15 @@ class ResourceIndexController < ApplicationController
   #  -  get_options(params)
   #  -  get_ontology_virtual_id(ontology_acronym)
 
-  namespace "/resource_index" do
+  EXPIRE_ONTOLOGIES = 60 * 60 * 24  # /ontologies cached for 24 hours
+  EXPIRE_RESOURCES  = 60 * 60 * 24   # /resources cached for 24 hours
 
+  namespace "/resource_index" do
 
     # http://rest.bioontology.org/resource_index/ontologies
     # Return all ontologies
     get "/ontologies" do
+      expires EXPIRE_ONTOLOGIES, :public
       options = get_options(params)
       result = NCBO::ResourceIndex.ontologies(options)
       check404(result, "No ontologies found by resource index client.")
@@ -78,6 +81,7 @@ class ResourceIndexController < ApplicationController
 
     # Return all resources
     get "/resources" do
+      expires EXPIRE_RESOURCES, :public
       options = get_options(params)
       result = NCBO::ResourceIndex.resources(options)
       check404(result, "No resources found.")
@@ -132,22 +136,25 @@ class ResourceIndexController < ApplicationController
     #
 
     def massage_ontologies(old_response, options)
-      ri_ontology_acronyms = []
-      old_response.each do |ont|
-        acronym = acronym_from_virtual_id(ont[:virtualOntologyId])  # from resource_index_helper (REDIS lookup)
-        if acronym.nil?
-          # The RI contains an ontology that is not in the new API service, or the
-          # GOO/REDIS store doesn't contain the lookup data?
-          LOGGER.info("/resource_index/ontologies: failed lookup of ontology URI for #{ont[:virtualOntologyId]} - #{ont[:ontologyName]}")
-        else
-          ri_ontology_acronyms.push(acronym)
-        end
-      end
+      #ri_onts = old_response.map {|ont| ont[:acronym] = acronym_from_virtual_id(ont[:virtualOntologyId]); ont }
+      #ri_ont_acronyms = ri_onts.map {|ont| ont[:acronym] }.compact
+      # Resolution failure logging
+      #ri_debug = 0  # Speed things up by skipping the failure logging.
+      #if ri_debug
+      #  ri_onts.each do |ont|
+      #    if ont[:acronym].nil?
+      #      # The RI contains an ontology that is not in the new REST service, or the
+      #      # GOO/REDIS store doesn't contain the lookup data?
+      #      LOGGER.info("/resource_index/ontologies: failed lookup of ontology URI for #{ont[:virtualOntologyId]} - #{ont[:ontologyName]}")
+      #    end
+      #  end
+      #end
+      ri_ont_acronyms = old_response.map {|ont| acronym_from_virtual_id(ont[:virtualOntologyId]) }.compact
       # Triple Store ontologies - not equivalent to resource index ontologies.
       ont_attributes = LinkedData::Models::Ontology.goo_attrs_to_load()
       linked_ontologies = LinkedData::Models::Ontology.where.include(ont_attributes).all
       # Return only the triple store ontologies with data in the resource index
-      linked_ontologies.delete_if {|ont| not ri_ontology_acronyms.include? ont.acronym  }
+      linked_ontologies.delete_if {|ont| not ri_ont_acronyms.include? ont.acronym  }
       return linked_ontologies
     end
 

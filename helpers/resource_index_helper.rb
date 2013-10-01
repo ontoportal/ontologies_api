@@ -222,7 +222,7 @@ module Sinatra
       # https://github.com/ncbo/ncbo_resolver
       # @param uri [String] ontology id in URI form
       def virtual_id_from_uri(uri)
-        uri = replace_url_prefix(uri) rescue binding.pry
+        uri = replace_url_prefix(uri) #rescue binding.pry
         acronym = acronym_from_ontology_uri(uri)
         virtual_id_from_acronym(acronym)
       end

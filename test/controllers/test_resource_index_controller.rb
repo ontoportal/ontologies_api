@@ -59,7 +59,7 @@ class TestResourceIndexController < TestCase
         submission = ont_new.submissions.last  # get the last submission, regardless of parsing status
         submission.bring_remaining
         submission.set_ready
-        submission.uploadFilePath = "test/data/uploaded_ontologies/BROTEST-0/1/BRO_v3.2.owl"
+        submission.uploadFilePath = "test/data/ontology_files/repo/TEST-ONT-0/1/BRO_v3.1.owl"
         submission.ontology = ontology
         submission.save
       end
@@ -91,6 +91,7 @@ class TestResourceIndexController < TestCase
 
   PAGE_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "page",
     "description": "A Resource Index page of results.",
@@ -108,6 +109,7 @@ class TestResourceIndexController < TestCase
 
   ONTOLOGIES_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "array",
     "title": "ontologies",
     "description": "An array of Resource Index ontologies.",
@@ -117,6 +119,7 @@ class TestResourceIndexController < TestCase
 
   ONTOLOGY_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "ontology",
     "description": "A Resource Index ontology.",
@@ -128,13 +131,15 @@ class TestResourceIndexController < TestCase
       "@id": { "type": "string", "format": "uri", "required": true },
       "@type": { "type": "string", "format": "uri", "required": true },
       "links": { "type": "object", "required": true },
-      "@context": { "type": "object", "required": true }
+      "@context": { "type": "object", "required": true },
+      "summaryOnly": { "type": [ "string", "null" ] }
     }
   }
   END_SCHEMA
 
   SEARCH_RESOURCES_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "array",
     "title": "resources",
     "description": "An array of Resource Index resource objects.",
@@ -144,6 +149,7 @@ class TestResourceIndexController < TestCase
 
   SEARCH_RESOURCE_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "search resource",
     "description": "A Resource Index resource.",
@@ -158,6 +164,7 @@ class TestResourceIndexController < TestCase
 
   ANNOTATIONS_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "array",
     "title": "annotations",
     "description": "An array of Resource Index annotation objects.",
@@ -167,23 +174,25 @@ class TestResourceIndexController < TestCase
 
   ANNOTATION_SCHEMA = <<-END_SCHEMA
   {
-      "type": "object",
-      "title": "annotation",
-      "description": "A Resource Index annotation.",
-      "additionalProperties": false,
-      "properties": {
-          "annotatedClass": { "type": "object", "required": true },
-          "annotationType": { "type": "string", "required": true },
-          "elementField": { "type": "string", "required": true },
-          "elementId": { "type": "string", "required": true },
-          "from": { "type": "number", "required": true },
-          "to": { "type": "number", "required": true }
-      }
+    "$schema": "http://json-schema.org/draft-03/schema#",
+    "type": "object",
+    "title": "annotation",
+    "description": "A Resource Index annotation.",
+    "additionalProperties": false,
+    "properties": {
+      "annotatedClass": { "type": "object", "required": true },
+      "annotationType": { "type": "string", "required": true },
+      "elementField": { "type": "string", "required": true },
+      "elementId": { "type": "string", "required": true },
+      "from": { "type": "number", "required": true },
+      "to": { "type": "number", "required": true }
+    }
   }
   END_SCHEMA
 
   RANKED_ELEMENTS_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "array",
     "title": "ranked elements",
     "description": "An array of Resource Index ranked element objects.",
@@ -193,6 +202,7 @@ class TestResourceIndexController < TestCase
 
   RANKED_ELEMENT_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "ranked element",
     "description": "A Resource Index ranked element.",
@@ -209,6 +219,7 @@ class TestResourceIndexController < TestCase
 
   RESOURCES_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "array",
     "title": "resources",
     "description": "An array of Resource Index resource objects.",
@@ -218,6 +229,7 @@ class TestResourceIndexController < TestCase
 
   RESOURCE_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "resource",
     "description": "A Resource Index resource.",
@@ -238,6 +250,7 @@ class TestResourceIndexController < TestCase
 
   ELEMENTS_ANNOTATED_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "elements",
     "description": "A hash of Resource Index element objects."
@@ -246,6 +259,7 @@ class TestResourceIndexController < TestCase
 
   ELEMENT_ANNOTATED_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "element",
     "description": "A Resource Index element."
@@ -254,6 +268,7 @@ class TestResourceIndexController < TestCase
 
   ELEMENTS_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "array",
     "title": "elements",
     "description": "An array of Resource Index element objects."
@@ -262,6 +277,7 @@ class TestResourceIndexController < TestCase
 
   ELEMENT_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "element",
     "description": "A Resource Index element.",
@@ -275,6 +291,7 @@ class TestResourceIndexController < TestCase
 
   ELEMENT_FIELD_SCHEMA = <<-END_SCHEMA
   {
+    "$schema": "http://json-schema.org/draft-03/schema#",
     "type": "object",
     "title": "element_field",
     "description": "A Resource Index element field.",
