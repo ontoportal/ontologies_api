@@ -33,9 +33,11 @@ class TestClassesController < TestCase
 
     page_response = nil
     count_terms = 0
+    last_page_n = nil
     begin
       call = "/ontologies/#{ont.acronym}/classes"
       if page_response
+        last_page_n = page_response['nextPage']
         call <<  "?page=#{page_response['nextPage']}"
       end
       get call
@@ -52,6 +54,14 @@ class TestClassesController < TestCase
     end while page_response["nextPage"]
     #bnodes thing got fixed. changed to 486.
     assert count_terms == 486
+
+    #one more page should bring no results
+    call = "/ontologies/#{ont.acronym}/classes"
+    call <<  "?page=#{last_page_n+1}"
+    get call
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    assert page_response["collection"].length == 0
   end
 
   def test_page_include_ancestors
