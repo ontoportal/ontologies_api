@@ -28,6 +28,21 @@ class TestClassesController < TestCase
     end
   end
 
+  def test_first_default_page_with_all
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+    call = "/ontologies/#{ont.acronym}/classes?include=all"
+    get call
+    assert last_response.ok?
+    clss = MultiJson.load(last_response.body)
+    assert last_response.ok?
+    assert clss["collection"].length == 50 #default size
+    clss["collection"].each do |cls|
+      assert cls["properties"]
+      assert_instance_of Hash,cls["properties"]
+      assert cls["properties"].include?"http://www.w3.org/2004/02/skos/core#prefLabel"
+    end
+  end
+
   def test_all_class_pages
     ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
@@ -98,6 +113,40 @@ class TestClassesController < TestCase
       count_terms = count_terms + page_response["collection"].length
     end while page_response["nextPage"]
     assert count_terms == 486
+  end
+
+  def test_single_cls_all
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
+    clss_ids.each do |cls_id|
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}?include=all"
+      get call
+      assert last_response.ok?
+      cls = MultiJson.load(last_response.body)
+      assert(!cls["prefLabel"].nil?)
+      assert_instance_of(String, cls["prefLabel"])
+      assert_instance_of(Array, cls["synonym"])
+      assert_instance_of(Hash, cls["properties"])
+      assert(cls["properties"].include?("http://www.w3.org/2004/02/skos/core#prefLabel"))
+    end
+  end
+
+  def test_single_cls_properties
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+    clss_ids = [ 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Interaction',
+            "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Electron_Microscope" ]
+    clss_ids.each do |cls_id|
+      escaped_cls= CGI.escape(cls_id)
+      call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}?include=properties"
+      get call
+      assert last_response.ok?
+      cls = MultiJson.load(last_response.body)
+      assert(cls["prefLabel"].nil?)
+      assert_instance_of(Hash, cls["properties"])
+      assert(cls["properties"].include?("http://www.w3.org/2004/02/skos/core#prefLabel"))
+    end
   end
 
   def test_single_cls

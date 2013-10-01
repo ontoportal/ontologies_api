@@ -8,7 +8,7 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties)
+      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
       page_data = LinkedData::Models::Class.in(submission)
                                 .include(ld)
                                 .page(page,size)
@@ -24,7 +24,7 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = load_attrs.delete(:properties)
+      unmapped = load_attrs.delete(:properties) || (includes_param && includes_param.include?(:all))
       include_childrenCount = load_attrs.include?(:childrenCount)
       roots = submission.roots(load_attrs, include_childrenCount)
       if unmapped && roots.length > 0
@@ -47,7 +47,7 @@ class ClassesController < ApplicationController
         end
       end
 
-      unmapped = ld.delete(:properties)
+      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
       cls = get_class(submission, ld)
       if unmapped
         LinkedData::Models::Class.in(submission).models([cls]).include(:unmapped).all
@@ -125,7 +125,7 @@ class ClassesController < ApplicationController
       cls = get_class(submission)
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties)
+      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
       page_data_query.aggregate(*aggregates) unless aggregates.empty?
@@ -142,7 +142,7 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties)
+      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
       if ld.include?(:children)
         error 400, "The parents call does not allow children attribute to be included"
       end
