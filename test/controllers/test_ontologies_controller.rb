@@ -109,8 +109,36 @@ class TestOntologiesController < TestCase
     assert last_response.status == 409
   end
 
+  def test_create_new_ontology_same_name
+    put "/ontologies/XXX", :name => @@name
+    assert last_response.status == 409
+  end
+
+  def test_create_new_ontology_acronym_invalid
+    # acronym rules:
+    #   - 0-9, a-z, A-Z, dash, and underscore (no spaces)
+    #   - acronym must start with a letter (upper or lower case)
+    #   - acronym length <= 16 characters
+    #   - acronym and name must be unique
+    #
+    # test invalid starting characters: '_', '-', [0-9]
+    ont_name = 'Invalid Ontology Acronym'
+    put "/ontologies/_abc123", :name => ont_name
+    check400 last_response
+    put "/ontologies/-abc123", :name => ont_name
+    check400 last_response
+    put "/ontologies/123abc", :name => ont_name
+    check400 last_response
+    # test acronym is too long (17 > 16), otherwise this one is OK
+    put "/ontologies/A1234567890123456", :name => ont_name
+    check400 last_response
+    # test acronym with any invalid character
+    put "/ontologies/A*", :name => ont_name
+    check400 last_response
+  end
+
   def test_create_new_ontology_invalid
-    put "/ontologies/ont_no_properties"
+    put "/ontologies/no_properties"
     assert last_response.status == 422
     assert MultiJson.load(last_response.body)["errors"]
   end
@@ -141,4 +169,15 @@ class TestOntologiesController < TestCase
   def test_ontology_properties
     # not implemented yet
   end
+
+
+  private
+
+  def check400(response)
+    assert response.status == 400
+    assert MultiJson.load(response.body)["errors"]
+  end
+
+
+
 end

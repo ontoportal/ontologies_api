@@ -1,4 +1,17 @@
 class OntologiesController < ApplicationController
+
+  # Ontology acronym and name validation rules
+  ACRONYM_RULES = <<-DOC
+  Acronyms should conform to these rules:
+  # it may contain a-z, A-Z, 0-9, dash, and underscore (no spaces)
+  # it must start with a letter (upper or lower case)
+  # it's length <= 16 characters
+  # it must be unique (no ontology already owns it)
+  DOC
+  # regex to satisfy these criteria (tested at http://rubular.com/)
+  ACRONYM_REGEX = /\A[a-z]{1}[-_0-9a-z]{0,15}\Z/i
+
+
   namespace "/ontologies" do
 
     ##
@@ -104,11 +117,30 @@ class OntologiesController < ApplicationController
 
     def create_ontology
       params ||= @params
-      ont = Ontology.find(params["acronym"]).first
+      acronym = params["acronym"]
+
+      # acronym must be well formed
+      if ACRONYM_REGEX.match(acronym).nil?
+        error 400, "Ontology acronym is not well formed.\n" + ACRONYM_RULES
+      end
+
+      # ontology acronym must be unique
+      ont = Ontology.find(acronym).first
       if ont.nil?
         ont = instance_from_params(Ontology, params)
       else
-        error 409, "Ontology already exists, to add a new submission, please POST to: /ontologies/#{params["acronym"]}/submission. To modify the resource, use PATCH."
+        error_msg = <<-ERR
+        Ontology already exists, see #{ont.id}
+        To add a new submission, POST to: /ontologies/#{params["acronym"]}/submission.
+        To modify the resource, use PATCH.
+        ERR
+        error 409, error_msg
+      end
+
+      # ontology name must be unique
+      ont_names = Ontology.where.include(:name).to_a.map {|o| o.name }
+      if ont_names.include?(ont.name)
+        error 409, "Ontology name is already in use by another ontology."
       end
 
       if ont.valid?
