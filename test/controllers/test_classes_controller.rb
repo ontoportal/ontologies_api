@@ -386,6 +386,25 @@ class TestClassesController < TestCase
     end
   end
 
+  def test_parents_in_include_all
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+    cls_id = "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Federal_Funding_Resource"
+    escaped_cls= CGI.escape(cls_id)
+    call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}/parents"
+    get call
+    assert last_response.ok?
+    parents = MultiJson.load(last_response.body)
+    assert parents.length == 1
+    assert parents[0]["@id"]["Funding_Resource"]
+
+    call = "/ontologies/#{ont.acronym}/classes/#{escaped_cls}?include=all"
+    get call
+    assert last_response.ok?
+    cls_all_data = MultiJson.load(last_response.body)
+    assert cls_all_data["parents"].length == 1
+    assert cls_all_data["parents"][0]["@id"]["Funding_Resource"]
+  end
+
   def test_calls_not_found
     escaped_cls= CGI.escape("http://my.bogus.inexistent.class/that/this/is")
 
