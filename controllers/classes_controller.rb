@@ -164,7 +164,7 @@ class ClassesController < ApplicationController
       if unmapped
         LinkedData::Models::Class.in(submission).models(cls.parents).include(:unmapped).all
       end
-      reply cls.parents
+      reply cls.parents.select { |x| !x.id.to_s["owl#Thing"] }
     end
 
     private
