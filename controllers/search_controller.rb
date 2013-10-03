@@ -106,7 +106,7 @@ class SearchController < ApplicationController
         params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
         params["sort"] = "score desc, norm(prefLabel) desc"
       else
-        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT}"
+        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
         params["qf"] << " property^#{PROPERTY_FIELD_WEIGHT}" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         query = "\"#{text}\""
       end
