@@ -102,14 +102,9 @@ class SearchController < ApplicationController
         params["qf"] = "prefLabelExact"
         query = "\"#{text}\""
       elsif (text[-1] == '*')
-        #TODO: This is a termporary solution for wildcard searches
-        text.gsub!(/\s+/, '\ ')
         query = text
-        params["qf"] = "prefLabelExact"
-        params["sort"] = "prefLabelExact asc"
-        # return ALL rows every time because we need to re-sort them
-        #params["start"] = 0
-        #params["rows"] = WILDCARD_RESULT_SIZE
+        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
+        params["sort"] = "score desc, norm(prefLabel) desc"
       else
         params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT}"
         params["qf"] << " property^#{PROPERTY_FIELD_WEIGHT}" if params[INCLUDE_PROPERTIES_PARAM] == "true"
