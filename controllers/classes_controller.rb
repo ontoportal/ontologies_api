@@ -159,6 +159,7 @@ class ClassesController < ApplicationController
       if unmapped
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
+      page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
       reply page_data
     end
 
