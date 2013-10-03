@@ -27,7 +27,7 @@ class SearchController < ApplicationController
       #query = get_standard_query(text, params)
       #puts "Standard query: #{query}"
       query = get_edismax_query(text, params)
-      #puts "Edismax query: #{query}"
+      # puts "Edismax query: #{query}, params: #{params}"
       set_page_params(params)
 
       docs = Array.new
