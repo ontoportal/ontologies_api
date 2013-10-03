@@ -51,14 +51,7 @@ class SearchController < ApplicationController
         docs.push(instance)
       end
 
-      if (text[-1] == '*')
-        #TODO: this is a termporary block until we find a better solution for wildcard queries
-        #docs.sort! {|a, b| [a[:prefLabel].downcase, b[:ontology_rank]] <=> [b[:prefLabel].downcase, a[:ontology_rank]]}
-        #params.delete("start")
-        #set_page_params(params)
-        #docs = docs[params["start"], params["pagesize"]]
-        docs.sort! {|a, b| [a[:prefLabel].downcase, b[:ontology_rank]] <=> [b[:prefLabel].downcase, a[:ontology_rank]]}
-      else
+      if params["q"][-1] != '*'
         docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
       end
 
