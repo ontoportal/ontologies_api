@@ -38,6 +38,16 @@ class TestClassesController < TestCase
     get call
     assert !last_response.ok?
     assert last_response.status == 422
+
+    #also descendents/ancestors are not allowed
+    call = "/ontologies/#{ont.acronym}/classes/roots?include=prefLabel,descendants"
+    get call
+    assert !last_response.ok?
+    assert last_response.status == 422
+    call = "/ontologies/#{ont.acronym}/classes/roots?include=prefLabel,synonym,ancestors"
+    get call
+    assert !last_response.ok?
+    assert last_response.status == 422
   end
 
   def test_all_class_pages
@@ -78,38 +88,10 @@ class TestClassesController < TestCase
 
   def test_page_include_ancestors
     ont = Ontology.find("TEST-ONT-0").include(:acronym).first
-
-    page_response = nil
-    count_terms = 0
-    begin
-      call = "/ontologies/#{ont.acronym}/classes?include=ancestors,prefLabel"
-      if page_response
-        call << "&page=#{page_response['nextPage']}"
-      end
-      get call
-      assert last_response.ok?
-      page_response = MultiJson.load(last_response.body)
-      page_response["collection"].each do |item|
-        assert_instance_of String, item["@id"]
-        assert_instance_of Hash, item["@context"]
-        assert_instance_of Hash, item["links"]
-        ##TODO: this test is at the moment failing due to:
-        # (a) serializer embed issue
-        # (b) goo is not running properly the transitive query
-        if item["@id"]["Ontology_Development_and_Management"]
-          assert item["ancestors"].map {|x| x["@id"]}.uniq.length, 5
-          assert item["ancestors"].select { |x| x["@id"]["Software_Development_Resource"] }.length == 1
-          assert item["ancestors"].select { |x| x["@id"]["Interactive_Tool"] }.length == 1
-          assert item["ancestors"].select { |x| x["@id"]["owl#Resource"] }.length == 1
-        end
-        item["ancestors"].each do |anc|
-          assert_instance_of String, anc["prefLabel"]
-        end
-      end
-      assert last_response.ok?
-      count_terms = count_terms + page_response["collection"].length
-    end while page_response["nextPage"]
-    assert count_terms == 486
+    call = "/ontologies/#{ont.acronym}/classes?include=ancestors,prefLabel"
+    get call
+    assert !last_response.ok?
+    assert last_response.status == 422
   end
 
   def test_single_cls_all
