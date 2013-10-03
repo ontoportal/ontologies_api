@@ -4,7 +4,7 @@ class ClassesController < ApplicationController
 
     # Display a page for all classes
     get do
-      error 422 if (includes_param && includes_param.include?(:all))
+      includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
@@ -22,7 +22,7 @@ class ClassesController < ApplicationController
 
     # Get root classes
     get '/roots' do
-      error 422 if (includes_param && includes_param.include?(:all))
+      includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
@@ -50,9 +50,27 @@ class ClassesController < ApplicationController
       end
 
       unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
+      #ancestors and descedendents need to run in a separate query
+      #otherwise they can conflict with parents and children
+      with_reasoning = [ld.delete(:ancestors),ld.delete(:descendants)].delete_if { |x| x.nil? }
+      if ld[-1].is_a?(Hash)
+        if ld[-1].include?(:ancestors) || ld[-1].include?(:descendants)
+          with_reasoning << Hash.new
+          if ld[-1].include?(:ancestors)
+            with_reasoning[-1][:ancestors] = ld[-1].delete(:ancestors)
+          end
+          if ld[-1].include?(:descendants)
+            with_reasoning[-1][:descendants] = ld[-1].delete(:descendants)
+          end
+          ld.pop if ld[-1].length == 0
+        end
+      end
       cls = get_class(submission, ld)
       if unmapped
         LinkedData::Models::Class.in(submission).models([cls]).include(:unmapped).all
+      end
+      if with_reasoning.length > 0
+        LinkedData::Models::Class.in(submission).models([cls]).include(*with_reasoning).all
       end
       if load_children
         LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
@@ -62,7 +80,7 @@ class ClassesController < ApplicationController
 
     # Get a paths_to_root view
     get '/:cls/paths_to_root' do
-      error 422 if (includes_param && includes_param.include?(:all))
+      includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
@@ -72,7 +90,7 @@ class ClassesController < ApplicationController
 
     # Get a tree view
     get '/:cls/tree' do
-      error 422 if (includes_param && includes_param.include?(:all))
+      includes_param_check
       # We override include values other than the following, user-provided include ignored
       params["include"] = "prefLabel,childrenCount,children"
       env["rack.request.query_hash"] = params
@@ -99,31 +117,34 @@ class ClassesController < ApplicationController
 
     # Get all ancestors for given class
     get '/:cls/ancestors' do
+      includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission,load_attrs=[:ancestors])
       error 404 if cls.nil?
       ancestors = cls.ancestors
-      LinkedData::Models::Class.in(submission).models(ancestors).include(:prefLabel).all
+      LinkedData::Models::Class.in(submission).models(ancestors)
+        .include(:prefLabel,:synonym,:definition).all
       reply ancestors
     end
 
     # Get all descendants for given class
     get '/:cls/descendants' do
+      includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
       page_data_query = LinkedData::Models::Class.where(ancestors: cls)
-                          .in(submission).include(:prefLabel)
+                          .in(submission).include(:prefLabel,:synonym,:definition)
       page_data = page_data_query.page(page,size).all
       reply page_data
     end
 
     # Get all children of given class
     get '/:cls/children' do
-      error 422 if (includes_param && includes_param.include?(:all))
+      includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
@@ -143,7 +164,7 @@ class ClassesController < ApplicationController
 
     # Get all parents of given class
     get '/:cls/parents' do
-      error 422 if (includes_param && includes_param.include?(:all))
+      includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
@@ -168,6 +189,17 @@ class ClassesController < ApplicationController
     end
 
     private
+    def includes_param_check
+      if includes_param
+        if includes_param.include?(:all)
+          error(422, "all not allowed in include parameter for this endpoint")
+        end
+        if includes_param.include?(:ancestors) || includes_param.include?(:descendants)
+            error(422,
+            "in this endpoint ancestors and descendants are not allowed in include parameter")
+        end
+      end
+    end
 
     def get_class(submission,load_attrs=nil)
       load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
