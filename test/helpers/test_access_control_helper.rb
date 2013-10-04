@@ -83,7 +83,7 @@ class TestAccessControlHelper < TestCaseHelpers
 
   def test_delete_access
     begin
-      acronym = "SECURE_ONT_DELETE"
+      acronym = "SECURE_ONT_DEL" # must be <= 16 chars
       params = {apikey: @@user2.apikey, acronym: acronym, name: "New test name", administeredBy: [@@user2.id.to_s]}
       post "/ontologies", MultiJson.dump(params), "CONTENT_TYPE" => "application/json"
       assert last_response.status == 201

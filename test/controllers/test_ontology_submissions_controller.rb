@@ -1,6 +1,7 @@
 require_relative '../test_case'
 
 class TestOntologySubmissionsController < TestCase
+
   def self.before_suite
     _set_vars
     _delete
@@ -24,7 +25,7 @@ class TestOntologySubmissionsController < TestCase
       administeredBy: "tim",
       "file" => Rack::Test::UploadedFile.new(@@test_file, ""),
       released: DateTime.now.to_s,
-      contact: {name: "test_name", email: "test@example.org"}
+      contact: [{name: "test_name", email: "test@example.org"}]
     }
     @@status_uploaded = "UPLOADED"
     @@status_rdf = "RDF"
@@ -71,32 +72,36 @@ class TestOntologySubmissionsController < TestCase
 
   def test_create_new_submission_missing_file_and_pull_location
     post "/ontologies/#{@@acronym}/submissions", name: @@name, hasOntologyLanguage: "OWL"
-    assert last_response.status == 422
+    assert_equal(422, last_response.status, msg=get_errors(last_response))
     assert MultiJson.load(last_response.body)["errors"]
   end
 
   def test_create_new_submission_file
     post "/ontologies/#{@@acronym}/submissions", @@file_params
-    assert(last_response.status == 201, msg=last_response.errors)
+    assert_equal(201, last_response.status, msg=get_errors(last_response))
+    sub = MultiJson.load(last_response.body)
     get "/ontologies/#{@@acronym}"
     ont = MultiJson.load(last_response.body)
     assert ont["acronym"].eql?(@@acronym)
+    # Cleanup
+    delete "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}"
+    assert_equal(204, last_response.status, msg=get_errors(last_response))
   end
 
   def test_create_new_submission_and_parse
     post "/ontologies/#{@@acronym}/submissions", @@file_params
-    assert last_response.status == 201
+    assert_equal(201, last_response.status, msg=get_errors(last_response))
     sub = MultiJson.load(last_response.body)
     get "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}?include=all"
     ont = MultiJson.load(last_response.body)
     assert ont["ontology"]["acronym"].eql?(@@acronym)
     post "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}/parse"
-    assert last_response.status == 200
+    assert_equal(200, last_response.status, msg=get_errors(last_response))
     # Wait for the ontology parsing process to complete
     max = 25
     while (ont["submissionStatus"].length == 1 and ont["submissionStatus"].include?(@@status_uploaded) and max > 0)
       get "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}?include=all"
-      assert last_response.status == 200
+      assert_equal(200, last_response.status, msg=get_errors(last_response))
       ont = MultiJson.load(last_response.body)
       max = max - 1
       sleep(1.5)
@@ -105,14 +110,18 @@ class TestOntologySubmissionsController < TestCase
     assert ont["submissionStatus"].include?(@@status_rdf)
     # Try to get roots
     get "/ontologies/#{@@acronym}/classes/roots"
-    assert last_response.status == 200
+    assert_equal(200, last_response.status, msg=get_errors(last_response))
     roots = MultiJson.load(last_response.body)
     assert roots.length > 0
   end
 
   def test_create_new_ontology_submission
     post "/ontologies/#{@@acronym}/submissions", @@file_params
-    assert(last_response.status == 201, msg=last_response.errors)
+    assert_equal(201, last_response.status, msg=get_errors(last_response))
+    # Cleanup
+    sub = MultiJson.load(last_response.body)
+    delete "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}"
+    assert_equal(204, last_response.status, msg=get_errors(last_response))
   end
 
   def test_patch_ontology_submission
@@ -123,7 +132,7 @@ class TestOntologySubmissionsController < TestCase
 
     new_values = {description: "Testing new description changes"}
     patch "/ontologies/#{submission.ontology.acronym}/submissions/#{submission.submissionId}", MultiJson.dump(new_values), "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 204
+    assert_equal(204, last_response.status, msg=get_errors(last_response))
 
     get "/ontologies/#{submission.ontology.acronym}/submissions/#{submission.submissionId}"
     submission = MultiJson.load(last_response.body)
@@ -135,29 +144,47 @@ class TestOntologySubmissionsController < TestCase
     acronym = created_ont_acronyms.first
     submission_to_delete = (1..5).to_a.shuffle.first
     delete "/ontologies/#{acronym}/submissions/#{submission_to_delete}"
-    assert last_response.status == 204
+    assert_equal(204, last_response.status, msg=get_errors(last_response))
 
     get "/ontologies/#{acronym}/submissions/#{submission_to_delete}"
-    assert last_response.status == 404
+    assert_equal(404, last_response.status, msg=get_errors(last_response))
   end
 
   def test_download_submission
     num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
-    assert onts.length == 1
+    assert_equal(1, onts.length, msg="Failed to create 1 ontology?")
     ont = onts.first
-    assert ont.submissions.length == 1
+    assert_equal(1, ont.submissions.length, msg="Failed to create 1 ontology submission?")
+    assert ont.instance_of?(Ontology), msg="ont is not a #{Ontology.class}"
     sub = ont.submissions.first
+    assert sub.instance_of?(OntologySubmission), msg="sub is not a #{OntologySubmission.class}"
     # Download the specific submission
     get "/ontologies/#{sub.ontology.acronym}/submissions/#{sub.submissionId}/download"
-    assert(last_response.status == 200, msg='failed download for specific submission')
+    assert_equal(200, last_response.status, msg='failed download for specific submission : ' + get_errors(last_response))
     # Download the same submission, as the latest submission (the generic ontology download)
     get "/ontologies/#{sub.ontology.acronym}/download"
-    assert(last_response.status == 200, msg='failed download for latest submission')
+    assert_equal(200, last_response.status, msg='failed download for latest submission : ' + get_errors(last_response))
   end
 
   def test_ontology_submission_properties
     # not implemented yet
   end
 
+
+  private
+
+  def get_errors(response)
+    errors = ''
+    if response.respond_to?('errors')
+      errors += last_response.errors
+    end
+    errors += '; ' unless errors.empty?
+    begin
+      errors += MultiJson.load(last_response.body)['errors'].to_s
+    rescue
+      # pass
+    end
+    return errors.strip
+  end
 
 end

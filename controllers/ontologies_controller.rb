@@ -9,7 +9,7 @@ class OntologiesController < ApplicationController
   # it must be unique (no ontology already owns it)
   DOC
   # regex to satisfy these criteria (tested at http://rubular.com/)
-  ACRONYM_REGEX = /\A[a-z]{1}[-_0-9a-z]{0,15}\Z/i
+  ACRONYM_REGEX = /\A[A-Z]{1}[-_0-9A-Z]{0,15}\Z/
 
 
   namespace "/ontologies" do

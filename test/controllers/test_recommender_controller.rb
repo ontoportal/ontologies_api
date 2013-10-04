@@ -26,9 +26,9 @@ eos
     assert_instance_of(Array, recommendations)
     assert_equal(3, recommendations.length)
     rec = recommendations[0]
-
     assert_instance_of(Hash, rec)
-    assert_equal("MCCLTEST-0", rec['ontology']['acronym'])
+    ont_acronyms = @@ontologies.map {|o| o.bring(:acronym); o.acronym }
+    assert ont_acronyms.include? rec['ontology']['acronym']
     assert rec['numTermsMatched'] > 0
     assert rec['numTermsTotal'] > 0
     assert rec['numTermsTotal'] >= rec['numTermsMatched']
