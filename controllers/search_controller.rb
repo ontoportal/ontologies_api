@@ -103,7 +103,7 @@ class SearchController < ApplicationController
         query = "\"#{text}\""
       elsif (text[-1] == '*')
         query = text
-        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
+        params["qf"] = "prefLabelExact^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
         params["sort"] = "score desc, norm(prefLabel) desc"
       else
         params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
