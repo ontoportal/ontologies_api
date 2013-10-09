@@ -131,10 +131,12 @@
               %li
                 Filtering & query behavior
                 %ul
-                  %li ontologies={ontology_id1,ontology_id2,ontology_id3}
-                  %li semantic_types={semType1,semType2,semType3}
+                  %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
+                  %li semantic_types={semType1,semType2..,semTypeN}
                   %li max_level={0..N}
                   %li mapping_types={automatic|manual}
+                  %li stop_words={word1,word2..,wordN}
+                  %li minimum_match_length={0..N}
 
 
       %h3#nav_resource_index Resource Index
@@ -184,11 +186,11 @@
                   %li
                     Filtering & query behavior
                     %ul
-                      %li ontologies={ontology_id1,ontology_id2,ontology_id3}
-                      %li semantic_types={semType1,semType2,semType3}
+                      %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
+                      %li semantic_types={semType1,semType2..,semTypeN}
                       %li max_level={0..N}
                       %li mapping_types={automatic|manual}
-                      %li resources={resource1,resource2}
+                      %li resources={resource1,resource2..,resourceN}
                       %li exclude_numbers={true|false}
                       %li minimum_match_length={0..N}
                       %li include_synonyms={true|false}
@@ -196,8 +198,8 @@
                   %li
                     Stop words
                     %ul
-                      %li exclude_words={word1,word2,word3}
-                      %li excluded_words_are_case_sensitive={true|false}
+                      %li stop_words={word1,word2..,wordN}
+                      %li stop_words_are_case_sensitive={true|false}
           %li
             Ontologies
             %ul

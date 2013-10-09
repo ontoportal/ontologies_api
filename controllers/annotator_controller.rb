@@ -23,21 +23,16 @@ class AnnotatorController < ApplicationController
         mapping_types = mapping_types.is_a?(Array) ? mapping_types : []
       end
       exclude_nums = params["exclude_numbers"].eql?("true")
-      stop_words = params["stopWords"]
-      min_term_size = params["minTermSize"]
+      stop_words = params["stop_words"]
+      min_term_size = params["minimum_match_length"]
+      min_term_size = min_term_size.to_i if min_term_size
 
-      if min_term_size
-        min_term_size = min_term_size.to_i
-      end
       annotator = Annotator::Models::NcboAnnotator.new
-
-      unless stop_words.nil?
-        annotator.stop_words = stop_words
-      end
-      annotations = annotator.annotate(text, 
+      annotator.stop_words = stop_words if stop_words
+      annotations = annotator.annotate(text,
                                        acronyms,
-                                       semantic_types, 
-                                       exclude_nums, 
+                                       semantic_types,
+                                       exclude_nums,
                                        max_level,
                                        expand_with_mappings=mapping_types,
                                        min_term_size)
@@ -45,11 +40,13 @@ class AnnotatorController < ApplicationController
     end
 
     get '/dictionary' do
+      error 403, "Access denied" unless current_user && current_user.admin?
       annotator = Annotator::Models::NcboAnnotator.new
       annotator.generate_dictionary_file
     end
 
     get '/cache' do
+      error 403, "Access denied" unless current_user && current_user.admin?
       annotator = Annotator::Models::NcboAnnotator.new
       annotator.create_term_cache
     end
