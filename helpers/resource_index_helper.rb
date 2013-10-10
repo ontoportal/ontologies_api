@@ -145,12 +145,12 @@ module Sinatra
         #
         # Stop words
         #
-        #* exclude_words={word1,word2,word3}
-        #* excluded_words_are_case_sensitive={true|false}
-        exclude_words = [params['exclude_words']].compact
-        options[:stopWords] = exclude_words
-        options[:withDefaultStopWords] = false if not exclude_words.empty?
-        case_sensitive = params['excluded_words_are_case_sensitive']
+        #* stop_words={word1,word2,word3}
+        #* stop_words_are_case_sensitive={true|false}
+        stop_words = [params['stop_words']].compact
+        options[:stopWords] = stop_words
+        options[:withDefaultStopWords] = false if not stop_words.empty?
+        case_sensitive = params['stop_words_are_case_sensitive']
         options[:isStopWordsCaseSensitive] = case_sensitive unless case_sensitive.nil?
 
         return options
