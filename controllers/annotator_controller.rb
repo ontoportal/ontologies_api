@@ -16,16 +16,14 @@ class AnnotatorController < ApplicationController
       raise error 400, 'A text to be annotated must be supplied using the argument text=<text to be annotated>' if text.nil? || text.strip.empty?
       acronyms = restricted_ontologies_to_acronyms(params)
       semantic_types = semantic_types_param
-      max_level = params['max_level']                        # default = nil
-      max_level = max_level.to_i if max_level
+      max_level = params['max_level'].to_i                   # default = 0
       mapping_types = [params['mappings']].flatten           # default = []
       exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
-      min_term_size = params['minimum_match_length']         # default = nil
-      min_term_size = min_term_size.to_i if min_term_size
+      min_term_size = params['minimum_match_length'].to_i    # default = 0
 
       annotator = Annotator::Models::NcboAnnotator.new
       if params['stop_words']
-        annotator.stop_words = params['stop_words']
+        annotator.stop_words = [params['stop_words']].flatten
       end
       annotations = annotator.annotate(
           text,
