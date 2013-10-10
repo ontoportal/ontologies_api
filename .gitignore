@@ -28,8 +28,6 @@ bin/**
 **.DS_Store
 
 # Support local configs
-Gemfile.local
-Gemfile.lock
 config/environments/production.rb
 config/environments/test.rb
 config/environments/development.rb
