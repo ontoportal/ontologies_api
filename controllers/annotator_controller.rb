@@ -12,30 +12,28 @@ class AnnotatorController < ApplicationController
     # execute an annotator query
     def process_annotation(params=nil)
       params ||= @params
-      text = params["text"]
-      raise error 400, "A text to be annotated must be supplied using the argument text=<text to be annotated>" if text.nil? || text.strip.empty?
+      text = params['text']
+      raise error 400, 'A text to be annotated must be supplied using the argument text=<text to be annotated>' if text.nil? || text.strip.empty?
       acronyms = restricted_ontologies_to_acronyms(params)
       semantic_types = semantic_types_param
-      max_level = params["max_level"].to_i || 0
-      mapping_types = params["mappings"]
-
-      if mapping_types
-        mapping_types = mapping_types.is_a?(Array) ? mapping_types : []
-      end
-      exclude_nums = params["exclude_numbers"].eql?("true")
-      stop_words = params["stop_words"]
-      min_term_size = params["minimum_match_length"]
-      min_term_size = min_term_size.to_i if min_term_size
+      max_level = params['max_level'].to_i                   # default = 0
+      mapping_types = [params['mappings']].flatten           # default = []
+      exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
+      min_term_size = params['minimum_match_length'].to_i    # default = 0
 
       annotator = Annotator::Models::NcboAnnotator.new
-      annotator.stop_words = stop_words if stop_words
-      annotations = annotator.annotate(text,
-                                       acronyms,
-                                       semantic_types,
-                                       exclude_nums,
-                                       max_level,
-                                       expand_with_mappings=mapping_types,
-                                       min_term_size)
+      if params['stop_words']
+        annotator.stop_words = [params['stop_words']].flatten
+      end
+      annotations = annotator.annotate(
+          text,
+          acronyms,
+          semantic_types,
+          exclude_nums,
+          max_level,
+          expand_with_mappings=mapping_types,
+          min_term_size
+      )
       reply 200, annotations
     end
 

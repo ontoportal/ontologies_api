@@ -197,7 +197,7 @@ eos
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
     assert annotations.length == 3
-    params = { text: text , stopWords: ["resOUrce", "DeletioN"]}
+    params = { text: text , stop_words: ["resOUrce", "DeletioN"]}
     post "/annotator", params
     annotations = MultiJson.load(last_response.body)
     assert annotations.length == 1
