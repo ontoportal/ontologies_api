@@ -98,6 +98,10 @@ class OntologiesController < ApplicationController
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
       ont.bring(:viewingRestriction)
       check_access(ont)
+      #
+      # TODO: Also check for licensing restrictions, see
+      # TODO: https://bmir-jira.stanford.edu/browse/NCBO-331
+      #
       latest_submission = ont.latest_submission(status: :rdf)  # Should resolve to latest successfully loaded submission
       error 404, "There is no latest submission loaded for download" if latest_submission.nil?
       latest_submission.bring(:uploadFilePath)
