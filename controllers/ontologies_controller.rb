@@ -96,6 +96,8 @@ class OntologiesController < ApplicationController
     get '/:acronym/download' do
       ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
+      ont.bring(:viewingRestriction)
+      check_access(ont)
       latest_submission = ont.latest_submission(status: :rdf)  # Should resolve to latest successfully loaded submission
       error 404, "There is no latest submission loaded for download" if latest_submission.nil?
       latest_submission.bring(:uploadFilePath)

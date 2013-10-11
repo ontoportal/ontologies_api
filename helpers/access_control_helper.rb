@@ -16,6 +16,8 @@ module Sinatra
             filter_access(obj)
           end
         else
+          # TODO: Ensure obj.bring() attributes required for read_restricted?
+          # TODO: e.g. this throws an exception for an ontology without the 'viewingRestriction' attribute.
           if obj.read_restricted?
             readable = obj.readable?(env["REMOTE_USER"])
             error 403, "Access denied for this resource" unless readable
