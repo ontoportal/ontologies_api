@@ -11,6 +11,23 @@ class MetricsController < ApplicationController
       LinkedData::Models::OntologySubmission.where.models(submissions)
                          .include(metrics: metrics_include).all
 
+      #just a fallback or metrics that are not really built.
+      to_remove = []
+      submissions.each do |x|
+        if x.metrics
+          begin
+            x.metrics.submission
+          rescue
+            LOGGER.error("submission with inconsistent metrics #{x.id.to_s}")
+            to_remove << x
+          end
+        end
+      end
+      to_remove.each do |x|
+        submissions.delete x
+      end
+      #end fallback
+
       reply submissions.select { |s| !s.metrics.nil? }.map { |s| s.metrics }
     end
 
