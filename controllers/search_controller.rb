@@ -102,8 +102,14 @@ class SearchController < ApplicationController
         params["qf"] = "prefLabelExact"
         query = "\"#{text}\""
       elsif (text[-1] == '*')
-        query = text
-        params["qf"] = "prefLabelExact^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
+        # We want to escape the part of the query before the wildcard
+        # This:
+        #   cell li*
+        # Should become this:
+        #   cell\ li*
+        # This causes 'cell line' to match instead of 'line' by itself
+        query = RSolr.escape(text[0..-2]) + "*"
+        params["qf"] = "prefLabelExact^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation^1 resource_id^1"
         params["sort"] = "score desc, norm(prefLabel) desc"
       else
         params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
