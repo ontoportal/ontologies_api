@@ -42,16 +42,10 @@ gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/s
 gem 'haml'
 gem 'redcarpet'
 
-# NCBO gems (can be from a local dev path or from rubygems/git)
-gemfile_local = File.expand_path("../Gemfile.local", __FILE__)
-if File.exists?(gemfile_local)
-  self.instance_eval(Bundler.read_file(gemfile_local))
-else
-  gem 'sparql-client', :git => 'https://github.com/ncbo/sparql-client.git'
-  gem 'goo', :git => 'https://github.com/ncbo/goo.git'
-  gem 'ontologies_linked_data', :git => 'https://github.com/ncbo/ontologies_linked_data.git'
-  gem 'ncbo_resource_index_client', :git => 'https://github.com/ncbo/resource_index_ruby_client.git'
-  gem 'ncbo_annotator', :git => 'https://github.com/ncbo/ncbo_annotator.git'
-  gem 'ncbo_cron', :git => 'https://github.com/ncbo/ncbo_cron.git'
-  gem 'ncbo_resolver', git: "https://github.com/ncbo/ncbo_resolver.git"
-end
+gem 'sparql-client', :git => 'https://github.com/ncbo/sparql-client.git', :branch => "master"
+gem 'goo', :git => 'https://github.com/ncbo/goo.git', :branch => "master"
+gem 'ontologies_linked_data', :git => 'https://github.com/ncbo/ontologies_linked_data.git', :branch => "master"
+gem 'ncbo_resource_index_client', :git => 'https://github.com/ncbo/resource_index_ruby_client.git', :branch => "master"
+gem 'ncbo_annotator', :git => 'https://github.com/ncbo/ncbo_annotator.git', :branch => "master"
+gem 'ncbo_cron', :git => 'https://github.com/ncbo/ncbo_cron.git', :branch => "master"
+gem 'ncbo_resolver', git: "https://github.com/ncbo/ncbo_resolver.git", :branch => "master"
