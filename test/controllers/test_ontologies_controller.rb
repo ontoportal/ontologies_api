@@ -168,8 +168,21 @@ class TestOntologiesController < TestCase
   end
 
   def test_download_ontology
-    # see test_ontologies_submissions_controller
+    num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+    assert_equal(1, num_onts_created, msg="Failed to create 1 ontology?")
+    assert_equal(1, onts.length, msg="Failed to create 1 ontology?")
+    ont = onts.first
+    assert_instance_of(Ontology, ont, msg="ont is not a #{Ontology.class}")
+    # Download the latest submission (the generic ontology download)
+    get "/ontologies/#{created_ont_acronyms.first}/download"
+    assert_equal(200, last_response.status, msg='failed download for latest submission : ' + get_errors(last_response))
+    # see also test_ontologies_submissions_controller::test_download_submission
   end
+
+  ## TODO: test restrictions on downloads for ontologies with restricted licenses
+  #def test_download_restricted_ontology
+  #  # download should fail with a 403
+  #end
 
   def test_ontology_properties
     # not implemented yet

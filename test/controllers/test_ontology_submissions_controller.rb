@@ -154,37 +154,24 @@ class TestOntologySubmissionsController < TestCase
     num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
     assert_equal(1, onts.length, msg="Failed to create 1 ontology?")
     ont = onts.first
+    assert_instance_of(Ontology, ont, msg="ont is not a #{Ontology.class}")
     assert_equal(1, ont.submissions.length, msg="Failed to create 1 ontology submission?")
-    assert ont.instance_of?(Ontology), msg="ont is not a #{Ontology.class}"
     sub = ont.submissions.first
-    assert sub.instance_of?(OntologySubmission), msg="sub is not a #{OntologySubmission.class}"
+    assert_instance_of(OntologySubmission, sub, msg="sub is not a #{OntologySubmission.class}")
     # Download the specific submission
     get "/ontologies/#{sub.ontology.acronym}/submissions/#{sub.submissionId}/download"
     assert_equal(200, last_response.status, msg='failed download for specific submission : ' + get_errors(last_response))
-    # Download the same submission, as the latest submission (the generic ontology download)
-    get "/ontologies/#{sub.ontology.acronym}/download"
-    assert_equal(200, last_response.status, msg='failed download for latest submission : ' + get_errors(last_response))
+    # see also test_ontologies_controller::test_download_ontology
   end
+
+  ## TODO: test restrictions on downloads for ontologies with restricted licenses
+  #def test_download_restricted_submission
+  #  # download should fail with a 403
+  #end
 
   def test_ontology_submission_properties
     # not implemented yet
   end
 
-
-  private
-
-  def get_errors(response)
-    errors = ''
-    if response.respond_to?('errors')
-      errors += last_response.errors
-    end
-    errors += '; ' unless errors.empty?
-    begin
-      errors += MultiJson.load(last_response.body)['errors'].to_s
-    rescue
-      # pass
-    end
-    return errors.strip
-  end
 
 end

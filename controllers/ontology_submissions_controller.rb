@@ -116,9 +116,17 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Download a submission
     get '/:ontology_submission_id/download' do
+      acronym = params["acronym"]
       submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath]
-      ont = Ontology.find(params['acronym']).include(:submissions => submission_attributes).first
+      ont = Ontology.find(acronym).include(:submissions => submission_attributes).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
+      ont.bring(:viewingRestriction)
+      check_access(ont)
+      # TODO: Also check for licensing restrictions, see
+      # TODO: https://bmir-jira.stanford.edu/browse/NCBO-331
+      # TODO: Revise this code if/when the ontology model contains license attributes
+      # TODO: to be used for access filtering on downloads.
+      error 403, "License restrictions on download for #{acronym}" if ONT_RESTRICT_DOWNLOADS.include? acronym
       submission = ont.submission(params['ontology_submission_id'].to_i)
       error 404, "There is no such submission for download" if submission.nil?
       file_path = submission.uploadFilePath

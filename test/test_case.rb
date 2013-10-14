@@ -136,4 +136,18 @@ class TestCase < MiniTest::Unit::TestCase
     )
   end
 
+  # Abstract method to get error messages during a test.
+  def get_errors(response)
+    errors = ''
+    if response.respond_to?('errors')
+      errors += last_response.errors
+    end
+    errors += '; ' unless errors.empty?
+    begin
+      errors += MultiJson.load(last_response.body)['errors'].to_s
+    rescue
+      # pass
+    end
+    return errors.strip
+  end
 end
