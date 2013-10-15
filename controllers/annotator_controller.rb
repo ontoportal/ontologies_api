@@ -18,6 +18,7 @@ class AnnotatorController < ApplicationController
       semantic_types = semantic_types_param
       max_level = params['max_level'].to_i                   # default = 0
       mapping_types = [params['mappings']].flatten           # default = []
+      expand_with_mappings = mapping_types.first != nil
       exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
       min_term_size = params['minimum_match_length'].to_i    # default = 0
 
@@ -31,7 +32,7 @@ class AnnotatorController < ApplicationController
           semantic_types,
           exclude_nums,
           max_level,
-          expand_with_mappings=mapping_types,
+          expand_with_mappings=expand_with_mappings,
           min_term_size
       )
       reply 200, annotations
