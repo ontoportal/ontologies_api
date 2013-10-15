@@ -98,11 +98,8 @@ class OntologiesController < ApplicationController
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
       ont.bring(:viewingRestriction)
       check_access(ont)
-      # TODO: Also check for licensing restrictions, see
-      # TODO: https://bmir-jira.stanford.edu/browse/NCBO-331
-      # TODO: Revise this code if/when the ontology model contains license attributes
-      # TODO: to be used for access filtering on downloads.
-      error 403, "License restrictions on download for #{acronym}" if ONT_RESTRICT_DOWNLOADS.include? acronym
+      ont_restrict_downloads = LinkedData::OntologiesAPI.settings.restrict_download
+      error 403, "License restrictions on download for #{acronym}" if ont_restrict_downloads.include? acronym
       latest_submission = ont.latest_submission(status: :rdf)  # Should resolve to latest successfully loaded submission
       error 404, "There is no latest submission loaded for download" if latest_submission.nil?
       latest_submission.bring(:uploadFilePath)
