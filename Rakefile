@@ -99,7 +99,7 @@ namespace :deploy do
     puts 'Doing pull'
     `git pull`
     puts "Installing bundle"
-    `bundle install --without test --deployment`
+    `bundle install`
     puts 'Restarting unicorn'
     `sudo env PATH=$PATH rake unicorn:stop`
     `sudo env PATH=$PATH rake unicorn:start:production`
