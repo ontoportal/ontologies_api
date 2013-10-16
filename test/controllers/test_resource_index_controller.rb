@@ -36,9 +36,15 @@ class TestResourceIndexController < TestCase
 
   # Populate the ontology dB
   def self.before_suite
+    # Change the resolver redis host
+    NCBO::Resolver.configure(redis_host: 'ncbostage-redis2', redis_port: 6379)
+    puts "\n**************************************************************************************"
+    puts "RESOURCE INDEX TEST SUITE."
+    puts "Resolver redis modified: ncbostage-redis2:6379"
+    puts "**************************************************************************************\n"
+    # Create test 'BRO' ontology with submission
     test_ontology_acronyms = ["BRO"]
-    acronyms = []
-    LinkedData::Models::Ontology.all {|o| acronyms << o.acronym}
+    acronyms = [] && LinkedData::Models::Ontology.all {|o| acronyms << o.acronym}
     @@created_acronyms = []
     begin
       _user('create')
@@ -49,19 +55,19 @@ class TestResourceIndexController < TestCase
             name: "#{acronym} ontology",
             administeredBy: [@@user]
         }
-        ontology = LinkedData::Models::Ontology.new(ontology_data)
-        ontology.save
+        ont = LinkedData::Models::Ontology.new(ontology_data)
+        ont.save
         @@created_acronyms << acronym
         # Create a dummy ontology submission.
         ont_data = LinkedData::SampleData::Ontology.create_ontologies_and_submissions(ont_count: 1, submission_count: 1)
         ont_new = ont_data[2][0]
         ont_new.bring(:submissions)
-        submission = ont_new.submissions.last  # get the last submission, regardless of parsing status
-        submission.bring_remaining
-        submission.set_ready
-        submission.uploadFilePath = "test/data/ontology_files/repo/TEST-ONT-0/1/BRO_v3.1.owl"
-        submission.ontology = ontology
-        submission.save
+        sub = ont_new.submissions.last  # get the last submission, regardless of parsing status
+        sub.bring_remaining
+        sub.set_ready
+        sub.uploadFilePath = "test/data/ontology_files/repo/TEST-ONT-0/1/BRO_v3.1.owl"
+        sub.ontology = ont
+        sub.save
       end
     rescue Exception => e
       puts "Failure to create ontology or user in before_suite: delete and recreate triple store.\n"
@@ -70,12 +76,21 @@ class TestResourceIndexController < TestCase
   end
 
   def self.after_suite
+    # Restore the resolver redis host
+    NCBO::Resolver.configure(
+        redis_host: LinkedData::OntologiesAPI.settings.resolver_redis_host,
+        redis_port: LinkedData::OntologiesAPI.settings.resolver_redis_port
+    )
+    puts "\n**************************************************************************************"
+    puts "RESOURCE INDEX TEST SUITE."
+    puts "Resolver redis restored: #{LinkedData::OntologiesAPI.settings.resolver_redis_host}:#{LinkedData::OntologiesAPI.settings.resolver_redis_port}"
+    puts "**************************************************************************************\n"
     begin
       LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
       _user('delete')
       @@created_acronyms.each do |acronym|
-        ontology = LinkedData::Models::Ontology.find(acronym).first
-        ontology.delete unless ontology.nil?
+        ont = LinkedData::Models::Ontology.find(acronym).first
+        ont.delete unless ont.nil?
       end
     rescue Exception => e
       puts "Failure to delete ontology or user in after_suite\n"
@@ -319,6 +334,11 @@ class TestResourceIndexController < TestCase
     rest_param_list.each do |param|
       rest_target = rest_search + param
       last_response = _get_response(rest_target)
+      if DEBUG_MESSAGES
+        assert_equal(200, last_response.status, last_response.body)
+      else
+        assert_equal(200, last_response.status)
+      end
       validate_json(last_response.body, PAGE_SCHEMA)
       page = MultiJson.load(last_response.body)
       annotations = page["collection"]
@@ -349,7 +369,12 @@ class TestResourceIndexController < TestCase
     ]
     rest_param_list.each do |param|
       rest_target = rest_search + param
-      last_response = _get_response(rest_target, 404)
+      last_response = _get_response(rest_target)
+      if DEBUG_MESSAGES
+        assert_equal(404, last_response.status, last_response.body)
+      else
+        assert_equal(404, last_response.status)
+      end
     end
   end
 
@@ -357,6 +382,11 @@ class TestResourceIndexController < TestCase
   def test_get_ontologies
     rest_target = '/resource_index/ontologies'
     last_response = _get_response(rest_target)
+    if DEBUG_MESSAGES
+      assert_equal(200, last_response.status, last_response.body)
+    else
+      assert_equal(200, last_response.status)
+    end
     # Note: ontologies is no longer a paged response
     #validate_json(last_response.body, PAGE_SCHEMA)
     #ontology_pages = MultiJson.load(last_response.body)
@@ -373,6 +403,11 @@ class TestResourceIndexController < TestCase
   def test_get_resources
     rest_target = '/resource_index/resources'
     last_response = _get_response(rest_target)
+    if DEBUG_MESSAGES
+      assert_equal(200, last_response.status, last_response.body)
+    else
+      assert_equal(200, last_response.status)
+    end
     # Note: resources is no longer a paged response
     #validate_json(last_response.body, PAGE_SCHEMA)
     #resources_pages = MultiJson.load(last_response.body)
@@ -392,6 +427,11 @@ class TestResourceIndexController < TestCase
     #rest_target = "/resource_index/ranked_elements?classes[#{acronym}]=#{classid1},#{classid2}"
     rest_target = "/resource_index/ranked_elements?classes[#{ONT_ID_SHORT}]=#{CLASS_ID_SHORT}"
     last_response = _get_response(rest_target)
+    if DEBUG_MESSAGES
+      assert_equal(200, last_response.status, last_response.body)
+    else
+      assert_equal(200, last_response.status)
+    end
     validate_json(last_response.body, PAGE_SCHEMA)
     page = MultiJson.load(last_response.body)
     resources = page["collection"]
@@ -403,6 +443,11 @@ class TestResourceIndexController < TestCase
   def test_get_resource_element
     rest_target = "/resource_index/resources/#{RESOURCE_ID}/elements/#{ELEMENT_ID}"
     last_response = _get_response(rest_target)
+    if DEBUG_MESSAGES
+      assert_equal(200, last_response.status, last_response.body)
+    else
+      assert_equal(200, last_response.status)
+    end
     element = MultiJson.load(last_response.body)
     validate_element(element)
   end
@@ -415,25 +460,21 @@ class TestResourceIndexController < TestCase
     classes = "classes[BRO]=BRO:Graph_Algorithm"
     rest_target = "/resource_index/element_annotations?elements=#{element_id}&resources=#{resource_id}&#{classes}"
     last_response = _get_response(rest_target)
+    if DEBUG_MESSAGES
+      assert_equal(200, last_response.status, last_response.body)
+    else
+      assert_equal(200, last_response.status)
+    end
     validate_json(last_response.body, ANNOTATION_SCHEMA, true)
   end
 
 private
 
 
-  def _get_response(rest_target, expected_status=200)
+  def _get_response(rest_target)
     puts rest_target if DEBUG_MESSAGES
     get rest_target
-    _response_status(expected_status, last_response)
     return last_response
-  end
-
-  def _response_status(status, response)
-    if DEBUG_MESSAGES
-      assert_equal(status, response.status, response.body)
-    else
-      assert_equal(status, response.status)
-    end
   end
 
   def validate_annotated_elements(elements)
