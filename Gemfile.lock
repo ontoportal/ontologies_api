@@ -1,10 +1,10 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 8dccb9b8bbd6e163a2b37b6781e5a6c3a18b472c
+  revision: 330642b2a703c1fc86310880f84598477ef5cce7
   branch: staging
   specs:
     goo (0.0.2)
-      rdf
+      rdf (= 1.0.8)
       redis
       rest-client
       rsolr
@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 043c39be3e59c7f38aaf0690697aa7742f602262
+  revision: 177543dcb29650ac856eafc60e18f1d06ab88b5b
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 1b961b6a43bde9a9a73775f121397b4a124d076c
+  revision: adc3518b5568f8aebabff349fb31d09d83dd1d82
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 1d73c378d0a437005149c83e09acff7b48e25e04
+  revision: 44a8ec8fbaa0fe263e814665641b414e557bf6d2
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -91,7 +91,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.14)
+    activesupport (3.2.15)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
@@ -155,8 +155,8 @@ GEM
     rack-timeout (0.0.4)
     raindrops (0.12.0)
     rake (10.1.0)
-    rdf (1.0.9)
-      addressable (>= 2.3)
+    rdf (1.0.8)
+      addressable (>= 2.2)
     recursive-open-struct (0.4.4)
     redcarpet (3.0.0)
     redis (3.0.5)
