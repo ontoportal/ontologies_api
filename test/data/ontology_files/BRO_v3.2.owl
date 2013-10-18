@@ -53,7 +53,6 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <owl:AnnotationProperty rdf:about="&umls;cui"/>
     <owl:AnnotationProperty rdf:about="&desc;definition">
         <rdfs:label rdf:datatype="&xsd;string">Definition</rdfs:label>
         <core:prefLabel rdf:datatype="&xsd;string">definition</core:prefLabel>
@@ -62,6 +61,8 @@
         <core:prefLabel rdf:datatype="&xsd;string">replacedBy</core:prefLabel>
         <rdfs:domain rdf:resource="&owl;DeprecatedClass"/>
     </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="&core;notation"/>
+    <owl:AnnotationProperty rdf:about="&umls;cui"/>
     
 
 
@@ -3126,6 +3127,7 @@ we think this should be deleted</desc:definition>
         <desc:definition rdf:datatype="&xsd;string">A resource that provides items such as reagents, instruments, tissue samples or organisms.</desc:definition>
         <rdfs:comment rdf:datatype="&xsd;string">As per alignment with NIF resource type hierarchy.</rdfs:comment>
         <core:prefLabel rdf:datatype="&xsd;string">Material Resource</core:prefLabel>
+        <core:notation>BRO:0000001</core:notation>
     </owl:Class>
     
 
@@ -4040,6 +4042,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
 - epidemiology
 - development</core:editorialNote>
         <core:prefLabel rdf:datatype="&xsd;string">People Resource</core:prefLabel>
+        <core:notation>BRO:0000002</core:notation>
     </owl:Class>
     
 
