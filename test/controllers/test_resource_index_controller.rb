@@ -2,7 +2,7 @@ require_relative '../test_case'
 
 class TestResourceIndexController < TestCase
 
-  DEBUG_MESSAGES = true
+  DEBUG_MESSAGES = false
 
   # 1104 is BRO
   # 1104, BRO:Algorithm, http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm
