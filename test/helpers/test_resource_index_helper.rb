@@ -9,6 +9,7 @@ class TestResourceIndexHelper < TestCaseHelpers
     puts "RESOURCE INDEX HELPER TEST SUITE."
     puts "Resolver redis modified: ncbostage-redis2:6379"
     puts "**************************************************************************************\n"
+    @@redis_available ||= NCBO::Resolver.redis.ping.eql?("PONG") rescue false # Ping redis to make sure it's available
     settings = {ont_count: 1, submission_count: 1, acronym: "BRO", acronym_suffix: ""}
     @@ontology = LinkedData::SampleData::Ontology.create_ontologies_and_submissions(settings)[2].first
   end
@@ -27,16 +28,22 @@ class TestResourceIndexHelper < TestCaseHelpers
   end
 
   def test_acronym_from_version_id
+    skip "redis unavailable" unless @@redis_available
+
     acronym = acronym_from_version_id("45215")
     assert acronym == "TM-CONST"
   end
 
   def test_uri_from_short_id
+    skip "redis unavailable" unless @@redis_available
+
     uri = uri_from_short_id("45215", "TM817086")
     assert uri == "http://who.int/ictm/constitution#TM817086"
   end
 
   def test_virtual_id_from_uri
+    skip "redis unavailable" unless @@redis_available
+
     virtual_id = virtual_id_from_uri("http://data.bioontology.org/ontologies/BRO")
     assert virtual_id == 1104
   end
