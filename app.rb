@@ -24,6 +24,9 @@ require_relative 'lib/rack/cube_reporter'
 # Logging setup
 require_relative "config/logging"
 
+# Protection settings
+set :protection, :except => :path_traversal
+
 # Setup root and static public directory
 set :root, File.dirname(__FILE__)
 use Rack::Static,
