@@ -14,7 +14,7 @@ gem 'rack-accept', '~> 0.4'
 gem 'rack-post-body-to-params', '~> 0.1'
 gem 'rack-cache', '~> 1.0'
 gem 'redis-rack-cache', '~> 1.0'
-gem "rack-timeout"
+gem 'rack-timeout'
 
 # Data access (caching)
 gem 'redis', '~> 3.0'
