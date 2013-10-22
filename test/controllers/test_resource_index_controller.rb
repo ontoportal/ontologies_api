@@ -38,6 +38,7 @@ class TestResourceIndexController < TestCase
   def self.before_suite
     # Change the resolver redis host
     NCBO::Resolver.configure(redis_host: 'ncbostage-redis2', redis_port: 6379)
+    @@redis_available ||= NCBO::Resolver.redis.ping.eql?("PONG") rescue false # Ping redis to make sure it's available
     puts "\n**************************************************************************************"
     puts "RESOURCE INDEX TEST SUITE."
     puts "Resolver redis modified: ncbostage-redis2:6379"
@@ -321,6 +322,8 @@ class TestResourceIndexController < TestCase
   END_SCHEMA
 
   def test_get_search_classes
+    skip "redis unavailable" unless @@redis_available
+
     #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
     #
@@ -353,6 +356,8 @@ class TestResourceIndexController < TestCase
 
 
   def test_get_search_classes_failures
+    skip "redis unavailable" unless @@redis_available
+
     #get "/resource_index/search?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
     # 404 should be thrown for any 'missing' ontology or an ontology without a latest_submission.
@@ -380,6 +385,8 @@ class TestResourceIndexController < TestCase
 
 
   def test_get_ontologies
+    skip "redis unavailable" unless @@redis_available
+
     rest_target = '/resource_index/ontologies'
     last_response = _get_response(rest_target)
     if DEBUG_MESSAGES
@@ -401,6 +408,8 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_resources
+    skip "redis unavailable" unless @@redis_available
+
     rest_target = '/resource_index/resources'
     last_response = _get_response(rest_target)
     if DEBUG_MESSAGES
@@ -421,6 +430,8 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_ranked_elements
+    skip "redis unavailable" unless @@redis_available
+
     #get "/resource_index/ranked_elements?{classes}"  # such that {classes} is of the form:
     #classes[acronym1|URI1][classid1,..,classidN]&classes[acronym2|URI2][classid1,..,classidN]
     #
@@ -441,6 +452,8 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_resource_element
+    skip "redis unavailable" unless @@redis_available
+
     rest_target = "/resource_index/resources/#{RESOURCE_ID}/elements/#{ELEMENT_ID}"
     last_response = _get_response(rest_target)
     if DEBUG_MESSAGES
@@ -453,6 +466,8 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_resource_element_annotations
+    skip "redis unavailable" unless @@redis_available
+
     #resource_id = 'PM'  # PubMed
     #element_id = '10866208'
     element_id = "NCT00357513"
