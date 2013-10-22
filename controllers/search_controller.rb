@@ -1,3 +1,5 @@
+require 'cgi'
+
 class SearchController < ApplicationController
   namespace "/search" do
     ONTOLOGIES_PARAM = "ontologies"
@@ -100,7 +102,7 @@ class SearchController < ApplicationController
 
       if (params[EXACT_MATCH_PARAM] == "true")
         params["qf"] = "prefLabelExact"
-        query = "\"#{text}\""
+        query = "\"#{RSolr.escape(text)}\""
       elsif (text[-1] == '*')
         # We want to escape the part of the query before the wildcard
         # This:
@@ -109,12 +111,12 @@ class SearchController < ApplicationController
         #   cell\ li*
         # This causes 'cell line' to match instead of 'line' by itself
         query = RSolr.escape(text[0..-2]) + "*"
-        params["qf"] = "prefLabelExact^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation^1 resource_id^1"
+        params["qf"] = "prefLabelExact^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
         params["sort"] = "score desc, norm(prefLabel) desc"
       else
-        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} resource_id^1"
+        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
         params["qf"] << " property^#{PROPERTY_FIELD_WEIGHT}" if params[INCLUDE_PROPERTIES_PARAM] == "true"
-        query = "\"#{text}\""
+        query = "\"#{RSolr.escape(text)}\""
       end
 
       acronyms = restricted_ontologies_to_acronyms(params)
