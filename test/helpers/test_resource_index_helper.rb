@@ -5,10 +5,6 @@ class TestResourceIndexHelper < TestCaseHelpers
   def self.before_suite
     # Change the resolver redis host
     NCBO::Resolver.configure(redis_host: 'ncbostage-redis2', redis_port: 6379)
-    puts "\n**************************************************************************************"
-    puts "RESOURCE INDEX HELPER TEST SUITE."
-    puts "Resolver redis modified: ncbostage-redis2:6379"
-    puts "**************************************************************************************\n"
     @@redis_available ||= NCBO::Resolver.redis.ping.eql?("PONG") rescue false # Ping redis to make sure it's available
     settings = {ont_count: 1, submission_count: 1, acronym: "BRO", acronym_suffix: ""}
     @@ontology = LinkedData::SampleData::Ontology.create_ontologies_and_submissions(settings)[2].first
@@ -20,10 +16,6 @@ class TestResourceIndexHelper < TestCaseHelpers
         redis_host: LinkedData::OntologiesAPI.settings.resolver_redis_host,
         redis_port: LinkedData::OntologiesAPI.settings.resolver_redis_port
     )
-    puts "\n**************************************************************************************"
-    puts "RESOURCE INDEX HELPER TEST SUITE."
-    puts "Resolver redis restored: #{LinkedData::OntologiesAPI.settings.resolver_redis_host}:#{LinkedData::OntologiesAPI.settings.resolver_redis_port}"
-    puts "**************************************************************************************\n"
     LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
   end
 

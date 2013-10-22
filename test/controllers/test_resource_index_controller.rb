@@ -39,10 +39,6 @@ class TestResourceIndexController < TestCase
     # Change the resolver redis host
     NCBO::Resolver.configure(redis_host: 'ncbostage-redis2', redis_port: 6379)
     @@redis_available ||= NCBO::Resolver.redis.ping.eql?("PONG") rescue false # Ping redis to make sure it's available
-    puts "\n**************************************************************************************"
-    puts "RESOURCE INDEX TEST SUITE."
-    puts "Resolver redis modified: ncbostage-redis2:6379"
-    puts "**************************************************************************************\n"
     # Create test 'BRO' ontology with submission
     test_ontology_acronyms = ["BRO"]
     acronyms = [] && LinkedData::Models::Ontology.all {|o| acronyms << o.acronym}
@@ -82,10 +78,6 @@ class TestResourceIndexController < TestCase
         redis_host: LinkedData::OntologiesAPI.settings.resolver_redis_host,
         redis_port: LinkedData::OntologiesAPI.settings.resolver_redis_port
     )
-    puts "\n**************************************************************************************"
-    puts "RESOURCE INDEX TEST SUITE."
-    puts "Resolver redis restored: #{LinkedData::OntologiesAPI.settings.resolver_redis_host}:#{LinkedData::OntologiesAPI.settings.resolver_redis_port}"
-    puts "**************************************************************************************\n"
     begin
       LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
       _user('delete')

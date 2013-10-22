@@ -50,6 +50,12 @@ unless LinkedData.settings.goo_host.match(safe_hosts) &&
   $stdout.flush
 end
 
+class TestLogFile < File
+  def initialize
+    super(File.expand_path("../test_run.log", __FILE__), "w")
+  end
+end
+
 class AppUnit < MiniTest::Unit
   def before_suites
     # code to run before the first test (gets inherited in sub-tests)

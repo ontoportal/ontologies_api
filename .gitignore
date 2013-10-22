@@ -51,3 +51,5 @@ config/environments/console.rb
 config/environments/stage.rb
 
 config/environments/benchmark.rb
+
+test/test_run.log

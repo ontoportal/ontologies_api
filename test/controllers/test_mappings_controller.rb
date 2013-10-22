@@ -60,9 +60,16 @@ class TestMappingsController < TestCase
     cno = cno.first
     bro = bro .first
     mappings.each do |process|
-      process.new(fake,cno,Logger.new(STDOUT)).start()
-      process.new(fake,bro,Logger.new(STDOUT)).start()
-      process.new(bro,cno,Logger.new(STDOUT)).start()
+      begin
+        tmp_log = Logger.new(TestLogFile.new)
+        process.new(fake,cno,tmp_log).start()
+        process.new(fake,bro,tmp_log).start()
+        process.new(bro,cno,tmp_log).start()
+      rescue Exception => e
+        puts "Error, logged in #{tmp_log.instance_variable_get("@logdev").dev.path}"
+        raise e
+      end
+
     end
   end
 
