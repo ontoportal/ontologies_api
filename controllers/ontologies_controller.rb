@@ -48,14 +48,9 @@ class OntologiesController < ApplicationController
       else
         latest = ont.latest_submission(status: :any)
       end
-
-      if latest
-        check_last_modified(latest)
-        latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
-        reply latest
-      else
-        reply({})
-      end
+      check_last_modified(latest) if latest
+      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
+      reply(latest || {})
     end
 
     ##
