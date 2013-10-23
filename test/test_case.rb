@@ -11,6 +11,7 @@ end
 
 ENV['RACK_ENV'] = 'test'
 
+require_relative 'test_log_file'
 require_relative '../app'
 require 'minitest/unit'
 MiniTest::Unit.autorun
@@ -48,12 +49,6 @@ unless LinkedData.settings.goo_host.match(safe_hosts) &&
   end
   print "Running tests..."
   $stdout.flush
-end
-
-class TestLogFile < File
-  def initialize
-    super(File.expand_path("../test_run.log", __FILE__), "w")
-  end
 end
 
 class AppUnit < MiniTest::Unit
