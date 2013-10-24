@@ -3126,8 +3126,8 @@ we think this should be deleted</desc:definition>
         <rdfs:subClassOf rdf:resource="&BRO;Resource"/>
         <desc:definition rdf:datatype="&xsd;string">A resource that provides items such as reagents, instruments, tissue samples or organisms.</desc:definition>
         <rdfs:comment rdf:datatype="&xsd;string">As per alignment with NIF resource type hierarchy.</rdfs:comment>
+        <core:notation rdf:datatype="&xsd;string">BRO:0000001</core:notation>
         <core:prefLabel rdf:datatype="&xsd;string">Material Resource</core:prefLabel>
-        <core:notation>BRO:0000001</core:notation>
     </owl:Class>
     
 
@@ -4020,6 +4020,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <rdfs:subClassOf rdf:resource="&BRO;Resource"/>
         <desc:definition rdf:datatype="&xsd;string">A resource comprised of one or more individuals who have specific expertise and provide professional or expert advice.</desc:definition>
         <rdfs:comment rdf:datatype="&xsd;string">As per alignment with NIF resource type hierarchy.</rdfs:comment>
+        <core:notation rdf:datatype="&xsd;string">BRO:0000002</core:notation>
         <core:editorialNote rdf:datatype="&xsd;string">I spent some time thinking about the distinction between People Resources and Services Resources. Then I spent some time thinking of what would be subclasses of people. Below is the list I came up with. However, it bares striking similarity to what we had envisioned for Related Activity or Area of Research. Looking over at NIF, they defined People Resource as &quot;A resource that provides access to individual people based, for example, on expertise or affiliation&quot; and do not have any child nodes. I think I&apos;ve come around to the opinion that we should either adopt NIF&apos;s approach, or change from having the top level People Resource to Consulting Resource as a child of Service Resource. (then still tbd whether to have children of that- I think I&apos;d vote for not.) Note that we&apos;re already not in complete alignment at the top level- NIF has &quot;Job Resource&quot;. I look forward to discussion with the group.
 
 - grant prep 
@@ -4042,7 +4043,6 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
 - epidemiology
 - development</core:editorialNote>
         <core:prefLabel rdf:datatype="&xsd;string">People Resource</core:prefLabel>
-        <core:notation>BRO:0000002</core:notation>
     </owl:Class>
     
 
