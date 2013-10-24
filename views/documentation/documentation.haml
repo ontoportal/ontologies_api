@@ -16,6 +16,8 @@
             %li
               %a{href: "#nav_resource_index"} Resource Index
         %li
+          %a{href: "#nav_batch"} Batch Endpoints
+        %li
           %a{href: "#nav_resource_endpoints"} Resource Endpoints
           %ul.nav.nav-list
             %li
@@ -100,7 +102,7 @@
             Perform search
           %ul
             %li
-              <span class="label label-info">GET</span> <code>/search?q={search query}</code>
+              <span class="label label-info">GET</span> <span class="label label-info">POST</span> <code>/search?q={search query}</code>
             %li
               example:
               %a{href: "/search?q=melanoma"} /search?q=melanoma
@@ -121,7 +123,7 @@
           %li Annotate text
           %ul
             %li
-              <span class="label label-info">GET</span> <code>/annotator?text={input text}</code>
+              <span class="label label-info">GET</span> <span class="label label-info">POST</span> <code>/annotator?text={input text}</code>
             %li
               example:
               %a{href: "/annotator?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye."} /annotator?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye.
@@ -232,17 +234,66 @@
                   %li
                     example:
                     %a{href: "/resource_index/resources/AE,CARY"} /resource_index/resources/AE,CARY
-          -#%li
-          -#  Ranked Elements
-          -#  %ul
-          -#    %li
-          -#      <span class="label label-info">GET</span> <code>/resource_index/ranked_elements?classes[ontology_id1]=class_id1</code>
-          -#    %li
-          -#      example:
-          -#      %a{href: "/resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
-          -#    %li
-          -#      example:
-          -#      %a{href: "/resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FFMA]=http%3A%2F%2Fsig.uw.edu%2Ffma%23Heart"} /resource_index/ranked_elements?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FFMA]=http%3A%2F%2Fsig.uw.edu%2Ffma%23Heart
+
+
+      %h2#nav_batch Batch Endpoints
+
+      %p
+        In order to reduce the number of HTTP requests required to obtain information about resources, we are exploring
+        the use of batch endpoints that will use one request/response cycle for multiple resources. Currently, only
+        classes are supported.
+
+      %p
+        :markdown
+          <span class="label label-info">POST</span> <code>/batch</code>
+
+          The batch service takes input in the BODY of a POST request. The input should be a JSON document with the following structure:
+
+          <pre class="prettyprint linenums lang-javascript" style="display: table; padding-right: 20px;">
+          {
+              "http://www.w3.org/2002/07/owl#Class": {
+                  "collection": [
+                      {
+                          "class": "http://example.org/ontology1/class1",
+                          "ontology": "http://example.org/ontology1"
+                      },
+                      {
+                          "class": "http://example.org/ontology2/class1",
+                          "ontology": "http://example.org/ontology2"
+                      },
+                      {
+                          "class": "http://example.org/ontologyN/classN",
+                          "ontology": "http://example.org/ontologyN"
+                      }
+                  ],
+                  "include": "prefLabel,synonym,semanticTypes"
+              }
+          }
+          </pre>
+
+          Example:
+
+          <pre class="prettyprint linenums lang-javascript" style="display: table; padding-right: 20px;">
+          {
+              "http://www.w3.org/2002/07/owl#Class": {
+                  "collection": [
+                      {
+                          "class": "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Ontology_Development_and_Management",
+                          "ontology": "http://data.bioontology.org/ontologies/BRO"
+                      },
+                      {
+                        "class": "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Modular_Component",
+                          "ontology": "http://data.bioontology.org/ontologies/BRO"
+                      },
+                      {
+                        "class": "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Stimulator",
+                          "ontology": "http://data.bioontology.org/ontologies/BRO"
+                      }
+                  ],
+                  "include": "prefLabel,synonym,semanticTypes"
+              }
+          }
+          </pre>
 
 
       %h2#nav_resource_endpoints Resource Endpoints
