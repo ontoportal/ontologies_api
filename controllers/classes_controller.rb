@@ -205,8 +205,9 @@ class ClassesController < ApplicationController
 
     def notation_to_class_uri(submission)
       if params[:cls] && !params[:cls].start_with?("http") 
+        f = Goo::Filter.new(:notation) == params[:cls]
         notation_lookup = LinkedData::Models::Class
-                            .where(notation: params[:cls])
+                            .where.filter(f)
                             .in(submission)
                             .first
         if notation_lookup
