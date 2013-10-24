@@ -6,15 +6,25 @@
           %a{href: "#nav_home"} Home
         %li
           %a{href: "#nav_usage"} General Usage
+
+
+
         %li
-          %a{href: "#nav_non_rest"} Search and Annotation Endpoints
-          %ul.nav.nav-list
-            %li
-              %a{href: "#nav_search"} Classes Search
-            %li
-              %a{href: "#nav_annotator"} Annotator
-            %li
-              %a{href: "#nav_resource_index"} Resource Index
+          %a{href: "#nav_search"} Search Endpoint
+        %li
+          %a{href: "#nav_annotator"} Annotator Endpoint
+        %li
+          %a{href: "#nav_recommender"} Recommender Endpoint
+
+
+
+
+        %li
+          %a{href: "#nav_resource_index"} Resource Index Endpoint
+
+
+
+
         %li
           %a{href: "#nav_batch"} Batch Endpoints
         %li
@@ -89,7 +99,7 @@
           %td {boolean representing whether or not to include ontology views (default is false)}
           %td For calls that involve ontologies, include_views='true' will include ontology views.
 
-      %h2#nav_non_rest Search, Annotation, and Resource Index Endpoints
+      %h2#nav_non_rest Search, Annotator, Recommender, and Resource Index Endpoints
 
       %p Several endpoints are available for performing lookups for classes, annotations, and annotated resources. These endpoints are not strictly RESTful, but do return objects with links where relevant.
 
@@ -140,6 +150,26 @@
                   %li stop_words={word1,word2..,wordN}
                   %li minimum_match_length={0..N}
 
+      %h3#nav_recommender Recommender
+
+      %p
+        The Recommender endpoint will call an Annotator API on a given text, and, based on the resulting annotations, group the ontologies from which the annotations came from according to their relevancy to the supplied text. The top results will contain ontologies with the highest relevancy scores. The Annotator is called with the max_level = 5 to include hierarchy matches in the relevancy calculation.
+        %ul
+          %li Recommend
+          %ul
+            %li
+              <span class="label label-info">GET</span> <code>/recommender?text={input text}</code>
+            %li
+              example:
+              %a{href: "/recommender?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye."} /recommender?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye.
+          %li
+            Parameters
+            %ul
+              %li
+                Filtering & query behavior
+                %ul
+                  %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
+                  %li include_classes={true|false}  // default = false. Optionally to include the annotated classes in the output.
 
       %h3#nav_resource_index Resource Index
 
