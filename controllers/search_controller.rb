@@ -7,6 +7,7 @@ class SearchController < ApplicationController
     INCLUDE_VIEWS_PARAM = "include_views"
     REQUIRE_DEFINITIONS_PARAM = "require_definition"
     INCLUDE_PROPERTIES_PARAM = "include_properties"
+    SUBTREE_ID_PARAM = "subtree_id"
 
     PREF_LABEL_FIELD_WEIGHT = 1.6
     SYNONYM_FIELD_WEIGHT = 1
@@ -26,10 +27,9 @@ class SearchController < ApplicationController
     def process_search(params=nil)
       params ||= @params
       text = params["q"]
-      #query = get_standard_query(text, params)
-      #puts "Standard query: #{query}"
+
       query = get_edismax_query(text, params)
-      # puts "Edismax query: #{query}, params: #{params}"
+      #puts "Edismax query: #{query}, params: #{params}"
       set_page_params(params)
 
       docs = Array.new
@@ -63,35 +63,6 @@ class SearchController < ApplicationController
       reply 200, page
     end
 
-    def get_standard_query(text, params={})
-      raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
-      query = ""
-
-      if (params[EXACT_MATCH_PARAM] == "true")
-        query = "prefLabelExact:\"#{text}\""
-      elsif (text[-1] == '*')
-        #TODO: This is a termporary solution for wildcard searches
-        text.gsub!(/\s+/, '\ ')
-        query = "prefLabelExact:#{text}"
-        params["sort"] = "prefLabelExact asc"
-        # return ALL rows every time because we need to re-sort them
-        #params["start"] = 0
-        #params["rows"] = WILDCARD_RESULT_SIZE
-      else
-        query = get_tokenized_standard_query(text, params)
-      end
-
-      acronyms = restricted_ontologies_to_acronyms(params)
-      query << " AND "
-      query << get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
-
-      if params[REQUIRE_DEFINITIONS_PARAM] == "true"
-        query << " AND definition:[* TO *]"
-      end
-
-      return query
-    end
-
     def get_edismax_query(text, params={})
       raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
       query = ""
@@ -112,15 +83,21 @@ class SearchController < ApplicationController
         # This causes 'cell line' to match instead of 'line' by itself
         query = RSolr.escape(text[0..-2]) + "*"
         params["qf"] = "prefLabelExact^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
-        params["sort"] = "score desc, norm(prefLabel) desc"
+        params["sort"] = "norm(prefLabel) desc"
       else
         params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
         params["qf"] << " property^#{PROPERTY_FIELD_WEIGHT}" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         query = "\"#{RSolr.escape(text)}\""
       end
 
+      subtree_ids = get_subtree_ids(params)
       acronyms = restricted_ontologies_to_acronyms(params)
       filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
+      ids_clause = (subtree_ids.nil? || subtree_ids.empty?)? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
+
+      if (!ids_clause.empty?)
+        filter_query = "#{filter_query} AND #{ids_clause}"
+      end
 
       if params[REQUIRE_DEFINITIONS_PARAM] == "true"
         filter_query << " AND definition:[* TO *]"
@@ -131,6 +108,28 @@ class SearchController < ApplicationController
     end
 
     private
+
+    def get_subtree_ids(params)
+      subtree_ids = nil
+
+      if (params["subtree_id"])
+        ontology = params["ontology"].split(",")
+
+        if (ontology.nil? || ontology.empty? || ontology.length > 1)
+          raise error 400, "A subtree search requires a single ontology: /search?q=<query>&ontology=CNO&subtree_id=http%3a%2f%2fwww.w3.org%2f2004%2f02%2fskos%2fcore%23Concept"
+        end
+
+        ont, submission = get_ontology_and_submission
+        params[:cls] = params["subtree_id"]
+        params["ontologies"] = params["ontology"]
+
+        cls = get_class(submission, load_attrs={descendants: true})
+        subtree_ids = cls.descendants.map {|d| d.id.to_s}
+        subtree_ids.push(params["subtree_id"])
+      end
+
+      return subtree_ids
+    end
 
     def get_tokenized_standard_query(text, params)
       words = text.split

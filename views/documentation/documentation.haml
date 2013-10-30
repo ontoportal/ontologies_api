@@ -6,25 +6,17 @@
           %a{href: "#nav_home"} Home
         %li
           %a{href: "#nav_usage"} General Usage
-
-
-
         %li
           %a{href: "#nav_search"} Search Endpoint
+          %ul.nav.nav-list
+            %li
+              %a{href: "#nav_search_subtree"} Subtree Search
         %li
           %a{href: "#nav_annotator"} Annotator Endpoint
         %li
           %a{href: "#nav_recommender"} Recommender Endpoint
-
-
-
-
         %li
           %a{href: "#nav_resource_index"} Resource Index Endpoint
-
-
-
-
         %li
           %a{href: "#nav_batch"} Batch Endpoints
         %li
@@ -124,6 +116,23 @@
               %li include_views={true|false}  // default = false
               %li require_definition={true|false}  // default = false
               %li include_properties={true|false}  // default = false
+
+        %h4#nav_search_subtree Subtree Search
+
+        %p
+          The same endpoint also allows limiting a search to a given subtree/branch. The root of the subtree is defined using a combination of parameters "ontology" and "subtree_id". Both are required when performing a subtree search.
+          %ul
+            %li
+              Perform a subtree search
+            %ul
+              %li
+                example:
+                %a{href: "/search?q=melanoma&ontology=NCIT&subtree_id=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224"} /search?q=melanoma&ontology=NCIT&subtree_id=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224
+            %li
+              Parameters
+              %ul
+                %li ontology={ontology_id}
+                %li subtree_id={a URI encoded class id of the root node of the subtree}
 
       %h3#nav_annotator Annotator
 
