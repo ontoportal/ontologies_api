@@ -44,7 +44,7 @@ unless LinkedData.settings.goo_host.match(safe_hosts) &&
   print "Type 'y' to continue: "
   $stdout.flush
   confirm = $stdin.gets
-  if !(confirm.strip == 'y')
+  if !(confirm.to_s.strip == 'y')
     abort("Canceling tests...\n\n")
   end
   print "Running tests..."
