@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 60028583a6704dc4abfb910877fe6d9df6eb9ab2
+  revision: 306533c5aa6a4dc1cc8c732de745f9277fdd3404
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: adc3518b5568f8aebabff349fb31d09d83dd1d82
+  revision: 40acd271d79a6c530e5dd31e22279fdae19ec319
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -104,7 +104,7 @@ GEM
     coderay (1.0.9)
     cube-ruby (0.0.3)
     dante (0.1.5)
-    ffi (1.9.0-java)
+    ffi (1.9.2)
     haml (4.0.3)
       tilt
     i18n (0.6.5)
@@ -116,11 +116,12 @@ GEM
     libxml-ruby (2.7.0)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
-    mail (2.5.4)
-      mime-types (~> 1.16)
-      treetop (~> 1.4.8)
+    mail (2.2.7)
+      activesupport (>= 2.3.6)
+      mime-types
+      treetop (>= 1.4.5)
     method_source (0.8.2)
-    mime-types (1.25)
+    mime-types (2.0)
     minitest (4.7.5)
     mlanett-redis-lock (0.2.5)
       redis
