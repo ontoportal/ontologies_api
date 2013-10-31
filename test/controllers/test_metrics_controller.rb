@@ -19,7 +19,7 @@ class TestMetricsController < TestCase
 "classesWithOneChild"=>14,
 "classesWithMoreThan25Children"=>2,
 "classesWithNoDefinition"=>11,
-"individuals"=>80,
+"individuals"=>82,
 "properties"=>63,
 "maxDepth"=>8 }
     options = {ont_count: 2,
@@ -39,7 +39,7 @@ class TestMetricsController < TestCase
     #though this is tested in LD
     metrics.each do |m|
       @@data.each do |k,v|
-        assert m[k] == v
+        assert_equal m[k], v
       end
       assert m["@id"] == m["submission"].first + "/metrics" rescue binding.pry
     end
@@ -51,7 +51,7 @@ class TestMetricsController < TestCase
     assert last_response.ok?
     metrics = MultiJson.load(last_response.body)
     @@data.each do |k,v|
-      assert metrics[k] == v
+      assert_equal metrics[k], v
     end
   end
 
@@ -61,7 +61,7 @@ class TestMetricsController < TestCase
     assert last_response.ok?
     metrics = MultiJson.load(last_response.body)
     @@data.each do |k,v|
-      assert metrics[k] == v
+      assert_equal metrics[k], v
     end
   end
 
@@ -71,7 +71,7 @@ class TestMetricsController < TestCase
     assert last_response.ok?
     metrics = MultiJson.load(last_response.body)
     @@data.each do |k,v|
-      assert metrics[k] == v
+      assert_equal metrics[k], v
     end
   end
 
