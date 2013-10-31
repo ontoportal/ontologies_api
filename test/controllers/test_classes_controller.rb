@@ -50,6 +50,28 @@ class TestClassesController < TestCase
     assert last_response.status == 422
   end
 
+  def test_notation_lookup
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+    call = "/ontologies/#{ont.acronym}/classes/BRO:0000001?include=all"
+    get call
+    assert last_response.ok?
+    response = MultiJson.load(last_response.body)
+    assert response["@id"]["Material_Resource"]
+    assert response["notation"] == "BRO:0000001"
+
+    call = "/ontologies/#{ont.acronym}/classes/BRO:0000002?include=all"
+    get call
+    assert last_response.ok?
+    response = MultiJson.load(last_response.body)
+    assert response["@id"]["People_Resource"]
+    assert response["notation"] == "BRO:0000002"
+
+    call = "/ontologies/#{ont.acronym}/classes/BRO:0000003?include=all"
+    get call
+    assert !last_response.ok?
+    assert last_response.status == 404
+  end
+
   def test_all_class_pages
     ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 

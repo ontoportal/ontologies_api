@@ -1,27 +1,27 @@
 source 'https://rubygems.org'
 
-gem 'sinatra'
-gem 'sinatra-contrib'
+gem 'sinatra', '~> 1.0'
+gem 'sinatra-contrib', '~> 1.0'
 gem 'sinatra-advanced-routes'
-gem 'multi_json'
-gem 'oj'
-gem 'json-schema', '= 2.0.0'
-gem 'rake'
-gem 'activesupport', '< 4.0'
+gem 'multi_json', '~> 1.0'
+gem 'oj', '~> 2.0'
+gem 'json-schema', '~> 2.0'
+gem 'rake', '~> 10.0'
+gem 'activesupport', '~> 3.0'
 
 # Rack middleware
-gem 'rack-accept'
-gem 'rack-post-body-to-params'
-gem 'rack-cache'
-gem 'redis-rack-cache'
-gem "rack-timeout"
+gem 'rack-accept', '~> 0.4'
+gem 'rack-post-body-to-params', '~> 0.1'
+gem 'rack-cache', '~> 1.0'
+gem 'redis-rack-cache', '~> 1.0'
+gem 'rack-timeout'
 
 # Data access (caching)
-gem 'redis'
+gem 'redis', '~> 3.0'
 
 # Testing
 gem 'simplecov', :require => false, :group => :test
-gem 'minitest', '< 5.0'
+gem 'minitest', '~> 4.0'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
@@ -42,10 +42,14 @@ gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/s
 gem 'haml'
 gem 'redcarpet'
 
-gem 'sparql-client', :git => 'https://github.com/ncbo/sparql-client.git', :branch => "master"
-gem 'goo', :git => 'https://github.com/ncbo/goo.git', :branch => "master"
-gem 'ontologies_linked_data', :git => 'https://github.com/ncbo/ontologies_linked_data.git', :branch => "master"
-gem 'ncbo_resource_index_client', :git => 'https://github.com/ncbo/resource_index_ruby_client.git', :branch => "master"
-gem 'ncbo_annotator', :git => 'https://github.com/ncbo/ncbo_annotator.git', :branch => "master"
-gem 'ncbo_cron', :git => 'https://github.com/ncbo/ncbo_cron.git', :branch => "master"
-gem 'ncbo_resolver', git: "https://github.com/ncbo/ncbo_resolver.git", :branch => "master"
+# NCBO gems (can be from a local dev path or from rubygems/git)
+ncbo_branch = ENV["NCBO_BRANCH"] || `git rev-parse --abbrev-ref HEAD`.strip || "staging"
+gem 'goo', github: 'ncbo/goo', branch: ncbo_branch
+gem 'sparql-client', github: 'ncbo/sparql-client', branch: ncbo_branch
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: ncbo_branch
+gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: ncbo_branch
+gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: ncbo_branch
+
+# Not versioned
+gem 'ncbo_resolver', github: "ncbo/ncbo_resolver"
+gem 'ncbo_resource_index_client', github: 'ncbo/resource_index_ruby_client'

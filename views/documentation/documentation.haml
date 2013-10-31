@@ -7,14 +7,18 @@
         %li
           %a{href: "#nav_usage"} General Usage
         %li
-          %a{href: "#nav_non_rest"} Search and Annotation Endpoints
+          %a{href: "#nav_search"} Search Endpoint
           %ul.nav.nav-list
             %li
-              %a{href: "#nav_search"} Classes Search
-            %li
-              %a{href: "#nav_annotator"} Annotator
-            %li
-              %a{href: "#nav_resource_index"} Resource Index
+              %a{href: "#nav_search_subtree"} Subtree Search
+        %li
+          %a{href: "#nav_annotator"} Annotator Endpoint
+        %li
+          %a{href: "#nav_recommender"} Recommender Endpoint
+        %li
+          %a{href: "#nav_resource_index"} Resource Index Endpoint
+        %li
+          %a{href: "#nav_batch"} Batch Endpoints
         %li
           %a{href: "#nav_batch"} Batch Endpoints
         %li
@@ -89,7 +93,7 @@
           %td {boolean representing whether or not to include ontology views (default is false)}
           %td For calls that involve ontologies, include_views='true' will include ontology views.
 
-      %h2#nav_non_rest Search, Annotation, and Resource Index Endpoints
+      %h2#nav_non_rest Search, Annotator, Recommender, and Resource Index Endpoints
 
       %p Several endpoints are available for performing lookups for classes, annotations, and annotated resources. These endpoints are not strictly RESTful, but do return objects with links where relevant.
 
@@ -114,6 +118,23 @@
               %li include_views={true|false}  // default = false
               %li require_definition={true|false}  // default = false
               %li include_properties={true|false}  // default = false
+
+        %h4#nav_search_subtree Subtree Search
+
+        %p
+          The same endpoint also allows limiting a search to a given subtree/branch. The root of the subtree is defined using a combination of parameters "ontology" and "subtree_id". Both are required when performing a subtree search.
+          %ul
+            %li
+              Perform a subtree search
+            %ul
+              %li
+                example:
+                %a{href: "/search?q=melanoma&ontology=NCIT&subtree_id=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224"} /search?q=melanoma&ontology=NCIT&subtree_id=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224
+            %li
+              Parameters
+              %ul
+                %li ontology={ontology_id}
+                %li subtree_id={a URI encoded class id of the root node of the subtree}
 
       %h3#nav_annotator Annotator
 
@@ -148,6 +169,26 @@
                   %li
                     I, a, above, after, against, all, alone, always, am, amount, an, and, any, are, around, as, at, back, be, before, behind, below, between, bill, both, bottom, by, call, can, co, con, de, detail, do, done, down, due, during, each, eg, eight, eleven, empty, ever, every, few, fill, find, fire, first, five, for, former, four, from, front, full, further, get, give, go, had, has, hasnt, he, her, hers, him, his, i, ie, if, in, into, is, it, last, less, ltd, many, may, me, mill, mine, more, most, mostly, must, my, name, next, nine, no, none, nor, not, nothing, now, of, off, often, on, once, one, only, or, other, others, out, over, part, per, put, re, same, see, serious, several, she, show, side, since, six, so, some, sometimes, still, take, ten, the, then, third, this, thick, thin, three, through, to, together, top, toward, towards, twelve, two, un, under, until, up, upon, us, very, via, was, we, well, when, while, who, whole, will, with, within, without, you, yourself, yourselves
 
+      %h3#nav_recommender Recommender
+
+      %p
+        The Recommender endpoint will call an Annotator API on a given text, and, based on the resulting annotations, group the ontologies from which the annotations came from according to their relevancy to the supplied text. The top results will contain ontologies with the highest relevancy scores. The Annotator is called with the max_level = 5 to include hierarchy matches in the relevancy calculation.
+        %ul
+          %li Recommend
+          %ul
+            %li
+              <span class="label label-info">GET</span> <code>/recommender?text={input text}</code>
+            %li
+              example:
+              %a{href: "/recommender?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye."} /recommender?text=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye.
+          %li
+            Parameters
+            %ul
+              %li
+                Filtering & query behavior
+                %ul
+                  %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
+                  %li include_classes={true|false}  // default = false. Optionally to include the annotated classes in the output.
 
       %h3#nav_resource_index Resource Index
 

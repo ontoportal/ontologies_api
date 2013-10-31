@@ -21,7 +21,7 @@ class BatchController < ApplicationController
           error 422, "The collection param needs to be { 'class' : CLS_ID, 'ontology' : ont_id }"
         end
         unless class_id_by_ontology.include? class_input["ontology"]
-          class_id_by_ontology[class_input["ontology"]] = [] 
+          class_id_by_ontology[class_input["ontology"]] = []
         end
         class_id_by_ontology[class_input["ontology"]] << class_input["class"]
       end

@@ -17,15 +17,23 @@ class AnnotatorController < ApplicationController
       acronyms = restricted_ontologies_to_acronyms(params)
       semantic_types = semantic_types_param
       max_level = params['max_level'].to_i                   # default = 0
-      mapping_types = [params['mappings']].flatten           # default = []
+
+      mapping_types = []
+
+      if params['mappings']
+        mapping_types = mapping_types.split(/\s*,\s*/)
+      end
+
       expand_with_mappings = mapping_types.first != nil
       exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
       min_term_size = params['minimum_match_length'].to_i    # default = 0
 
       annotator = Annotator::Models::NcboAnnotator.new
+
       if params['stop_words']
-        annotator.stop_words = [params['stop_words']].flatten
+        annotator.stop_words = params['stop_words']
       end
+
       annotations = annotator.annotate(
           text,
           acronyms,

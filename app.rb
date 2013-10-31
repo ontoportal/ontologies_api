@@ -48,7 +48,7 @@ if [:development, :console].include?(settings.environment)
 end
 
 # mini-profiler sets the etag header to nil, so don't use when caching is enabled
-if [:development].include?(settings.environment) && !LinkedData.settings.enable_http_cache
+if [:development].include?(settings.environment) && !LinkedData.settings.enable_http_cache && LinkedData::OntologiesAPI.settings.enable_miniprofiler
   begin
     require 'rack-mini-profiler'
     Rack::MiniProfiler.config.storage = Rack::MiniProfiler::FileStore

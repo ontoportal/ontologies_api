@@ -203,33 +203,5 @@ class ClassesController < ApplicationController
       end
     end
 
-    def get_class(submission,load_attrs=nil)
-      load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      load_children = load_attrs.delete :children
-      if !load_children
-        load_children = load_attrs.select { |x| x.instance_of?(Hash) && x.include?(:children) }
-        if load_children
-          load_attrs = load_attrs.select { |x| !(x.instance_of?(Hash) && x.include?(:children)) }
-        end
-      end
-      cls_uri = RDF::URI.new(params[:cls])
-      if !cls_uri.valid?
-        error 400, "The input class id '#{params[:cls]}' is not a valid IRI"
-      end
-      aggregates = LinkedData::Models::Class.goo_aggregates_to_load(load_attrs)
-      cls = LinkedData::Models::Class.find(cls_uri).in(submission)
-      cls = cls.include(load_attrs) if load_attrs && load_attrs.length > 0
-      cls.aggregate(*aggregates) unless aggregates.empty?
-      cls = cls.first
-      if cls.nil?
-        error 404,
-           "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
-      end
-      if load_children
-        LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
-      end
-      return cls
-    end
-
   end
 end

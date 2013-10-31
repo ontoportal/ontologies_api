@@ -11,6 +11,7 @@ end
 
 ENV['RACK_ENV'] = 'test'
 
+require_relative 'test_log_file'
 require_relative '../app'
 require 'minitest/unit'
 MiniTest::Unit.autorun
@@ -20,7 +21,7 @@ require 'oj'
 require 'json-schema'
 
 # Check to make sure you want to run if not pointed at localhost
-safe_hosts = Regexp.new(/localhost|ncbo-dev*/)
+safe_hosts = Regexp.new(/localhost|ncbo-dev*|ncbo-stg-app-22*/)
 def safe_redis_hosts?(sh)
   return [LinkedData.settings.http_redis_host,
    Annotator.settings.annotator_redis_host,
@@ -43,7 +44,7 @@ unless LinkedData.settings.goo_host.match(safe_hosts) &&
   print "Type 'y' to continue: "
   $stdout.flush
   confirm = $stdin.gets
-  if !(confirm.strip == 'y')
+  if !(confirm.to_s.strip == 'y')
     abort("Canceling tests...\n\n")
   end
   print "Running tests..."
@@ -136,4 +137,18 @@ class TestCase < MiniTest::Unit::TestCase
     )
   end
 
+  # Abstract method to get error messages during a test.
+  def get_errors(response)
+    errors = ''
+    if response.respond_to?('errors')
+      errors += last_response.errors
+    end
+    errors += '; ' unless errors.empty?
+    begin
+      errors += MultiJson.load(last_response.body)['errors'].to_s
+    rescue
+      # pass
+    end
+    return errors.strip
+  end
 end

@@ -13,7 +13,8 @@ module Sinatra
         submission_id = ont.next_submission_id
         if tmpfile
           # Copy tmpfile to appropriate location
-          file_location = OntologySubmission.copy_file_repository(params["acronym"], submission_id, tmpfile, filename)
+          ont.bring(:acronym) if ont.bring?(:acronym)
+          file_location = OntologySubmission.copy_file_repository(ont.acronym, submission_id, tmpfile, filename)
         end
 
         # Create OntologySubmission

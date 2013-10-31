@@ -9,6 +9,7 @@ class TestHTTPCacheHelper < TestCaseHelpers
     @@ontology = ontologies.shift
     @@ontology_alt = ontologies.shift
     @@ontology.bring_remaining
+    @@ontology_alt.bring_remaining
 
     @@note_user = "test_note_user"
     _delete_user

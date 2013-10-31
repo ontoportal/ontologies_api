@@ -1,0 +1,248 @@
+GIT
+  remote: git://github.com/ncbo/goo.git
+  revision: 240b88e2db091756dde17198d19be529b9bbd450
+  branch: staging
+  specs:
+    goo (0.0.2)
+      rdf (= 1.0.8)
+      redis
+      rest-client
+      rsolr
+      sparql-client
+      uuid
+
+GIT
+  remote: git://github.com/ncbo/ncbo_annotator.git
+  revision: 41ddbea33901c64aafd4ee85d927c7358c35ece2
+  branch: staging
+  specs:
+    ncbo_annotator (0.0.1)
+      goo
+      ontologies_linked_data
+      redis
+
+GIT
+  remote: git://github.com/ncbo/ncbo_cron.git
+  revision: 40acd271d79a6c530e5dd31e22279fdae19ec319
+  branch: staging
+  specs:
+    ncbo_cron (0.0.1)
+      dante
+      goo
+      mlanett-redis-lock
+      multi_json
+      ncbo_annotator
+      ontologies_linked_data
+      redis
+      rufus-scheduler (~> 2.0.24)
+
+GIT
+  remote: git://github.com/ncbo/ncbo_resolver.git
+  revision: 67989c445e53e019b3b3fa4905e0aa9d519df0ed
+  specs:
+    ncbo_resolver (0.0.1)
+      recursive-open-struct
+      redis
+
+GIT
+  remote: git://github.com/ncbo/ontologies_linked_data.git
+  revision: 86eff64ed3f3ad36e961518c244d3ccaceb4bc5b
+  branch: staging
+  specs:
+    ontologies_linked_data (0.0.1)
+      activesupport
+      bcrypt-ruby
+      goo
+      json
+      libxml-ruby
+      multi_json
+      oj
+      pony
+      rack
+      rack-test
+      rsolr
+      rubyzip
+
+GIT
+  remote: git://github.com/ncbo/resource_index_ruby_client.git
+  revision: d5676f865c61d852e3e32a5973a8bafe8451330e
+  specs:
+    ncbo_resource_index_client (1.6.1)
+      libxml-ruby (~> 2.7.0)
+
+GIT
+  remote: git://github.com/ncbo/sparql-client.git
+  revision: de82689e690f400833653b0ecc51676396e945a8
+  branch: staging
+  specs:
+    sparql-client (1.0.4.1)
+      json_pure (>= 1.4)
+      net-http-persistent (>= 1.4)
+      rdf (>= 1.0)
+
+GIT
+  remote: https://github.com/palexander/shotgun.git
+  revision: db198224aaab2e4cb9b049adccb30e387d88bc3b
+  branch: ncbo
+  specs:
+    shotgun (0.9)
+      rack (>= 1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (3.2.15)
+      i18n (~> 0.6, >= 0.6.4)
+      multi_json (~> 1.0)
+    addressable (2.3.5)
+    atomic (1.1.14)
+    atomic (1.1.14-java)
+    backports (3.3.5)
+    bcrypt-ruby (3.1.2)
+    bcrypt-ruby (3.1.2-java)
+    builder (3.2.2)
+    coderay (1.0.9)
+    cube-ruby (0.0.3)
+    dante (0.1.5)
+    ffi (1.9.2)
+    haml (4.0.3)
+      tilt
+    i18n (0.6.5)
+    json (1.8.1)
+    json (1.8.1-java)
+    json-schema (2.1.3)
+    json_pure (1.8.1)
+    kgio (2.8.1)
+    libxml-ruby (2.7.0)
+    macaddr (1.6.1)
+      systemu (~> 2.5.0)
+    mail (2.2.7)
+      activesupport (>= 2.3.6)
+      mime-types
+      treetop (>= 1.4.5)
+    method_source (0.8.2)
+    mime-types (2.0)
+    minitest (4.7.5)
+    mlanett-redis-lock (0.2.5)
+      redis
+    multi_json (1.8.2)
+    net-http-persistent (2.9)
+    oj (2.1.7)
+    polyglot (0.3.3)
+    pony (1.5.1)
+      mail (>= 2.0)
+    pry (0.9.12.2)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    pry (0.9.12.2-java)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+      spoon (~> 0.0)
+    rack (1.5.2)
+    rack-accept (0.4.5)
+      rack (>= 0.4)
+    rack-cache (1.2)
+      rack (>= 0.4)
+    rack-mini-profiler (0.1.31)
+      rack (>= 1.1.3)
+    rack-post-body-to-params (0.1.8)
+      activesupport (>= 2.3)
+    rack-protection (1.5.1)
+      rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
+    rack-timeout (0.0.4)
+    raindrops (0.12.0)
+    rake (10.1.0)
+    rdf (1.0.8)
+      addressable (>= 2.2)
+    recursive-open-struct (0.4.5)
+    redcarpet (3.0.0)
+    redis (3.0.5)
+    redis-rack-cache (1.2.2)
+      rack-cache (~> 1.2)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.4)
+      redis (>= 2.2)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    rsolr (1.0.9)
+      builder (>= 2.1.2)
+    rubyzip (1.0.0)
+    rufus-scheduler (2.0.24)
+      tzinfo (>= 0.3.22)
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
+    sinatra (1.4.4)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    sinatra-advanced-routes (0.5.3)
+      sinatra (~> 1.0)
+    sinatra-contrib (1.4.1)
+      backports (>= 2.0)
+      multi_json
+      rack-protection
+      rack-test
+      sinatra (~> 1.4.0)
+      tilt (~> 1.3)
+    slop (3.4.6)
+    spoon (0.0.4)
+      ffi
+    systemu (2.5.2)
+    thread_safe (0.1.3)
+      atomic
+    thread_safe (0.1.3-java)
+      atomic
+    tilt (1.4.1)
+    treetop (1.4.15)
+      polyglot
+      polyglot (>= 0.3.1)
+    tzinfo (1.1.0)
+      thread_safe (~> 0.1)
+    unicorn (4.6.3)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
+    uuid (2.3.7)
+      macaddr (~> 1.0)
+
+PLATFORMS
+  java
+  ruby
+
+DEPENDENCIES
+  activesupport (~> 3.0)
+  cube-ruby
+  goo!
+  haml
+  json-schema (~> 2.0)
+  minitest (~> 4.0)
+  multi_json (~> 1.0)
+  ncbo_annotator!
+  ncbo_cron!
+  ncbo_resolver!
+  ncbo_resource_index_client!
+  oj (~> 2.0)
+  ontologies_linked_data!
+  pry
+  rack-accept (~> 0.4)
+  rack-cache (~> 1.0)
+  rack-mini-profiler
+  rack-post-body-to-params (~> 0.1)
+  rack-timeout
+  rake (~> 10.0)
+  redcarpet
+  redis (~> 3.0)
+  redis-rack-cache (~> 1.0)
+  shotgun!
+  simplecov
+  sinatra (~> 1.0)
+  sinatra-advanced-routes
+  sinatra-contrib (~> 1.0)
+  sparql-client!
+  unicorn
