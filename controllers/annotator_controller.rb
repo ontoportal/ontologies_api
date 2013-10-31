@@ -21,7 +21,7 @@ class AnnotatorController < ApplicationController
       mapping_types = []
 
       if params['mappings']
-        mapping_types = mapping_types.split(/\s*,\s*/)
+        mapping_types = params['mappings'].split(/\s*,\s*/)
       end
 
       expand_with_mappings = mapping_types.first != nil
