@@ -21,7 +21,7 @@ require 'oj'
 require 'json-schema'
 
 # Check to make sure you want to run if not pointed at localhost
-safe_hosts = Regexp.new(/localhost|ncbo-dev*/)
+safe_hosts = Regexp.new(/localhost|ncbo-dev*|ncbo-stg-app-22*/)
 def safe_redis_hosts?(sh)
   return [LinkedData.settings.http_redis_host,
    Annotator.settings.annotator_redis_host,
