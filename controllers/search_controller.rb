@@ -83,7 +83,7 @@ class SearchController < ApplicationController
         # This causes 'cell line' to match instead of 'line' by itself
         query = RSolr.escape(text[0..-2]) + "*"
         params["qf"] = "prefLabelExact^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
-        params["sort"] = "norm(prefLabel) desc"
+        params["sort"] = "score desc, norm(prefLabel) desc"
       else
         params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
         params["qf"] << " property^#{PROPERTY_FIELD_WEIGHT}" if params[INCLUDE_PROPERTIES_PARAM] == "true"
