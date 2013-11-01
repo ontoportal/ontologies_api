@@ -13,8 +13,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 753b410e41097873d43872d0e812cb23b36a7f10
-  branch: staging
+  revision: e791a5cc55940c97d2a74fa4cdf517e94bd29f6e
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -46,8 +46,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 69ef9cb6583b089132429887eb45984e6559c698
-  branch: staging
+  revision: f173673107c1fae3cf86cd2fcf37168886f1178c
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -170,7 +170,7 @@ GEM
       mime-types (>= 1.16)
     rsolr (1.0.9)
       builder (>= 2.1.2)
-    rubyzip (1.0.0)
+    rubyzip (1.1.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     simplecov (0.7.1)
