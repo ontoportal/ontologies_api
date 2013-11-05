@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 6ea511c310484824e050e9956dac68dab2af5eb0
-  branch: master
+  revision: 4f2676f7c81fd88c9bba0ca1f69f100e8afa9702
+  branch: staging
   specs:
     goo (0.0.2)
       rdf (= 1.0.8)
@@ -13,8 +13,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: e791a5cc55940c97d2a74fa4cdf517e94bd29f6e
-  branch: master
+  revision: 70b18823c260699e853e734873ddcc7cc76ad9d6
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -46,8 +46,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: f173673107c1fae3cf86cd2fcf37168886f1178c
-  branch: master
+  revision: 04baf9292f605adc978c4525ac4f96fe098df52c
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -72,8 +72,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: de82689e690f400833653b0ecc51676396e945a8
-  branch: master
+  revision: 972f264109779a7522552cda0325755dbc004edc
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -105,7 +105,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.1.5)
     ffi (1.9.3-java)
-    haml (4.0.3)
+    haml (4.0.4)
       tilt
     i18n (0.6.5)
     json (1.8.1)
@@ -204,7 +204,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.1.0)
       thread_safe (~> 0.1)
-    unicorn (4.6.3)
+    unicorn (4.7.0)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
