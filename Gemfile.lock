@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: aa58b68d2748e354b68bbc44dddb06ca02827688
+  revision: def9dbcbf64c70032dec5cdac3fe0d1386e86914
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -160,7 +160,7 @@ GEM
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
     redcarpet (3.0.0)
-    redis (3.0.5)
+    redis (3.0.6)
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
