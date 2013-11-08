@@ -44,7 +44,6 @@ class BatchController < ApplicationController
         end
       end
       all_class_ids.flatten!
-      puts "first part #{Time.now - t0}"
       if latest_submissions.length == 0 or all_class_ids.length == 0
         reply({ resource_type => [] })
       else
@@ -63,7 +62,6 @@ class BatchController < ApplicationController
             to_reply << cls
           end 
         end
-        puts "first part #{Time.now - t0}"
         reply({ resource_type => to_reply })
       end
     end
