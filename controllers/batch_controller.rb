@@ -25,32 +25,47 @@ class BatchController < ApplicationController
         end
         class_id_by_ontology[class_input["ontology"]] << class_input["class"]
       end
-      classes = []
-      mutex = Mutex.new
-      class_id_by_ontology.keys.each_slice(4) do |ont_ids|
-        threads = []
-        ont_ids.each do |ont_id|
-          threads << Thread.new do
-            class_ids = class_id_by_ontology[ont_id]
-            class_ids.uniq!
-            class_ids.map! { |id| RDF::URI.new(id) }
-            ont = LinkedData::Models::Ontology.find(RDF::URI.new(replace_url_prefix(ont_id)))
-                        .include(submissions: [:submissionId])
-                        .include(:acronym).first
-            #error 404, "Ontology #{ont_id} could not be found" if ont.nil?
-            next if ont.nil?
-            latest = ont.latest_submission
-            next if latest.nil?
-            latest.bring(ontology: [:acronym])
-            ont_classes = LinkedData::Models::Class.in(latest)
-                          .ids(class_ids)
-                          .include(goo_include).all
-            mutex.synchronize { classes.concat(ont_classes) }
+      latest_submissions = []
+      all_class_ids = []
+      t0 = Time.now
+      all_latest = retrieve_latest_submissions
+      all_latest_by_id = Hash.new 
+      all_latest.each do |acr,obj|
+        all_latest_by_id[obj.ontology.id.to_s] = obj
+      end
+      class_id_to_ontology = Hash.new
+      class_id_by_ontology.keys.each do |ont_id|
+        if all_latest_by_id[ont_id]
+          latest_submissions << all_latest_by_id[ont_id]
+          all_class_ids << class_id_by_ontology[ont_id]
+          class_id_by_ontology[ont_id].each do |cls_id|
+            class_id_to_ontology[cls_id] = ont_id
           end
         end
-        threads.each{|t| t.join}
       end
-      reply({ resource_type => classes })
+      all_class_ids.flatten!
+      puts "first part #{Time.now - t0}"
+      if latest_submissions.length == 0 or all_class_ids.length == 0
+        reply({ resource_type => [] })
+      else
+        all_class_ids.uniq!
+        all_class_ids.map! { |x| RDF::URI.new(x) }
+        t0 = Time.now
+        ont_classes = LinkedData::Models::Class.in(latest_submissions)
+                      .ids(all_class_ids)
+                      .include(goo_include).all
+
+        to_reply = []
+        ont_classes.each do |cls|
+          if class_id_to_ontology[cls.id.to_s] and\
+               all_latest_by_id[class_id_to_ontology[cls.id.to_s]]
+            cls.submission = all_latest_by_id[class_id_to_ontology[cls.id.to_s]]
+            to_reply << cls
+          end 
+        end
+        puts "first part #{Time.now - t0}"
+        reply({ resource_type => to_reply })
+      end
     end
 
     private
