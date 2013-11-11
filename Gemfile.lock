@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2948b587cc32c8603f52c1e0ee14bddc45ac991d
+  revision: b1d76ad124ff7b8c29d950479d7689efb59edd7d
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -101,9 +101,10 @@ GEM
     bcrypt-ruby (3.1.2)
     bcrypt-ruby (3.1.2-java)
     builder (3.2.2)
-    coderay (1.0.9)
+    coderay (1.1.0)
     cube-ruby (0.0.3)
     dante (0.1.5)
+    docile (1.1.0)
     ffi (1.9.3-java)
     haml (4.0.4)
       tilt
@@ -114,6 +115,7 @@ GEM
     json_pure (1.8.1)
     kgio (2.8.1)
     libxml-ruby (2.7.0)
+    lockfile (2.1.0)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
     mail (2.2.7)
@@ -131,12 +133,12 @@ GEM
     polyglot (0.3.3)
     pony (1.5.1)
       mail (>= 2.0)
-    pry (0.9.12.2)
-      coderay (~> 1.0.5)
+    pry (0.9.12.3)
+      coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
-    pry (0.9.12.2-java)
-      coderay (~> 1.0.5)
+    pry (0.9.12.3-java)
+      coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
       spoon (~> 0.0)
@@ -173,10 +175,12 @@ GEM
     rubyzip (1.1.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    simplecov (0.7.1)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.7.1)
-    simplecov-html (0.7.1)
+    simplecov (0.8.1)
+      docile (~> 1.1.0)
+      lockfile (>= 2.1.0)
+      multi_json
+      simplecov-html (~> 0.8.0)
+    simplecov-html (0.8.0)
     sinatra (1.4.4)
       rack (~> 1.4)
       rack-protection (~> 1.4)
