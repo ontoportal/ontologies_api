@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 85136d471e22618209a029cb62ae36b5020b2b8f
+  revision: 3f259e9c3df46c449e5264cb9677ef7bcd0163bc
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 473782e2c6cf5f29a1b17201da975cfdb50e1762
+  revision: ce6efac114f1f7ac6d3d7e166949569afb487639
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: a613cbeabffc9cfae82f89f6bf3129e55f103678
+  revision: ba3cf3ba3866cb218ec1d55290b24edcd1b3dcbb
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -194,7 +194,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
-    slop (3.4.6)
+    slop (3.4.7)
     spoon (0.0.4)
       ffi
     systemu (2.5.2)
