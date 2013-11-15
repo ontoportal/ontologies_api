@@ -27,7 +27,7 @@ gem 'minitest', '~> 4.0'
 gem 'cube-ruby', require: 'cube'
 
 # HTTP server
-gem 'unicorn'
+gem 'rainbows'
 
 # Debugging
 gem 'pry', :group => :development

@@ -156,6 +156,10 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rack-timeout (0.0.4)
+    rainbows (4.5.0)
+      kgio (~> 2.5)
+      rack (~> 1.1)
+      unicorn (~> 4.6, >= 4.6.2)
     raindrops (0.12.0)
     rake (10.1.0)
     rdf (1.0.8)
@@ -239,6 +243,7 @@ DEPENDENCIES
   rack-mini-profiler
   rack-post-body-to-params (~> 0.1)
   rack-timeout
+  rainbows
   rake (~> 10.0)
   redcarpet
   redis (~> 3.0)
@@ -249,4 +254,3 @@ DEPENDENCIES
   sinatra-advanced-routes
   sinatra-contrib (~> 1.0)
   sparql-client!
-  unicorn
