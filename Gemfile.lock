@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: ce6efac114f1f7ac6d3d7e166949569afb487639
+  revision: 1e34a169271ce9c414aaf880aeb36183d4df6fdc
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: ba3cf3ba3866cb218ec1d55290b24edcd1b3dcbb
+  revision: 9a5d6827d74281a84567208cf9547442555d8e09
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -129,7 +129,7 @@ GEM
       redis
     multi_json (1.8.2)
     net-http-persistent (2.9)
-    oj (2.2.0)
+    oj (2.2.1)
     polyglot (0.3.3)
     pony (1.5.1)
       mail (>= 2.0)
