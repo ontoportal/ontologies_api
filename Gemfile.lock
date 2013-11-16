@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 85136d471e22618209a029cb62ae36b5020b2b8f
+  revision: 3f259e9c3df46c449e5264cb9677ef7bcd0163bc
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: ba3cf3ba3866cb218ec1d55290b24edcd1b3dcbb
+  revision: 9a5d6827d74281a84567208cf9547442555d8e09
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -156,6 +156,10 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rack-timeout (0.0.4)
+    rainbows (4.5.0)
+      kgio (~> 2.5)
+      rack (~> 1.1)
+      unicorn (~> 4.6, >= 4.6.2)
     raindrops (0.12.0)
     rake (10.1.0)
     rdf (1.0.8)
@@ -239,6 +243,7 @@ DEPENDENCIES
   rack-mini-profiler
   rack-post-body-to-params (~> 0.1)
   rack-timeout
+  rainbows
   rake (~> 10.0)
   redcarpet
   redis (~> 3.0)
@@ -249,4 +254,3 @@ DEPENDENCIES
   sinatra-advanced-routes
   sinatra-contrib (~> 1.0)
   sparql-client!
-  unicorn
