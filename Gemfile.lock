@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 7fb38b0a80837d44953c8ba94487b79fdef3ee73
+  revision: 24f305759eaa5d4fd5c4b2f73a00bf738120b024
   branch: staging
   specs:
     goo (0.0.2)
@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 85136d471e22618209a029cb62ae36b5020b2b8f
+  revision: b89f9eefedcd86a859e835dc30ad36672bc239c1
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 1e34a169271ce9c414aaf880aeb36183d4df6fdc
+  revision: b4809c52e048849af33e6d08410451dee2bbab28
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 36b7a0c753cafa8b1af9b4e4bc1b19ae76de2233
+  revision: 2e8e6ad68f78c2dcf443c61c6b4cb9f963ca6903
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -72,7 +72,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 972f264109779a7522552cda0325755dbc004edc
+  revision: e1dfb143a3097066f81bfe13393ed93ec01c37ad
   branch: staging
   specs:
     sparql-client (1.0.4.1)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/palexander/rack.git
-  revision: 6d1264be8a1da2a6850b567712ac19caae8d4dfb
+  revision: 65f75b40d94cda2e90441554ea7d6878a26dde2b
   branch: patch-1
   specs:
     rack (1.6.0.alpha)
@@ -136,7 +136,7 @@ GEM
       redis
     multi_json (1.8.2)
     net-http-persistent (2.9)
-    oj (2.2.1)
+    oj (2.2.2)
     polyglot (0.3.3)
     pony (1.5.1)
       mail (>= 2.0)
