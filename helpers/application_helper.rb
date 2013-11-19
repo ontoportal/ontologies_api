@@ -59,7 +59,7 @@ module Sinatra
               # Create a new object and save if one didn't exist
               if value.is_a?(Array)
                 retrieved_value = []
-                value.each {|e| populate_from_params(attr_cls.new, e.symbolize_keys)}
+                value.each {|e| retrieved_value << populate_from_params(attr_cls.new, e.symbolize_keys)}
                 retrieved_value.each {|e| e.save}
               else
                 retrieved_value = populate_from_params(attr_cls.new, value.symbolize_keys)
