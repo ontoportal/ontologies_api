@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f67e54ad95338ddbc59a575f05a059142bc2b1e2
+  revision: e791a5cc55940c97d2a74fa4cdf517e94bd29f6e
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 6f377e0408bc810fedd8a38c4c87a49d34ae9341
+  revision: 32aed5a66ec5d7efe80dffcd58fba9b0d7aec2cf
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 5180dbe9c0519ab127747eabfa005837cc6ab922
+  revision: 358cad218efcc8c15c09685996b3c2a75100059e
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -72,7 +72,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 972f264109779a7522552cda0325755dbc004edc
+  revision: de82689e690f400833653b0ecc51676396e945a8
   branch: master
   specs:
     sparql-client (1.0.4.1)
@@ -129,7 +129,7 @@ GEM
       redis
     multi_json (1.8.2)
     net-http-persistent (2.9)
-    oj (2.2.0)
+    oj (2.2.2)
     polyglot (0.3.3)
     pony (1.5.1)
       mail (>= 2.0)
@@ -194,7 +194,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
-    slop (3.4.6)
+    slop (3.4.7)
     spoon (0.0.4)
       ffi
     systemu (2.5.2)
