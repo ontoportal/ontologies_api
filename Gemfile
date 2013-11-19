@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rack', github: 'palexander/rack', branch: 'patch-1' # can remove github dependency when this is merged: https://github.com/rack/rack/pull/621
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-contrib', '~> 1.0'
 gem 'sinatra-advanced-routes'

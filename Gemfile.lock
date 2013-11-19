@@ -81,6 +81,13 @@ GIT
       rdf (>= 1.0)
 
 GIT
+  remote: git://github.com/palexander/rack.git
+  revision: 6d1264be8a1da2a6850b567712ac19caae8d4dfb
+  branch: patch-1
+  specs:
+    rack (1.6.0.alpha)
+
+GIT
   remote: https://github.com/palexander/shotgun.git
   revision: db198224aaab2e4cb9b049adccb30e387d88bc3b
   branch: ncbo
@@ -142,7 +149,6 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
       spoon (~> 0.0)
-    rack (1.5.2)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cache (1.2)
@@ -238,6 +244,7 @@ DEPENDENCIES
   oj (~> 2.0)
   ontologies_linked_data!
   pry
+  rack!
   rack-accept (~> 0.4)
   rack-cache (~> 1.0)
   rack-mini-profiler
