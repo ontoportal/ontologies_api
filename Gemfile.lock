@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 9e387b5224d7ff2887f54e65669d41a5892c3bb9
+  revision: 8f9c2aa0cf26b97a257a7425d52d40451ef4d1c4
   branch: master
   specs:
     goo (0.0.2)
@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: e791a5cc55940c97d2a74fa4cdf517e94bd29f6e
+  revision: 80db484c138697c84ccfb4bb5e84abc3ef5d0d30
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: a351ba8999b280fc9c17113eb925eda454316fe6
+  revision: 0b0ef673fa6375937c55cf52ee525883a90d139e
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -72,7 +72,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: de82689e690f400833653b0ecc51676396e945a8
+  revision: 1dc17f0bd9966b3a4d93d5d9ccc1b2d8f0cd4e8e
   branch: master
   specs:
     sparql-client (1.0.4.1)
@@ -115,7 +115,6 @@ GEM
     json_pure (1.8.1)
     kgio (2.8.1)
     libxml-ruby (2.7.0)
-    lockfile (2.1.0)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
     mail (2.2.7)
@@ -129,7 +128,7 @@ GEM
       redis
     multi_json (1.8.2)
     net-http-persistent (2.9)
-    oj (2.2.2)
+    oj (2.2.3)
     polyglot (0.3.3)
     pony (1.5.1)
       mail (>= 2.0)
@@ -175,9 +174,8 @@ GEM
     rubyzip (1.1.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    simplecov (0.8.1)
+    simplecov (0.8.2)
       docile (~> 1.1.0)
-      lockfile (>= 2.1.0)
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
