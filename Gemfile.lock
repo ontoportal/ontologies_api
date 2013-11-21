@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 80db484c138697c84ccfb4bb5e84abc3ef5d0d30
+  revision: e791a5cc55940c97d2a74fa4cdf517e94bd29f6e
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 0b0ef673fa6375937c55cf52ee525883a90d139e
+  revision: a351ba8999b280fc9c17113eb925eda454316fe6
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -72,13 +72,21 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 1dc17f0bd9966b3a4d93d5d9ccc1b2d8f0cd4e8e
+  revision: de82689e690f400833653b0ecc51676396e945a8
   branch: master
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
       net-http-persistent (>= 1.4)
       rdf (>= 1.0)
+
+GIT
+  remote: git://github.com/palexander/rack-post-body-to-params.git
+  revision: 0fd30e710386d0cb8a3a6833d9549d7b655d5398
+  branch: multipart_support
+  specs:
+    rack-post-body-to-params (0.1.8)
+      activesupport (>= 2.3)
 
 GIT
   remote: https://github.com/palexander/shotgun.git
@@ -148,8 +156,6 @@ GEM
       rack (>= 0.4)
     rack-mini-profiler (0.1.31)
       rack (>= 1.1.3)
-    rack-post-body-to-params (0.1.8)
-      activesupport (>= 2.3)
     rack-protection (1.5.1)
       rack
     rack-test (0.6.2)
@@ -235,7 +241,7 @@ DEPENDENCIES
   rack-accept (~> 0.4)
   rack-cache (~> 1.0)
   rack-mini-profiler
-  rack-post-body-to-params (~> 0.1)
+  rack-post-body-to-params!
   rack-timeout
   rake (~> 10.0)
   redcarpet
