@@ -12,7 +12,7 @@ gem 'activesupport', '~> 3.0'
 
 # Rack middleware
 gem 'rack-accept', '~> 0.4'
-gem 'rack-post-body-to-params', '~> 0.1'
+gem 'rack-post-body-to-params', github: "palexander/rack-post-body-to-params", branch: "multipart_support"
 gem 'rack-cache', '~> 1.0'
 gem 'redis-rack-cache', '~> 1.0'
 gem 'rack-timeout'
