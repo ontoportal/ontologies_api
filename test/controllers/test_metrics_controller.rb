@@ -7,27 +7,23 @@ class TestMetricsController < TestCase
       puts "this test is going to wipe out all submission and ontologies. probably this is not a test env."
       return
     end
-    OntologySubmission.all.each do |s|
-      s.delete
-    end
-    Ontology.all.each do |s|
-      s.delete
-    end
+    OntologySubmission.all.each {|s| s.delete }
+    Ontology.all.each {|o| o.delete }
     @@data = {"classes"=>486,
-"averageChildCount"=>5,
-"maxChildCount"=>65,
-"classesWithOneChild"=>14,
-"classesWithMoreThan25Children"=>2,
-"classesWithNoDefinition"=>11,
-"individuals"=>82,
-"properties"=>63,
-"maxDepth"=>8 }
-    options = {ont_count: 2,
+              "averageChildCount"=>5,
+              "maxChildCount"=>65,
+              "classesWithOneChild"=>14,
+              "classesWithMoreThan25Children"=>2,
+              "classesWithNoDefinition"=>11,
+              "individuals"=>82,
+              "properties"=>63,
+              "maxDepth"=>8 }
+    @@options = {ont_count: 2,
                submission_count: 3,
                submissions_to_process: [1, 2],
                process_submission: true,
                random_submission_count: false}
-   LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
+    LinkedData::SampleData::Ontology.create_ontologies_and_submissions(@@options)
   end
 
   def test_all_metrics
@@ -73,6 +69,28 @@ class TestMetricsController < TestCase
     @@data.each do |k,v|
       assert_equal(metrics[k], v)
     end
+  end
+
+  def test_metrics_missing
+    # test for zero ontologies without metrics (created by before_suite)
+    get '/metrics/missing'
+    assert last_response.ok?
+    ontologies = MultiJson.load(last_response.body)
+    assert_equal(0, ontologies.length, msg='Failure to detect 0 ontologies with missing metrics.')
+    # create ontologies with latest submissions that have no metrics
+    delete_ontologies_and_submissions
+    options = {ont_count: 2,
+               submission_count: 1,
+               process_submission: false,
+               random_submission_count: false}
+    create_ontologies_and_submissions(options)
+    get '/metrics/missing'
+    assert last_response.ok?
+    ontologies = MultiJson.load(last_response.body)
+    assert_equal(2, ontologies.length, msg='Failure to detect 2 ontologies with missing metrics.')
+    # recreate the before_suite data (this test might not be the last one to run in the suite)
+    delete_ontologies_and_submissions
+    create_ontologies_and_submissions(@@options)
   end
 
 end

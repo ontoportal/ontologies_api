@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 3f259e9c3df46c449e5264cb9677ef7bcd0163bc
+  revision: 42f3d1c3181694df24f4dcb9d59b5985a4500c4e
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 1564f08d273465676a1ea6bcb8c6939ca67e8d86
+  revision: 518f425ca75c2b91087bdfe47930eb76da918a27
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: b66e824ed2eb243332ffe6b6753dde67584bd5b9
+  revision: 679e0cae6ae35a08b49788a9fd92441f4455b5c6
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -72,7 +72,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 972f264109779a7522552cda0325755dbc004edc
+  revision: e1dfb143a3097066f81bfe13393ed93ec01c37ad
   branch: staging
   specs:
     sparql-client (1.0.4.1)
@@ -119,7 +119,7 @@ GEM
     coderay (1.1.0)
     cube-ruby (0.0.3)
     dante (0.1.5)
-    docile (1.1.0)
+    docile (1.1.1)
     ffi (1.9.3-java)
     haml (4.0.4)
       tilt
@@ -147,11 +147,11 @@ GEM
     polyglot (0.3.3)
     pony (1.5.1)
       mail (>= 2.0)
-    pry (0.9.12.3)
+    pry (0.9.12.4)
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
-    pry (0.9.12.3-java)
+    pry (0.9.12.4-java)
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)

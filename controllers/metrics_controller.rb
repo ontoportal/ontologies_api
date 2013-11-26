@@ -31,6 +31,22 @@ class MetricsController < ApplicationController
       reply submissions.select { |s| !s.metrics.nil? }.map { |s| s.metrics }
     end
 
+    get '/missing' do
+      missing = Set.new()
+      onts = LinkedData::Models::Ontology.all
+      onts.each do |ont|
+        ont.bring(:submissions)
+        sub = ont.latest_submission
+        if sub.nil?
+          missing.add(ont) if sub.nil?
+        else
+          sub.bring(:metrics)
+          missing.add(ont) if sub.metrics.nil?
+        end
+      end
+      reply missing.to_a
+    end
+
   end
 
   # Display metrics for ontology
@@ -51,5 +67,6 @@ class MetricsController < ApplicationController
     sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
     reply sub.metrics || {}
   end
+
 
 end
