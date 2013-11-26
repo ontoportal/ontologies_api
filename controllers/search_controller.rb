@@ -107,8 +107,6 @@ class SearchController < ApplicationController
       return query
     end
 
-    private
-
     def get_subtree_ids(params)
       subtree_ids = nil
 
