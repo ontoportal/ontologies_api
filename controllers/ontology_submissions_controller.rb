@@ -56,6 +56,7 @@ class OntologySubmissionsController < ApplicationController
 
       submission.bring(*OntologySubmission.attributes)
       populate_from_params(submission, params)
+      add_file_to_submission(ont, submission)
 
       if submission.valid?
         submission.save
@@ -95,7 +96,7 @@ class OntologySubmissionsController < ApplicationController
           submission.process_submission(logger_for_parsing,
                                         process_rdf: true, index_search: true,
                                         run_metrics: true, reasoning: true)
-        rescue => e
+        rescue
           if submission.valid?
             submission.save
           else
