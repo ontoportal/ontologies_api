@@ -136,7 +136,7 @@ class MappingsController < ApplicationController
 
     # Delete a mapping
     delete '/:mapping' do
-      mapping_id = RDF::URI.new(params[:mapping])
+      mapping_id = RDF::URI.new(replace_url_prefix(params[:mapping]))
       mapping = LinkedData::Models::Mapping.find(mapping_id)
                   .include(terms: [:ontology, :term ])
                   .include(process: LinkedData::Models::MappingProcess.attributes)
@@ -157,6 +157,7 @@ class MappingsController < ApplicationController
             end
           end
         end
+
         if deleted
           reply(204,"Mapping deleted")
         else
