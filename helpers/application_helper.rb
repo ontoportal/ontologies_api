@@ -110,6 +110,9 @@ module Sinatra
         # Security check
         check_access(obj) if LinkedData.settings.enable_security
 
+        # Slice or set check
+        filter_for_slice(obj) if LinkedData.settings.enable_slices
+
         LinkedData::Serializer.build_response(@env, status: status, ld_object: obj)
       end
 
@@ -186,6 +189,8 @@ module Sinatra
           else
             onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
           end
+
+          filter_for_slice(onts)
         end
         onts = filter_access(onts)
 
