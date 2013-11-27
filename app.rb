@@ -20,6 +20,7 @@ require 'rack/post-body-to-params'
 require 'rack-timeout'
 require_relative 'lib/rack/slow_requests'
 require_relative 'lib/rack/cube_reporter'
+require_relative 'lib/rack/slice_detection'
 
 # Logging setup
 require_relative "config/logging"
@@ -86,7 +87,7 @@ end
 if LinkedData::OntologiesAPI.settings.enable_req_timeout
   use Rack::Timeout; Rack::Timeout.timeout = LinkedData::OntologiesAPI.settings.req_timeout # seconds, shorter than unicorn timeout
 end
-
+use Rack::SliceDetection
 use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
