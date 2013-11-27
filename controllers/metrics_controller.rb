@@ -31,23 +31,55 @@ class MetricsController < ApplicationController
       reply submissions.select { |s| !s.metrics.nil? }.map { |s| s.metrics }
     end
 
+    #
+    # Note: useful submission status states:
+    #LinkedData::Models::SubmissionStatus::VALUES.sort
+    #=> ["ANNOTATOR",
+    #    "ARCHIVED",
+    #    "ERROR_ANNOTATOR",
+    #    "ERROR_ARCHIVED",
+    #    "ERROR_INDEXED",
+    #    "ERROR_METRICS",
+    #    "ERROR_OBSOLETE",
+    #    "ERROR_RDF",
+    #    "ERROR_RDF_LABELS",
+    #    "ERROR_UPLOADED",
+    #    "INDEXED",
+    #    "METRICS",
+    #    "OBSOLETE",
+    #    "RDF",
+    #    "RDF_LABELS",
+    #    "UPLOADED"]
+
     get '/missing' do
       missing = Set.new()
       onts = LinkedData::Models::Ontology.all
       onts.each do |ont|
-        ont.bring(:submissions)
-        sub = ont.latest_submission
+        ont.bring(:summaryOnly)
+        next if ont.summaryOnly
+        # Get the latest submission, but ensure the processing status
+        # doesn't require anything more than RDF parsing.
+        sub = ont.latest_submission(:status => 'RDF')
         if sub.nil?
-          missing.add(ont) if sub.nil?
+          missing.add(ont)
         else
-          sub.bring(:metrics)
-          missing.add(ont) if sub.metrics.nil?
+          status = sub.submissionStatus.map {|s| s.id.to_s.split('/').last }
+          if status.include? 'ERROR_METRICS'
+            missing.add(ont)
+          else
+            if status.include? 'METRICS'
+              sub.bring(:metrics)
+              missing.add(ont) if sub.metrics.nil?
+            else
+              missing.add(ont)
+            end
+          end
         end
       end
       reply missing.to_a
     end
 
-  end
+  end  # namespace /metrics
 
   # Display metrics for ontology
   get "/ontologies/:ontology/metrics" do
