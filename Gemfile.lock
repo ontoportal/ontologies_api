@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 42f3d1c3181694df24f4dcb9d59b5985a4500c4e
+  revision: 3f259e9c3df46c449e5264cb9677ef7bcd0163bc
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 518f425ca75c2b91087bdfe47930eb76da918a27
+  revision: 473782e2c6cf5f29a1b17201da975cfdb50e1762
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 4b0394bce13158ae76167a0974375899a96f92a4
+  revision: e2c557d47a652967ffa28933f8d10f7e66c2cadd
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -143,9 +143,9 @@ GEM
       redis
     multi_json (1.8.2)
     net-http-persistent (2.9)
-    oj (2.2.3)
+    oj (2.3.0)
     polyglot (0.3.3)
-    pony (1.5.1)
+    pony (1.6.1)
       mail (>= 2.0)
     pry (0.9.12.4)
       coderay (~> 1.0)
@@ -201,7 +201,7 @@ GEM
       tilt (~> 1.3, >= 1.3.4)
     sinatra-advanced-routes (0.5.3)
       sinatra (~> 1.0)
-    sinatra-contrib (1.4.1)
+    sinatra-contrib (1.4.2)
       backports (>= 2.0)
       multi_json
       rack-protection
