@@ -63,14 +63,14 @@ class TestSlicesHelper < TestCaseHelpers
 
   def test_search_slices
     # Make sure group and non-group onts are in the search index
-    get "/search?q=*&pagesize=500"
+    get "/search?q=a*&pagesize=500"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)["collection"]
     ont_ids = Set.new(results.map {|r| r["links"]["ontology"]})
     assert_equal ont_ids.to_a.sort, @@search_onts.map {|o| o.id.to_s}.sort
 
     # Do a search on the slice
-    get "http://#{@@group_acronym}/search?q=*&pagesize=500"
+    get "http://#{@@group_acronym}/search?q=a*&pagesize=500"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)["collection"]
     group_ids = @@group.ontologies.map {|o| o.id.to_s}
