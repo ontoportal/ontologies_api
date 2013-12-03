@@ -29,14 +29,7 @@ class SearchController < ApplicationController
       text = params["q"]
 
       query = get_edismax_query(text, params)
-
-
-
-      puts "Edismax query: #{query}, params: #{params}"
-
-
-
-
+      #puts "Edismax query: #{query}, params: #{params}"
       set_page_params(params)
 
       docs = Array.new
@@ -60,9 +53,7 @@ class SearchController < ApplicationController
         docs.push(instance)
       end
 
-      if params["q"][-1] != '*'
-        docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
-      end
+      docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
 
       #need to return a Page object
       page = page_object(docs, total_found)
