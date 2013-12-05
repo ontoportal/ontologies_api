@@ -318,11 +318,12 @@ module Sinatra
 
       def get_ontology_and_submission
         ont = Ontology.find(@params["ontology"])
-              .include(:acronym)
+              .include(:acronym, :administeredBy, :acl, :viewingRestriction)
               .include(submissions:
                        [:submissionId, submissionStatus: [:code], ontology: [:acronym]])
                 .first
         error(404, "Ontology '#{@params["ontology"]}' not found.") if ont.nil?
+        check_access(ont) if LinkedData.settings.enable_security # Security check
         submission = nil
         if @params.include? "ontology_submission_id"
           submission = ont.submission(@params[:ontology_submission_id])
