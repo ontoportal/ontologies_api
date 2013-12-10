@@ -141,6 +141,9 @@ class MappingsController < ApplicationController
                   .include(terms: [:ontology, :term ])
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
+      
+      binding.pry
+
       if mapping.nil?
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       else
@@ -159,10 +162,10 @@ class MappingsController < ApplicationController
         end
 
         if deleted
-          reply(204,"Mapping deleted")
+          halt 204
         else
           if disconnected > 0
-            reply(204,"REST processes disconected from mapping")
+            halt 204
           else
             reply(400, "This mapping only contains automatic processes. Nothing has been deleted")
           end
