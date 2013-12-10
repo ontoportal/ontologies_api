@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: f87f94bced96deae778854074a8aa47916ad896e
+  revision: 3af8434dbcc3d2965fae888dedbadc6e16bb009a
   branch: staging
   specs:
     goo (0.0.2)
@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ae05e64b0d62f36047662f9b36604fa2a74177ca
+  revision: 9b57b58a30017e4990935e794015265e0bb66e5f
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: c4c0ab54e0481c6742c13e62d049a2ba90e90587
+  revision: ecc247f853c2fab99eb8fe2913d6b4919d170f7e
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -265,3 +265,4 @@ DEPENDENCIES
   sinatra-advanced-routes
   sinatra-contrib (~> 1.0)
   sparql-client!
+  unicorn

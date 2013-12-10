@@ -29,6 +29,7 @@ gem 'cube-ruby', require: 'cube'
 
 # HTTP server
 gem 'rainbows'
+gem 'unicorn'
 
 # Debugging
 gem 'pry', :group => :development
