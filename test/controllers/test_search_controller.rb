@@ -59,4 +59,8 @@ class TestSearchController < TestCase
     assert results["collection"].length > 46
   end
 
+  def test_wildcard_search
+
+  end
+
 end

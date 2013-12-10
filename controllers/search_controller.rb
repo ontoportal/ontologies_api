@@ -3,11 +3,13 @@ require 'cgi'
 class SearchController < ApplicationController
   namespace "/search" do
     ONTOLOGIES_PARAM = "ontologies"
+    ONTOLOGY_PARAM = "ontology"
     EXACT_MATCH_PARAM = "exact_match"
     INCLUDE_VIEWS_PARAM = "include_views"
     REQUIRE_DEFINITIONS_PARAM = "require_definition"
     INCLUDE_PROPERTIES_PARAM = "include_properties"
     SUBTREE_ID_PARAM = "subtree_id"
+    OBSOLETE_PARAM = "obsolete"
 
     PREF_LABEL_FIELD_WEIGHT = 1.6
     SYNONYM_FIELD_WEIGHT = 1
@@ -96,6 +98,11 @@ class SearchController < ApplicationController
       if params[REQUIRE_DEFINITIONS_PARAM] == "true"
         filter_query << " AND definition:[* TO *]"
       end
+
+      if ["true", "false"].include? params[OBSOLETE_PARAM]
+        filter_query << " AND obsolete:#{params[OBSOLETE_PARAM]}"
+      end
+
       params["fq"] = filter_query
       params["q"] = query
 
@@ -105,20 +112,20 @@ class SearchController < ApplicationController
     def get_subtree_ids(params)
       subtree_ids = nil
 
-      if (params["subtree_id"])
-        ontology = params["ontology"].split(",")
+      if (params[SUBTREE_ID_PARAM])
+        ontology = params[ONTOLOGY_PARAM].split(",")
 
         if (ontology.nil? || ontology.empty? || ontology.length > 1)
           raise error 400, "A subtree search requires a single ontology: /search?q=<query>&ontology=CNO&subtree_id=http%3a%2f%2fwww.w3.org%2f2004%2f02%2fskos%2fcore%23Concept"
         end
 
         ont, submission = get_ontology_and_submission
-        params[:cls] = params["subtree_id"]
-        params["ontologies"] = params["ontology"]
+        params[:cls] = params[SUBTREE_ID_PARAM]
+        params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
 
         cls = get_class(submission, load_attrs={descendants: true})
         subtree_ids = cls.descendants.map {|d| d.id.to_s}
-        subtree_ids.push(params["subtree_id"])
+        subtree_ids.push(params[SUBTREE_ID_PARAM])
       end
 
       return subtree_ids
