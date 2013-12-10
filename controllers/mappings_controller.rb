@@ -86,7 +86,6 @@ class MappingsController < ApplicationController
       error(400, "Input does not contain at least 2 terms") if params[:terms].length < 2
       error(400, "Input does not contain mapping relation") if !params[:relation]
       error(400, "Input does not contain user creator ID") if !params[:creator]
-      ontologies = {}
       params[:terms].each do |term|
         if !term[:term] || !term[:ontology]
           error(400,"Every term must have at least one term ID and a ontology ID or acronym")
@@ -141,7 +140,7 @@ class MappingsController < ApplicationController
                   .include(terms: [:ontology, :term ])
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
-      
+
       if mapping.nil?
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       else
