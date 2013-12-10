@@ -113,6 +113,9 @@ module Sinatra
         # Slice or set check
         filter_for_slice(obj) if LinkedData.settings.enable_slices
 
+        # Check for custom ontologies set by user
+        filter_for_user_onts(obj)
+
         LinkedData::Serializer.build_response(@env, status: status, ld_object: obj)
       end
 
@@ -191,6 +194,7 @@ module Sinatra
           end
 
           filter_for_slice(onts)
+          filter_for_user_onts(onts)
         end
         onts = filter_access(onts)
 
