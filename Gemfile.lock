@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 038619809f947d45065a60a800a8c28dc92638b3
+  revision: 3af8434dbcc3d2965fae888dedbadc6e16bb009a
   branch: staging
   specs:
     goo (0.0.2)
@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 42f3d1c3181694df24f4dcb9d59b5985a4500c4e
+  revision: 84ae8170d12e3b6bc65b6b301a7839ae454bf956
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 6caf152ad69ae55a430b34695492ac4411ed8f82
+  revision: 8fab4c33e900c79d920cf189f79fc53466a3a9c9
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: aefefe6f589f05fd4612d7b837e1948bc46c4818
+  revision: c37158a857e19976b1a7685076b7848fb4ebc102
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -106,7 +106,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.15)
+    activesupport (3.2.16)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
@@ -118,12 +118,12 @@ GEM
     builder (3.2.2)
     coderay (1.1.0)
     cube-ruby (0.0.3)
-    dante (0.1.5)
+    dante (0.2.0)
     docile (1.1.1)
     ffi (1.9.3-java)
     haml (4.0.4)
       tilt
-    i18n (0.6.5)
+    i18n (0.6.9)
     json (1.8.1)
     json (1.8.1-java)
     json-schema (2.1.3)
@@ -143,9 +143,9 @@ GEM
       redis
     multi_json (1.8.2)
     net-http-persistent (2.9)
-    oj (2.3.0)
+    oj (2.4.0)
     polyglot (0.3.3)
-    pony (1.6.1)
+    pony (1.6.2)
       mail (>= 2.0)
     pry (0.9.12.4)
       coderay (~> 1.0)
