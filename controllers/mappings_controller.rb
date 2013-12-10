@@ -142,8 +142,6 @@ class MappingsController < ApplicationController
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
       
-      binding.pry
-
       if mapping.nil?
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       else
