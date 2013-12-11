@@ -59,7 +59,7 @@ class TestHTTPCacheHelper < TestCaseHelpers
   end
 
   def test_cached_collection
-    puts LinkedData.settings.enable_http_cache
+    #puts LinkedData.settings.enable_http_cache
     get '/ontologies'
     assert_equal 200, last_response.status
     token = last_response.headers["Last-Modified"]
@@ -73,7 +73,7 @@ class TestHTTPCacheHelper < TestCaseHelpers
   end
 
   def test_cached_single
-    puts LinkedData.settings.enable_http_cache
+    #puts LinkedData.settings.enable_http_cache
     get '/ontologies/' + @@ontology.acronym
     assert_equal 200, last_response.status
     token = last_response.headers["Last-Modified"]
@@ -87,7 +87,7 @@ class TestHTTPCacheHelper < TestCaseHelpers
   end
 
   def test_cached_segment
-    puts LinkedData.settings.enable_http_cache
+    #puts LinkedData.settings.enable_http_cache
     get "/ontologies/#{@@ontology.acronym}/notes"
     token = last_response.headers["Last-Modified"]
     assert_equal 200, last_response.status
