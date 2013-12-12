@@ -60,6 +60,12 @@ class TestSearchController < TestCase
   end
 
   def test_wildcard_search
+    get "/search?q=lun*"
+    assert last_response.ok?
+    results = MultiJson.load(last_response.body)
+    coll = results["collection"]
+
+    binding.pry
 
   end
 
