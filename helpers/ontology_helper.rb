@@ -29,7 +29,7 @@ module Sinatra
           cron = NcboCron::Models::OntologySubmissionParser.new
           cron.queue_submission(ont_submission, {all: true})
         else
-          error 422, ont_submission.errors
+          error 400, ont_submission.errors
         end
 
         ont_submission
@@ -50,15 +50,15 @@ module Sinatra
       # Add a file to the submission if a file exists in the params
       def add_file_to_submission(ont, submission)
         filename, tmpfile = file_from_request
-        if filename.nil?
-          error 424, "Failure to resolve ontology filename"
-        end
         if tmpfile
+          if filename.nil?
+            error 400, "Failure to resolve ontology filename from upload file."
+          end
           # Copy tmpfile to appropriate location
           ont.bring(:acronym) if ont.bring?(:acronym)
           # Ensure the ontology acronym is available
           if ont.acronym.nil?
-            error 424, "Failure to resolve ontology acronym"
+            error 500, "Failure to resolve ontology acronym"
           end
           file_location = OntologySubmission.copy_file_repository(ont.acronym, submission.submissionId, tmpfile, filename)
           submission.uploadFilePath = file_location
