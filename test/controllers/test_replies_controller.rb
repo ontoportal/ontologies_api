@@ -51,6 +51,11 @@ class TestRepliesController < TestCase
     replies = MultiJson.load(last_response.body)
     reply = replies.first
     get reply['@id']
+    unless last_response.ok?
+      puts "Debug output for test_single_reply intermittant error"
+      puts last_response.status
+      puts last_response.body
+    end
     assert last_response.ok?
     retrieved_reply = MultiJson.load(last_response.body)
     assert_equal reply["@id"], retrieved_reply["@id"]
