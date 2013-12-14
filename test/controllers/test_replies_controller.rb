@@ -3,7 +3,7 @@ require_relative '../test_case'
 class TestRepliesController < TestCase
 
   def self.before_suite
-    count, acronyms, ontologies = self.new("before_suite").create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: false)
+    ontologies = self.new("before_suite").create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: false)[2]
     @@ontology = ontologies.first
 
     @@reply_user = "test_reply_user"
@@ -47,15 +47,17 @@ class TestRepliesController < TestCase
   end
 
   def test_single_reply
-    get "/notes/#{@@note.id.to_s.split('/').last}/replies"
+    get @@note.id.to_s
     replies = MultiJson.load(last_response.body)
+    note_body = last_response.body
     reply = replies.first
     get reply['@id']
-    unless last_response.ok?
-      puts "Debug output for test_single_reply intermittant error"
-      puts last_response.status
-      puts last_response.body
-    end
+    puts "\n\n", "Debug output for test_single_reply intermittant error"
+    puts "Note id: #{@@note.id.to_s}"
+    puts "Note response body:\n#{note_body}"
+    puts "Reply id: #{reply['@id']}"
+    puts "Reply response body:\n#{last_response.body}"
+    puts "\n\n"
     assert last_response.ok?
     retrieved_reply = MultiJson.load(last_response.body)
     assert_equal reply["@id"], retrieved_reply["@id"]
