@@ -23,6 +23,14 @@ class TestRepliesController < TestCase
     })
     @@note.save
 
+    @@note1 = LinkedData::Models::Note.new({
+      creator: @@user,
+      subject: "Test subject note 1",
+      body: "Test body for note 1",
+      relatedOntology: [@@ontology]
+    })
+    @@note1.save
+
     @@replies = []
     5.times do |i|
       reply = LinkedData::Models::Notes::Reply.new({
@@ -33,6 +41,8 @@ class TestRepliesController < TestCase
       @@replies << reply
       @@note.reply = (@@note.reply || []).dup.push(reply)
       @@note.save
+      @@note1.reply = (@@note.reply || []).dup.push(reply)
+      @@note1.save
     end
   end
 
@@ -47,17 +57,10 @@ class TestRepliesController < TestCase
   end
 
   def test_single_reply
-    get @@note.id.to_s
+    get @@note1.id.to_s
     replies = MultiJson.load(last_response.body)
-    note_body = last_response.body
     reply = replies.first
     get reply['@id']
-    puts "\n\n", "Debug output for test_single_reply intermittant error"
-    puts "Note id: #{@@note.id.to_s}"
-    puts "Note response body:\n#{note_body}"
-    puts "Reply id: #{reply['@id']}"
-    puts "Reply response body:\n#{last_response.body}"
-    puts "\n\n"
     assert last_response.ok?
     retrieved_reply = MultiJson.load(last_response.body)
     assert_equal reply["@id"], retrieved_reply["@id"]
