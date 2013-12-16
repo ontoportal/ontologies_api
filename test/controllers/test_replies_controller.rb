@@ -3,7 +3,7 @@ require_relative '../test_case'
 class TestRepliesController < TestCase
 
   def self.before_suite
-    count, acronyms, ontologies = self.new("before_suite").create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: false)
+    ontologies = self.new("before_suite").create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: false)[2]
     @@ontology = ontologies.first
 
     @@reply_user = "test_reply_user"
@@ -23,6 +23,14 @@ class TestRepliesController < TestCase
     })
     @@note.save
 
+    @@note1 = LinkedData::Models::Note.new({
+      creator: @@user,
+      subject: "Test subject note 1",
+      body: "Test body for note 1",
+      relatedOntology: [@@ontology]
+    })
+    @@note1.save
+
     @@replies = []
     5.times do |i|
       reply = LinkedData::Models::Notes::Reply.new({
@@ -33,6 +41,8 @@ class TestRepliesController < TestCase
       @@replies << reply
       @@note.reply = (@@note.reply || []).dup.push(reply)
       @@note.save
+      @@note1.reply = (@@note.reply || []).dup.push(reply)
+      @@note1.save
     end
   end
 
@@ -47,13 +57,13 @@ class TestRepliesController < TestCase
   end
 
   def test_single_reply
-    get "/notes/#{@@note.id.to_s.split('/').last}/replies"
+    get @@note1.id.to_s
     replies = MultiJson.load(last_response.body)
-    reply = replies.first
+    reply = replies["reply"].first
     get reply['@id']
     assert last_response.ok?
     retrieved_reply = MultiJson.load(last_response.body)
-    assert_equal reply["@id"], retrieved_reply["@id"]
+    assert_equal reply['@id'], retrieved_reply['@id']
   end
 
   def test_reply_lifecycle

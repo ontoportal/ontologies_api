@@ -72,7 +72,7 @@ class TestOntologySubmissionsController < TestCase
 
   def test_create_new_submission_missing_file_and_pull_location
     post "/ontologies/#{@@acronym}/submissions", name: @@name, hasOntologyLanguage: "OWL"
-    assert_equal(422, last_response.status, msg=get_errors(last_response))
+    assert_equal(400, last_response.status, msg=get_errors(last_response))
     assert MultiJson.load(last_response.body)["errors"]
   end
 
@@ -129,11 +129,9 @@ class TestOntologySubmissionsController < TestCase
     ont = Ontology.find(created_ont_acronyms.first).include(submissions: [:submissionId, ontology: :acronym]).first
     assert(ont.submissions.length > 0)
     submission = ont.submissions[0]
-
     new_values = {description: "Testing new description changes"}
     patch "/ontologies/#{submission.ontology.acronym}/submissions/#{submission.submissionId}", MultiJson.dump(new_values), "CONTENT_TYPE" => "application/json"
     assert_equal(204, last_response.status, msg=get_errors(last_response))
-
     get "/ontologies/#{submission.ontology.acronym}/submissions/#{submission.submissionId}"
     submission = MultiJson.load(last_response.body)
     assert submission["description"].eql?("Testing new description changes")
