@@ -64,9 +64,6 @@ class TestSearchController < TestCase
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     coll = results["collection"]
-
-    binding.pry
-
   end
 
 end
