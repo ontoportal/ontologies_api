@@ -59,11 +59,11 @@ class TestRepliesController < TestCase
   def test_single_reply
     get @@note1.id.to_s
     replies = MultiJson.load(last_response.body)
-    reply = replies.first
+    reply = replies["reply"].first
     get reply['@id']
     assert last_response.ok?
     retrieved_reply = MultiJson.load(last_response.body)
-    assert_equal reply["@id"], retrieved_reply["@id"]
+    assert_equal reply['@id'], retrieved_reply['@id']
   end
 
   def test_reply_lifecycle
