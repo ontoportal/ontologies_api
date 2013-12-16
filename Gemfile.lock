@@ -1,7 +1,12 @@
 GIT
   remote: git://github.com/ncbo/goo.git
+<<<<<<< HEAD
   revision: 0f68487d691d81c676cff97e520b7549166e478a
   branch: master
+=======
+  revision: 93727885409db3704b52adbecb0b05fa7cc35686
+  branch: staging
+>>>>>>> aedf585... fixes for NCBO-471 and NCBO-472
   specs:
     goo (0.0.2)
       rdf (= 1.0.8)
@@ -13,8 +18,13 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
+<<<<<<< HEAD
   revision: cacc1377dc521ec19a14e4f06e264b9698c5a0b2
   branch: master
+=======
+  revision: 883f0c44974db683db54d8caf7941a4cafcd49ee
+  branch: staging
+>>>>>>> aedf585... fixes for NCBO-471 and NCBO-472
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -23,8 +33,13 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
+<<<<<<< HEAD
   revision: cf586a5f3db8b105d4eeacc0c32150e8dbc8adc1
   branch: master
+=======
+  revision: 1fc16aa9c4fa97b2f4fa271430b0ff0287e7fa08
+  branch: staging
+>>>>>>> aedf585... fixes for NCBO-471 and NCBO-472
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -46,8 +61,13 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
+<<<<<<< HEAD
   revision: c8dad45d56aea872ba7616c9a4f5c2866368184f
   branch: master
+=======
+  revision: dd89a667c4ec4234c616899caa0de1bf46a79a60
+  branch: staging
+>>>>>>> aedf585... fixes for NCBO-471 and NCBO-472
   specs:
     ontologies_linked_data (0.0.1)
       activesupport

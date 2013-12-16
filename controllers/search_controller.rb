@@ -11,10 +11,6 @@ class SearchController < ApplicationController
     SUBTREE_ID_PARAM = "subtree_id"
     OBSOLETE_PARAM = "obsolete"
 
-    PREF_LABEL_FIELD_WEIGHT = 1.6
-    SYNONYM_FIELD_WEIGHT = 1
-    PROPERTY_FIELD_WEIGHT = 1
-
     # execute a search query
     get do
       process_search()
@@ -72,19 +68,20 @@ class SearchController < ApplicationController
       params["fl"] = "*,score"
 
       if (params[EXACT_MATCH_PARAM] == "true")
+        query = "\"#{RSolr.escape(text)}\""
         params["qf"] = "prefLabelExact"
       elsif (text[-1] == '*')
         text = text[0..-2]
+        query = RSolr.escape(text)
         params["qt"] = "/suggest"
         params["qf"] = "prefLabelSuggestEdge^50 synonymSuggestEdge"
         params["pf"] = "prefLabelSuggest^50"
         params["sort"] = "score desc, prefLabelExact asc"
       else
-        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
-        params["qf"] << " property^#{PROPERTY_FIELD_WEIGHT}" if params[INCLUDE_PROPERTIES_PARAM] == "true"
+        query = "\"#{RSolr.escape(text)}\""
+        params["qf"] = "prefLabel^50 synonym^10 notation resource_id"
+        params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
       end
-
-      query = "\"#{RSolr.escape(text)}\""
 
       subtree_ids = get_subtree_ids(params)
       acronyms = restricted_ontologies_to_acronyms(params)
