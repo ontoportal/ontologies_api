@@ -1,10 +1,14 @@
 GIT
   remote: git://github.com/ncbo/goo.git
 <<<<<<< HEAD
+<<<<<<< HEAD
   revision: 0f68487d691d81c676cff97e520b7549166e478a
   branch: master
 =======
   revision: 93727885409db3704b52adbecb0b05fa7cc35686
+=======
+  revision: 90be4a2f6cbd2ff6304eab805505df4c88994eea
+>>>>>>> dbfe0aa... more fixes for NCBO-471 and NCBO-472
   branch: staging
 >>>>>>> aedf585... fixes for NCBO-471 and NCBO-472
   specs:
