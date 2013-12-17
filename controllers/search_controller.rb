@@ -72,13 +72,13 @@ class SearchController < ApplicationController
         params["qf"] = "prefLabelExact"
       elsif (text[-1] == '*')
         text = text[0..-2]
-        query = RSolr.escape(text)
+        query = "\"#{RSolr.escape(text)}\""
         params["qt"] = "/suggest"
         params["qf"] = "prefLabelSuggestEdge^50 synonymSuggestEdge"
         params["pf"] = "prefLabelSuggest^50"
         params["sort"] = "score desc, prefLabelExact asc"
       else
-        query = "\"#{RSolr.escape(text)}\""
+        query = RSolr.escape(text)
         params["qf"] = "prefLabel^50 synonym^10 notation resource_id"
         params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
       end
