@@ -103,8 +103,12 @@ class TestReviewsController < TestCase
     _reviews_delete(@review.id)
     post "/reviews", MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
     review_id = MultiJson.load(last_response.body)["@id"]
-    # _response_status(201, last_response)
-    # _reviews_get_success(review_id, true)
+    _response_status(201, last_response)
+    get review_id
+    review = MultiJson.load(last_response.body)
+    assert_equal review_id, review["@id"]
+    assert_equal @review_params[:body], review["body"]
+    assert_equal @review_params[:qualityRating], review["qualityRating"]
   end
 
   def test_review_create_failure
@@ -120,11 +124,13 @@ class TestReviewsController < TestCase
   def test_review_update_success
     get "/reviews"
     reviews = MultiJson.load(last_response.body)
-    review_id = reviews.first["@id"]
+    review = reviews.first
     @review_params[:qualityRating] = @review_params[:qualityRating] + 1
-    patch review_id, MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
+    patch review["@id"], MultiJson.dump(@review_params), "CONTENT_TYPE" => "application/json"
     _response_status(204, last_response)
-    _reviews_get_success(review_id)
+    get review["@id"]
+    patched_review = MultiJson.load(last_response.body)
+    assert_equal @review_params[:qualityRating], patched_review["qualityRating"]
   end
 
   def test_delete_review
