@@ -118,10 +118,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.1)
-<<<<<<< HEAD
     ffi (1.9.3-java)
-=======
->>>>>>> a7e0e81f3f0ebef010d6e2709c14c42f40547814
     haml (4.0.4)
       tilt
     i18n (0.6.9)
@@ -143,22 +140,15 @@ GEM
       redis
     multi_json (1.8.2)
     net-http-persistent (2.9)
-<<<<<<< HEAD
     oj (2.5.1)
-=======
-    oj (2.4.3)
->>>>>>> a7e0e81f3f0ebef010d6e2709c14c42f40547814
     polyglot (0.3.3)
     pony (1.6.2)
       mail (>= 2.0)
     pry (0.9.12.4)
-<<<<<<< HEAD
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
     pry (0.9.12.4-java)
-=======
->>>>>>> a7e0e81f3f0ebef010d6e2709c14c42f40547814
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
