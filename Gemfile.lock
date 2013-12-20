@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: cf586a5f3db8b105d4eeacc0c32150e8dbc8adc1
+  revision: 2fd6d1fb6dc95f7b1b9fe5d7707d4fc1e90a661e
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -118,7 +118,6 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.1)
-    ffi (1.9.3-java)
     haml (4.0.4)
       tilt
     i18n (0.6.9)
@@ -145,10 +144,6 @@ GEM
     pony (1.6.2)
       mail (>= 2.0)
     pry (0.9.12.4)
-      coderay (~> 1.0)
-      method_source (~> 0.8)
-      slop (~> 3.4)
-    pry (0.9.12.4-java)
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
