@@ -19,6 +19,11 @@ module Sinatra
       def populate_from_params(obj, params)
         return if obj.nil?
 
+        # Make sure everything is loaded
+        if obj.is_a?(LinkedData::Models::Base)
+          obj.bring_remaining unless !obj.exist?
+        end
+
         params.each do |attribute, value|
           next if value.nil? || (value.is_a?(String) && value.empty?)
 
