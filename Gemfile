@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rack', github: 'palexander/rack', branch: 'patch-1' # can remove github dependency when this is merged: https://github.com/rack/rack/pull/621
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-contrib', '~> 1.0'
 gem 'sinatra-advanced-routes'
@@ -11,7 +12,7 @@ gem 'activesupport', '~> 3.0'
 
 # Rack middleware
 gem 'rack-accept', '~> 0.4'
-gem 'rack-post-body-to-params', '~> 0.1'
+gem 'rack-post-body-to-params', github: "palexander/rack-post-body-to-params", branch: "multipart_support" # github dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
 gem 'rack-cache', '~> 1.0'
 gem 'redis-rack-cache', '~> 1.0'
 gem 'rack-timeout'
@@ -27,7 +28,7 @@ gem 'minitest', '~> 4.0'
 gem 'cube-ruby', require: 'cube'
 
 # HTTP server
-gem 'unicorn'
+gem 'rainbows'
 
 # Debugging
 gem 'pry', :group => :development

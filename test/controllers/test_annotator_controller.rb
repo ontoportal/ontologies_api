@@ -3,9 +3,9 @@ require_relative '../test_case'
 class TestAnnotatorController < TestCase
 
   def self.before_suite
-    @@redis = Redis.new(:host => LinkedData.settings.redis_host, :port => LinkedData.settings.redis_port)
+    @@redis = Redis.new(:host => Annotator.settings.annotator_redis_host, :port => Annotator.settings.annotator_redis_port)
     db_size = @@redis.dbsize
-    if db_size > 2000
+    if db_size > 5000
       puts "   This test cannot be run. You are probably pointing to the wrong redis backend. "
       return
     end

@@ -70,6 +70,14 @@ class TestClassesController < TestCase
     get call
     assert !last_response.ok?
     assert last_response.status == 404
+
+
+    #test for notation based on prefix IRI value
+    call = "/ontologies/#{ont.acronym}/classes/BRO:Ontology_Development_and_Management?include=all"
+    get call
+    assert last_response.ok?
+    response = MultiJson.load(last_response.body)
+    assert response["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Ontology_Development_and_Management"
   end
 
   def test_all_class_pages

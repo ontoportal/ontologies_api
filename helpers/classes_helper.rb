@@ -15,6 +15,13 @@ module Sinatra
             cls_uri = notation_lookup.id
             return cls_uri
           end
+          f = Goo::Filter.new(:prefixIRI) == params[:cls]
+          prefix_lookup = LinkedData::Models::Class.where.filter(f).in(submission).first
+
+          if prefix_lookup
+            cls_uri = prefix_lookup.id
+            return cls_uri
+          end
         end
         return nil
       end

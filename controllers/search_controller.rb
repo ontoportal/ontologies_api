@@ -3,15 +3,13 @@ require 'cgi'
 class SearchController < ApplicationController
   namespace "/search" do
     ONTOLOGIES_PARAM = "ontologies"
+    ONTOLOGY_PARAM = "ontology"
     EXACT_MATCH_PARAM = "exact_match"
     INCLUDE_VIEWS_PARAM = "include_views"
     REQUIRE_DEFINITIONS_PARAM = "require_definition"
     INCLUDE_PROPERTIES_PARAM = "include_properties"
     SUBTREE_ID_PARAM = "subtree_id"
-
-    PREF_LABEL_FIELD_WEIGHT = 1.6
-    SYNONYM_FIELD_WEIGHT = 1
-    PROPERTY_FIELD_WEIGHT = 1
+    OBSOLETE_PARAM = "obsolete"
 
     # execute a search query
     get do
@@ -53,9 +51,7 @@ class SearchController < ApplicationController
         docs.push(instance)
       end
 
-      if params["q"][-1] != '*'
-        docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
-      end
+      docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
 
       #need to return a Page object
       page = page_object(docs, total_found)
@@ -72,22 +68,19 @@ class SearchController < ApplicationController
       params["fl"] = "*,score"
 
       if (params[EXACT_MATCH_PARAM] == "true")
+        query = "\"#{RSolr.escape(text)}\""
         params["qf"] = "prefLabelExact"
-        query = "\"#{RSolr.escape(text)}\""
       elsif (text[-1] == '*')
-        # We want to escape the part of the query before the wildcard
-        # This:
-        #   cell li*
-        # Should become this:
-        #   cell\ li*
-        # This causes 'cell line' to match instead of 'line' by itself
-        query = RSolr.escape(text[0..-2]) + "*"
-        params["qf"] = "prefLabelExact^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
-        params["sort"] = "score desc, norm(prefLabel) desc"
-      else
-        params["qf"] = "prefLabel^#{PREF_LABEL_FIELD_WEIGHT} synonym^#{SYNONYM_FIELD_WEIGHT} notation resource_id"
-        params["qf"] << " property^#{PROPERTY_FIELD_WEIGHT}" if params[INCLUDE_PROPERTIES_PARAM] == "true"
+        text = text[0..-2]
         query = "\"#{RSolr.escape(text)}\""
+        params["qt"] = "/suggest"
+        params["qf"] = "prefLabelSuggestEdge^50 synonymSuggestEdge"
+        params["pf"] = "prefLabelSuggest^50"
+        params["sort"] = "score desc, prefLabelExact asc"
+      else
+        query = RSolr.escape(text)
+        params["qf"] = "prefLabel^50 synonym^10 notation resource_id"
+        params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
       end
 
       subtree_ids = get_subtree_ids(params)
@@ -102,30 +95,34 @@ class SearchController < ApplicationController
       if params[REQUIRE_DEFINITIONS_PARAM] == "true"
         filter_query << " AND definition:[* TO *]"
       end
+
+      if ["true", "false"].include? params[OBSOLETE_PARAM]
+        filter_query << " AND obsolete:#{params[OBSOLETE_PARAM]}"
+      end
+
       params["fq"] = filter_query
+      params["q"] = query
 
       return query
     end
 
-    private
-
     def get_subtree_ids(params)
       subtree_ids = nil
 
-      if (params["subtree_id"])
-        ontology = params["ontology"].split(",")
+      if (params[SUBTREE_ID_PARAM])
+        ontology = params[ONTOLOGY_PARAM].split(",")
 
         if (ontology.nil? || ontology.empty? || ontology.length > 1)
           raise error 400, "A subtree search requires a single ontology: /search?q=<query>&ontology=CNO&subtree_id=http%3a%2f%2fwww.w3.org%2f2004%2f02%2fskos%2fcore%23Concept"
         end
 
         ont, submission = get_ontology_and_submission
-        params[:cls] = params["subtree_id"]
-        params["ontologies"] = params["ontology"]
+        params[:cls] = params[SUBTREE_ID_PARAM]
+        params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
 
         cls = get_class(submission, load_attrs={descendants: true})
         subtree_ids = cls.descendants.map {|d| d.id.to_s}
-        subtree_ids.push(params["subtree_id"])
+        subtree_ids.push(params[SUBTREE_ID_PARAM])
       end
 
       return subtree_ids

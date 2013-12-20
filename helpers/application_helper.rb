@@ -115,6 +115,12 @@ module Sinatra
         # Security check
         check_access(obj) if LinkedData.settings.enable_security
 
+        # Slice or set check
+        filter_for_slice(obj) if LinkedData.settings.enable_slices
+
+        # Check for custom ontologies set by user
+        filter_for_user_onts(obj)
+
         LinkedData::Serializer.build_response(@env, status: status, ld_object: obj)
       end
 
@@ -191,6 +197,9 @@ module Sinatra
           else
             onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
           end
+
+          filter_for_slice(onts)
+          filter_for_user_onts(onts)
         end
         onts = filter_access(onts)
 
@@ -318,11 +327,12 @@ module Sinatra
 
       def get_ontology_and_submission
         ont = Ontology.find(@params["ontology"])
-              .include(:acronym)
+              .include(:acronym, :administeredBy, :acl, :viewingRestriction)
               .include(submissions:
                        [:submissionId, submissionStatus: [:code], ontology: [:acronym]])
                 .first
         error(404, "Ontology '#{@params["ontology"]}' not found.") if ont.nil?
+        check_access(ont) if LinkedData.settings.enable_security # Security check
         submission = nil
         if @params.include? "ontology_submission_id"
           submission = ont.submission(@params[:ontology_submission_id])

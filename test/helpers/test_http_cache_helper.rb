@@ -59,48 +59,51 @@ class TestHTTPCacheHelper < TestCaseHelpers
   end
 
   def test_cached_collection
+    #puts LinkedData.settings.enable_http_cache
     get '/ontologies'
-    assert last_response.status == 200
+    assert_equal 200, last_response.status
     token = last_response.headers["Last-Modified"]
     get '/ontologies', {}, {"HTTP_IF_MODIFIED_SINCE" => token}
-    assert last_response.status == 304
+    assert_equal 304, last_response.status
     sleep(1)
     @@ontology.name = "Test new name"
     @@ontology.save
     get '/ontologies'
-    assert last_response.status == 200
+    assert_equal 200, last_response.status
   end
 
   def test_cached_single
+    #puts LinkedData.settings.enable_http_cache
     get '/ontologies/' + @@ontology.acronym
-    assert last_response.status == 200
+    assert_equal 200, last_response.status
     token = last_response.headers["Last-Modified"]
     get '/ontologies/' + @@ontology.acronym, {}, {"HTTP_IF_MODIFIED_SINCE" => token}
-    assert last_response.status == 304
+    assert_equal 304, last_response.status
     sleep(1)
     @@ontology.name = "Test new name"
     @@ontology.save
     get '/ontologies/' + @@ontology.acronym
-    assert last_response.status == 200
+    assert_equal 200, last_response.status
   end
 
   def test_cached_segment
+    #puts LinkedData.settings.enable_http_cache
     get "/ontologies/#{@@ontology.acronym}/notes"
     token = last_response.headers["Last-Modified"]
-    assert last_response.status == 200
+    assert_equal 200, last_response.status
     get "/ontologies/#{@@ontology.acronym}/notes", {}, {"HTTP_IF_MODIFIED_SINCE" => token}
-    assert last_response.status == 304
+    assert_equal 304, last_response.status
     get "/ontologies/#{@@ontology_alt.acronym}/notes"
     token_alt = last_response.headers["Last-Modified"]
-    assert last_response.status == 200
+    assert_equal 200, last_response.status
     get "/ontologies/#{@@ontology_alt.acronym}/notes", {}, {"HTTP_IF_MODIFIED_SINCE" => token_alt}
-    assert last_response.status == 304
+    assert_equal 304, last_response.status
     sleep(1)
     @@note.subject = "New subject"
     @@note.save
     get "/ontologies/#{@@ontology.acronym}/notes", {}, {"HTTP_IF_MODIFIED_SINCE" => token}
-    assert last_response.status == 200
+    assert_equal 200, last_response.status
     get "/ontologies/#{@@ontology_alt.acronym}/notes", {}, {"HTTP_IF_MODIFIED_SINCE" => token_alt}
-    assert last_response.status == 304
+    assert_equal 304, last_response.status
   end
 end

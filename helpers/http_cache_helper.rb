@@ -51,7 +51,7 @@ module Sinatra
       end
 
       def cache_headers(max_age = 60)
-        headers["Vary"] = "User-Agent, Accept, Accept-Language, Accept-Encoding, Authorization"
+        headers["Vary"] = "User-Agent, Accept, Accept-Language, Accept-Encoding, Authorization, NCBO-Slice"
         headers["Cache-Control"] = "public, max-age=#{max_age}"
       end
     end

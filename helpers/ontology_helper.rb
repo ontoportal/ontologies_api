@@ -8,20 +8,15 @@ module Sinatra
       def create_submission(ont)
         params = @params
 
-        # Get file info
-        filename, tmpfile = file_from_request
         submission_id = ont.next_submission_id
-        if tmpfile
-          # Copy tmpfile to appropriate location
-          ont.bring(:acronym) if ont.bring?(:acronym)
-          file_location = OntologySubmission.copy_file_repository(ont.acronym, submission_id, tmpfile, filename)
-        end
 
         # Create OntologySubmission
         ont_submission = instance_from_params(OntologySubmission, params)
         ont_submission.ontology = ont
         ont_submission.submissionId = submission_id
-        ont_submission.uploadFilePath = file_location
+
+        # Get file info
+        add_file_to_submission(ont, ont_submission)
 
         # Add new format if it doesn't exist
         if ont_submission.hasOntologyLanguage.nil?
@@ -34,7 +29,7 @@ module Sinatra
           cron = NcboCron::Models::OntologySubmissionParser.new
           cron.queue_submission(ont_submission, {all: true})
         else
-          error 422, ont_submission.errors
+          error 400, ont_submission.errors
         end
 
         ont_submission
@@ -49,6 +44,26 @@ module Sinatra
           end
         end
         return nil, nil
+      end
+
+      ##
+      # Add a file to the submission if a file exists in the params
+      def add_file_to_submission(ont, submission)
+        filename, tmpfile = file_from_request
+        if tmpfile
+          if filename.nil?
+            error 400, "Failure to resolve ontology filename from upload file."
+          end
+          # Copy tmpfile to appropriate location
+          ont.bring(:acronym) if ont.bring?(:acronym)
+          # Ensure the ontology acronym is available
+          if ont.acronym.nil?
+            error 500, "Failure to resolve ontology acronym"
+          end
+          file_location = OntologySubmission.copy_file_repository(ont.acronym, submission.submissionId, tmpfile, filename)
+          submission.uploadFilePath = file_location
+        end
+        return filename, tmpfile
       end
 
       def get_parse_log_file(submission)

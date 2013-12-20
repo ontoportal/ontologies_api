@@ -86,7 +86,6 @@ class MappingsController < ApplicationController
       error(400, "Input does not contain at least 2 terms") if params[:terms].length < 2
       error(400, "Input does not contain mapping relation") if !params[:relation]
       error(400, "Input does not contain user creator ID") if !params[:creator]
-      ontologies = {}
       params[:terms].each do |term|
         if !term[:term] || !term[:ontology]
           error(400,"Every term must have at least one term ID and a ontology ID or acronym")
@@ -136,11 +135,12 @@ class MappingsController < ApplicationController
 
     # Delete a mapping
     delete '/:mapping' do
-      mapping_id = RDF::URI.new(params[:mapping])
+      mapping_id = RDF::URI.new(replace_url_prefix(params[:mapping]))
       mapping = LinkedData::Models::Mapping.find(mapping_id)
                   .include(terms: [:ontology, :term ])
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
+
       if mapping.nil?
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       else
@@ -157,11 +157,12 @@ class MappingsController < ApplicationController
             end
           end
         end
+
         if deleted
-          reply(204,"Mapping deleted")
+          halt 204
         else
           if disconnected > 0
-            reply(204,"REST processes disconected from mapping")
+            halt 204
           else
             reply(400, "This mapping only contains automatic processes. Nothing has been deleted")
           end

@@ -56,6 +56,7 @@ class OntologySubmissionsController < ApplicationController
 
       submission.bring(*OntologySubmission.attributes)
       populate_from_params(submission, params)
+      add_file_to_submission(ont, submission)
 
       if submission.valid?
         submission.save
@@ -95,7 +96,7 @@ class OntologySubmissionsController < ApplicationController
           submission.process_submission(logger_for_parsing,
                                         process_rdf: true, index_search: true,
                                         run_metrics: true, reasoning: true)
-        rescue => e
+        rescue
           if submission.valid?
             submission.save
           else
@@ -117,7 +118,7 @@ class OntologySubmissionsController < ApplicationController
     # Download a submission
     get '/:ontology_submission_id/download' do
       acronym = params["acronym"]
-      submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath]
+      submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath, :pullLocation]
       ont = Ontology.find(acronym).include(:submissions => submission_attributes).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
       ont.bring(:viewingRestriction)
@@ -130,6 +131,7 @@ class OntologySubmissionsController < ApplicationController
       if File.readable? file_path
         send_file file_path, :filename => File.basename(file_path)
       else
+        # TODO: Look at using the submission.pullLocation if uploadFilePath fails?
         error 500, "Cannot read submission upload file: #{file_path}"
       end
     end

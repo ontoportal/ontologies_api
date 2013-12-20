@@ -34,12 +34,16 @@ class BatchController < ApplicationController
         all_latest_by_id[obj.ontology.id.to_s] = obj
       end
       class_id_to_ontology = Hash.new
-      class_id_by_ontology.keys.each do |ont_id|
+      class_id_by_ontology.keys.each do |ont_id_orig|
+        ont_id = ont_id_orig
+        if LinkedData.settings.replace_url_prefix && ont_id_orig.to_s.start_with?(LinkedData.settings.rest_url_prefix)
+          ont_id = ont_id_orig.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix)
+        end
         if all_latest_by_id[ont_id]
           latest_submissions << all_latest_by_id[ont_id]
-          all_class_ids << class_id_by_ontology[ont_id]
-          class_id_by_ontology[ont_id].each do |cls_id|
-            class_id_to_ontology[cls_id] = ont_id
+          all_class_ids << class_id_by_ontology[ont_id_orig]
+          class_id_by_ontology[ont_id_orig].each do |cls_id|
+            class_id_to_ontology[cls_id] = ont_id_orig
           end
         end
       end
@@ -56,10 +60,16 @@ class BatchController < ApplicationController
 
         to_reply = []
         ont_classes.each do |cls|
-          if class_id_to_ontology[cls.id.to_s] and\
-               all_latest_by_id[class_id_to_ontology[cls.id.to_s]]
-            cls.submission = all_latest_by_id[class_id_to_ontology[cls.id.to_s]]
+          if class_id_to_ontology[cls.id.to_s]
+            ont_id_orig = class_id_to_ontology[cls.id.to_s]
+            ont_id = ont_id_orig
+            if LinkedData.settings.replace_url_prefix && ont_id_orig.to_s.start_with?(LinkedData.settings.rest_url_prefix)
+          ont_id = ont_id_orig.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix)
+            end
+            if all_latest_by_id[ont_id]
+            cls.submission = all_latest_by_id[ont_id]
             to_reply << cls
+            end
           end 
         end
         reply({ resource_type => to_reply })
