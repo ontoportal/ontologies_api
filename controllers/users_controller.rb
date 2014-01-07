@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   namespace "/users" do
     post "/authenticate" do
-      user_id = params["user"]
+      user_id       = params["user"]
       user_password = params["password"]
       # Modify params to show all user attributes
       params["include"] = User.attributes.join(",")
@@ -10,6 +10,47 @@ class UsersController < ApplicationController
       error 401, "Username/password combination invalid" unless authenticated
       user.show_apikey = true
       reply user
+    end
+
+    ##
+    # This endpoint will create a token and store it on the user
+    # An email is generated with this token, which allows the user
+    # to click and login to the UI. The token can then be provided to
+    # the /reset_password endpoint to actually reset the password.
+    post "/create_reset_password_token" do
+      email    = params["email"]
+      username = params["username"]
+      user = LinkedData::Models::User.where(email: email, username: username).include(LinkedData::Models::User.attributes).first
+      error 404, "User not found" unless user
+      reset_token = token(36)
+      user.resetToken = reset_token
+      if user.valid?
+        user.save(override_security: true)
+        LinkedData::Utils::Notifications.reset_password(user, reset_token)
+      else
+        error 422, user.errors
+      end
+      halt 204
+    end
+
+    ##
+    # Passing an email, username, and password to this endpoint will
+    # reset a users password and provide back a full user object which
+    # can be used to log a user in. This will allow them to change their
+    # password and update the user object.
+    post "/reset_password" do
+      email    = params["email"] || ""
+      username = params["username"] || ""
+      token    = params["token"] || ""
+      params["include"] = User.attributes.join(",")
+      user = LinkedData::Models::User.where(email: email, username: username).include(User.goo_attrs_to_load(includes_param)).first
+      error 404, "User not found" unless user
+      if token.eql?(user.resetToken)
+        user.show_apikey = true
+        reply user
+      else
+        error 403, "Password reset not authorized with this token"
+      end
     end
 
     # Display all users
@@ -56,6 +97,13 @@ class UsersController < ApplicationController
     end
 
     private
+
+    def token(len)
+      chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
+      token = ""
+      1.upto(len) { |i| token << chars[rand(chars.size-1)] }
+      token
+    end
 
     def create_user
       params ||= @params
