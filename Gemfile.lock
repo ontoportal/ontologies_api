@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 2b0c84da155b77d6020f973bde39bb24eb5dc5c5
+  revision: eb563f8d07da84dd9e88af9cc768bef46c49f52c
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 310f20506802e483b26648aa66776baa4e22eb12
+  revision: 766b23bbddff1aafbe81ae10890cd72bfb15efed
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -118,7 +118,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.1)
-    haml (4.0.4)
+    haml (4.0.5)
       tilt
     i18n (0.6.9)
     json (1.8.1)
