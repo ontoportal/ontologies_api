@@ -18,6 +18,7 @@ require 'ncbo_cron'
 require 'rack/accept'
 require 'rack/post-body-to-params'
 require 'rack-timeout'
+require 'rack/cors'
 require_relative 'lib/rack/slow_requests'
 require_relative 'lib/rack/cube_reporter'
 require_relative 'lib/rack/slice_detection'
@@ -65,6 +66,13 @@ if [:development].include?(settings.environment) && !LinkedData.settings.enable_
     puts ">> rack-mini-profiler is enabled"
   rescue LoadError
     # profiler isn't there
+  end
+end
+
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', :headers => :any, :methods => [:get, :post, :put, :patch, :delete, :options]
   end
 end
 
