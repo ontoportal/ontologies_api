@@ -16,6 +16,7 @@ gem 'rack-post-body-to-params', github: "palexander/rack-post-body-to-params", b
 gem 'rack-cache', '~> 1.0'
 gem 'redis-rack-cache', '~> 1.0'
 gem 'rack-timeout'
+gem 'rack-cors', :require => 'rack/cors'
 
 # Data access (caching)
 gem 'redis', '~> 3.0'
