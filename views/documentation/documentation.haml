@@ -162,9 +162,12 @@
                   %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
                   %li semantic_types={semType1,semType2..,semTypeN}
                   %li max_level={0..N}
-                  %li mapping_types={automatic|manual}
+                  %li mappings={true|false} // default = false. true means that the following manual mappings will be used in annotation: UMLS, REST, CUI, OBOXREF
                   %li stop_words={word1,word2..,wordN} (case insensitive)
                   %li minimum_match_length={0..N}
+                  %li exclude_numbers={true|false}  // default = false
+                  %li whole_word_only={true|false}  // default = true
+                  %li with_synonyms={true|false}  // default = true
           %li
             Default stop words
             %ul
