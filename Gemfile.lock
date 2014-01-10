@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 8a5df731b1a621c50e23f1d333ececbb12637784
+  revision: ff6f242b4a2443dae07f0735ca8b18cb073a5953
   branch: staging
   specs:
     goo (0.0.2)
@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 4b354b3a2c9ba17145444f9bb5edb8015748cc3a
+  revision: b6b5a2efb7bad1fc5e6cfd2b96807e6691f286a9
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 1fc16aa9c4fa97b2f4fa271430b0ff0287e7fa08
+  revision: ac2a3ae0b1033e6b25fe3975e6d36c5d41c39747
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6f2763dd3b6f08c4b3820f5b395b929cc2554ea8
+  revision: 218f06e500009f80de364f19855144cd95c4b0f2
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -141,7 +141,7 @@ GEM
     minitest (4.7.5)
     mlanett-redis-lock (0.2.5)
       redis
-    multi_json (1.8.3)
+    multi_json (1.8.4)
     net-http-persistent (2.9)
     oj (2.5.3)
     polyglot (0.3.3)
