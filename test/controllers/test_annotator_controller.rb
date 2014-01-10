@@ -94,7 +94,7 @@ eos
   def test_annotate_with_mappings
     text = "Aggregate Human Data chromosomal mutation Aggregate Human Data chromosomal deletion Aggregate Human Data Resource Federal Funding Resource receptor antagonists chromosomal mutation"
 
-    params = {text: text,mappings: "all"}
+    params = {text: text, mappings: "true"}
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
@@ -135,7 +135,7 @@ eos
 
     ontologies = "http://data.bioontology.org/ontologies/ONTOMATEST-0," +
                  "http://data.bioontology.org/ontologies/BROTEST-0"
-    params = {text: text,mappings: "all", ontologies: ontologies }
+    params = {text: text, mappings: "true", ontologies: ontologies}
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
