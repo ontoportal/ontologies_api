@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: c3362ab7b990cb6b7cb695e385ab9f39497f59aa
+  revision: 4da7d59753dfdf3cbb3d847151585f0d5f91be63
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 5a274860cfc4540fc94b30452c462e06101648c4
+  revision: fc677067c9d8c8f0253d1b615510e997dcb2bcf1
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +46,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 3b5607d407fb9218b48fbf015b8ef7065867f3a8
+  revision: d9e56f8e346908c29a9994da34911db7c7543e52
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -119,7 +119,7 @@ GEM
     coderay (1.1.0)
     cube-ruby (0.0.3)
     dante (0.2.0)
-    docile (1.1.1)
+    docile (1.1.2)
     ffi (1.9.3-java)
     haml (4.0.5)
       tilt
@@ -223,7 +223,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.1.0)
       thread_safe (~> 0.1)
-    unicorn (4.7.0)
+    unicorn (4.8.0)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
