@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ada612f89e2176aba7a0f873116e4e0b8c98a42b
+  revision: 0c95c9c742b596c90b630b4744ecdde79db821dc
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 4c0bf867c64e7c675e50549c5b9e4a700aa85659
+  revision: 3b1424736eddd23cf01ae07c1435814119bdb7d5
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -126,7 +126,7 @@ GEM
     i18n (0.6.9)
     json (1.8.1)
     json (1.8.1-java)
-    json-schema (2.1.9)
+    json-schema (2.2.1)
     json_pure (1.8.1)
     kgio (2.8.1)
     libxml-ruby (2.7.0)
