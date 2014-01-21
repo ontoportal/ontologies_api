@@ -6,10 +6,6 @@ class TestBatchController < TestCase
     @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
   end
 
-  def self.after_suite
-    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
-  end
-
   def test_class_batch_one_ontology
     bro = @@ontologies.map { |x| x.id.to_s }.select { |y| y.include? "BRO"}.first
     assert bro, "BRO is not found to execute batch test."

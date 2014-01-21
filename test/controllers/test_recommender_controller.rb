@@ -10,10 +10,6 @@ Ginsenosides chemistry, biosynthesis, analysis, and potential health effects in 
 eos
   end
 
-  def self.after_suite
-    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
-  end
-
   def test_recommend_query_failure
     params = {}
     get "/recommender", params

@@ -30,13 +30,6 @@ class TestSlicesHelper < TestCaseHelpers
     LinkedData::Models::Slice.synchronize_groups_to_slices
   end
 
-  def self.after_suite
-    self.new("after_suite").delete_ontologies_and_submissions
-    LinkedData.settings.enable_slices = @@orig_slices_setting
-    LinkedData::Models::Slice.all.each {|s| s.delete}
-    LinkedData::Models::Group.all.each {|g| g.delete}
-  end
-
   def test_filtered_list
     get "http://#{@@group_acronym}.dev/ontologies"
     assert last_response.ok?

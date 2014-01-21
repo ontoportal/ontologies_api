@@ -7,7 +7,6 @@ class TestRepliesController < TestCase
     @@ontology = ontologies.first
 
     @@reply_user = "test_reply_user"
-    _delete_user
     @@user = LinkedData::Models::User.new(
       username: @@reply_user,
       email: "reply_user@example.org",
@@ -44,16 +43,6 @@ class TestRepliesController < TestCase
       @@note1.reply = (@@note.reply || []).dup.push(reply)
       @@note1.save
     end
-  end
-
-  def self.after_suite
-    @@note.delete if @@note.persistent?
-    _delete_user
-  end
-
-  def self._delete_user
-    u = LinkedData::Models::User.find(@@reply_user).first
-    u.delete unless u.nil?
   end
 
   def test_single_reply

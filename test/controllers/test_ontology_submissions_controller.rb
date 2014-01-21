@@ -4,15 +4,8 @@ class TestOntologySubmissionsController < TestCase
 
   def self.before_suite
     _set_vars
-    _delete
     _create_user
     _create_onts
-  end
-
-  def self.after_suite
-    _set_vars
-    _delete
-    self.new("after_suite").delete_ontologies_and_submissions
   end
 
   def self._set_vars
@@ -38,24 +31,9 @@ class TestOntologySubmissionsController < TestCase
     @@user = test_user.valid? ? test_user : User.find(username).first
   end
 
-  def self._delete
-    _delete_onts
-    test_user = User.find("tim").first
-    test_user.delete unless test_user.nil?
-  end
-
   def self._create_onts
     ont = Ontology.new(acronym: @@acronym, name: @@name, administeredBy: [@@user])
     ont.save
-  end
-
-  def self._delete_onts
-    ont = Ontology.find(@@acronym).first
-    subs = OntologySubmission.where(ontology: ont).all
-    subs.each do |s|
-      s.delete
-    end
-    ont.delete unless ont.nil?
   end
 
   def test_submissions_for_given_ontology
