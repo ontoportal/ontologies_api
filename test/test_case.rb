@@ -52,6 +52,32 @@ unless LinkedData.settings.goo_host.match(safe_hosts) &&
 end
 
 class AppUnit < MiniTest::Unit
+  def count_pattern(pattern)
+    q = "SELECT (count(DISTINCT ?s) as ?c) WHERE { #{pattern} }"
+    rs = Goo.sparql_query_client.query(q)
+    rs.each_solution do |sol|
+      return sol[:c].object
+    end
+    return 0
+  end
+
+  def backend_4s_delete
+    if count_pattern("?s ?p ?o") < 400000
+      LinkedData::Models::Ontology.where.include(:acronym).each do |o|
+        query = "submissionAcronym:#{o.acronym}"
+        LinkedData::Models::Ontology.unindexByQuery(query)
+      end
+      LinkedData::Models::Ontology.indexCommit()
+      Goo.sparql_update_client.update("DELETE {?s ?p ?o } WHERE { ?s ?p ?o }")
+      LinkedData::Models::SubmissionStatus.init_enum
+      LinkedData::Models::OntologyFormat.init_enum
+      LinkedData::Models::Users::Role.init_enum
+      LinkedData::Models::Users::NotificationType.init_enum
+    else
+      raise Exception, "Too many triples in KB, does not seem right to run tests"
+    end
+  end
+
   def before_suites
     # code to run before the first test (gets inherited in sub-tests)
   end
@@ -71,6 +97,7 @@ class AppUnit < MiniTest::Unit
 
   def _run_suite(suite, type)
     begin
+      backend_4s_delete
       suite.before_suite if suite.respond_to?(:before_suite)
       super(suite, type)
     rescue Exception => e
@@ -79,6 +106,7 @@ class AppUnit < MiniTest::Unit
       puts "Traced from:"
       raise e
     ensure
+      backend_4s_delete
       suite.after_suite if suite.respond_to?(:after_suite)
     end
   end
@@ -91,6 +119,8 @@ AppUnit.runner = AppUnit.new
 # See http://www.sinatrarb.com/testing.html for testing information
 class TestCase < MiniTest::Unit::TestCase
   include Rack::Test::Methods
+
+
 
   def app
     Sinatra::Application
@@ -151,4 +181,5 @@ class TestCase < MiniTest::Unit::TestCase
     end
     return errors.strip
   end
+
 end
