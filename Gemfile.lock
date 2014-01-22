@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 43c5e0ef034ee0f4fe9af299834c19078e1f0841
+  revision: 78bb29368f578005ebebf10fef1fe5734c290ee1
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 71535b45dc20f5256df80a9de739117a131386b6
+  revision: a499d6179876eae7c710e79e0e16ac6f40cd3b9f
   branch: staging
   specs:
     ncbo_cron (0.0.1)
