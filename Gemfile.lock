@@ -149,6 +149,8 @@ GEM
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
+    rack-attack (2.3.0)
+      rack
     rack-cache (1.2)
       rack (>= 0.4)
     rack-cors (0.2.9)
@@ -170,6 +172,9 @@ GEM
     recursive-open-struct (0.4.5)
     redcarpet (3.0.0)
     redis (3.0.7)
+    redis-activesupport (3.2.5)
+      activesupport (~> 3.2.0)
+      redis-store (~> 1.1.0)
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
@@ -237,6 +242,7 @@ DEPENDENCIES
   pry
   rack!
   rack-accept (~> 0.4)
+  rack-attack
   rack-cache (~> 1.0)
   rack-cors
   rack-mini-profiler
@@ -246,6 +252,7 @@ DEPENDENCIES
   rake (~> 10.0)
   redcarpet
   redis (~> 3.0)
+  redis-activesupport
   redis-rack-cache (~> 1.0)
   shotgun!
   simplecov
