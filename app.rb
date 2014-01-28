@@ -69,6 +69,7 @@ if [:development].include?(settings.environment) && !LinkedData.settings.enable_
   end
 end
 
+# Use middleware (ORDER IS IMPORTANT)
 use Rack::Cors do
   allow do
     origins '*'
@@ -76,7 +77,6 @@ use Rack::Cors do
   end
 end
 
-# Use middleware (ORDER IS IMPORTANT)
 if Goo.queries_debug?
   use Goo::Debug
 end
@@ -100,6 +100,10 @@ use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
 use LinkedData::Security::AccessDenied
+
+if LinkedData::OntologiesAPI.settings.enable_throttling
+  require_relative 'config/rack_attack'
+end
 
 if LinkedData.settings.enable_http_cache
   require 'rack/cache'
