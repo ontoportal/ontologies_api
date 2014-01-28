@@ -3,6 +3,8 @@ require 'sinatra/base'
 module Sinatra
   module Helpers
     module PaginationHelper
+      MAX_PAGE_SIZE = 5_000
+
       ##
       # Check the request params to get page and pagesize, both are returned
       def page_params(params=nil)
@@ -15,7 +17,7 @@ module Sinatra
         rescue
           error 400, "Page number and page size must be integers. Page number is #{page} and page size is #{size}."
         end
-        raise error 400, "Limit page size is 500. Page size in request is #{size}" if size > 500
+        raise error 400, "Page size limit is #{MAX_PAGE_SIZE}. Page size in request is #{size}" if size > MAX_PAGE_SIZE
         return page, size
       end
 
