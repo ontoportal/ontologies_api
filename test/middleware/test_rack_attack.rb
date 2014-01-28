@@ -1,7 +1,6 @@
 require 'rack'
 require 'open-uri'
 require_relative '../test_case'
-require_relative '../../config/rack_attack'
 
 RACK_CONFIG = File.join([settings.root, "config.ru"])
 
@@ -34,21 +33,28 @@ class TestRackAttack < TestCase
     $stdout = File.open("/dev/null", "w")
     $stderr = File.open("/dev/null", "w")
 
+    # Fork the process to create two servers
+    # This isolates the rack_attack config from the test, as it makes many other tests fail
+    # when it is included in the code
     @@port1 = Random.rand(55000..65535) # http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Dynamic.2C_private_or_ephemeral_ports
-    @@thread1 = Thread.new do
+    @@pid1 = fork do
+      require_relative '../../config/rack_attack'
       Rack::Server.start(
         config: RACK_CONFIG,
         Port: @@port1,
         AccessLog: []
       )
+      Signal.trap("HUP") { Process.exit! }
     end
     @@port2 = Random.rand(55000..65535) # http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Dynamic.2C_private_or_ephemeral_ports
-    @@thread2 = Thread.new do
+    @@pid2 = fork do
+      require_relative '../../config/rack_attack'
       Rack::Server.start(
         config: RACK_CONFIG,
         Port: @@port2,
         AccessLog: []
       )
+      Signal.trap("HUP") { Process.exit! }
     end
 
     # Let the servers start
@@ -59,8 +65,8 @@ class TestRackAttack < TestCase
     LinkedData.settings.enable_security = @@auth_setting
     LinkedData.settings.enable_throttling = @@throttling_setting
     LinkedData::OntologiesAPI.settings.req_per_second_per_ip = @@req_per_sec_limit
-    Thread.kill(@@thread1)
-    Thread.kill(@@thread2)
+    Process.kill("HUP", @@pid1)
+    Process.kill("HUP", @@pid2)
     $stdout = STDOUT
     $stderr = STDERR
     @@admin.delete
