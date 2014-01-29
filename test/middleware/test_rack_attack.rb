@@ -20,6 +20,12 @@ class TestRackAttack < TestCase
                                             email: "test_email@example.org"
                                           })
     @@user.save
+    @@bp_user = LinkedData::Models::User.new({
+                                            username: "ncbobioportal",
+                                            password: "test_password",
+                                            email: "test_email@example.org"
+                                          })
+    @@bp_user.save
     @@admin = LinkedData::Models::User.new({
                                              username: "admin",
                                              password: "test_password",
@@ -71,6 +77,7 @@ class TestRackAttack < TestCase
     $stderr = STDERR
     @@admin.delete
     @@user.delete
+    @@bp_user.delete
   end
 
   def test_throttling_limit
@@ -81,7 +88,7 @@ class TestRackAttack < TestCase
     end
   end
 
-  def test_throttling_override
+  def test_throttling_admin_override
     request_in_threads do
       assert_raises(OpenURI::HTTPError) {
         request()
@@ -98,6 +105,18 @@ class TestRackAttack < TestCase
       assert_raises(OpenURI::HTTPError) {
         request(port: @@port2)
       }
+    end
+  end
+
+  def test_throttling_ui_override
+    request_in_threads do
+      assert_raises(OpenURI::HTTPError) {
+        request()
+      }
+
+      request(user: @@bp_user) do |r|
+        assert r.status[0].to_i == 200
+      end
     end
   end
 
