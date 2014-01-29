@@ -4,7 +4,7 @@ require 'rack/attack'
 require 'redis-activesupport'
 use Rack::Attack
 
-attack_redis_host_port = "#{LinkedData::OntologiesAPI.settings.http_redis_host}:#{LinkedData::OntologiesAPI.settings.http_redis_port}"
+attack_redis_host_port = {host: LinkedData::OntologiesAPI.settings.http_redis_host, port: LinkedData::OntologiesAPI.settings.http_redis_port}
 attack_store = ActiveSupport::Cache::RedisStore.new(attack_redis_host_port)
 Rack::Attack.cache.store = attack_store
 
