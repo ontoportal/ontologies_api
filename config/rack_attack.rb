@@ -1,3 +1,5 @@
+puts "(API) >> Throttling enabled at #{LinkedData::OntologiesAPI.settings.req_per_second_per_ip} req/sec"
+
 require 'rack/attack'
 require 'redis-activesupport'
 use Rack::Attack
