@@ -26,7 +26,7 @@ module LinkedData::OntologiesAPI
     @settings.enable_req_timeout    ||= false
     @settings.req_timeout           ||= 55
     @settings.enable_throttling     ||= false
-    @settings.req_per_second_per_ip ||= 5
+    @settings.req_per_second_per_ip ||= 15
 
     if @settings.enable_monitoring
       puts "(API) >> Slow queries log enabled: #{@settings.slow_request_log}"
