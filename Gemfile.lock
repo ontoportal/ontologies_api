@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 8eb295cf2803f4f28fe0036d0d71bd5e3f12405b
+  revision: aa6b80faadaddda393e7ece34fede9f76bc144f8
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 2e26ecf5d79fa573cd7979d359893faa9eccc6e7
+  revision: 9cb9a78dea2311f00df462c9b0e87424d9bbf9de
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -215,7 +215,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.1.0)
       thread_safe (~> 0.1)
-    unicorn (4.8.0)
+    unicorn (4.8.1)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
