@@ -41,12 +41,11 @@ class ProvisionalClassesController < ApplicationController
     patch '/:provisional_class_id' do
       id = params["provisional_class_id"]
       pc = ProvisionalClass.find(id).include(ProvisionalClass.attributes).first
-
       if pc.nil?
         error 400, "Provisional class does not exist, please create using HTTP POST before modifying"
       else
+        pc.bring_remaining
         populate_from_params(pc, params)
-
         if pc.valid?
           pc.save
         else
