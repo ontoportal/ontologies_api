@@ -1,9 +1,10 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 6bdc0cf882179a5c882500dbdb00c2facc59a1e7
-  branch: master
+  revision: a5a3aabe06419ce31dc0cf10039d3bcad847a4ec
+  branch: staging
   specs:
     goo (0.0.2)
+      pry
       rdf (= 1.0.8)
       redis
       rest-client
@@ -13,8 +14,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: cacc1377dc521ec19a14e4f06e264b9698c5a0b2
-  branch: master
+  revision: 785bfdfb1fa6124034edd7bfb3538a5b3bfaae46
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -23,8 +24,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 2fd6d1fb6dc95f7b1b9fe5d7707d4fc1e90a661e
-  branch: master
+  revision: d62a8c8c0ddc950c5cf19a07b66ba76193e95088
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -46,8 +47,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6d2ce78b45932c3ad8d856532d1babf3b6673eac
-  branch: master
+  revision: 07e89355eb21f81ffe8e99c4ea2738811704a6df
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -72,8 +73,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 245ca3abdb4c1c72bff1b150e7fe6f0d4922356f
-  branch: master
+  revision: e1dfb143a3097066f81bfe13393ed93ec01c37ad
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -117,12 +118,12 @@ GEM
     coderay (1.1.0)
     cube-ruby (0.0.3)
     dante (0.2.0)
-    docile (1.1.1)
-    haml (4.0.4)
+    docile (1.1.2)
+    haml (4.0.5)
       tilt
     i18n (0.6.9)
     json (1.8.1)
-    json-schema (2.1.9)
+    json-schema (2.2.1)
     json_pure (1.8.1)
     kgio (2.8.1)
     libxml-ruby (2.7.0)
@@ -133,43 +134,48 @@ GEM
       mime-types
       treetop (>= 1.4.5)
     method_source (0.8.2)
-    mime-types (2.0)
+    mime-types (2.1)
     minitest (4.7.5)
     mlanett-redis-lock (0.2.5)
       redis
-    multi_json (1.8.2)
-    net-http-persistent (2.9)
-    oj (2.5.3)
+    multi_json (1.8.4)
+    net-http-persistent (2.9.1)
+    oj (2.5.4)
     polyglot (0.3.3)
     pony (1.6.2)
       mail (>= 2.0)
-    pry (0.9.12.4)
+    pry (0.9.12.6)
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
+    rack-attack (2.3.0)
+      rack
     rack-cache (1.2)
       rack (>= 0.4)
     rack-cors (0.2.9)
     rack-mini-profiler (0.9.0)
       rack (>= 1.1.3)
-    rack-protection (1.5.1)
+    rack-protection (1.5.2)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rack-timeout (0.0.4)
-    rainbows (4.5.0)
+    rainbows (4.6.0)
       kgio (~> 2.5)
       rack (~> 1.1)
-      unicorn (~> 4.6, >= 4.6.2)
+      unicorn (~> 4.8)
     raindrops (0.12.0)
     rake (10.1.1)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
     redcarpet (3.0.0)
-    redis (3.0.6)
+    redis (3.0.7)
+    redis-activesupport (3.2.5)
+      activesupport (~> 3.2.0)
+      redis-store (~> 1.1.0)
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
@@ -210,7 +216,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.1.0)
       thread_safe (~> 0.1)
-    unicorn (4.7.0)
+    unicorn (4.8.1)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
@@ -237,6 +243,7 @@ DEPENDENCIES
   pry
   rack!
   rack-accept (~> 0.4)
+  rack-attack
   rack-cache (~> 1.0)
   rack-cors
   rack-mini-profiler
@@ -246,6 +253,7 @@ DEPENDENCIES
   rake (~> 10.0)
   redcarpet
   redis (~> 3.0)
+  redis-activesupport
   redis-rack-cache (~> 1.0)
   shotgun!
   simplecov

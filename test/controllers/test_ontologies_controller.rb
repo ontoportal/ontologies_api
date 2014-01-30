@@ -8,12 +8,6 @@ class TestOntologiesController < TestCase
     _create_onts
   end
 
-  def self.after_suite
-    _set_vars
-    _delete
-    self.new("after_suite").delete_ontologies_and_submissions()
-  end
-
   def teardown
     self.class._delete_onts
     self.class._create_onts

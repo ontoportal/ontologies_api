@@ -18,14 +18,10 @@ class AnnotatorController < ApplicationController
       semantic_types = semantic_types_param
       max_level = params['max_level'].to_i                   # default = 0
 
-      mapping_types = []
-
-      if params['mappings']
-        mapping_types = params['mappings'].split(/\s*,\s*/)
-      end
-
-      expand_with_mappings = mapping_types.first != nil
+      expand_with_mappings = params['mappings'].eql?('true')  # default = false
       exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
+      whole_word_only = params['whole_word_only'].eql?('false') ? false : true  # default = true
+      with_synonyms = params['with_synonyms'].eql?('false') ? false : true  # default = true
       min_term_size = params['minimum_match_length'].to_i    # default = 0
 
       annotator = Annotator::Models::NcboAnnotator.new
@@ -40,8 +36,10 @@ class AnnotatorController < ApplicationController
           semantic_types,
           exclude_nums,
           max_level,
-          expand_with_mappings=expand_with_mappings,
-          min_term_size
+          expand_with_mappings,
+          min_term_size,
+          whole_word_only,
+          with_synonyms
       )
       reply 200, annotations
     end

@@ -6,10 +6,6 @@ class TestApplicationHelper < TestCaseHelpers
     count, acronyms, @@ontologies = LinkedData::SampleData::Ontology.create_ontologies_and_submissions
   end
 
-  def self.after_suite
-    @@ontologies.each {|o| o.delete}
-  end
-
   def test_it_escapes_html
     escaped_html = helper.h("<a>http://testlink.com</a>")
     assert escaped_html.eql?("&lt;a&gt;http:&#x2F;&#x2F;testlink.com&lt;&#x2F;a&gt;")

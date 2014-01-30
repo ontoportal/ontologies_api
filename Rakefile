@@ -133,7 +133,7 @@ namespace :deploy do
     puts "Installing bundle"
     `bundle install`
     puts 'Restarting rainbows'
-    `sudo env PATH=$PATH rake rainbows:stop`
-    `sudo env PATH=$PATH rake rainbows:start:production`
+    `sudo env PATH=$PATH rake unicorn:stop`
+    `sudo env PATH=$PATH rake unicorn:start:production`
   end
 end

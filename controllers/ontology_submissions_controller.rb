@@ -22,7 +22,7 @@ class OntologySubmissionsController < ApplicationController
       ont = Ontology.find(params["acronym"]).include(:acronym).first
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
-      reply ont.submissions
+      reply ont.submissions.sort {|a,b| b.submissionId <=> a.submissionId }  # descending order of submissionId
     end
 
     ##
@@ -131,8 +131,12 @@ class OntologySubmissionsController < ApplicationController
       if File.readable? file_path
         send_file file_path, :filename => File.basename(file_path)
       else
-        # TODO: Look at using the submission.pullLocation if uploadFilePath fails?
-        error 500, "Cannot read submission upload file: #{file_path}"
+        if submission.pullLocation
+          # Suggest using the submission.pullLocation if uploadFilePath fails.
+          error 500, "Cannot read submission upload file: #{file_path}, try #{submission.pullLocation}"
+        else
+          error 500, "Cannot read submission upload file: #{file_path}"
+        end
       end
     end
 

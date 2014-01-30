@@ -68,6 +68,10 @@
             This behavior can be overridden by providing <code>include=all</code> to show all attributes
             or <code>include=attribute1,attribute2</code> to include a specific list. The API is optimized
             to return the default values, so overriding this can impact the performance of your request.
+            %br
+            The <code>include=all</code> option is most useful for testing in the browser. Use it to identify
+            the set of attributes required and use only those by passing them as a comma separated
+            list, e.g. <code>include=prefLabel,cui</code>.
         %tr
           %td format
           %td
@@ -158,9 +162,12 @@
                   %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
                   %li semantic_types={semType1,semType2..,semTypeN}
                   %li max_level={0..N}
-                  %li mapping_types={automatic|manual}
+                  %li mappings={true|false} // default = false. true means that the following manual mappings will be used in annotation: UMLS, REST, CUI, OBOXREF
                   %li stop_words={word1,word2..,wordN} (case insensitive)
                   %li minimum_match_length={0..N}
+                  %li exclude_numbers={true|false}  // default = false
+                  %li whole_word_only={true|false}  // default = true
+                  %li with_synonyms={true|false}  // default = true
           %li
             Default stop words
             %ul

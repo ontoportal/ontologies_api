@@ -78,17 +78,6 @@ class TestResourceIndexController < TestCase
         redis_host: LinkedData::OntologiesAPI.settings.resolver_redis_host,
         redis_port: LinkedData::OntologiesAPI.settings.resolver_redis_port
     )
-    begin
-      LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
-      _user('delete')
-      @@created_acronyms.each do |acronym|
-        ont = LinkedData::Models::Ontology.find(acronym).first
-        ont.delete unless ont.nil?
-      end
-    rescue Exception => e
-      puts "Failure to delete ontology or user in after_suite\n"
-      raise e
-    end
   end
 
 

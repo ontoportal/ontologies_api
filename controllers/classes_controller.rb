@@ -92,7 +92,7 @@ class ClassesController < ApplicationController
     get '/:cls/tree' do
       includes_param_check
       # We override include values other than the following, user-provided include ignored
-      params["include"] = "prefLabel,childrenCount,children"
+      params["include"] = "prefLabel,childrenCount,children,obsolete"
       params["serialize_nested"] = true # Override safety check and cause children to serialize
       env["rack.request.query_hash"] = params
 

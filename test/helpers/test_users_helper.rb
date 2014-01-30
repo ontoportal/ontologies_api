@@ -3,8 +3,6 @@ require_relative '../test_case_helpers'
 class TestUsersHelper < TestCaseHelpers
 
   def self.before_suite
-    self.new("before_suite").delete_ontologies_and_submissions
-
     @@user = _create_user
     @@non_custom_user = _create_user("notcustom")
 
@@ -29,12 +27,6 @@ class TestUsersHelper < TestCaseHelpers
 
     @@old_security_setting = LinkedData.settings.enable_security
     LinkedData.settings.enable_security = true
-  end
-
-  def self.after_suite
-    LinkedData.settings.enable_security = @@old_security_setting
-    self.new("after_suite").delete_ontologies_and_submissions
-    LinkedData::Models::User.all.each {|u| u.delete}
   end
 
   def test_filtered_list

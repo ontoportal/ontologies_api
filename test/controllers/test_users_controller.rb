@@ -5,9 +5,6 @@ class TestUsersController < TestCase
     # Create a bunch of test users
     @@usernames = %w(fred goerge henry ben mark matt charlie)
 
-    # Make sure these don't exist
-    _delete_users
-
     # Create them again
     @@usernames.each do |username|
       User.new(username: username, email: "#{username}@example.org", password: "pass_word").save
@@ -15,15 +12,6 @@ class TestUsersController < TestCase
 
     # Test data
     @@username = "test_user"
-  end
-
-  def self.after_suite
-    # Delete users
-    _delete_users
-
-    # Remove test user if exists
-    test_user = User.find(@@username).first
-    test_user.delete unless test_user.nil?
   end
 
   def self._delete_users

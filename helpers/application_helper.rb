@@ -25,7 +25,16 @@ module Sinatra
         end
 
         params.each do |attribute, value|
-          next if value.nil? || (value.is_a?(String) && value.empty?)
+          next if value.nil?
+
+          # Deal with empty strings
+          empty_string = value.is_a?(String) && value.empty?
+          old_string_value_exists = obj.respond_to?(attribute) && obj.send(attribute).is_a?(String)
+          if old_string_value_exists && empty_string
+            value = nil
+          elsif empty_string
+            next
+          end
 
           attribute = attribute.to_sym
           attr_cls = obj.class.range(attribute)

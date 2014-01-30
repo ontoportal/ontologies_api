@@ -13,7 +13,7 @@ class ProvisionalClassesController < ApplicationController
     get do
       check_last_modified_collection(LinkedData::Models::ProvisionalClass)
       prov_class = ProvisionalClass.where.include(ProvisionalClass.goo_attrs_to_load(includes_param)).to_a
-      reply prov_class
+      reply prov_class.sort {|a,b| b.created <=> a.created }  # most recent first
     end
 
     # Display a single provisional_class
@@ -41,12 +41,11 @@ class ProvisionalClassesController < ApplicationController
     patch '/:provisional_class_id' do
       id = params["provisional_class_id"]
       pc = ProvisionalClass.find(id).include(ProvisionalClass.attributes).first
-
       if pc.nil?
         error 400, "Provisional class does not exist, please create using HTTP POST before modifying"
       else
+        pc.bring_remaining
         populate_from_params(pc, params)
-
         if pc.valid?
           pc.save
         else
@@ -59,6 +58,10 @@ class ProvisionalClassesController < ApplicationController
     # Delete a provisional_class
     delete '/:provisional_class_id' do
       pc = ProvisionalClass.find(params["provisional_class_id"]).first
+      if pc.nil?
+        error 400, "Provisional class does not exist."
+      end
+      pc.bring_remaining
       pc.delete
       halt 204
     end

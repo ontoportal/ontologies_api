@@ -12,7 +12,6 @@ class TestHTTPCacheHelper < TestCaseHelpers
     @@ontology_alt.bring_remaining
 
     @@note_user = "test_note_user"
-    _delete_user
     @@user = LinkedData::Models::User.new(
       username: @@note_user,
       email: "note_user@example.org",
@@ -41,16 +40,8 @@ class TestHTTPCacheHelper < TestCaseHelpers
   end
 
   def self.after_suite
-    _delete_user
     LinkedData.settings.enable_http_cache = @orig_enable_cache
-    self.new("after_suite").delete_ontologies_and_submissions
     LinkedData::HTTPCache.invalidate_all
-  end
-
-  def self._delete_user
-    return unless class_variable_defined?("@@note_user")
-    u = LinkedData::Models::User.find(@@note_user).first
-    u.delete unless u.nil?
   end
 
   def _ontologies

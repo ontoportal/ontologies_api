@@ -77,6 +77,13 @@ use Rack::Cors do
 end
 
 # Use middleware (ORDER IS IMPORTANT)
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', :headers => :any, :methods => [:get, :post, :put, :patch, :delete, :options]
+  end
+end
+
 if Goo.queries_debug?
   use Goo::Debug
 end
@@ -100,6 +107,10 @@ use Rack::Accept
 use Rack::PostBodyToParams
 use LinkedData::Security::Authorization
 use LinkedData::Security::AccessDenied
+
+if LinkedData::OntologiesAPI.settings.enable_throttling
+  require_relative 'config/rack_attack'
+end
 
 if LinkedData.settings.enable_http_cache
   require 'rack/cache'

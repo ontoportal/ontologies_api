@@ -3,12 +3,7 @@ require_relative '../test_case'
 class TestSearchController < TestCase
 
   def self.before_suite
-    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
     @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
-  end
-
-  def self.after_suite
-    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
   end
 
   def test_search

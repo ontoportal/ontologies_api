@@ -8,7 +8,6 @@ class TestNotesController < TestCase
     @@ontology, @@cls = self.new("before_suite")._ontology_and_class
 
     @@note_user = "test_note_user"
-    _delete_user
     @@user = LinkedData::Models::User.new(
       username: @@note_user,
       email: "note_user@example.org",
@@ -30,24 +29,12 @@ class TestNotesController < TestCase
     end
   end
 
-  def self.after_suite
-    notes = LinkedData::Models::Note.where(creator: @@user)
-    notes.each {|n| n.delete}
-    _delete_user
-    self.new("after_suite").delete_ontologies_and_submissions
-  end
-
   def _ontology_and_class
     count, acronyms, ontologies = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
     ontology = ontologies.first
     sub = ontology.latest_submission(status: :rdf)
     cls = LinkedData::Models::Class.in(sub).include(:prefLabel, :notes).page(1, 1).first
     return ontology, cls
-  end
-
-  def self._delete_user
-    u = LinkedData::Models::User.find(@@note_user).first
-    u.delete unless u.nil?
   end
 
   def test_all_notes

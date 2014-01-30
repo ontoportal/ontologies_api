@@ -17,9 +17,11 @@ gem 'rack-cache', '~> 1.0'
 gem 'redis-rack-cache', '~> 1.0'
 gem 'rack-timeout'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-attack', :require => 'rack/attack'
 
 # Data access (caching)
 gem 'redis', '~> 3.0'
+gem 'redis-activesupport'
 
 # Testing
 gem 'simplecov', :require => false, :group => :test

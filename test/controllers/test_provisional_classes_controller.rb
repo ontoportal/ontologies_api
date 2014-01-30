@@ -6,7 +6,6 @@ class TestProvisionalClassesController < TestCase
     @@ontology, cls = self.new("before_suite")._ontology_and_class
 
     @@test_username = "test_provisional_user"
-    _delete_user
     @@test_user = LinkedData::Models::User.new(
         username: @@test_username,
         email: "provisional_classes_user@example.org",
@@ -29,24 +28,12 @@ class TestProvisionalClassesController < TestCase
     end
   end
 
-  def self.after_suite
-    self.new("after_suite").delete_ontologies_and_submissions
-    pcs = ProvisionalClass.where(creator: @@test_user.id.to_s)
-    pcs.each {|pc| pc.delete}
-    _delete_user
-  end
-
   def _ontology_and_class
     count, acronyms, ontologies = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
     ontology = ontologies.first
     sub = ontology.latest_submission(status: :rdf)
     cls = LinkedData::Models::Class.in(sub).include(:prefLabel).page(1, 1).first
     return ontology, cls
-  end
-
-  def self._delete_user
-    u = LinkedData::Models::User.find(@@test_username).first
-    u.delete unless u.nil?
   end
 
   def test_all_provisional_classes
