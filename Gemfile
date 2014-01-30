@@ -50,8 +50,8 @@ gem 'redcarpet'
 ncbo_branch = ENV["NCBO_BRANCH"] || `git rev-parse --abbrev-ref HEAD`.strip || "staging"
 gem 'goo', github: 'ncbo/goo', branch: ncbo_branch
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: ncbo_branch
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: ncbo_branch
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: ncbo_branch
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: "mallet_recognizer"
+gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: "mallet_recognizer"
 gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: ncbo_branch
 
 # Not versioned

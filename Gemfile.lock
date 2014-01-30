@@ -1,10 +1,9 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: a5a3aabe06419ce31dc0cf10039d3bcad847a4ec
+  revision: 99db600897ada3ae13ba54ecb7cde87ae38d00d7
   branch: staging
   specs:
     goo (0.0.2)
-      pry
       rdf (= 1.0.8)
       redis
       rest-client
@@ -14,8 +13,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 785bfdfb1fa6124034edd7bfb3538a5b3bfaae46
-  branch: staging
+  revision: f871a995c577b56e13cc03c38f5b877fee02c875
+  branch: mallet_recognizer
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -24,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d62a8c8c0ddc950c5cf19a07b66ba76193e95088
+  revision: 2e26ecf5d79fa573cd7979d359893faa9eccc6e7
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -47,8 +46,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 07e89355eb21f81ffe8e99c4ea2738811704a6df
-  branch: staging
+  revision: 5256f46e7e87bf1f3c664645e0bab7f398a62917
+  branch: mallet_recognizer
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
