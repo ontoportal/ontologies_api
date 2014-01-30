@@ -23,16 +23,16 @@ class AnnotatorController < ApplicationController
       whole_word_only = params['whole_word_only'].eql?('false') ? false : true  # default = true
       with_synonyms = params['with_synonyms'].eql?('false') ? false : true  # default = true
       min_term_size = params['minimum_match_length'].to_i    # default = 0
-      recognizer = params['recognizer'] || 'NcboAnnotator'
+      recognizer = params['recognizer'] || 'Mgrep'
       annotator = nil
 
       # see if a name of the recognizer has been passed in, use default if not or error
       begin
         recognizer = recognizer.slice(0, 1).capitalize + recognizer.slice(1..-1)
-        clazz = "Annotator::Models::#{recognizer}".split('::').inject(Object) {|o, c| o.const_get c}
+        clazz = "Annotator::Models::Recognizers::#{recognizer}".split('::').inject(Object) {|o, c| o.const_get c}
         annotator = clazz.new
       rescue Exception => e
-        annotator = Annotator::Models::NcboAnnotator.new
+        annotator = Annotator::Models::Recognizers::Mgrep.new
       end
 
       if params['stop_words']
