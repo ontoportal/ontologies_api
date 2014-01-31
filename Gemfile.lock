@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d62a8c8c0ddc950c5cf19a07b66ba76193e95088
+  revision: 0325d52848f8ef0b5710a0291d07ed036b51dc41
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -112,7 +112,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.5)
     atomic (1.1.14)
-    backports (3.4.0)
+    backports (3.4.1)
     bcrypt-ruby (3.1.2)
     builder (3.2.2)
     coderay (1.1.0)
