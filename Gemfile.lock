@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 785bfdfb1fa6124034edd7bfb3538a5b3bfaae46
+  revision: 55ccd3a99a2e0923baab4bec81b961e2a08c5e06
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 0325d52848f8ef0b5710a0291d07ed036b51dc41
+  revision: b6b8c4db40fe1ba7cdfc1837ed861f81c10106eb
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -112,7 +112,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.5)
     atomic (1.1.14)
-    backports (3.4.1)
+    backports (3.5.0)
     bcrypt-ruby (3.1.2)
     builder (3.2.2)
     coderay (1.1.0)
@@ -162,7 +162,7 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rack-timeout (0.0.4)
-    rainbows (4.6.0)
+    rainbows (4.6.1)
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 4.8)
