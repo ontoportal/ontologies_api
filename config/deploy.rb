@@ -10,7 +10,10 @@ set :deploy_via, :remote_cache
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
-set :branch, "deployment_test2"
+
+#NCBO_BRANCH is required for setting correct branch for NCBO gems
+NCBO_BRANCH = ENV.include?('NCBO_BRANCH') ? ENV['NCBO_BRANCH'] : 'staging'
+set :branch, "#{NCBO_BRANCH}" 
 
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, "#{APP_PATH}/#{fetch(:application)}"
@@ -44,8 +47,7 @@ set :use_sudo, false
 
 # Default value for default_env is {}
 set :default_env, { 
-  #NCBO_BRANCH is required for setting correct branch for NCBO gems
-  'NCBO_BRANCH' => ENV.include?('NCBO_BRANCH') ? ENV['NCBO_BRANCH'] : 'staging'
+  'NCBO_BRANCH' => "#{NCBO_BRANCH}"
 }
 
 # Default value for keep_releases is 5
