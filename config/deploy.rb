@@ -11,6 +11,7 @@ set :deploy_via, :remote_cache
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
+#NCBO_BRANCH is required for setting correct branch for NCBO gems
 NCBO_BRANCH = ENV.include?('NCBO_BRANCH') ? ENV['NCBO_BRANCH'] : 'staging'
 set :branch, "#{NCBO_BRANCH}" 
 
@@ -43,10 +44,9 @@ set :rbenv_roles, :all # default value
 
 # do not use sudo
 set :use_sudo, false
-NCBO_BRANCH = ENV.include?('NCBO_BRANCH') ? ENV['NCBO_BRANCH'] : 'staging'
+
 # Default value for default_env is {}
 set :default_env, { 
-  #NCBO_BRANCH is required for setting correct branch for NCBO gems
   'NCBO_BRANCH' => "#{NCBO_BRANCH}"
 }
 
