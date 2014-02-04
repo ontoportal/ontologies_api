@@ -20,8 +20,6 @@
         %li
           %a{href: "#nav_batch"} Batch Endpoints
         %li
-          %a{href: "#nav_batch"} Batch Endpoints
-        %li
           %a{href: "#nav_resource_endpoints"} Resource Endpoints
           %ul.nav.nav-list
             %li
@@ -64,14 +62,17 @@
             all<br/>
             {comma-separated list of attributes, EX: attr1,attr2}
           %td
-            By default, the API will show a subset of the available attributes for a given media type.
-            This behavior can be overridden by providing <code>include=all</code> to show all attributes
-            or <code>include=attribute1,attribute2</code> to include a specific list. The API is optimized
-            to return the default values, so overriding this can impact the performance of your request.
-            %br
-            The <code>include=all</code> option is most useful for testing in the browser. Use it to identify
-            the set of attributes required and use only those by passing them as a comma separated
-            list, e.g. <code>include=prefLabel,cui</code>.
+            %p
+              By default, the API will show a subset of the available attributes for a given media type.
+              This behavior can be overridden by providing <code>include=all</code> to show all attributes
+              or <code>include=attribute1,attribute2</code> to include a specific list. The API is optimized
+              to return the default values, so overriding this can impact the performance of your request.
+            %p
+              The <code>include=all</code> option is most useful for testing in the browser. Use it to identify
+              the set of attributes required and use only those by passing them as a comma separated
+              list, e.g. <code>include=prefLabel,cui</code>.
+            %p
+              The <code>include</code> parameter is currently unsupported on Search, Annotator, and Recommender endpoints.
         %tr
           %td format
           %td
