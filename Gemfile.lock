@@ -125,7 +125,7 @@ GEM
     json (1.8.1)
     json-schema (2.2.1)
     json_pure (1.8.1)
-    kgio (2.8.1)
+    kgio (2.9.0)
     libxml-ruby (2.7.0)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
