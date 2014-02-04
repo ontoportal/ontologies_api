@@ -134,7 +134,7 @@ class TestRackAttack < TestCase
   end
 
   def request_in_threads(&block)
-    thread_count = 10
+    thread_count = 20
     threads = []
     begin
       thread_count.times do
