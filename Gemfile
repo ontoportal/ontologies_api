@@ -46,6 +46,11 @@ gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/s
 gem 'haml'
 gem 'redcarpet'
 
+# Deployments
+gem 'capistrano', '~> 3.1.0'
+gem 'capistrano-bundler', '~> 1.1.1'
+gem 'capistrano-rbenv', '~> 2.0.2'
+
 # NCBO gems (can be from a local dev path or from rubygems/git)
 ncbo_branch = ENV["NCBO_BRANCH"] || `git rev-parse --abbrev-ref HEAD`.strip || "staging"
 gem 'goo', github: 'ncbo/goo', branch: ncbo_branch
