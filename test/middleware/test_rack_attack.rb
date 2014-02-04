@@ -103,6 +103,10 @@ class TestRackAttack < TestCase
   def test_two_servers_one_ip
     request_in_threads do
       assert_raises(OpenURI::HTTPError) {
+        request()
+      }
+
+      assert_raises(OpenURI::HTTPError) {
         request(port: @@port2)
       }
     end
