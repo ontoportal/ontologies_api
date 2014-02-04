@@ -33,6 +33,9 @@ config/environments/production.rb
 config/environments/test.rb
 config/environments/development.rb
 
+#ignore capistrano deployment 
+config/deploy/*
+
 # Ignore generated test data
 test/data/uploaded_ontologies/**/*
 test/data/ontology_files/repo/**/*
