@@ -25,55 +25,7 @@ class BatchController < ApplicationController
         end
         class_id_by_ontology[class_input["ontology"]] << class_input["class"]
       end
-      latest_submissions = []
-      all_class_ids = []
-      t0 = Time.now
-      all_latest = retrieve_latest_submissions
-      all_latest_by_id = Hash.new 
-      all_latest.each do |acr,obj|
-        all_latest_by_id[obj.ontology.id.to_s] = obj
-      end
-      class_id_to_ontology = Hash.new
-      class_id_by_ontology.keys.each do |ont_id_orig|
-        ont_id = ont_id_orig
-        if LinkedData.settings.replace_url_prefix && ont_id_orig.to_s.start_with?(LinkedData.settings.rest_url_prefix)
-          ont_id = ont_id_orig.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix)
-        end
-        if all_latest_by_id[ont_id]
-          latest_submissions << all_latest_by_id[ont_id]
-          all_class_ids << class_id_by_ontology[ont_id_orig]
-          class_id_by_ontology[ont_id_orig].each do |cls_id|
-            class_id_to_ontology[cls_id] = ont_id_orig
-          end
-        end
-      end
-      all_class_ids.flatten!
-      if latest_submissions.length == 0 or all_class_ids.length == 0
-        reply({ resource_type => [] })
-      else
-        all_class_ids.uniq!
-        all_class_ids.map! { |x| RDF::URI.new(x) }
-        t0 = Time.now
-        ont_classes = LinkedData::Models::Class.in(latest_submissions)
-                      .ids(all_class_ids)
-                      .include(goo_include).all
-
-        to_reply = []
-        ont_classes.each do |cls|
-          if class_id_to_ontology[cls.id.to_s]
-            ont_id_orig = class_id_to_ontology[cls.id.to_s]
-            ont_id = ont_id_orig
-            if LinkedData.settings.replace_url_prefix && ont_id_orig.to_s.start_with?(LinkedData.settings.rest_url_prefix)
-          ont_id = ont_id_orig.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix)
-            end
-            if all_latest_by_id[ont_id]
-            cls.submission = all_latest_by_id[ont_id]
-            to_reply << cls
-            end
-          end 
-        end
-        reply({ resource_type => to_reply })
-      end
+      reply({ resource_type => batch_class_lookup(class_id_by_ontology, goo_include) })
     end
 
     private
