@@ -202,9 +202,9 @@ module Sinatra
           Ontology.where.models(onts).include(*Ontology.access_control_settings[:access_control_load]).all
         else
           if params["include_views"] == "true"
-            onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
+            onts = Ontology.where.include(Ontology.goo_attrs_to_load()).to_a
           else
-            onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
+            onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load()).to_a
           end
 
           filter_for_slice(onts)
@@ -217,7 +217,7 @@ module Sinatra
 
       def restricted_ontologies_to_acronyms(params=nil)
         onts = restricted_ontologies(params)
-        return onts.map {|o| o.acronym}
+        return onts.map {|o| o.acronym rescue binding.pry}
       end
 
       def ontologies_param_to_acronyms(params = nil)
