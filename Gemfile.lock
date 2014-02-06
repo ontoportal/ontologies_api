@@ -4,7 +4,6 @@ GIT
   branch: staging
   specs:
     goo (0.0.2)
-      pry
       rdf (= 1.0.8)
       redis
       rest-client
