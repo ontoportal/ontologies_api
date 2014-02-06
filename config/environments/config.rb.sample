@@ -25,6 +25,7 @@ Annotator.config do |config|
   config.mgrep_port            ||= 55555
   config.annotator_redis_host = "localhost"
   config.annotator_redis_port = 6379
+  config.enable_recognizer_param = false
 end
 
 LinkedData::OntologiesAPI.config do |config|

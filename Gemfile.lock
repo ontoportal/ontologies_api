@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 1426589cc3bb7793babda6da0594b51cbb5d8369
+  revision: bf7563dfa72d1eb39a201f0075c937eef571ea83
   branch: mallet_recognizer
   specs:
     ncbo_annotator (0.0.1)

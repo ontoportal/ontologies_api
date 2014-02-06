@@ -23,7 +23,7 @@ class AnnotatorController < ApplicationController
       whole_word_only = params['whole_word_only'].eql?('false') ? false : true  # default = true
       with_synonyms = params['with_synonyms'].eql?('false') ? false : true  # default = true
       min_term_size = params['minimum_match_length'].to_i    # default = 0
-      recognizer = params['recognizer'] || 'Mgrep'
+      recognizer = (Annotator.settings.enable_recognizer_param && params['recognizer']) || 'Mgrep'
       annotator = nil
 
       # see if a name of the recognizer has been passed in, use default if not or error
