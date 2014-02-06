@@ -4,6 +4,7 @@ GIT
   branch: staging
   specs:
     goo (0.0.2)
+      pry
       rdf (= 1.0.8)
       redis
       rest-client
@@ -13,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 1b7c3221b297e822286cdd7d3396bcef7fa14582
+  revision: 45fcc499181a50b3c474fc709c4861567ac83275
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -46,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 94514abbbe57eee60ad5b80f95ed2f725ea3eda3
+  revision: 0149fe739a39e4d754ae52089971b34810cfc6f7
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
