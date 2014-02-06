@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 08a36098343e9a6d404d303377d51f2f38e5106a
+  revision: 1b7c3221b297e822286cdd7d3396bcef7fa14582
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: c747e2309c562b4109718e66eca3c339726cb2eb
+  revision: c6922569b2350369d1006cd3cd6d264bbb990487
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -47,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 5a3a5fa17c4f688ee78acd887f35cdec7dc30ca8
+  revision: 94514abbbe57eee60ad5b80f95ed2f725ea3eda3
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -149,7 +149,7 @@ GEM
     mlanett-redis-lock (0.2.5)
       redis
     multi_json (1.8.4)
-    net-http-persistent (2.9.1)
+    net-http-persistent (2.9.2)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
