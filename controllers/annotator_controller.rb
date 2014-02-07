@@ -18,6 +18,7 @@ class AnnotatorController < ApplicationController
       semantic_types = semantic_types_param
       max_level = params['max_level'].to_i                   # default = 0
 
+      longest_only = params['longest_only'].eql?('true')  # default = false
       expand_with_mappings = params['mappings'].eql?('true')  # default = false
       exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
       whole_word_only = params['whole_word_only'].eql?('false') ? false : true  # default = true
@@ -47,7 +48,8 @@ class AnnotatorController < ApplicationController
           expand_with_mappings: expand_with_mappings,
           min_term_size: min_term_size,
           whole_word_only: whole_word_only,
-          with_synonyms: with_synonyms
+          with_synonyms: with_synonyms,
+          longest_only: longest_only
       })
 
       reply 200, annotations
