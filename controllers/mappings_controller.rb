@@ -48,7 +48,6 @@ class MappingsController < ApplicationController
       mappings = mappings.include(terms: [ :term, ontology: [ :acronym ] ])
                   .include(process: [:name, :owner ])
                   .page(page,size)
-                  .query_options({ "soft-limit" => "120" })
                   .no_count
                   .all
       reply filter_mappings_with_no_ontology(mappings)
