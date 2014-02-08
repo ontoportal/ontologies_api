@@ -12,8 +12,8 @@ class MappingsController < ApplicationController
     mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology, term: cls.id ])
                                  .include(terms: [ :term, ontology: [ :acronym ] ])
                                  .include(process: [:name, :owner ])
+                                 .no_graphs
                                  .all
-
     res = filter_mappings_with_no_ontology(mappings)
     reply res
   end
@@ -25,6 +25,7 @@ class MappingsController < ApplicationController
     mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology ])
                                  .include(terms: [ :term, ontology: [ :acronym ] ])
                                  .include(process: [:name, :owner ])
+                                 .no_graphs
                                  .page(page,size)
                                  .all
     reply filter_mappings_with_no_ontology(mappings)
@@ -46,6 +47,7 @@ class MappingsController < ApplicationController
       end
       mappings = mappings.include(terms: [ :term, ontology: [ :acronym ] ])
                   .include(process: [:name, :owner ])
+                  .no_graphs
                   .page(page,size)
                   .all
       reply filter_mappings_with_no_ontology(mappings)
@@ -65,6 +67,7 @@ class MappingsController < ApplicationController
     get '/:mapping' do
       mapping_id = RDF::URI.new(params[:mapping])
       mapping = LinkedData::Models::Mapping.find(mapping_id)
+                  .no_graphs
                   .include(terms: [:ontology, :term ])
                   .include(process: LinkedData::Models::MappingProcess.attributes)
                   .first
