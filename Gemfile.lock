@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 977ace99c11261428183b79b557772fc28cf693b
+  revision: d6a88ab765a48cef8395a4c0c96519e1e8ffc7b5
   branch: staging
   specs:
     goo (0.0.2)
@@ -47,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2fbbc150462cdb9a71d87590f609932ffd8c11cc
+  revision: b983d252be8aa7778bbec1a0c5418a7c8ad315fc
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -119,9 +119,9 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
-    capistrano-bundler (1.1.1)
+    capistrano-bundler (1.1.2)
       capistrano (~> 3.0)
-      sshkit (>= 1.2.0)
+      sshkit (~> 1.2)
     capistrano-rbenv (2.0.2)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
