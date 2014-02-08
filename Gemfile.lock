@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 4217cbfafe425b8d1428aafd0b95daa3e4ee27fa
+  revision: 977ace99c11261428183b79b557772fc28cf693b
   branch: staging
   specs:
     goo (0.0.2)
@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 6284d97b6550552b23270382b30b0e3643aaa4e1
+  revision: 1e2264d766471d4515ea6d085d59ab20935451e5
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -47,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 0149fe739a39e4d754ae52089971b34810cfc6f7
+  revision: 9b6d07126bcb198a7e82b07ad2476d21ef098f9d
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -73,7 +73,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: e1dfb143a3097066f81bfe13393ed93ec01c37ad
+  revision: a5ddcaa6a4997aaf740376c34c5f1000530862fd
   branch: staging
   specs:
     sparql-client (1.0.4.1)
@@ -225,12 +225,12 @@ GEM
       net-ssh
       term-ansicolor
     systemu (2.5.2)
-    term-ansicolor (1.2.2)
-      tins (~> 0.8)
+    term-ansicolor (1.3.0)
+      tins (~> 1.0)
     thread_safe (0.1.3)
       atomic
     tilt (1.4.1)
-    tins (0.13.2)
+    tins (1.0.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
