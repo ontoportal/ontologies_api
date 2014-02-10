@@ -75,7 +75,8 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       # execute :touch, release_path.join('tmp/restart.txt')
-      execute "/etc/init.d/unicorn start; echo" #Execute doesn't read return code from unicorn init.d script for some odd reason so forcing it to true
+      execute "whoami"
+      execute "/etc/init.d/unicorn restart; echo" #Execute doesn't read return code from unicorn init.d script for some odd reason so forcing it to true
     end
   end
 
