@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 1e2264d766471d4515ea6d085d59ab20935451e5
+  revision: a6d8569c9e4b8a8680b9387893e509c985acdb64
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 5dc8f36bf03a14ff7b4fa31bbd4e7d9081693e07
+  revision: 31ed138d9a3f2e095e4cf57ed224422c155de276
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -155,7 +155,7 @@ GEM
     net-ssh (2.8.0)
     oj (2.5.4)
     polyglot (0.3.3)
-    pony (1.6.2)
+    pony (1.8)
       mail (>= 2.0)
     pry (0.9.12.6)
       coderay (~> 1.0)
