@@ -1,9 +1,10 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 4217cbfafe425b8d1428aafd0b95daa3e4ee27fa
+  revision: 85dfa6f17da6e1d9674ebcb975a4b6e4386fa740
   branch: staging
   specs:
     goo (0.0.2)
+      pry
       rdf (= 1.0.8)
       redis
       rest-client
@@ -13,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 1b7c3221b297e822286cdd7d3396bcef7fa14582
+  revision: fab202d8a9010b2dae7a3426279e08cd740992ab
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -23,7 +24,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: c6922569b2350369d1006cd3cd6d264bbb990487
+  revision: 0fa3705fc0f450a7ab1f7e2a5c741deee51ca0d8
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -46,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 94514abbbe57eee60ad5b80f95ed2f725ea3eda3
+  revision: e76adb3efaeb7fcaf85269bb037bff59d9cc1608
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -72,7 +73,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: e1dfb143a3097066f81bfe13393ed93ec01c37ad
+  revision: e6a2d6b4fda4e23d77a70c440f058bd08c801e26
   branch: staging
   specs:
     sparql-client (1.0.4.1)
@@ -118,9 +119,9 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
-    capistrano-bundler (1.1.1)
+    capistrano-bundler (1.1.2)
       capistrano (~> 3.0)
-      sshkit (>= 1.2.0)
+      sshkit (~> 1.2)
     capistrano-rbenv (2.0.2)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
@@ -148,13 +149,13 @@ GEM
     mlanett-redis-lock (0.2.5)
       redis
     multi_json (1.8.4)
-    net-http-persistent (2.9.2)
+    net-http-persistent (2.9.4)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
     oj (2.5.4)
     polyglot (0.3.3)
-    pony (1.6.2)
+    pony (1.8)
       mail (>= 2.0)
     pry (0.9.12.6)
       coderay (~> 1.0)
@@ -224,12 +225,12 @@ GEM
       net-ssh
       term-ansicolor
     systemu (2.5.2)
-    term-ansicolor (1.2.2)
-      tins (~> 0.8)
+    term-ansicolor (1.3.0)
+      tins (~> 1.0)
     thread_safe (0.1.3)
       atomic
     tilt (1.4.1)
-    tins (0.13.2)
+    tins (1.0.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
