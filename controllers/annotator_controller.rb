@@ -52,6 +52,12 @@ class AnnotatorController < ApplicationController
           longest_only: longest_only
       })
 
+      if params["populate_from_search"]
+        orig_classes = annotations.map {|a| a.annotatedClass}
+        classes_hash = populate_classes_from_search(orig_classes)
+        annotations.each {|a| a.instance_variable_set("@annotatedClass", classes_hash[a.annotatedClass.submission.ontology.id.to_s + a.annotatedClass.id.to_s])}
+      end
+
       reply 200, annotations
     end
 
@@ -72,6 +78,7 @@ class AnnotatorController < ApplicationController
     def get_page_params(text, args={})
       return args
     end
+
   end
 end
 
