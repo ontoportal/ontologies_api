@@ -27,15 +27,8 @@ class SearchController < ApplicationController
       text = params["q"]
 
       query = get_edismax_query(text, params)
-
-
-
-      puts "Edismax query: #{query}, params: #{params}"
-
-
-
+      #puts "Edismax query: #{query}, params: #{params}"
       set_page_params(params)
-
 
       docs = Array.new
       resp = LinkedData::Models::Class.search(query, params)
