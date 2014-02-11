@@ -13,8 +13,8 @@ if [:development, :console].include?(settings.environment)
   LOGGER = CustomLogger.new(STDOUT)
   LOGGER.level = Logger::DEBUG
 else
-  Dir.mkdir('logs') unless File.exist?('logs')
-  log = File.new("logs/#{settings.environment}.log", "a+")
+  Dir.mkdir('log') unless File.exist?('log')
+  log = File.new("log/#{settings.environment}.log", "a+")
   log.sync = true
   LOGGER = CustomLogger.new(log)
   LOGGER.level = Logger::INFO
