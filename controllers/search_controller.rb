@@ -27,8 +27,15 @@ class SearchController < ApplicationController
       text = params["q"]
 
       query = get_edismax_query(text, params)
-      #puts "Edismax query: #{query}, params: #{params}"
+
+
+
+      puts "Edismax query: #{query}, params: #{params}"
+
+
+
       set_page_params(params)
+
 
       docs = Array.new
       resp = LinkedData::Models::Class.search(query, params)
@@ -78,8 +85,9 @@ class SearchController < ApplicationController
         params["pf"] = "prefLabelSuggest^50"
         params["sort"] = "score desc, prefLabelExact asc"
       else
+        # using prefLabel^50 synonymExact^15 synonym^10 notation resource_id and RSolr.escape(text) allows to move exact synonym matches to top
         query = RSolr.escape(text)
-        params["qf"] = "prefLabel^50 synonym^10 notation resource_id"
+        params["qf"] = "prefLabelExact^100 synonymExact^80 prefLabel^50 synonym^10 notation resource_id"
         params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
       end
 
@@ -104,6 +112,10 @@ class SearchController < ApplicationController
       params["q"] = query
 
       return query
+    end
+
+    def escape_text(text)
+      text.gsub(/([:\[\]\{\}])/, '\\\\\1')
     end
 
     def get_subtree_ids(params)
