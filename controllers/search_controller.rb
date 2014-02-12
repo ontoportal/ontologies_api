@@ -2,15 +2,6 @@ require 'cgi'
 
 class SearchController < ApplicationController
   namespace "/search" do
-    ONTOLOGIES_PARAM = "ontologies"
-    ONTOLOGY_PARAM = "ontology"
-    EXACT_MATCH_PARAM = "exact_match"
-    INCLUDE_VIEWS_PARAM = "include_views"
-    REQUIRE_DEFINITIONS_PARAM = "require_definition"
-    INCLUDE_PROPERTIES_PARAM = "include_properties"
-    SUBTREE_ID_PARAM = "subtree_id"
-    OBSOLETE_PARAM = "obsolete"
-
     # execute a search query
     get do
       process_search()
@@ -192,6 +183,5 @@ class SearchController < ApplicationController
       end
       params["rows"] ||= pagesize
     end
-
   end
 end
