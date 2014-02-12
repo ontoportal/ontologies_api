@@ -31,7 +31,6 @@ module Sinatra
           params["pf"] = "prefLabelSuggest^50"
           params["sort"] = "score desc, prefLabelExact asc"
         else
-          # using prefLabel^50 synonymExact^15 synonym^10 notation resource_id and RSolr.escape(text) allows to move exact synonym matches to top
           query = RSolr.escape(text)
           params["qf"] = "prefLabelExact^100 synonymExact^80 prefLabel^50 synonym^10 notation resource_id"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
