@@ -42,7 +42,7 @@ class SearchController < ApplicationController
         docs.push(instance)
       end
 
-      docs.sort! {|a, b| [b[:score], b[:ontology_rank], ] <=> [a[:score], a[:ontology_rank]]}
+      docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
 
       #need to return a Page object
       page = page_object(docs, total_found)
