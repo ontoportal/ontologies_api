@@ -32,7 +32,7 @@ module Sinatra
           params["sort"] = "score desc, prefLabelExact asc"
         else
           query = RSolr.escape(text)
-          params["qf"] = "prefLabelExact^100 synonymExact^80 prefLabel^50 synonym^10 notation resource_id"
+          params["qf"] = "prefLabelExact^100 synonymExact^70 prefLabel^50 synonym^10 notation resource_id"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
