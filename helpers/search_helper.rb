@@ -37,7 +37,7 @@ module Sinatra
         end
 
         subtree_ids = get_subtree_ids(params)
-        acronyms = restricted_ontologies_to_acronyms(params)
+        acronyms = params["ontology_acronyms"] || restricted_ontologies_to_acronyms(params)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
         ids_clause = (subtree_ids.nil? || subtree_ids.empty?)? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
 
@@ -149,21 +149,24 @@ module Sinatra
       ##
       # Populate an array of classes. Returns a hash where the key is ontology_uri + class_id:
       # "http://data.bioontology.org/ontologies/ONThttp://ont.org/class1" => cls
-      def populate_classes_from_search(classes)
+      def populate_classes_from_search(classes, ontology_acronyms=nil)
         class_ids = []
-        ontology_ids = []
-        classes.each {|c| class_ids << c.id.to_s; ontology_ids << c.submission.ontology.id.to_s}
+        acronyms = (ontology_acronyms.nil?) ? [] : ontology_acronyms
+        classes.each {|c| class_ids << c.id.to_s; acronyms << c.submission.ontology.acronym.to_s unless ontology_acronyms}
+        acronyms.uniq!
         old_classes_hash = Hash[classes.map {|cls| [cls.submission.ontology.id.to_s + cls.id.to_s, cls]}]
-        params = {"ontologies" => ontology_ids.join(",")}
+        params = {"ontology_acronyms" => acronyms}
+
         # Use a fake phrase because we want a normal wildcard query, not the suggest.
         # Replace this with a wildcard below.
         get_edismax_query("avoid_search_mangling", params)
-        params.delete("qf")
+        params.delete("ontology_acronyms")
+        params.delete("q")
+        params["qf"] = "resource_id"
         params["fq"] << " AND #{get_quoted_field_query_param(class_ids, "OR", "resource_id")}"
-        # Replace fake query with wildcard
-        params["q"] = "*"
         params["rows"] = 99999
-        resp = LinkedData::Models::Class.search("*", params)
+        # Replace fake query with wildcard
+        resp = LinkedData::Models::Class.search("*:*", params)
 
         classes_hash = {}
         resp["response"]["docs"].each do |doc|

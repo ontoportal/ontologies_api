@@ -54,7 +54,7 @@ class AnnotatorController < ApplicationController
 
       if params["populate_from_search"]
         orig_classes = annotations.map {|a| a.annotatedClass}
-        classes_hash = populate_classes_from_search(orig_classes)
+        classes_hash = populate_classes_from_search(orig_classes, acronyms)
         annotations.each {|a| a.instance_variable_set("@annotatedClass", classes_hash[a.annotatedClass.submission.ontology.id.to_s + a.annotatedClass.id.to_s])}
       end
 
