@@ -43,9 +43,9 @@ module Sinatra
           not_hash_or_array = !value.is_a?(Hash) && !value.is_a?(Array)
           not_array_of_hashes = value.is_a?(Array) && !value.first.is_a?(Hash)
 
-          # Try to find dependent Goo objects, but only if the naming is not done via Proc
-          # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
           if attr_cls == LinkedData::Models::Class
+            # Try to find dependent Goo objects, but only if the naming is not done via Proc
+            # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
             value = value.is_a?(Array) ? value : [value]
             new_value = []
             value.each do |cls|
