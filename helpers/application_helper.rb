@@ -63,24 +63,22 @@ module Sinatra
           elsif attr_cls
             # Check to see if the resource exists in the triplestore
             if value.is_a?(Array)
-              retrieved_value = []
-              value.each {|e| retrieved_value += attr_cls.where(e.symbolize_keys).to_a}
+              retrieved_values = []
+              value.each do |e|
+                retrieved_value = attr_cls.where(e.symbolize_keys).first
+                if retrieved_value
+                  retrieved_values << retrieved_value
+                else
+                  retrieved_values << populate_from_params(attr_cls.new, e.symbolize_keys).save
+                end
+              end
             else
-              retrieved_value = attr_cls.where(value.symbolize_keys).to_a
-            end
-
-            if retrieved_value.empty?
-              # Create a new object and save if one didn't exist
-              if value.is_a?(Array)
-                retrieved_value = []
-                value.each {|e| retrieved_value << populate_from_params(attr_cls.new, e.symbolize_keys)}
-                retrieved_value.each {|e| e.save}
-              else
-                retrieved_value = populate_from_params(attr_cls.new, value.symbolize_keys)
-                retrieved_value.save
+              retrieved_values = attr_cls.where(value.symbolize_keys).to_a
+              unless retrieved_values
+                retrieved_values = populate_from_params(attr_cls.new, e.symbolize_keys).save
               end
             end
-            value = retrieved_value
+            value = retrieved_values
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:date_time)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
