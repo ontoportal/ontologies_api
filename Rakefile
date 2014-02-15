@@ -111,6 +111,16 @@ namespace :cache do
       LinkedData::HTTPCache.invalidate_all
       `rm -rf cache/`
     end
+    
+    desc "Clear HTTP cache (staging redis and Rack::Cache)"
+    task :staging do
+      require 'ontologies_linked_data'
+      require 'ncbo_annotator'
+      require_relative "config/config"
+      require_relative 'config/environments/staging.rb'
+      LinkedData::HTTPCache.invalidate_all
+      `rm -rf cache/`
+    end
 
     desc "Clear HTTP cache (development redis and Rack::Cache)"
     task :development do
