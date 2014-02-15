@@ -11,9 +11,10 @@ class AnnotatorController < ApplicationController
 
     # execute an annotator query
     def process_annotation(params=nil)
+      validate_params_solr_population()
       params ||= @params
       text = params['text']
-      raise error 400, 'A text to be annotated must be supplied using the argument text=<text to be annotated>' if text.nil? || text.strip.empty?
+      error 400, 'A text to be annotated must be supplied using the argument text=<text to be annotated>' if text.nil? || text.strip.empty?
       acronyms = restricted_ontologies_to_acronyms(params)
       semantic_types = semantic_types_param
       max_level = params['max_level'].to_i                   # default = 0
@@ -32,7 +33,7 @@ class AnnotatorController < ApplicationController
         recognizer = recognizer.slice(0, 1).capitalize + recognizer.slice(1..-1)
         clazz = "Annotator::Models::Recognizers::#{recognizer}".split('::').inject(Object) {|o, c| o.const_get c}
         annotator = clazz.new
-      rescue Exception => e
+      rescue
         annotator = Annotator::Models::Recognizers::Mgrep.new
       end
 
@@ -52,10 +53,19 @@ class AnnotatorController < ApplicationController
           longest_only: longest_only
       })
 
-      if params["populate_from_search"]
-        orig_classes = annotations.map {|a| a.annotatedClass}
+      unless includes_param.empty?
+        # Move include param to special param so it only applies to classes
+        params["include_for_class"] = includes_param
+        params.delete("include")
+        env["rack.request.query_hash"] = params
+
+        orig_classes = annotations.map {|a| [a.annotatedClass, a.hierarchy.map {|h| h.annotatedClass}, a.mappings.map {|m| m.annotatedClass}]}.flatten
         classes_hash = populate_classes_from_search(orig_classes, acronyms)
-        annotations.each {|a| a.instance_variable_set("@annotatedClass", classes_hash[a.annotatedClass.submission.ontology.id.to_s + a.annotatedClass.id.to_s])}
+        annotations.each do |a|
+          a.instance_variable_set("@annotatedClass", classes_hash[a.annotatedClass.submission.ontology.id.to_s + a.annotatedClass.id.to_s])
+          a.hierarchy.each {|h| h.instance_variable_set("@annotatedClass", classes_hash[h.annotatedClass.submission.ontology.id.to_s + h.annotatedClass.id.to_s])}
+          a.mappings.each {|m| m.instance_variable_set("@annotatedClass", classes_hash[m.annotatedClass.submission.ontology.id.to_s + m.annotatedClass.id.to_s])}
+        end
       end
 
       reply 200, annotations
