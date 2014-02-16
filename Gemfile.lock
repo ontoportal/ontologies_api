@@ -284,3 +284,4 @@ DEPENDENCIES
   sinatra-advanced-routes
   sinatra-contrib (~> 1.0)
   sparql-client!
+  systemu
