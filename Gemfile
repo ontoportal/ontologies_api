@@ -9,7 +9,6 @@ gem 'oj', '~> 2.0'
 gem 'json-schema', '~> 2.0'
 gem 'rake', '~> 10.0'
 gem 'activesupport', '~> 3.0'
-gem 'systemu' # remove when https://github.com/ahoward/macaddr/pull/19 is resolved
 
 # Rack middleware
 gem 'rack-accept', '~> 0.4'
