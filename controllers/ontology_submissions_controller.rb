@@ -79,42 +79,6 @@ class OntologySubmissionsController < ApplicationController
     end
 
     ##
-    # Trigger the parsing of ontology submission ID
-    post '/:ontology_submission_id/parse' do
-      ont = Ontology.find(get_acronym(params)).first
-      error 422, "You must provide an existing `acronym` to parse a submission" if ont.nil?
-      error 422, "You must provide a `submissionId`" if params[:ontology_submission_id].nil?
-      submission = ont.submission(params[:ontology_submission_id])
-      error 422, "You must provide an existing `submissionId` to parse" if submission.nil?
-
-      #TODO: @palexander All this can be moved outside of the controller
-      Thread.new do
-        log_file = get_parse_log_file(submission)
-        logger_for_parsing = CustomLogger.new(log_file)
-        logger_for_parsing.level = Logger::DEBUG
-        begin
-          submission.process_submission(logger_for_parsing,
-                                        process_rdf: true, index_search: true,
-                                        run_metrics: true, reasoning: true)
-        rescue
-          if submission.valid?
-            submission.save
-          else
-            mess = "Error saving ERROR status for submission #{submission.resource_id.value}"
-            logger.error(mess)
-            logger_for_parsing.error(mess)
-          end
-          log_file.flush()
-          log_file.close()
-        end
-      end
-      #TODO: end
-
-      message = { "message" => "Parse triggered as background process. Check ontology status for parsing progress." }
-      reply 200, message
-    end
-
-    ##
     # Download a submission
     get '/:ontology_submission_id/download' do
       acronym = get_acronym(params)
