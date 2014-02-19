@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 85dfa6f17da6e1d9674ebcb975a4b6e4386fa740
+  revision: 9b0623b79e01047fb9578f523034db9fcfb65f5f
   branch: staging
   specs:
     goo (0.0.2)
@@ -10,6 +10,7 @@ GIT
       rest-client
       rsolr
       sparql-client
+      systemu
       uuid
 
 GIT
@@ -24,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: dc19af80bf96627f01c8276d0b2c2bb3442b183d
+  revision: 63991d94c136f15161c2a9b1372e6b6eb4d6f526
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -47,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: c0fd42a269b5e7020338e6aaf8bfba09aa5d599f
+  revision: 59c362ac19a0a85606d1f1d9ec46da83b2ee9598
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -283,4 +284,3 @@ DEPENDENCIES
   sinatra-advanced-routes
   sinatra-contrib (~> 1.0)
   sparql-client!
-  systemu
