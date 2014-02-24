@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 4ee0cd1db9deca32dbd8997f9259fb420c91bc42
+  revision: b991710603f5c341acdaaa5fe7be57c063c62668
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 7dd3fb1e18e9dcddf750e2433477a013496514ea
+  revision: 311e41c04a3d892118fdb1e4aee18cd6d941bca7
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -114,7 +114,9 @@ GEM
     addressable (2.3.5)
     atomic (1.1.14)
     backports (3.6.0)
-    bcrypt-ruby (3.1.2)
+    bcrypt (3.1.6)
+    bcrypt-ruby (3.1.5)
+      bcrypt (>= 3.1.3)
     builder (3.2.2)
     capistrano (3.1.0)
       i18n
@@ -138,7 +140,8 @@ GEM
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
-    macaddr (1.6.2)
+    macaddr (1.6.5)
+      systemu (~> 2.6.2)
     mail (2.2.7)
       activesupport (>= 2.3.6)
       mime-types
@@ -224,7 +227,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh
       term-ansicolor
-    systemu (2.6.2)
+    systemu (2.6.3)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
     thread_safe (0.1.3)
