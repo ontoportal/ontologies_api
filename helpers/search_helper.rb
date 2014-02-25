@@ -13,6 +13,7 @@ module Sinatra
       OBSOLETE_PARAM = "obsolete"
 
       def get_edismax_query(text, params={})
+        validate_params_solr_population()
         raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
         query = ""
         params["defType"] = "edismax"
