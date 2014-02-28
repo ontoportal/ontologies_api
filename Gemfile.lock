@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 91e75021562832ba584bc067d070cf4fb616e468
+  revision: 6e92e882b90f81ab819a3bfe2766eff19854e325
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 3360282a726786248acd12e904f515ac9836e1c0
+  revision: b949811e725c0e51ef17f7efaa7c6f91eaad85cb
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
