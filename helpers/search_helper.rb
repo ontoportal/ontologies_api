@@ -22,7 +22,7 @@ module Sinatra
 
         if (params[EXACT_MATCH_PARAM] == "true")
           query = "\"#{RSolr.escape(text)}\""
-          params["qf"] = "prefLabelExact"
+          params["qf"] = "prefLabelExact synonymExact"
         elsif (text[-1] == '*')
           text = text[0..-2]
           query = "\"#{RSolr.escape(text)}\""
