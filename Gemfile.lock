@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 85dfa6f17da6e1d9674ebcb975a4b6e4386fa740
+  revision: 9b0623b79e01047fb9578f523034db9fcfb65f5f
   branch: staging
   specs:
     goo (0.0.2)
@@ -10,11 +10,12 @@ GIT
       rest-client
       rsolr
       sparql-client
+      systemu
       uuid
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ce06dbb37852703248a3c952f613f122c2adee4b
+  revision: a2b40ff8de298f1433173bf9f2da878cb82e05c4
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -24,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 0ead142cc6489d894fb85e291baa0c04c8c2f9cc
+  revision: fab6bf82d7afdad80b3bc085a3addf95fee6c086
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -47,12 +48,12 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: d8b0feff739a43d44a5eec77a37b1579950b31f7
+  revision: 3360282a726786248acd12e904f515ac9836e1c0
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
-      bcrypt-ruby
+      bcrypt
       goo
       json
       libxml-ruby
@@ -107,13 +108,13 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.16)
+    activesupport (3.2.17)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    atomic (1.1.14)
-    backports (3.5.0)
-    bcrypt-ruby (3.1.2)
+    atomic (1.1.15)
+    backports (3.6.0)
+    bcrypt (3.1.7)
     builder (3.2.2)
     capistrano (3.1.0)
       i18n
@@ -135,10 +136,10 @@ GEM
     json (1.8.1)
     json-schema (2.2.1)
     json_pure (1.8.1)
-    kgio (2.9.1)
+    kgio (2.9.2)
     libxml-ruby (2.7.0)
-    macaddr (1.6.1)
-      systemu (~> 2.5.0)
+    macaddr (1.6.5)
+      systemu (~> 2.6.2)
     mail (2.2.7)
       activesupport (>= 2.3.6)
       mime-types
@@ -153,8 +154,8 @@ GEM
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
-    oj (2.5.4)
-    polyglot (0.3.3)
+    oj (2.5.5)
+    polyglot (0.3.4)
     pony (1.8)
       mail (>= 2.0)
     pry (0.9.12.6)
@@ -179,12 +180,12 @@ GEM
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 4.8)
-    raindrops (0.12.0)
+    raindrops (0.13.0)
     rake (10.1.1)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
-    redcarpet (3.0.0)
+    redcarpet (3.1.1)
     redis (3.0.7)
     redis-activesupport (3.2.5)
       activesupport (~> 3.2.0)
@@ -224,11 +225,11 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh
       term-ansicolor
-    systemu (2.5.2)
+    systemu (2.6.3)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
-    thread_safe (0.1.3)
-      atomic
+    thread_safe (0.2.0)
+      atomic (>= 1.1.7, < 2)
     tilt (1.4.1)
     tins (1.0.0)
     treetop (1.4.15)
