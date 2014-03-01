@@ -20,6 +20,7 @@ class OntologySubmissionsController < ApplicationController
     # Display all submissions of an ontology
     get do
       ont = Ontology.find(get_acronym(params)).include(:acronym).first
+      error 422, "Ontology #{get_acronym(params)} does not exist" unless ont
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
       reply ont.submissions.sort {|a,b| b.submissionId <=> a.submissionId }  # descending order of submissionId
