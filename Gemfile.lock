@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: bf021639f4839ea6ade8decc906cc75341d81695
+  revision: def1446d51725d92bcc1cd441807d733aa09c659
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -138,7 +138,7 @@ GEM
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
-    macaddr (1.6.5)
+    macaddr (1.6.7)
       systemu (~> 2.6.2)
     mail (2.2.7)
       activesupport (>= 2.3.6)
