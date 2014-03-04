@@ -215,7 +215,7 @@ module Sinatra
 
       def restricted_ontologies_to_acronyms(params=nil)
         onts = restricted_ontologies(params)
-        return onts.map {|o| o.acronym rescue binding.pry}
+        return onts.map {|o| o.acronym }
       end
 
       def ontologies_param_to_acronyms(params = nil)
