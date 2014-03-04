@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: a763c729df3a1176a4478c73732abcfab899f628
+  revision: 4d0e79bd0fa5a5017dd2ce9888ad197923f39ae5
   branch: staging
   specs:
     ncbo_cron (0.0.1)
