@@ -196,21 +196,28 @@ class TestMappingsController < TestCase
 
   def test_mappings_between_ontologies
     delete_manual_mapping()
-    ontologies = "BRO-TEST-MAP-0,FAKE-TEST-MAP-0"
-    get "/mappings/?ontologies=#{ontologies}"
-    assert last_response.ok?
-    mappings = MultiJson.load(last_response.body)
-    #pages
-    assert mappings["page"] == 1
-    assert mappings["pageCount"] == 1
-    assert mappings["prevPage"] == nil
-    assert mappings["nextPage"] == nil
+    bro_uri = LinkedData::Models::Ontology.find("BRO-TEST-MAP-0").first.id.to_s
+    fake_uri = LinkedData::Models::Ontology.find("FAKE-TEST-MAP-0").first.id.to_s
+    ontologies_params = [
+      "BRO-TEST-MAP-0,FAKE-TEST-MAP-0",
+      "#{bro_uri},#{fake_uri}",
+    ]
+    ontologies_params.each do |ontologies|
+      get "/mappings/?ontologies=#{ontologies}"
+      assert last_response.ok?
+      mappings = MultiJson.load(last_response.body)
+      #pages
+      assert mappings["page"] == 1
+      assert mappings["pageCount"] == 1
+      assert mappings["prevPage"] == nil
+      assert mappings["nextPage"] == nil
 
-    assert_equal 11, mappings["collection"].length
-    mappings = mappings["collection"]
+      assert_equal 11, mappings["collection"].length
+      mappings = mappings["collection"]
 
-    mappings.each do |mapping|
-      certify_mapping(mapping)
+      mappings.each do |mapping|
+        certify_mapping(mapping)
+      end
     end
   end
 

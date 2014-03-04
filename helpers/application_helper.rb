@@ -183,7 +183,7 @@ module Sinatra
           # Get list
           ontologies = params["ontologies"].split(",").map {|o| o.strip}
           # When they aren't URIs, make them URIs
-          ontologies.map! {|o| o.start_with?("http://") ? o : ontology_uri_from_acronym(o)}
+          ontologies.map! {|o| o.start_with?("http://") ? replace_url_prefix(o) : ontology_uri_from_acronym(o)}
           if ontologies.include? nil
             error 404, "The ontologies parameter `[#{params["ontologies"]}]` includes non-existent acronyms. Notice that acronyms are case sensitive."
           end
