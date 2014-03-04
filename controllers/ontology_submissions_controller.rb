@@ -19,7 +19,8 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display all submissions of an ontology
     get do
-      ont = Ontology.find(params["acronym"]).include(:acronym).first
+      ont = Ontology.find(get_acronym(params)).include(:acronym).first
+      error 422, "Ontology #{get_acronym(params)} does not exist" unless ont
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
       reply ont.submissions.sort {|a,b| b.submissionId <=> a.submissionId }  # descending order of submissionId
@@ -28,7 +29,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Create a new submission for an existing ontology
     post do
-      ont = Ontology.find(params["acronym"]).include(Ontology.attributes).first
+      ont = Ontology.find(get_acronym(params)).include(Ontology.attributes).first
       error 422, "You must provide a valid `acronym` to create a new submission" if ont.nil?
       reply 201, create_submission(ont)
     end
@@ -36,7 +37,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display a submission
     get '/:ontology_submission_id' do
-      ont = Ontology.find(params["acronym"]).include(:acronym).first
+      ont = Ontology.find(get_acronym(params)).include(:acronym).first
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       ont.bring(:submissions)
       ont_submission = ont.submission(params["ontology_submission_id"])
@@ -48,7 +49,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Update an existing submission of an ontology
     patch '/:ontology_submission_id' do
-      ont = Ontology.find(params["acronym"]).first
+      ont = Ontology.find(get_acronym(params)).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
       submission = ont.submission(params[:ontology_submission_id])
@@ -70,7 +71,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Delete a specific ontology submission
     delete '/:ontology_submission_id' do
-      ont = Ontology.find(params["acronym"]).first
+      ont = Ontology.find(get_acronym(params)).first
       error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       submission = ont.submission(params[:ontology_submission_id])
       error 422, "You must provide an existing `submissionId` to delete" if submission.nil?
@@ -79,45 +80,9 @@ class OntologySubmissionsController < ApplicationController
     end
 
     ##
-    # Trigger the parsing of ontology submission ID
-    post '/:ontology_submission_id/parse' do
-      ont = Ontology.find(params["acronym"]).first
-      error 422, "You must provide an existing `acronym` to parse a submission" if ont.nil?
-      error 422, "You must provide a `submissionId`" if params[:ontology_submission_id].nil?
-      submission = ont.submission(params[:ontology_submission_id])
-      error 422, "You must provide an existing `submissionId` to parse" if submission.nil?
-
-      #TODO: @palexander All this can be moved outside of the controller
-      Thread.new do
-        log_file = get_parse_log_file(submission)
-        logger_for_parsing = CustomLogger.new(log_file)
-        logger_for_parsing.level = Logger::DEBUG
-        begin
-          submission.process_submission(logger_for_parsing,
-                                        process_rdf: true, index_search: true,
-                                        run_metrics: true, reasoning: true)
-        rescue
-          if submission.valid?
-            submission.save
-          else
-            mess = "Error saving ERROR status for submission #{submission.resource_id.value}"
-            logger.error(mess)
-            logger_for_parsing.error(mess)
-          end
-          log_file.flush()
-          log_file.close()
-        end
-      end
-      #TODO: end
-
-      message = { "message" => "Parse triggered as background process. Check ontology status for parsing progress." }
-      reply 200, message
-    end
-
-    ##
     # Download a submission
     get '/:ontology_submission_id/download' do
-      acronym = params["acronym"]
+      acronym = get_acronym(params)
       submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath, :pullLocation]
       ont = Ontology.find(acronym).include(:submissions => submission_attributes).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
@@ -143,7 +108,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Download a submission diff file
     get '/:ontology_submission_id/download_diff' do
-      acronym = params["acronym"]
+      acronym = get_acronym(params)
       submission_attributes = [:submissionId, :submissionStatus, :diffFilePath]
       ont = Ontology.find(acronym).include(:submissions => submission_attributes).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
@@ -168,4 +133,6 @@ class OntologySubmissionsController < ApplicationController
     # end
 
   end
+
+
 end

@@ -11,9 +11,11 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+log/**
 logs/**
 .tags*
 cache/**
+vendor/bundle/*
 
 # YARD artifacts
 .yardoc
@@ -31,6 +33,9 @@ bin/**
 config/environments/production.rb
 config/environments/test.rb
 config/environments/development.rb
+
+#ignore capistrano deployment 
+config/deploy/*
 
 # Ignore generated test data
 test/data/uploaded_ontologies/**/*

@@ -225,6 +225,26 @@ eos
     assert annotations.length > 0
   end
 
+  def test_default_properties_output
+    text = "Aggregate Human Data chromosomal mutation Aggregate Human Data chromosomal deletion Aggregate Human Data Resource Federal Funding Resource receptor antagonists chromosomal mutation"
+
+    params = {text: text, include: "prefLabel"}
+    get "/annotator", params
+    assert last_response.ok?
+    annotations = MultiJson.load(last_response.body)
+    assert annotations.length == 9
+    assert annotations.first["annotatedClass"]["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
+    assert annotations.first["annotatedClass"]["prefLabel"] == "Aggregate Human Data"
+
+    params = {text: text, include: "prefLabel,definition"}
+    get "/annotator", params
+    assert last_response.ok?
+    annotations = MultiJson.load(last_response.body)
+    assert annotations.length == 9
+    assert annotations.first["annotatedClass"]["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
+    assert annotations.first["annotatedClass"]["definition"] == ["A resource that provides data from clinical care that comprises combined data from multiple individual human subjects."]
+  end
+
   #TODO: this method is duplicated in NCBO_ANNOTATOR
   def self.all_classes(ontologies)
     classes = []

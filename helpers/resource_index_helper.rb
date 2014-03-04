@@ -35,9 +35,6 @@ module Sinatra
       NCBO::Resolver.configure(redis_host: LinkedData::OntologiesAPI.settings.resolver_redis_host,
                                redis_port: LinkedData::OntologiesAPI.settings.resolver_redis_port)
 
-      # Old REST service used for resolving class URIs into short IDs.
-      REST_URL = 'http://rest.bioontology.org/bioportal'
-
       def classes_error(params)
         msg = "Malformed parameters. Try:\n"
         msg += "classes[ontAcronymA]=classA1,classA2,classA3&classes[ontAcronymB]=classB1,classB2\n"
@@ -77,6 +74,7 @@ module Sinatra
 
       def get_options(params={})
         options = {}
+        options[:resource_index_location] = LinkedData::OntologiesAPI.settings.resource_index_rest_url
         options[:debug] = true
         options[:request_timeout] = 600  # double the default of 300
         options[:apikey] = get_apikey

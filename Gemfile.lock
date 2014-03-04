@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 46515044deb8c3593aa6c6d72746ca28f2f95be6
+  revision: ff827f51398c7ad43b5a6257458eeef4d6275c51
   branch: master
   specs:
     goo (0.0.2)
@@ -10,11 +10,12 @@ GIT
       rest-client
       rsolr
       sparql-client
+      systemu
       uuid
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 46a4fe6f2c7a67a21a48862860da67cef02ad740
+  revision: 1af2842f341d8ccd89fb390300d3ca34362769e7
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -24,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 5066df18432558a827096247952f1731fd8b3a05
+  revision: f3fa5b77baedbc8022d137c6e55d1bbeb508ac2b
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -47,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 25c85dd2adfbb23aed5861f1ea309d5798d06137
+  revision: e05bda16c123ab381fe85c17c33f81a68f7f0b92
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -73,7 +74,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 245ca3abdb4c1c72bff1b150e7fe6f0d4922356f
+  revision: bfec1e7222c1f54100000dc988b27d8f0ff9ca46
   branch: master
   specs:
     sparql-client (1.0.4.1)
@@ -115,6 +116,16 @@ GEM
     backports (3.6.0)
     bcrypt (3.1.7)
     builder (3.2.2)
+    capistrano (3.1.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (~> 1.3)
+    capistrano-bundler (1.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
+    capistrano-rbenv (2.0.2)
+      capistrano (~> 3.1)
+      sshkit (~> 1.3)
     coderay (1.1.0)
     cube-ruby (0.0.3)
     dante (0.2.0)
@@ -127,7 +138,7 @@ GEM
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
-    macaddr (1.6.5)
+    macaddr (1.6.7)
       systemu (~> 2.6.2)
     mail (2.2.7)
       activesupport (>= 2.3.6)
@@ -140,6 +151,9 @@ GEM
       redis
     multi_json (1.8.4)
     net-http-persistent (2.9.4)
+    net-scp (1.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.8.0)
     oj (2.5.5)
     polyglot (0.3.4)
     pony (1.8)
@@ -207,10 +221,17 @@ GEM
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
     slop (3.4.7)
-    systemu (2.6.3)
+    sshkit (1.3.0)
+      net-scp (>= 1.1.2)
+      net-ssh
+      term-ansicolor
+    systemu (2.6.4)
+    term-ansicolor (1.3.0)
+      tins (~> 1.0)
     thread_safe (0.2.0)
       atomic (>= 1.1.7, < 2)
     tilt (1.4.1)
+    tins (1.0.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -228,6 +249,9 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
+  capistrano (~> 3.1.0)
+  capistrano-bundler (~> 1.1.1)
+  capistrano-rbenv (~> 2.0.2)
   cube-ruby
   goo!
   haml

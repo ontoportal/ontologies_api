@@ -47,8 +47,7 @@ class TestRackAttack < TestCase
       require_relative '../../config/rack_attack'
       Rack::Server.start(
         config: RACK_CONFIG,
-        Port: @@port1,
-        AccessLog: []
+        Port: @@port1
       )
       Signal.trap("HUP") { Process.exit! }
     end
@@ -57,8 +56,7 @@ class TestRackAttack < TestCase
       require_relative '../../config/rack_attack'
       Rack::Server.start(
         config: RACK_CONFIG,
-        Port: @@port2,
-        AccessLog: []
+        Port: @@port2
       )
       Signal.trap("HUP") { Process.exit! }
     end
@@ -72,7 +70,9 @@ class TestRackAttack < TestCase
     LinkedData.settings.enable_throttling = @@throttling_setting
     LinkedData::OntologiesAPI.settings.req_per_second_per_ip = @@req_per_sec_limit
     Process.kill("HUP", @@pid1)
+    Process.wait(@@pid1)
     Process.kill("HUP", @@pid2)
+    Process.wait(@@pid2)
     $stdout = STDOUT
     $stderr = STDERR
     @@admin.delete
@@ -103,6 +103,10 @@ class TestRackAttack < TestCase
   def test_two_servers_one_ip
     request_in_threads do
       assert_raises(OpenURI::HTTPError) {
+        request()
+      }
+
+      assert_raises(OpenURI::HTTPError) {
         request(port: @@port2)
       }
     end
@@ -126,11 +130,17 @@ class TestRackAttack < TestCase
     user ||= @@user
     port ||= @@port1
     headers = {"Authorization" => "apikey token=#{user.apikey}"}
-    open("http://127.0.0.1:#{port}/ontologies", headers)
+    # Make sure to do the request at least twice as many times as the limit
+    # in order to more effectively reach the throttling limit.
+    # Sometimes a single request can get through without failing depending
+    # on the order of the request as it coincides with the threaded requests.
+    (LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 2).times do
+      open("http://127.0.0.1:#{port}/ontologies", headers)
+    end
   end
 
   def request_in_threads(&block)
-    thread_count = 10
+    thread_count = LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 5
     threads = []
     begin
       thread_count.times do
@@ -142,7 +152,7 @@ class TestRackAttack < TestCase
         end
       end
 
-      sleep(0.5)
+      sleep(0.4)
 
       yield
     ensure

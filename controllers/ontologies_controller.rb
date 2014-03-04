@@ -29,7 +29,7 @@ class OntologiesController < ApplicationController
     ##
     # Display the most recent submission of the ontology
     get '/:acronym' do
-      ont = Ontology.find(params["acronym"]).first
+      ont = Ontology.find(get_acronym(params)).first
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       check_last_modified(ont)
       ont.bring(*Ontology.goo_attrs_to_load(includes_param))
@@ -39,7 +39,7 @@ class OntologiesController < ApplicationController
     ##
     # Ontology latest submission
     get "/:acronym/latest_submission" do
-      ont = Ontology.find(params["acronym"]).first
+      ont = Ontology.find(get_acronym(params)).first
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       include_status = params["include_status"]
       ont.bring(:acronym, :submissions)
@@ -68,7 +68,7 @@ class OntologiesController < ApplicationController
     ##
     # Update an ontology
     patch '/:acronym' do
-      ont = Ontology.find(params["acronym"]).include(Ontology.attributes).first
+      ont = Ontology.find(get_acronym(params)).include(Ontology.attributes).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
       populate_from_params(ont, params)
@@ -84,7 +84,7 @@ class OntologiesController < ApplicationController
     ##
     # Delete an ontology and all its versions
     delete '/:acronym' do
-      ont = Ontology.find(params["acronym"]).first
+      ont = Ontology.find(get_acronym(params)).first
       error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       ont.delete
       halt 204
@@ -93,7 +93,7 @@ class OntologiesController < ApplicationController
     ##
     # Download the latest submission for an ontology
     get '/:acronym/download' do
-      acronym = params["acronym"]
+      acronym = get_acronym(params)
       ont = Ontology.find(acronym).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
       ont.bring(:viewingRestriction)
@@ -121,9 +121,9 @@ class OntologiesController < ApplicationController
 
     def create_ontology
       params ||= @params
-      acronym = params["acronym"]
 
       # acronym must be well formed
+      acronym = get_acronym(params)  # coerce it to upper case
       if ACRONYM_REGEX.match(acronym).nil?
         error 400, "Ontology acronym is not well formed.\n" + ACRONYM_RULES
       end
@@ -135,7 +135,7 @@ class OntologiesController < ApplicationController
       else
         error_msg = <<-ERR
         Ontology already exists, see #{ont.id}
-        To add a new submission, POST to: /ontologies/#{params["acronym"]}/submission.
+        To add a new submission, POST to: /ontologies/#{acronym}/submission.
         To modify the resource, use PATCH.
         ERR
         error 409, error_msg

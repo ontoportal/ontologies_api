@@ -66,31 +66,18 @@ class TestOntologySubmissionsController < TestCase
     assert_equal(204, last_response.status, msg=get_errors(last_response))
   end
 
-  def test_create_new_submission_and_parse
-    post "/ontologies/#{@@acronym}/submissions", @@file_params
+  def test_CRD_submission_acronym_downcase
+    # A lower case acronym should be automatically coerced to uppercase
+    acronym_downcase = @@acronym.downcase
+    post "/ontologies/#{acronym_downcase}/submissions", @@file_params
     assert_equal(201, last_response.status, msg=get_errors(last_response))
     sub = MultiJson.load(last_response.body)
-    get "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}?include=all"
+    get "/ontologies/#{acronym_downcase}"
     ont = MultiJson.load(last_response.body)
-    assert ont["ontology"]["acronym"].eql?(@@acronym)
-    post "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}/parse"
-    assert_equal(200, last_response.status, msg=get_errors(last_response))
-    # Wait for the ontology parsing process to complete
-    max = 25
-    while (ont["submissionStatus"].length == 1 and ont["submissionStatus"].include?(@@status_uploaded) and max > 0)
-      get "/ontologies/#{@@acronym}/submissions/#{sub['submissionId']}?include=all"
-      assert_equal(200, last_response.status, msg=get_errors(last_response))
-      ont = MultiJson.load(last_response.body)
-      max = max - 1
-      sleep(1.5)
-    end
-    assert max > 0
-    assert ont["submissionStatus"].include?(@@status_rdf)
-    # Try to get roots
-    get "/ontologies/#{@@acronym}/classes/roots"
-    assert_equal(200, last_response.status, msg=get_errors(last_response))
-    roots = MultiJson.load(last_response.body)
-    assert roots.length > 0
+    assert ont["acronym"].eql?(@@acronym)
+    # Cleanup
+    delete "/ontologies/#{acronym_downcase}/submissions/#{sub['submissionId']}"
+    assert_equal(204, last_response.status, msg=get_errors(last_response))
   end
 
   def test_create_new_ontology_submission

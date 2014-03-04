@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rack', github: 'palexander/rack', branch: 'patch-1' # can remove github dependency when this is merged: https://github.com/rack/rack/pull/621
+gem 'rack', github: 'palexander/rack', branch: 'patch-1' # can remove github dependency when rack 1.6 is released
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-contrib', '~> 1.0'
 gem 'sinatra-advanced-routes'
@@ -46,6 +46,11 @@ gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/s
 # Templating
 gem 'haml'
 gem 'redcarpet'
+
+# Deployments
+gem 'capistrano', '~> 3.1.0'
+gem 'capistrano-bundler', '~> 1.1.1'
+gem 'capistrano-rbenv', '~> 2.0.2'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
 ncbo_branch = ENV["NCBO_BRANCH"] || `git rev-parse --abbrev-ref HEAD`.strip || "staging"

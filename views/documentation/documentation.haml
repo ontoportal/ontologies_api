@@ -8,9 +8,6 @@
           %a{href: "#nav_usage"} General Usage
         %li
           %a{href: "#nav_search"} Search Endpoint
-          %ul.nav.nav-list
-            %li
-              %a{href: "#nav_search_subtree"} Subtree Search
         %li
           %a{href: "#nav_annotator"} Annotator Endpoint
         %li
@@ -20,12 +17,10 @@
         %li
           %a{href: "#nav_batch"} Batch Endpoints
         %li
-          %a{href: "#nav_batch"} Batch Endpoints
-        %li
           %a{href: "#nav_resource_endpoints"} Resource Endpoints
           %ul.nav.nav-list
             %li
-              %a{href: "#nav_media_types"} Media Types
+              %a{href: "#nav_media_types"} Media Types and Hypermedia Links
               %ul.nav.nav-list
                 -@metadata_all.each do |cls|
                   %li
@@ -39,8 +34,13 @@
       %h1#nav_home API Documentation
       %h2#nav_usage General Usage
       %p
-        This API uses hypermedia to expose relationships between media types. The state of the application
-        is driven by navigating these links.
+        This API is comprised of a set of resources (Ontologies, Classes, etc) and related endpoints (Search, Annotator, Recommender)
+        that are connected together via links, much like webpages.
+        We recommend that you try browsing the API using a web browser (Chrome and Firefox work very well while IE does not)
+        before you start writing code.
+        For more information, please see the documentation on
+        %a{href: "#nav_media_types"} Media Types and Hypermedia Links.
+
 
       %h3 Common Parameters
       %table.table.table-striped.table-bordered
@@ -64,14 +64,17 @@
             all<br/>
             {comma-separated list of attributes, EX: attr1,attr2}
           %td
-            By default, the API will show a subset of the available attributes for a given media type.
-            This behavior can be overridden by providing <code>include=all</code> to show all attributes
-            or <code>include=attribute1,attribute2</code> to include a specific list. The API is optimized
-            to return the default values, so overriding this can impact the performance of your request.
-            %br
-            The <code>include=all</code> option is most useful for testing in the browser. Use it to identify
-            the set of attributes required and use only those by passing them as a comma separated
-            list, e.g. <code>include=prefLabel,cui</code>.
+            %p
+              By default, the API will show a subset of the available attributes for a given media type.
+              This behavior can be overridden by providing <code>include=all</code> to show all attributes
+              or <code>include=attribute1,attribute2</code> to include a specific list. The API is optimized
+              to return the default values, so overriding this can impact the performance of your request.
+            %p
+              The <code>include=all</code> option is most useful for testing in the browser. Use it to identify
+              the set of attributes required and use only those by passing them as a comma separated
+              list, e.g. <code>include=prefLabel,cui</code>.
+            %p
+              The <code>include</code> parameter is currently unsupported on Search, Annotator, and Recommender endpoints.
         %tr
           %td format
           %td
@@ -362,17 +365,26 @@
         be used to operate on the resources, a description of the resource (including available attributes),
         and a list of hypermedia links that can be found on each resource.
 
-      %h2#nav_media_types Media Types
+      %h2#nav_media_types Media Types and Hypermedia Links
 
       %h3 Documentation
       :markdown
-        The documentation below describes the media types that available in the API. Media types describe the types of
-        resources available, including the HTTP verbs that may be used with them and the attributes that each resource
-        contains.
+        The documentation below describes the media types that available in the API and the hypermedia links that connect them.
+        Media types describe the types of resources available, including the HTTP verbs that may be used with them and the
+        attributes that each resource contains.
+
+        #### Hypermedia Links
+        This programming interface comprises HTTP commands that return objects that themselves contain links to other locations
+        in the form of a URL.
+        In addition to the actual return values, the returned objects contain a set of links to related information.
+        You can access these links using HTTP commands, typically GET. Thus, it is possible to traverse BioPortal's information for
+        an ontology, including classes, notes, and reviews, by starting from the list of ontologies and traversing the available
+        links - either programmatically or in a browser. The different resources are described below, including information about
+        their available attributes, links, and the HTTP verbs that can be used to interact with them.
 
         #### HTTP Verbs
         The API uses different verbs to support processing of resources. This includes things like creating or deleting
-        individual resources or something more specific like parsing an ontology. Typically, the verbs will be used in
+        individual resources or something more specific searching or annotating. Typically, the verbs will be used in
         conjunciton with the URL that represents the id for a given resource. Here is how we interpret the verbs:
 
         - <span class="label label-info">GET</span> Used to retreive a resource or collection of resources.

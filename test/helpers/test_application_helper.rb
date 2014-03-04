@@ -1,3 +1,4 @@
+require 'multi_json'
 require_relative '../test_case_helpers'
 
 class TestApplicationHelper < TestCaseHelpers
@@ -44,4 +45,19 @@ class TestApplicationHelper < TestCaseHelpers
     end
   end
 
+  def test_bad_accept_header_handling
+    # This accept header contains '*; q=.2', which isn't valid according to the spec, should be '*/*; q=.2'
+    bad_accept_header = "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"
+    get "/ontologies", {}, {"HTTP_ACCEPT" => bad_accept_header}
+    assert last_response.status == 400
+    assert last_response.body.include?("Accept header `#{bad_accept_header}` is invalid")
+  end
+
+  def test_http_method_override
+    post "/ontologies", {}, {"HTTP_X_HTTP_METHOD_OVERRIDE" => "GET"}
+    assert last_response.ok?
+    acronyms = @@ontologies.map {|o| o.bring(:acronym).acronym}.sort
+    resp_acronyms = MultiJson.load(last_response.body).map {|o| o["acronym"]}.sort
+    assert_equal acronyms, resp_acronyms
+  end
 end

@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     get '/:username' do
       user = User.find(params[:username]).first
       check_last_modified(user)
-      error 404, "Cannot find user with username `params['username']`" if user.nil?
+      error 404, "Cannot find user with username `#{params['username']}`" if user.nil?
       user.bring(*User.goo_attrs_to_load(includes_param))
       reply user
     end
