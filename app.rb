@@ -29,6 +29,9 @@ require_relative "config/logging"
 # Protection settings
 set :protection, :except => :path_traversal
 
+# Allow HTTP method overrides
+set :method_override, true
+
 # Setup root and static public directory
 set :root, File.dirname(__FILE__)
 use Rack::Static,
