@@ -146,7 +146,7 @@ class TestRackAttack < TestCase
       thread_count.times do
         threads << Thread.new do
           while true
-            sleep(0.4)
+            sleep(0.2)
             request() rescue next
           end
         end
