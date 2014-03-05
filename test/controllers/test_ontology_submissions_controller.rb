@@ -66,20 +66,6 @@ class TestOntologySubmissionsController < TestCase
     assert_equal(204, last_response.status, msg=get_errors(last_response))
   end
 
-  def test_CRD_submission_acronym_downcase
-    # A lower case acronym should be automatically coerced to uppercase
-    acronym_downcase = @@acronym.downcase
-    post "/ontologies/#{acronym_downcase}/submissions", @@file_params
-    assert_equal(201, last_response.status, msg=get_errors(last_response))
-    sub = MultiJson.load(last_response.body)
-    get "/ontologies/#{acronym_downcase}"
-    ont = MultiJson.load(last_response.body)
-    assert ont["acronym"].eql?(@@acronym)
-    # Cleanup
-    delete "/ontologies/#{acronym_downcase}/submissions/#{sub['submissionId']}"
-    assert_equal(204, last_response.status, msg=get_errors(last_response))
-  end
-
   def test_create_new_ontology_submission
     post "/ontologies/#{@@acronym}/submissions", @@file_params
     assert_equal(201, last_response.status, msg=get_errors(last_response))

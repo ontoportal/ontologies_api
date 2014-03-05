@@ -9,7 +9,7 @@ class OntologySubmissionsController < ApplicationController
   ##
   # Create a new submission for an existing ontology
   post "/submissions" do
-    ont = Ontology.find(uri_as_needed(params["ontology"])).include(Ontology.goo_attrs_to_load).first
+    ont = Ontology.find(uri_as_needed(params["acronym"])).include(Ontology.goo_attrs_to_load).first
     error 422, "You must provide a valid `acronym` to create a new submission" if ont.nil?
     reply 201, create_submission(ont)
   end
@@ -19,8 +19,8 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display all submissions of an ontology
     get do
-      ont = Ontology.find(get_acronym(params)).include(:acronym).first
-      error 422, "Ontology #{get_acronym(params)} does not exist" unless ont
+      ont = Ontology.find(params["acronym"]).include(:acronym).first
+      error 422, "Ontology #{params["acronym"]} does not exist" unless ont
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
       reply ont.submissions.sort {|a,b| b.submissionId <=> a.submissionId }  # descending order of submissionId
@@ -29,7 +29,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Create a new submission for an existing ontology
     post do
-      ont = Ontology.find(get_acronym(params)).include(Ontology.attributes).first
+      ont = Ontology.find(params["acronym"]).include(Ontology.attributes).first
       error 422, "You must provide a valid `acronym` to create a new submission" if ont.nil?
       reply 201, create_submission(ont)
     end
@@ -37,7 +37,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display a submission
     get '/:ontology_submission_id' do
-      ont = Ontology.find(get_acronym(params)).include(:acronym).first
+      ont = Ontology.find(params["acronym"]).include(:acronym).first
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       ont.bring(:submissions)
       ont_submission = ont.submission(params["ontology_submission_id"])
@@ -49,7 +49,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Update an existing submission of an ontology
     patch '/:ontology_submission_id' do
-      ont = Ontology.find(get_acronym(params)).first
+      ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
       submission = ont.submission(params[:ontology_submission_id])
@@ -71,7 +71,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Delete a specific ontology submission
     delete '/:ontology_submission_id' do
-      ont = Ontology.find(get_acronym(params)).first
+      ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       submission = ont.submission(params[:ontology_submission_id])
       error 422, "You must provide an existing `submissionId` to delete" if submission.nil?
@@ -82,7 +82,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Download a submission
     get '/:ontology_submission_id/download' do
-      acronym = get_acronym(params)
+      acronym = params["acronym"]
       submission_attributes = [:submissionId, :submissionStatus, :uploadFilePath, :pullLocation]
       ont = Ontology.find(acronym).include(:submissions => submission_attributes).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
@@ -108,7 +108,7 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Download a submission diff file
     get '/:ontology_submission_id/download_diff' do
-      acronym = get_acronym(params)
+      acronym = params["acronym"]
       submission_attributes = [:submissionId, :submissionStatus, :diffFilePath]
       ont = Ontology.find(acronym).include(:submissions => submission_attributes).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
