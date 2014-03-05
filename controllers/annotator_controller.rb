@@ -61,10 +61,9 @@ class AnnotatorController < ApplicationController
 
         orig_classes = annotations.map {|a| [a.annotatedClass, a.hierarchy.map {|h| h.annotatedClass}, a.mappings.map {|m| m.annotatedClass}]}.flatten
         classes_hash = populate_classes_from_search(orig_classes, acronyms)
-        annotations.each do |a|
-          a.instance_variable_set("@annotatedClass", classes_hash[a.annotatedClass.submission.ontology.id.to_s + a.annotatedClass.id.to_s])
-          a.hierarchy.each {|h| h.instance_variable_set("@annotatedClass", classes_hash[h.annotatedClass.submission.ontology.id.to_s + h.annotatedClass.id.to_s])}
-          a.mappings.each {|m| m.instance_variable_set("@annotatedClass", classes_hash[m.annotatedClass.submission.ontology.id.to_s + m.annotatedClass.id.to_s])}
+        annotations = replace_empty_classes(annotations, classes_hash) do |a|
+          replace_empty_classes(a.hierarchy, classes_hash)
+          replace_empty_classes(a.mappings, classes_hash)
         end
       end
 
@@ -87,6 +86,26 @@ class AnnotatorController < ApplicationController
 
     def get_page_params(text, args={})
       return args
+    end
+
+    ##
+    # Take an array of annotations and replace 'empty' classes with populated ones
+    # Does a lookup in a provided hash that uses ontology uri + class id as a key
+    def replace_empty_classes(empty, populated_hash, &block)
+      populated = []
+      empty.each do |ann|
+        yield ann, populated if block_given?
+        found = replace_empty_class(ann, populated_hash)
+        populated << ann if found
+      end
+      populated
+    end
+
+    def replace_empty_class(ann, populated)
+      populated_cls = populated[ann.annotatedClass.submission.ontology.id.to_s + ann.annotatedClass.id.to_s]
+      return false unless populated_cls
+      ann.instance_variable_set("@annotatedClass", populated_cls)
+      return true
     end
 
   end
