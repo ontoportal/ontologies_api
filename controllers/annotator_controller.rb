@@ -23,8 +23,10 @@ class AnnotatorController < ApplicationController
       expand_with_mappings = params['mappings'].eql?('true')  # default = false
       exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
       whole_word_only = params['whole_word_only'].eql?('false') ? false : true  # default = true
-      with_synonyms = params['with_synonyms'].eql?('false') ? false : true  # default = true
       min_term_size = params['minimum_match_length'].to_i    # default = 0
+      # NCBO-603: switch to 'include_synonyms', but allow 'with_synonyms'.
+      include_synonyms = params['include_synonyms'] || params['with_synonyms'] || nil
+      include_synonyms = include_synonyms.eql?('false') ? false : true  # default = true
       recognizer = (Annotator.settings.enable_recognizer_param && params['recognizer']) || 'Mgrep'
       annotator = nil
 
@@ -49,7 +51,7 @@ class AnnotatorController < ApplicationController
           expand_with_mappings: expand_with_mappings,
           min_term_size: min_term_size,
           whole_word_only: whole_word_only,
-          with_synonyms: with_synonyms,
+          with_synonyms: include_synonyms,  # Note: not changing the annotator client parameter name.
           longest_only: longest_only
       })
 
