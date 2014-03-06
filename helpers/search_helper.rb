@@ -9,7 +9,7 @@ module Sinatra
       INCLUDE_VIEWS_PARAM = "include_views"
       REQUIRE_DEFINITIONS_PARAM = "require_definition"
       INCLUDE_PROPERTIES_PARAM = "include_properties"
-      SUBTREE_ID_PARAM = "subtree_id"
+      SUBTREE_ID_PARAM = "subtree_root"  # NCBO-603
       OBSOLETE_PARAM = "obsolete"
 
       def get_edismax_query(text, params={})
@@ -67,7 +67,9 @@ module Sinatra
       def get_subtree_ids(params)
         subtree_ids = nil
 
-        if (params[SUBTREE_ID_PARAM])
+        # NCBO-603: switch to 'subtree_root', but allow 'subtree_id'.
+        subtree_cls = params[SUBTREE_ID_PARAM] || params['subtree_id'] || nil
+        if subtree_cls
           ontology = params[ONTOLOGY_PARAM].split(",")
 
           if (ontology.nil? || ontology.empty? || ontology.length > 1)
@@ -75,12 +77,12 @@ module Sinatra
           end
 
           ont, submission = get_ontology_and_submission
-          params[:cls] = params[SUBTREE_ID_PARAM]
+          params[:cls] = subtree_cls
           params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
 
           cls = get_class(submission, load_attrs={descendants: true})
           subtree_ids = cls.descendants.map {|d| d.id.to_s}
-          subtree_ids.push(params[SUBTREE_ID_PARAM])
+          subtree_ids.push(subtree_cls)
         end
 
         return subtree_ids
