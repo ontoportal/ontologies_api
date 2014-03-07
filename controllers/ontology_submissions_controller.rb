@@ -9,7 +9,7 @@ class OntologySubmissionsController < ApplicationController
   ##
   # Create a new submission for an existing ontology
   post "/submissions" do
-    ont = Ontology.find(uri_as_needed(params["acronym"])).include(Ontology.goo_attrs_to_load).first
+    ont = Ontology.find(uri_as_needed(params["ontology"])).include(Ontology.goo_attrs_to_load).first
     error 422, "You must provide a valid `acronym` to create a new submission" if ont.nil?
     reply 201, create_submission(ont)
   end
