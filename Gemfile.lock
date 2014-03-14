@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 7b95338cb200dc33105d47634083d0ad26d028de
+  revision: 4786a3ac379d7ceb56eb7552c800227db3b2bab7
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 1ef163ce6eca99ba690f2612885449596875881c
+  revision: 398b4d79cdb61a96531bd371e16affa3d9f1068a
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -145,7 +145,7 @@ GEM
       mime-types
       treetop (>= 1.4.5)
     method_source (0.8.2)
-    mime-types (2.1)
+    mime-types (2.2)
     minitest (4.7.5)
     mlanett-redis-lock (0.2.5)
       redis
