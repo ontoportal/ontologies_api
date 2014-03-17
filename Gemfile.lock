@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 4786a3ac379d7ceb56eb7552c800227db3b2bab7
+  revision: 927949bc0fe6d48e0a51207fa0acd553d92bce3a
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 398b4d79cdb61a96531bd371e16affa3d9f1068a
+  revision: 5ead0e15a2659a64f9f60715c18bbdb5530ba096
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 89aa0aed871a08517722b0e68461eeba463d0cc9
+  revision: 0ee52b60392caf159637516e2dd772199e385642
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -164,7 +164,7 @@ GEM
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (2.3.0)
+    rack-attack (3.0.0)
       rack
     rack-cache (1.2)
       rack (>= 0.4)
@@ -199,7 +199,7 @@ GEM
       mime-types (>= 1.16)
     rsolr (1.0.9)
       builder (>= 2.1.2)
-    rubyzip (1.1.0)
+    rubyzip (1.1.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     simplecov (0.8.2)
