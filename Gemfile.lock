@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 927949bc0fe6d48e0a51207fa0acd553d92bce3a
+  revision: 5dffa249b2e40fcafd0400151a68a80ab568e332
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 5ead0e15a2659a64f9f60715c18bbdb5530ba096
+  revision: f53d9ea8f3d1a5c81ec4fe36d171d91efc13c446
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 0ee52b60392caf159637516e2dd772199e385642
+  revision: 652e457cf31892b797ba0d03ece9745878c4f5f5
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -228,7 +228,7 @@ GEM
     systemu (2.6.4)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
-    thread_safe (0.2.0)
+    thread_safe (0.3.0)
       atomic (>= 1.1.7, < 2)
     tilt (1.4.1)
     tins (1.0.0)
