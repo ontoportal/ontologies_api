@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: c667c44ca99569784e2431affd910fb57d1f5add
+  revision: d741e693b4f0e9a87d6130036256c886e79882ea
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -149,7 +149,7 @@ GEM
     minitest (4.7.5)
     mlanett-redis-lock (0.2.5)
       redis
-    multi_json (1.9.1)
+    multi_json (1.9.2)
     net-http-persistent (2.9.4)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -228,7 +228,7 @@ GEM
     systemu (2.6.4)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
-    thread_safe (0.2.0)
+    thread_safe (0.3.0)
       atomic (>= 1.1.7, < 2)
     tilt (1.4.1)
     tins (1.0.1)
