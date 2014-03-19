@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: ff827f51398c7ad43b5a6257458eeef4d6275c51
+  revision: 96b789173332809b37b79626744abebda793786f
   branch: master
   specs:
     goo (0.0.2)
@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 1af2842f341d8ccd89fb390300d3ca34362769e7
+  revision: 974fd0f3673441c2073ba2a7a5cf04090b313dcd
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 39bc5d95fa6cb2536fca360bb4bbf60785727590
+  revision: 361337f6272ad4bfe926a1fbaf2abc50dbdb0a88
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: e05bda16c123ab381fe85c17c33f81a68f7f0b92
+  revision: 986987b47799bcfef6a667327b57528454f334e4
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -134,7 +134,7 @@ GEM
       tilt
     i18n (0.6.9)
     json (1.8.1)
-    json-schema (2.2.1)
+    json-schema (2.2.2)
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
@@ -145,16 +145,16 @@ GEM
       mime-types
       treetop (>= 1.4.5)
     method_source (0.8.2)
-    mime-types (2.1)
+    mime-types (2.2)
     minitest (4.7.5)
     mlanett-redis-lock (0.2.5)
       redis
-    multi_json (1.8.4)
+    multi_json (1.9.0)
     net-http-persistent (2.9.4)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
-    oj (2.5.5)
+    oj (2.6.0)
     polyglot (0.3.4)
     pony (1.8)
       mail (>= 2.0)
@@ -164,12 +164,12 @@ GEM
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (2.3.0)
+    rack-attack (3.0.0)
       rack
     rack-cache (1.2)
       rack (>= 0.4)
     rack-cors (0.2.9)
-    rack-mini-profiler (0.9.0)
+    rack-mini-profiler (0.9.1)
       rack (>= 1.1.3)
     rack-protection (1.5.2)
       rack
@@ -199,7 +199,7 @@ GEM
       mime-types (>= 1.16)
     rsolr (1.0.9)
       builder (>= 2.1.2)
-    rubyzip (1.1.0)
+    rubyzip (1.1.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     simplecov (0.8.2)
@@ -220,7 +220,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
-    slop (3.4.7)
+    slop (3.5.0)
     sshkit (1.3.0)
       net-scp (>= 1.1.2)
       net-ssh
@@ -228,13 +228,12 @@ GEM
     systemu (2.6.4)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
-    thread_safe (0.2.0)
+    thread_safe (0.3.0)
       atomic (>= 1.1.7, < 2)
     tilt (1.4.1)
     tins (1.0.0)
-    treetop (1.4.15)
-      polyglot
-      polyglot (>= 0.3.1)
+    treetop (1.5.1)
+      polyglot (~> 0.3)
     tzinfo (1.1.0)
       thread_safe (~> 0.1)
     unicorn (4.8.2)
