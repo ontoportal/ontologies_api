@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 5dffa249b2e40fcafd0400151a68a80ab568e332
+  revision: 95d220e52a6f0f04cfa11240fbac3e86423bc664
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: f53d9ea8f3d1a5c81ec4fe36d171d91efc13c446
+  revision: 497230417d711d1e45907a45fb321183f76141aa
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 652e457cf31892b797ba0d03ece9745878c4f5f5
+  revision: 7e955208020b296d6d115612dfd45f23a4cdd43e
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -199,7 +199,7 @@ GEM
       mime-types (>= 1.16)
     rsolr (1.0.9)
       builder (>= 2.1.2)
-    rubyzip (1.1.1)
+    rubyzip (1.1.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     simplecov (0.8.2)
