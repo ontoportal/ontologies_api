@@ -231,7 +231,7 @@ GEM
     thread_safe (0.3.0)
       atomic (>= 1.1.7, < 2)
     tilt (1.4.1)
-    tins (1.0.0)
+    tins (1.0.1)
     treetop (1.5.1)
       polyglot (~> 0.3)
     tzinfo (1.1.0)
