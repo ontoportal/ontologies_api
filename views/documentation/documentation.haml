@@ -99,6 +99,14 @@
           %td include_views
           %td {boolean representing whether or not to include ontology views (default is false)}
           %td For calls that involve ontologies, include_views='true' will include ontology views.
+        %tr
+          %td include_context
+          %td {true|false} (defaults to true)
+          %td Turn off the JSON-LD context serialization. This will reduce the response size significantly for some calls, speeding up transmission and parse time.
+        %tr
+          %td include_links
+          %td {true|false} (defaults to true)
+          %td Turn off the hypermedia link serialization. This will reduce the response size significantly for some calls, speeding up transmission and parse time.
 
       %h2#nav_non_rest Search, Annotator, Recommender, and Resource Index Endpoints
 
