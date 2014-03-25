@@ -197,7 +197,7 @@ module Sinatra
 
         if params["ontologies"] && !params["ontologies"].empty?
           onts = ontology_objects_from_params(params)
-          Ontology.where.models(onts).include(*Ontology.access_control_settings[:access_control_load]).all
+          Ontology.where.models(onts).include(*Ontology.access_control_load_attrs).all
         else
           if params["include_views"] == "true"
             onts = Ontology.where.include(Ontology.goo_attrs_to_load()).to_a
