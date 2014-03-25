@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: b62913940061ea056bf6fa7bfcc815e896e79f60
+  revision: 5bfbd9b562c93b44d132f69a801e824ba102fc7c
   branch: staging
   specs:
     goo (0.0.2)
@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ec9e6f64ebef8a38203847495e7d58f48c4abfbe
+  revision: 43261966891e87a9a416c5dcc2f3b59c1facb755
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d2d354dc33a24c9a61eab8f5bb50ef17c2d73ed9
+  revision: 94493839b189650ab4df1a337025514fd5a2b106
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 10921ecf3b935c88b410ce84b9a561ac91f85adc
+  revision: 3c19a0677017c0bc98f554fd8d4ed1e4d0125d76
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -154,7 +154,7 @@ GEM
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
-    oj (2.6.0)
+    oj (2.6.1)
     polyglot (0.3.4)
     pony (1.8)
       mail (>= 2.0)
@@ -181,7 +181,7 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.8)
     raindrops (0.13.0)
-    rake (10.1.1)
+    rake (10.2.0)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
@@ -248,6 +248,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
+  addressable (= 2.3.5)
   capistrano (~> 3.1.0)
   capistrano-bundler (~> 1.1.1)
   capistrano-rbenv (~> 2.0.2)
