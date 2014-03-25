@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: db786fa788466e05c1f108fb9f1fb67f2272abe3
+  revision: cacea40ab9b7a5a7977b70671a18a47e970f9426
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -111,7 +111,7 @@ GEM
     activesupport (3.2.17)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
-    addressable (2.3.6)
+    addressable (2.3.5)
     atomic (1.1.16)
     backports (3.6.0)
     bcrypt (3.1.7)
@@ -248,6 +248,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
+  addressable (= 2.3.5)
   capistrano (~> 3.1.0)
   capistrano-bundler (~> 1.1.1)
   capistrano-rbenv (~> 2.0.2)
@@ -284,4 +285,3 @@ DEPENDENCIES
   sinatra-advanced-routes
   sinatra-contrib (~> 1.0)
   sparql-client!
-  systemu
