@@ -9,8 +9,8 @@ module Sinatra
       INCLUDE_VIEWS_PARAM = "include_views"
       REQUIRE_DEFINITIONS_PARAM = "require_definition"
       INCLUDE_PROPERTIES_PARAM = "include_properties"
-      SUBTREE_ID_PARAM = "subtree_id"
-      OBSOLETE_PARAM = "obsolete"
+      SUBTREE_ID_PARAM = "subtree_root"    # NCBO-603
+      OBSOLETE_PARAM = "include_obsolete"  # NCBO-603
 
       def get_edismax_query(text, params={})
         validate_params_solr_population()
@@ -50,8 +50,10 @@ module Sinatra
           filter_query << " AND definition:[* TO *]"
         end
 
-        if ["true", "false"].include? params[OBSOLETE_PARAM]
-          filter_query << " AND obsolete:#{params[OBSOLETE_PARAM]}"
+        # NCBO-603: switch to 'include_obsolete', but allow 'obsolete'.
+        include_obsolete = params[OBSOLETE_PARAM] || params['obsolete'] || nil
+        if ["true", "false"].include? include_obsolete
+          filter_query << " AND obsolete:#{include_obsolete}"
         end
 
         params["fq"] = filter_query
@@ -67,7 +69,9 @@ module Sinatra
       def get_subtree_ids(params)
         subtree_ids = nil
 
-        if (params[SUBTREE_ID_PARAM])
+        # NCBO-603: switch to 'subtree_root', but allow 'subtree_id'.
+        subtree_root_id = params[SUBTREE_ID_PARAM] || params['subtree_id'] || nil
+        if subtree_root_id
           ontology = params[ONTOLOGY_PARAM].split(",")
 
           if (ontology.nil? || ontology.empty? || ontology.length > 1)
@@ -75,12 +79,12 @@ module Sinatra
           end
 
           ont, submission = get_ontology_and_submission
-          params[:cls] = params[SUBTREE_ID_PARAM]
+          params[:cls] = subtree_root_id
           params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
 
           cls = get_class(submission, load_attrs={descendants: true})
           subtree_ids = cls.descendants.map {|d| d.id.to_s}
-          subtree_ids.push(params[SUBTREE_ID_PARAM])
+          subtree_ids.push(subtree_root_id)
         end
 
         return subtree_ids

@@ -123,7 +123,7 @@ class OntologiesController < ApplicationController
       params ||= @params
 
       # acronym must be well formed
-      acronym = get_acronym(params)  # coerce it to upper case
+      acronym = params['acronym'].upcase # coerce new ontologies to upper case
       if ACRONYM_REGEX.match(acronym).nil?
         error 400, "Ontology acronym is not well formed.\n" + ACRONYM_RULES
       end

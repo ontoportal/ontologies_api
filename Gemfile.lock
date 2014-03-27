@@ -1,9 +1,10 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 96b789173332809b37b79626744abebda793786f
-  branch: master
+  revision: 72847bee918b24fcdda4a65b811282e1234bae52
+  branch: staging
   specs:
     goo (0.0.2)
+      addressable (= 2.3.5)
       pry
       rdf (= 1.0.8)
       redis
@@ -15,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 974fd0f3673441c2073ba2a7a5cf04090b313dcd
-  branch: master
+  revision: 72e751714201c399dca9176bcf49b1c9ab7b039c
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -25,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 8125441c47a152b05aba1ab132cb899b26516180
-  branch: master
+  revision: 844f66855ac1efd38e820a39349ffae6ad56f8de
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -48,8 +49,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: f961f988d246399bcb62e63ee8b6a4d74664b60e
-  branch: master
+  revision: 2d5680db73c738b4a3049f240d56b86eb3afb04d
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -147,7 +148,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.2)
     minitest (4.7.5)
-    mlanett-redis-lock (0.2.5)
+    mlanett-redis-lock (0.2.6)
       redis
     multi_json (1.9.2)
     net-http-persistent (2.9.4)
@@ -181,7 +182,7 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.8)
     raindrops (0.13.0)
-    rake (10.2.0)
+    rake (10.2.1)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
@@ -197,7 +198,7 @@ GEM
       redis (>= 2.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    rsolr (1.0.9)
+    rsolr (1.0.10)
       builder (>= 2.1.2)
     rubyzip (1.1.2)
     rufus-scheduler (2.0.24)

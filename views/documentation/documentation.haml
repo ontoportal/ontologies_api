@@ -138,24 +138,24 @@
               %li include_views={true|false}  // default = false
               %li require_definition={true|false}  // default = false
               %li include_properties={true|false}  // default = false
-              %li obsolete={true|false}  // default = null (no restriction)
+              %li include_obsolete={true|false}  // default = null (no restriction)
 
         %h4#nav_search_subtree Subtree Search
 
         %p
-          The same endpoint also allows limiting a search to a given subtree/branch. The root of the subtree is defined using a combination of parameters "ontology" and "subtree_id". Both are required when performing a subtree search.
+          The same endpoint also allows limiting a search to a given subtree/branch. The root of the subtree is defined using a combination of parameters "ontology" and "subtree_root". Both are required when performing a subtree search.
           %ul
             %li
               Perform a subtree search
             %ul
               %li
                 example:
-                %a{href: "/search?q=melanoma&ontology=NCIT&subtree_id=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224"} /search?q=melanoma&ontology=NCIT&subtree_id=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224
+                %a{href: "/search?q=melanoma&ontology=NCIT&subtree_root=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224"} /search?q=melanoma&ontology=NCIT&subtree_root=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224
             %li
               Parameters
               %ul
                 %li ontology={ontology_id}
-                %li subtree_id={a URI encoded class id of the root node of the subtree}
+                %li subtree_root={a URI encoded class id of the root node of the subtree}
 
       %h3#nav_annotator Annotator
 
@@ -178,12 +178,13 @@
                   %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
                   %li semantic_types={semType1,semType2..,semTypeN}
                   %li max_level={0..N}
-                  %li mappings={true|false} // default = false. true means that the following manual mappings will be used in annotation: UMLS, REST, CUI, OBOXREF
+                  %li mappings={true|false} // default = false. true means that the following manual mappings will be used in annotation: UMLS, REST, CUI, OBOXREF.
                   %li stop_words={word1,word2..,wordN} (case insensitive)
                   %li minimum_match_length={0..N}
                   %li exclude_numbers={true|false}  // default = false
                   %li whole_word_only={true|false}  // default = true
-                  %li with_synonyms={true|false}  // default = true
+                  %li include_synonyms={true|false}  // default = true
+                  %li longest_only={true|false}  // default = false. true means that only the longest match for a given phrase will be returned.
           %li
             Default stop words
             %ul

@@ -4,7 +4,7 @@ require_relative '../test_case_helpers'
 class TestApplicationHelper < TestCaseHelpers
 
   def self.before_suite
-    count, acronyms, @@ontologies = LinkedData::SampleData::Ontology.create_ontologies_and_submissions
+    @@ontologies = LinkedData::SampleData::Ontology.create_ontologies_and_submissions[2]
   end
 
   def test_it_escapes_html
