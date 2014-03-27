@@ -1,9 +1,10 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 5bfbd9b562c93b44d132f69a801e824ba102fc7c
+  revision: 72847bee918b24fcdda4a65b811282e1234bae52
   branch: staging
   specs:
     goo (0.0.2)
+      addressable (= 2.3.5)
       pry
       rdf (= 1.0.8)
       redis
@@ -15,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: d826d643a2e65ece8adc33dd1b30c15c50432a3a
+  revision: 72e751714201c399dca9176bcf49b1c9ab7b039c
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -25,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 08fe4db4e7a801eee11ee98f4063d6f16d201433
+  revision: 844f66855ac1efd38e820a39349ffae6ad56f8de
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -48,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 657cfb84b6faeb624fb16f78fe7dd34dbb59a495
+  revision: 2d5680db73c738b4a3049f240d56b86eb3afb04d
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -248,7 +249,6 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
-  addressable (= 2.3.5)
   capistrano (~> 3.1.0)
   capistrano-bundler (~> 1.1.1)
   capistrano-rbenv (~> 2.0.2)
