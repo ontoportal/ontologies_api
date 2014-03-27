@@ -112,8 +112,10 @@ if LinkedData.settings.enable_http_cache
   require 'rack/cache'
   require 'redis-rack-cache'
   redis_host_port = "#{LinkedData::OntologiesAPI.settings.http_redis_host}:#{LinkedData::OntologiesAPI.settings.http_redis_port}"
+  verbose = environment == :development
   use Rack::Cache,
-    verbose: true,
+    verbose: verbose,
+    allow_reload: true,
     metastore: "redis://#{redis_host_port}/0/metastore",
     entitystore: "redis://#{redis_host_port}/0/entitystore"
 end
