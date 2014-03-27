@@ -234,11 +234,6 @@ module Sinatra
         Array.new
       end
 
-      # Utility method to ensure the ontology acronym is upper case
-      def get_acronym(params)
-        params["acronym"].upcase
-      end
-
       ##
       # Given an acronym (BRO), get the ontology URI (http://data.bioontology.org/ontologies/BRO)
       # @param acronym [String] the ontology acronym
