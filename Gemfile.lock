@@ -147,7 +147,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.2)
     minitest (4.7.5)
-    mlanett-redis-lock (0.2.5)
+    mlanett-redis-lock (0.2.6)
       redis
     multi_json (1.9.2)
     net-http-persistent (2.9.4)
