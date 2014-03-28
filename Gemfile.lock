@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 72e751714201c399dca9176bcf49b1c9ab7b039c
+  revision: 95bf5e452d56e69fd82fc3a60342fff2449defc5
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 844f66855ac1efd38e820a39349ffae6ad56f8de
+  revision: f290e03769d6fdc3bca2e20478dac16f0c1e1543
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2d5680db73c738b4a3049f240d56b86eb3afb04d
+  revision: d235f9a93e3ba5ccb3178a4f3b7747974bf949d4
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -182,7 +182,7 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.8)
     raindrops (0.13.0)
-    rake (10.2.1)
+    rake (10.2.2)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
