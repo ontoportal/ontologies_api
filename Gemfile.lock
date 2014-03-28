@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 7a2fefb8f528ed78a6ac5b6c20311b863adbd675
+  revision: 2256996b698edffda96de9dd82dc771d34ca85c8
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: ac55444a42df32d9627b007921ef9fabf5712544
+  revision: 6784c69a2636ac624a02fe6aaa2447117d2d4545
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -182,7 +182,7 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.8)
     raindrops (0.13.0)
-    rake (10.2.1)
+    rake (10.2.2)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
