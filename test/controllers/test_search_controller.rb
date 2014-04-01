@@ -41,17 +41,41 @@ class TestSearchController < TestCase
     get "/search?q=receptor%20antagonists&ontologies=#{acronym}&exact_match=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
-    assert_equal results["collection"].length, 1
+    assert_equal 1, results["collection"].length
 
     get "search?q=data&require_definition=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
-    assert results["collection"].length == 46
+    assert_equal 26, results["collection"].length
 
     get "search?q=data&require_definition=false"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
-    assert results["collection"].length > 46
+    assert results["collection"].length > 26
+
+    # testing "include_obsolete" flag
+    acronym = "BROTEST-0"
+
+    get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}"
+    results = MultiJson.load(last_response.body)
+    assert_equal 22, results["collection"].length
+
+    get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&include_obsolete=false"
+    results = MultiJson.load(last_response.body)
+    assert_equal 22, results["collection"].length
+
+    get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&include_obsolete=true"
+    results = MultiJson.load(last_response.body)
+    assert_equal 29, results["collection"].length
+
+    # testing "subtree_root" parameter
+    get "search?q=training&ontologies=#{acronym}"
+    results = MultiJson.load(last_response.body)
+    assert_equal 3, results["collection"].length
+
+    get "search?q=training&ontology=#{acronym}&subtree_root=http%3A%2F%2Fbioontology.org%2Fontologies%2FActivity.owl%23Activity"
+    results = MultiJson.load(last_response.body)
+    assert_equal 1, results["collection"].length
   end
 
   def test_wildcard_search

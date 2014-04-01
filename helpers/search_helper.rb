@@ -51,10 +51,9 @@ module Sinatra
         end
 
         # NCBO-603: switch to 'include_obsolete', but allow 'obsolete'.
-        include_obsolete = params[OBSOLETE_PARAM] || params['obsolete'] || nil
-        if ["true", "false"].include? include_obsolete
-          filter_query << " AND obsolete:#{include_obsolete}"
-        end
+        include_obsolete = params[OBSOLETE_PARAM] || params['obsolete'] || "false"
+        # NCBO-688 - by default search only non-obsolete classes
+        filter_query << " AND obsolete:false" if include_obsolete != "true"
 
         params["fq"] = filter_query
         params["q"] = query
