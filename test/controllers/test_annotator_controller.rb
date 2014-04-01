@@ -30,6 +30,33 @@ eos
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
+    assert_equal(7, annotations.length)
+
+    text = <<eos
+Aggregate Human Data chromosomal mutation Aggregate Human Data chromosomal deletion Aggregate Human Data Resource Federal Funding Resource receptor antagonists chromosomal mutation.
+eos
+    params[:text] = text
+    get "/annotator", params
+    annotations = MultiJson.load(last_response.body)
+    assert_equal(9, annotations.length)
+
+    #testing "include_synonyms" parameter
+    text = "This project requires a massive data repository, capable of storing hundreds of terabytes of information."
+    params[:text] = text
+    get "/annotator", params
+    annotations = MultiJson.load(last_response.body)
+    assert_equal(2, annotations.length)
+
+    params[:include_synonyms] = "false"
+    get "/annotator", params
+    annotations = MultiJson.load(last_response.body)
+    assert_equal(1, annotations.length)
+
+    # test for "with_synonyms"
+    params = {text: text, with_synonyms: false}
+    get "/annotator", params
+    annotations = MultiJson.load(last_response.body)
+    assert_equal(1, annotations.length)
   end
 
   def test_annotate_hierarchy
