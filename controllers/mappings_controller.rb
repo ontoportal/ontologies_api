@@ -36,7 +36,7 @@ class MappingsController < ApplicationController
     get do
       ontologies = ontology_objects_from_params
       if ontologies.length != 2
-        error(400, "/mappings/ endpoint only supports filtering on two ontologies")
+        error(400, "/mappings/ endpoint only supports filtering on two ontologies using `?ontologies=ONT1,ONT2`")
       end
 
       page, size = page_params
