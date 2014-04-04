@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f9f0f01a4bfcf22b8e6db6e102de41f32e59264f
+  revision: 20bbf054b76600b640628b53e8452825010ea089
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 8b8c54e228737cb5b2a32482100e964d4e4c1288
+  revision: de2546292382dd9514ee08a45c4737e4520eee5b
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 799be6011a064d49bbd835c4b01adc22d2f16520
+  revision: bbad5f2547f798e4d5ac50553474ae32319d7936
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -139,7 +139,7 @@ GEM
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
-    macaddr (1.6.7)
+    macaddr (1.7.0)
       systemu (~> 2.6.2)
     mail (2.2.7)
       activesupport (>= 2.3.6)
