@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 0c611657859d4c3c5b7842ef8c5c32c628f31f85
+  revision: 04b986c9c36cc13a296647f6473c19bed8ac2916
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -139,7 +139,7 @@ GEM
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
-    macaddr (1.6.7)
+    macaddr (1.7.0)
       systemu (~> 2.6.2)
     mail (2.2.7)
       activesupport (>= 2.3.6)
