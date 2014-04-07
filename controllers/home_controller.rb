@@ -46,7 +46,10 @@ class HomeController < ApplicationController
     end
 
     def metadata(cls)
-      cls = LinkedData::Models.const_get(cls) unless cls.is_a?(Class)
+      unless cls.is_a?(Class)
+        cls = cls.singularize
+        cls = LinkedData::Models.const_get(cls)
+      end
       metadata_all[cls]
     end
 
