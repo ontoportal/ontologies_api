@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 20bbf054b76600b640628b53e8452825010ea089
+  revision: 8c4f59540912017c3fbaae8f0bb046dc74dc5675
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: de2546292382dd9514ee08a45c4737e4520eee5b
+  revision: 626870fcad4d62df68cc28fa7209f1a86df9ff7f
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6c2033790f81ecf738644ca1322ff7d119272fec
+  revision: 0a4b6ec2f186e91b52cfe2fcfeb6df0842fe32a1
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -113,7 +113,6 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    atomic (1.1.16)
     backports (3.6.0)
     bcrypt (3.1.7)
     builder (3.2.2)
@@ -155,7 +154,7 @@ GEM
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
-    oj (2.7.1)
+    oj (2.7.2)
     polyglot (0.3.4)
     pony (1.8)
       mail (>= 2.0)
@@ -172,7 +171,7 @@ GEM
     rack-cors (0.2.9)
     rack-mini-profiler (0.9.1)
       rack (>= 1.1.3)
-    rack-protection (1.5.2)
+    rack-protection (1.5.3)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -200,7 +199,7 @@ GEM
       mime-types (>= 1.16)
     rsolr (1.0.10)
       builder (>= 2.1.2)
-    rubyzip (1.1.2)
+    rubyzip (1.1.3)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     simplecov (0.8.2)
@@ -208,7 +207,7 @@ GEM
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
-    sinatra (1.4.4)
+    sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
@@ -229,10 +228,9 @@ GEM
     systemu (2.6.4)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
-    thread_safe (0.3.1)
-      atomic (>= 1.1.7, < 2)
+    thread_safe (0.3.3)
     tilt (1.4.1)
-    tins (1.0.1)
+    tins (1.1.0)
     treetop (1.5.3)
       polyglot (~> 0.3)
     tzinfo (1.1.0)
