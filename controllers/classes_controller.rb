@@ -121,7 +121,7 @@ class ClassesController < ApplicationController
       includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
-      cls = get_class(submission,load_attrs=[:ancestors])
+      cls = get_class(submission)
       error 404 if cls.nil?
       ancestors = cls.ancestors
       LinkedData::Models::Class.in(submission).models(ancestors)
