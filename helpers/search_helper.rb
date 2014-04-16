@@ -86,7 +86,7 @@ module Sinatra
           params[:cls] = subtree_root_id
           params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
 
-          cls = get_class(submission, load_attrs={descendants: true})
+          cls = get_class(submission)
           subtree_ids = cls.descendants.map {|d| d.id.to_s}
           subtree_ids.push(subtree_root_id)
         end
