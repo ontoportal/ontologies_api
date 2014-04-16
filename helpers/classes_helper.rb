@@ -64,7 +64,7 @@ module Sinatra
         return cls
       end
 
-      ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION = [:prefLabel, :synonym, :definition, :notation].freeze
+      ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION = [:prefLabel, :synonym, :definition, :notation, :cui, :semanticType].freeze
       def validate_params_solr_population
         leftover = includes_param - ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION
         invalid = leftover.length > 0

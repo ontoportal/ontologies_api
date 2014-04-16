@@ -76,6 +76,24 @@ class TestSearchController < TestCase
     get "search?q=training&ontology=#{acronym}&subtree_root=http%3A%2F%2Fbioontology.org%2Fontologies%2FActivity.owl%23Activity"
     results = MultiJson.load(last_response.body)
     assert_equal 1, results["collection"].length
+
+    # testing cui and semantic_types flags
+    get "search?q=Funding%20Resource&ontologies=#{acronym}&include=prefLabel,synonym,definition,notation,cui,semanticType"
+    results = MultiJson.load(last_response.body)
+    assert_equal 35, results["collection"].length
+    assert_equal "Funding Resource", results["collection"][0]["prefLabel"]
+    assert_equal "T028", results["collection"][0]["semanticType"][0]
+    assert_equal "X123456", results["collection"][0]["cui"][0]
+
+    get "search?q=Funding&ontologies=#{acronym}&include=prefLabel,synonym,definition,notation,cui,semanticType&cui=X123456"
+    results = MultiJson.load(last_response.body)
+    assert_equal 1, results["collection"].length
+    assert_equal "X123456", results["collection"][0]["cui"][0]
+
+    get "search?q=Funding&ontologies=#{acronym}&include=prefLabel,synonym,definition,notation,cui,semanticType&semanticType=T028"
+    results = MultiJson.load(last_response.body)
+    assert_equal 5, results["collection"].length
+    assert_equal "T028", results["collection"][0]["semanticType"][0]
   end
 
   def test_wildcard_search
