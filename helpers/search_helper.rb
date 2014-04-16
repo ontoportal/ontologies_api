@@ -33,7 +33,7 @@ module Sinatra
           params["sort"] = "score desc, prefLabelExact asc"
         else
           query = RSolr.escape(text)
-          params["qf"] = "prefLabelExact^100 synonymExact^70 prefLabel^50 synonym^10 notation resource_id cui semanticType"
+          params["qf"] = "prefLabelExact^100 prefLabel^70 synonymExact^50 synonym^10 notation resource_id cui semanticType"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
@@ -43,9 +43,7 @@ module Sinatra
         ids_clause = (subtree_ids.nil? || subtree_ids.empty?) ? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
         filter_query = "#{filter_query} AND #{ids_clause}" unless (ids_clause.empty?)
 
-        if params[REQUIRE_DEFINITIONS_PARAM] == "true"
-          filter_query << " AND definition:[* TO *]"
-        end
+        filter_query << " AND definition:[* TO *]" if params[REQUIRE_DEFINITIONS_PARAM] == "true"
 
         # NCBO-603: switch to 'include_obsolete', but allow 'obsolete'.
         include_obsolete = params[OBSOLETE_PARAM] || params['obsolete'] || "false"
