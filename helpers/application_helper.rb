@@ -383,7 +383,7 @@ module Sinatra
 
       def include_param_contains?(str)
         str = str.to_s unless str.is_a?(String)
-        class_params_include = params["include_for_class"] && params["include_for_class"].split(",").include?(str)
+        class_params_include = params["include_for_class"] && params["include_for_class"].include?(str.to_sym)
         params_include = params["include"] && params["include"].split(",").include?(str)
         return class_params_include || params_include
       end
