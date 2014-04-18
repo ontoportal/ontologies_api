@@ -28,7 +28,7 @@ module Sinatra
           text = text[0..-2]
           query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest"
-          params["qf"] = "prefLabelSuggestEdge^50 synonymSuggestEdge notation resource_id cui semanticType"
+          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge notation resource_id cui semanticType"
           params["pf"] = "prefLabelSuggest^50"
           params["sort"] = "score desc, prefLabelExact asc"
         else
