@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'multi_json'
 
 module Sinatra
   module Helpers
@@ -188,6 +189,7 @@ module Sinatra
           old_class = old_classes_hash[ont_uri_class_uri]
           next unless old_class
           doc[:submission] = old_class.submission
+          doc[:properties] = MultiJson.load(doc.delete(:propertyRaw)) if include_param_contains?(:properties)
           instance = LinkedData::Models::Class.read_only(doc)
           classes_hash[ont_uri_class_uri] = instance
         end

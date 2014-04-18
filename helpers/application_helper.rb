@@ -381,6 +381,13 @@ module Sinatra
         env["REMOTE_USER"]
       end
 
+      def include_param_contains?(str)
+        str = str.to_s unless str.is_a?(String)
+        class_params_include = params["include_for_class"] && params["include_for_class"].include?(str.to_sym)
+        params_include = params["include"] && params["include"].split(",").include?(str)
+        return class_params_include || params_include
+      end
+
       private
 
       def naive_expiring_cache_write(key, object, timeout = 60)
