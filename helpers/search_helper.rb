@@ -28,10 +28,10 @@ module Sinatra
         elsif (text[-1] == '*')
           text = text[0..-2]
           query = "\"#{RSolr.escape(text)}\""
-          params["qt"] = "/suggest"
+          params["qt"] = "/suggest_ncbo"
           params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge notation resource_id cui semanticType"
           params["pf"] = "prefLabelSuggest^50"
-          params["sort"] = "score desc, prefLabelExact asc"
+          params["sort"] = "score desc, prefLabel asc"
         else
           query = RSolr.escape(text)
           params["qf"] = "prefLabelExact^100 prefLabel^70 synonymExact^50 synonym^10 notation resource_id cui semanticType"
