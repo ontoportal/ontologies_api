@@ -453,8 +453,7 @@ class TestResourceIndexController < TestCase
     #element_id = '10866208'
     element_id = "NCT00357513"
     resource_id = "CT"
-    classes = "classes[BRO]=BRO:Graph_Algorithm"
-    rest_target = "/resource_index/element_annotations?elements=#{element_id}&resources=#{resource_id}&#{classes}"
+    rest_target = "/resource_index/element_annotations?elements=#{element_id}&resources=#{resource_id}"
     last_response = _get_response(rest_target)
     if DEBUG_MESSAGES
       assert_equal(200, last_response.status, last_response.body)
