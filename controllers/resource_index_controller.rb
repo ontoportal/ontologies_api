@@ -59,8 +59,6 @@ class ResourceIndexController < ApplicationController
     get '/element_annotations' do
       options = get_options(params)
       error 404, "You must provide valid `elements` to retrieve the annotations" if not options.include? :elementid
-      classes = get_classes(params)
-      error 404, "You must provide valid `classes` to retrieve the annotations" if classes.empty?
       annotations = []
       elements = options[:elementid]
       resources = options[:resourceids]
@@ -68,7 +66,7 @@ class ResourceIndexController < ApplicationController
       RI = NCBO::ResourceIndex.new({:apikey => apikey}) # ensure we use default options (it breaks otherwise!)
       elements.each do |elementId|  # usually just one elementId
         resources.each do |resourceId|  # usually just one resourceId
-          element = RI.element_annotations(elementId, classes, resourceId)
+          element = RI.find_by_element(elementId, resourceId)
           element.annotations.each do |a|
             annotated_class = get_annotated_class(a)
             next if annotated_class.nil?
