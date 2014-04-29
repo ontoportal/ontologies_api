@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 7304fc68ea4488c831d725f85a0a39fed239ee1e
+  revision: 2b32faedfacdb5a8aa4a1e29031379db06dc374d
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6869db2cea77059892c38f9b824cf5f6ca4503b1
+  revision: 4c4c53e65eef354d52b1dccc2a149ca8efbb3ee1
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -75,7 +75,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: e6a2d6b4fda4e23d77a70c440f058bd08c801e26
+  revision: 106fa6f32c88b0845037a551705c09dd782f7de0
   branch: staging
   specs:
     sparql-client (1.0.4.1)
@@ -149,12 +149,12 @@ GEM
     minitest (4.7.5)
     mlanett-redis-lock (0.2.6)
       redis
-    multi_json (1.9.2)
+    multi_json (1.9.3)
     net-http-persistent (2.9.4)
     net-scp (1.2.0)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
-    oj (2.8.0)
+    oj (2.8.1)
     polyglot (0.3.4)
     pony (1.8)
       mail (>= 2.0)
@@ -164,7 +164,7 @@ GEM
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (3.0.0)
+    rack-attack (4.0.0)
       rack
     rack-cache (1.2)
       rack (>= 0.4)
@@ -181,7 +181,7 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.8)
     raindrops (0.13.0)
-    rake (10.3.0)
+    rake (10.3.1)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
