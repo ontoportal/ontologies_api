@@ -121,7 +121,7 @@ class ClassesController < ApplicationController
       includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
-      cls = get_class(submission,load_attrs=[:ancestors])
+      cls = get_class(submission)
       error 404 if cls.nil?
       ancestors = cls.ancestors
       LinkedData::Models::Class.in(submission).models(ancestors)
@@ -137,9 +137,9 @@ class ClassesController < ApplicationController
       page, size = page_params
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
-      page_data_query = LinkedData::Models::Class.where(ancestors: cls)
-                          .in(submission).include(:prefLabel,:synonym,:definition)
-      page_data = page_data_query.page(page,size).all
+      page_data = cls.retrieve_descendants(page,size)
+      LinkedData::Models::Class.in(submission).models(page_data)
+        .include(:prefLabel,:synonym,:definition).all
       reply page_data
     end
 

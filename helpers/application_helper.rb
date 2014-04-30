@@ -235,6 +235,17 @@ module Sinatra
       end
 
       ##
+      # Get cui parameter in the form [cui=C0302369,C0522224,C0176617]
+      def cui_param(params = nil)
+        params ||= @params
+        if params["cui"]
+          cui = params["cui"].split(",").map {|o| o.strip}
+          return cui
+        end
+        Array.new
+      end
+
+      ##
       # Given an acronym (BRO), get the ontology URI (http://data.bioontology.org/ontologies/BRO)
       # @param acronym [String] the ontology acronym
       def ontology_uri_from_acronym(acronym)
@@ -368,6 +379,13 @@ module Sinatra
 
       def current_user
         env["REMOTE_USER"]
+      end
+
+      def include_param_contains?(str)
+        str = str.to_s unless str.is_a?(String)
+        class_params_include = params["include_for_class"] && params["include_for_class"].include?(str.to_sym)
+        params_include = params["include"] && params["include"].split(",").include?(str)
+        return class_params_include || params_include
       end
 
       private

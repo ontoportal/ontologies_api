@@ -105,7 +105,7 @@ class TestMappingsController < TestCase
                                .include(:prefLabel,:synonym, :cui)
                                .first
       assert c
-      cuis << c.cui if c.cui
+      cuis += c.cui if c.cui
       labels << transmform_literal(c.prefLabel)
       syns << c.synonym.map { |x| transmform_literal(x) }
     end
@@ -418,7 +418,7 @@ class TestMappingsController < TestCase
     data.each_key do |acr|
           mappings_acr = LinkedData::Models::Mapping
             .where(terms: [
-              ontology: LinkedData::Models::Ontology.find(acr).first 
+              ontology: LinkedData::Models::Ontology.find(acr).first
                           ]).all
           assert mappings_acr.count == data[acr]
     end
@@ -435,12 +435,12 @@ class TestMappingsController < TestCase
     stats.each_key do |acr|
           mappings_acr = LinkedData::Models::Mapping
             .where(terms: [
-              ontology: 
-              LinkedData::Models::Ontology.find("BRO-TEST-MAP-0").first 
+              ontology:
+              LinkedData::Models::Ontology.find("BRO-TEST-MAP-0").first
                           ])
-            .and(terms: [ontology: 
-              LinkedData::Models::Ontology.find(acr).first 
-                          ]) 
+            .and(terms: [ontology:
+              LinkedData::Models::Ontology.find(acr).first
+                          ])
             .all
           assert mappings_acr.count == stats[acr]
     end

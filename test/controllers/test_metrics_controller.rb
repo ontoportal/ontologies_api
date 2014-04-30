@@ -15,7 +15,7 @@ class TestMetricsController < TestCase
               "classesWithOneChild"=>14,
               "classesWithMoreThan25Children"=>2,
               "classesWithNoDefinition"=>11,
-              "individuals"=>82,
+              "individuals"=>80,
               "properties"=>63,
               "maxDepth"=>8 }
     @@options = {ont_count: 2,
@@ -46,7 +46,17 @@ class TestMetricsController < TestCase
     get "/ontologies/#{ontology}/metrics"
     assert last_response.ok?
     metrics = MultiJson.load(last_response.body)
+
+
+    # binding.pry
+
+
     @@data.each do |k,v|
+
+
+      # puts "K: #{k}, V: #{v}"
+
+
       assert_equal(metrics[k], v)
     end
   end

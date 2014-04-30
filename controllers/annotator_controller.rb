@@ -72,16 +72,17 @@ class AnnotatorController < ApplicationController
       reply 200, annotations
     end
 
-    get '/dictionary' do
+    post '/dictionary' do
       error 403, "Access denied" unless current_user && current_user.admin?
       annotator = Annotator::Models::NcboAnnotator.new
-      annotator.generate_dictionary_file
+      annotator.generate_dictionary_file()
     end
 
-    get '/cache' do
+    post '/cache' do
       error 403, "Access denied" unless current_user && current_user.admin?
+      delete_cache = params['delete_cache'].eql?('true')
       annotator = Annotator::Models::NcboAnnotator.new
-      annotator.create_term_cache
+      annotator.create_term_cache(nil, delete_cache)
     end
 
     private

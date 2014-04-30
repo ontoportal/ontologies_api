@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'multi_json'
 
 module Sinatra
   module Helpers
@@ -9,8 +10,8 @@ module Sinatra
       INCLUDE_VIEWS_PARAM = "include_views"
       REQUIRE_DEFINITIONS_PARAM = "require_definition"
       INCLUDE_PROPERTIES_PARAM = "include_properties"
-      SUBTREE_ID_PARAM = "subtree_root"    # NCBO-603
-      OBSOLETE_PARAM = "include_obsolete"  # NCBO-603
+      SUBTREE_ID_PARAM = "subtree_root"     # NCBO-603
+      OBSOLETE_PARAM = "include_obsolete"   # NCBO-603
 
       def get_edismax_query(text, params={})
         validate_params_solr_population()
@@ -27,33 +28,37 @@ module Sinatra
         elsif (text[-1] == '*')
           text = text[0..-2]
           query = "\"#{RSolr.escape(text)}\""
-          params["qt"] = "/suggest"
-          params["qf"] = "prefLabelSuggestEdge^50 synonymSuggestEdge notation resource_id"
+          params["qt"] = "/suggest_ncbo"
+          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge notation resource_id cui semanticType"
           params["pf"] = "prefLabelSuggest^50"
-          params["sort"] = "score desc, prefLabelExact asc"
         else
           query = RSolr.escape(text)
-          params["qf"] = "prefLabelExact^100 synonymExact^70 prefLabel^50 synonym^10 notation resource_id"
+          params["qf"] = "prefLabelExact^100 prefLabel^70 synonymExact^50 synonym^10 notation resource_id cui semanticType"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
         subtree_ids = get_subtree_ids(params)
         acronyms = params["ontology_acronyms"] || restricted_ontologies_to_acronyms(params)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
-        ids_clause = (subtree_ids.nil? || subtree_ids.empty?)? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
+        ids_clause = (subtree_ids.nil? || subtree_ids.empty?) ? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
+        filter_query = "#{filter_query} AND #{ids_clause}" unless (ids_clause.empty?)
 
-        if (!ids_clause.empty?)
-          filter_query = "#{filter_query} AND #{ids_clause}"
-        end
-
-        if params[REQUIRE_DEFINITIONS_PARAM] == "true"
-          filter_query << " AND definition:[* TO *]"
-        end
+        filter_query << " AND definition:[* TO *]" if params[REQUIRE_DEFINITIONS_PARAM] == "true"
 
         # NCBO-603: switch to 'include_obsolete', but allow 'obsolete'.
         include_obsolete = params[OBSOLETE_PARAM] || params['obsolete'] || "false"
         # NCBO-688 - by default search only non-obsolete classes
         filter_query << " AND obsolete:false" if include_obsolete != "true"
+
+        # NCBO-695 - ability to search on CUI and TUI
+        cui = cui_param(params)
+        cui_clause = (cui.nil? || cui.empty?) ? "" : get_quoted_field_query_param(cui, "OR", "cui")
+        filter_query = "#{filter_query} AND #{cui_clause}" unless (cui_clause.empty?)
+
+        # NCBO-695 - ability to search on CUI and TUI (Semantic Type)
+        semantic_types = semantic_types_param(params)
+        semantic_types_clause = (semantic_types.nil? || semantic_types.empty?) ? "" : get_quoted_field_query_param(semantic_types, "OR", "semanticType")
+        filter_query = "#{filter_query} AND #{semantic_types_clause}" unless (semantic_types_clause.empty?)
 
         params["fq"] = filter_query
         params["q"] = query
@@ -81,7 +86,7 @@ module Sinatra
           params[:cls] = subtree_root_id
           params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
 
-          cls = get_class(submission, load_attrs={descendants: true})
+          cls = get_class(submission)
           subtree_ids = cls.descendants.map {|d| d.id.to_s}
           subtree_ids.push(subtree_root_id)
         end
@@ -183,6 +188,7 @@ module Sinatra
           old_class = old_classes_hash[ont_uri_class_uri]
           next unless old_class
           doc[:submission] = old_class.submission
+          doc[:properties] = MultiJson.load(doc.delete(:propertyRaw)) if include_param_contains?(:properties)
           instance = LinkedData::Models::Class.read_only(doc)
           classes_hash[ont_uri_class_uri] = instance
         end

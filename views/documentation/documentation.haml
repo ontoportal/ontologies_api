@@ -79,7 +79,7 @@
               the set of attributes required and use only those by passing them as a comma separated
               list, e.g. <code>include=prefLabel,cui</code>.
             %p
-              The <code>include</code> parameter is currently unsupported on Search, Annotator, and Recommender endpoints.
+              The <code>include</code> parameter is currently unsupported on Annotator and Recommender endpoints.
         %tr
           %td format
           %td
@@ -138,7 +138,10 @@
               %li include_views={true|false}  // default = false
               %li require_definition={true|false}  // default = false
               %li include_properties={true|false}  // default = false
-              %li include_obsolete={true|false}  // default = null (no restriction)
+              %li include_obsolete={true|false}  // default = false (exclude obsolete terms)
+              %li cui={C0018787,C0225807,C0018787}  // Allows restricting query by CUIs. default = null (no restriction)
+              %li semantic_types={T023,T185,T061}  // Allows restricting query by Semantic Types (TUI). default = null (no restriction)
+              %li include={prefLabel, synonym, definition, notation, cui, semanticType} // default = (see Common Parameters section)
 
         %h4#nav_search_subtree Subtree Search
 

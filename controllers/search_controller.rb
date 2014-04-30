@@ -1,3 +1,4 @@
+require 'multi_json'
 require 'cgi'
 
 class SearchController < ApplicationController
@@ -38,11 +39,16 @@ class SearchController < ApplicationController
         submission = LinkedData::Models::OntologySubmission.read_only(id: doc[:ontologyId], ontology: ontology)
         doc[:submission] = submission
         doc[:ontology_rank] = LinkedData::OntologiesAPI.settings.ontology_rank[doc[:submissionAcronym]] || 0
+        doc[:properties] = MultiJson.load(doc.delete(:propertyRaw)) if include_param_contains?(:properties)
         instance = LinkedData::Models::Class.read_only(doc)
         docs.push(instance)
       end
 
-      docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
+      if (text[-1] == '*')
+        docs.sort! {|a, b| [b[:score], a[:prefLabelExact].downcase, b[:ontology_rank]] <=> [a[:score], b[:prefLabelExact].downcase, a[:ontology_rank]]}
+      else
+        docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
+      end
 
       #need to return a Page object
       page = page_object(docs, total_found)

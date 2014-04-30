@@ -53,27 +53,42 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    
+
+
+    <!-- http://bioontology.org/ontologies/biositemap.owl#definition -->
+
     <owl:AnnotationProperty rdf:about="&desc;definition">
         <rdfs:label rdf:datatype="&xsd;string">Definition</rdfs:label>
         <core:prefLabel rdf:datatype="&xsd;string">definition</core:prefLabel>
     </owl:AnnotationProperty>
+    
+
+
+    <!-- http://bioontology.org/ontologies/biositemap.owl#replacedBy -->
+
     <owl:AnnotationProperty rdf:about="&desc;replacedBy">
         <core:prefLabel rdf:datatype="&xsd;string">replacedBy</core:prefLabel>
         <rdfs:domain rdf:resource="&owl;DeprecatedClass"/>
     </owl:AnnotationProperty>
-    <owl:AnnotationProperty rdf:about="&core;notation"/>
+    
+
+
+    <!-- http://bioportal.bioontology.org/ontologies/umls/cui -->
+
     <owl:AnnotationProperty rdf:about="&umls;cui"/>
     
 
 
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Datatypes
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
+    <!-- http://bioportal.bioontology.org/ontologies/umls/hasSTY -->
 
+    <owl:AnnotationProperty rdf:about="&umls;hasSTY"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#notation -->
+
+    <owl:AnnotationProperty rdf:about="&core;notation"/>
     
 
 
@@ -678,6 +693,7 @@
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Heath Services</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&activity;Health_Services"/>
     </owl:Class>
     
 
@@ -711,6 +727,7 @@
         <desc:definition rdf:datatype="&xsd;string">Innovative therapeutics (http://en.wiktionary.org/wiki/therapeutics)</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Novel Therapeutics</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&activity;Therapeutics"/>
     </owl:Class>
     
 
@@ -863,6 +880,7 @@
         <core:prefLabel rdf:datatype="&xsd;string">Anatomic Atlas</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Atlas"/>
     </owl:Class>
     
 
@@ -988,6 +1006,7 @@
         <desc:definition rdf:datatype="&xsd;string">Data file resulting from natural language processing.</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Natural_Language_Processing"/>
     </owl:Class>
     
 
@@ -1010,6 +1029,7 @@
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that performs signal processing by repeated measures of the signal and then calculates the expected value of the data set.</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Averaging_and_Agglomeration"/>
     </owl:Class>
     
 
@@ -1032,6 +1052,8 @@
         <core:prefLabel rdf:datatype="&xsd;string">Backup Archives and Disaster Recovery</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Backup_Archive_Service"/>
+        <desc:replacedBy rdf:resource="&BRO;Disaster_Recovery_Service"/>
     </owl:Class>
     
 
@@ -1053,6 +1075,7 @@
         <rdfs:subClassOf rdf:resource="&BRO;Semi-Structured_Knowledge_Resource"/>
         <desc:definition rdf:datatype="&xsd;string">A resource that contains information about or access to published sources.</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Bibliographic Resource</core:prefLabel>
+        <desc:replacedBy rdf:resource="&BRO;Bibliographic_Resource"/>
     </owl:Class>
     
 
@@ -1065,6 +1088,7 @@
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to Software that contains data encoded in binary form and contains instructions for the computer to perform a given set of tasks.</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -1087,6 +1111,7 @@
         <core:prefLabel rdf:datatype="&xsd;string">Biochemical Supply Resource</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Reagent_Resource"/>
     </owl:Class>
     
 
@@ -1285,6 +1310,7 @@
         <core:prefLabel rdf:datatype="&xsd;string">Centrality Analsysis</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Centrality_Analysis"/>
     </owl:Class>
     
 
@@ -1339,6 +1365,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Clinical Chart</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Narrative_Resource"/>
     </owl:Class>
     
 
@@ -1352,6 +1379,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Clinical Charts</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Clinical_Chart"/>
     </owl:Class>
     
 
@@ -1364,6 +1392,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Clinical Data</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Clinical_Care_Data"/>
     </owl:Class>
     
 
@@ -1386,6 +1415,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Clinical Trial Data</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Clinical_Research_Data"/>
     </owl:Class>
     
 
@@ -1531,6 +1561,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Connectivity Matrix</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -1563,6 +1594,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Continuous Data</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -1707,6 +1739,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Data Distribution</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -1761,6 +1794,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Data Object</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -1783,6 +1817,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Data Repository</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Database"/>
     </owl:Class>
     
 
@@ -1816,6 +1851,8 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <desc:definition rdf:datatype="&xsd;string">thing stores data</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Storage_Repository"/>
+        <desc:replacedBy rdf:resource="&BRO;Data_Storage_Service"/>
     </owl:Class>
     
 
@@ -1828,6 +1865,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Data Storage Repository</core:prefLabel>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Database_Software"/>
     </owl:Class>
     
 
@@ -1870,6 +1908,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <desc:definition rdf:datatype="&xsd;string">General data transformations</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Transform"/>
     </owl:Class>
     
 
@@ -1975,6 +2014,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Discrete Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -1997,6 +2037,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Document</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Bibliographic_Resource"/>
     </owl:Class>
     
 
@@ -2071,6 +2112,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">EDA</core:prefLabel>
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that performs exploratory data analysis methods.</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Exploratory_Data_Analysis"/>
     </owl:Class>
     
 
@@ -2137,6 +2179,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Experimental Measurement</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Molecular_and_Cellular_Data"/>
     </owl:Class>
     
 
@@ -2159,6 +2202,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Expertise</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Resource"/>
     </owl:Class>
     
 
@@ -2297,6 +2341,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Four Dimensional Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -2319,6 +2364,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Free Text</core:prefLabel>
         <desc:definition rdf:datatype="&xsd;string">Unstructured data in a format of alphanumeric characters.</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -2330,6 +2376,8 @@ we think this should be deleted</desc:definition>
         <desc:definition rdf:datatype="&xsd;string">A resource that provides monetary support in the form of grants, contracts, or gifts for research, training, or education.</desc:definition>
         <rdfs:comment rdf:datatype="&xsd;string">As per alignment with NIF resource type hierarchy.</rdfs:comment>
         <core:prefLabel rdf:datatype="&xsd;string">Funding Resource</core:prefLabel>
+        <umls:cui rdf:datatype="&xsd;string">X123456</umls:cui>
+        <umls:hasSTY rdf:datatype="&xsd;anyURI">http://bioportal.bioontology.org/ontologies/umls/sty/T028</umls:hasSTY>
         <core:editorialNote rdf:datatype="&xsd;string">pending final vetting: are more subclasses needed, e.g. Foreign_Funding_Resource  and Local_Funding_Resource</core:editorialNote>
     </owl:Class>
     
@@ -2447,6 +2495,7 @@ we think this should be deleted</desc:definition>
         <desc:definition rdf:datatype="&xsd;string">General graph visualization resources</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Graph Viewers</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Graph_Viewer"/>
     </owl:Class>
     
 
@@ -2510,6 +2559,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Heterogeneous Funding Resource</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Funding_Resource"/>
     </owl:Class>
     
 
@@ -2532,6 +2582,7 @@ we think this should be deleted</desc:definition>
         <desc:definition rdf:datatype="&xsd;string">Discrete data that contains many variables. </desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">High Dimensional Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -2811,6 +2862,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Integration and Interoperability Tools</core:prefLabel>
         <desc:definition rdf:datatype="&xsd;string">These are resources that allow tool interoperability and resource integration and data mediation.</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Integration_and_Interoperability_Tool"/>
     </owl:Class>
     
 
@@ -2872,6 +2924,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Interactive Tools</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Interactive_Tool"/>
     </owl:Class>
     
 
@@ -2904,6 +2957,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Knowledge Environment</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Structured_Knowledge_Resource"/>
     </owl:Class>
     
 
@@ -2987,6 +3041,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">License and Terms for Redistribution</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;License"/>
     </owl:Class>
     
 
@@ -2999,6 +3054,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">License and Terms for Use</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;License"/>
     </owl:Class>
     
 
@@ -3031,6 +3087,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Linear Algebra Tools</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Linear_Algebra_Tool"/>
     </owl:Class>
     
 
@@ -3075,6 +3132,7 @@ we think this should be deleted</desc:definition>
         <desc:definition rdf:datatype="&xsd;string">General (hyper)volume visualization tools (e.g., volume rendering).</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Manifold Viewers</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Manifold_Viewer"/>
     </owl:Class>
     
 
@@ -3160,6 +3218,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Matrix</core:prefLabel>
         <desc:definition rdf:datatype="&xsd;string">The dimensions of the array in computer memory used to store the data acquired during a pulse sequence. Related to the number of phase-encoding steps, frequency-encoding points and number of slices.</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -3330,6 +3389,7 @@ we think this should be deleted</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Modular Component</core:prefLabel>
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to a software component.</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -3404,6 +3464,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Molecular Trajectories</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Molecular_Trajectory_Data"/>
     </owl:Class>
     
 
@@ -3416,6 +3477,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Molecular Trajectory Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Dynamic_Model"/>
     </owl:Class>
     
 
@@ -3552,6 +3614,7 @@ we think this should be deleted</desc:definition>
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Network Editor</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Editor"/>
     </owl:Class>
     
 
@@ -3601,6 +3664,7 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Network model</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Network_Model"/>
     </owl:Class>
     
 
@@ -3655,6 +3719,7 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Non Computational Service</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Resource"/>
     </owl:Class>
     
 
@@ -3667,6 +3732,7 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Nonhuman Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Clinical_Research_Data"/>
     </owl:Class>
     
 
@@ -3698,6 +3764,7 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Numerical Integrators</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Numerical_Integrator"/>
     </owl:Class>
     
 
@@ -3720,6 +3787,7 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
         <desc:definition rdf:datatype="&xsd;string">General numerical modeling and computational tools (ala, GAMS: http://gams.nist.gov/)</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Numerical Methods</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Numerical_Method"/>
     </owl:Class>
     
 
@@ -3960,6 +4028,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Pass Through License</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;License"/>
     </owl:Class>
     
 
@@ -4161,6 +4230,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:prefLabel rdf:datatype="&xsd;string">Portlet Component</core:prefLabel>
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software portlet.</desc:definition>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Portal"/>
     </owl:Class>
     
 
@@ -4307,6 +4377,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Provenance</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Resource"/>
     </owl:Class>
     
 
@@ -4319,6 +4390,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Provenance and Intellectual Property</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Resource"/>
     </owl:Class>
     
 
@@ -4342,6 +4414,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Publication</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Bibliographic_Resource"/>
     </owl:Class>
     
 
@@ -4507,6 +4580,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <desc:definition rdf:datatype="&xsd;string">Material supplies provided for research (http://en.wikipedia.org/wiki/Research) purposes</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Research Supplies</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Resource"/>
     </owl:Class>
     
 
@@ -4559,6 +4633,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <desc:definition rdf:datatype="&xsd;string">Discrete data that is composed of individual data points as compared to.</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Scalar Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -4571,6 +4646,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Scripting Language and Environment</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Integration_and_Interoperability_Tool"/>
     </owl:Class>
     
 
@@ -4603,6 +4679,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Semantic Network</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Knowledgebase"/>
     </owl:Class>
     
 
@@ -4685,6 +4762,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Server</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Computational_Service"/>
     </owl:Class>
     
 
@@ -4793,6 +4871,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
 </desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Software Distribution</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -4805,6 +4884,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Software Documentation</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Bibliographic_Resource"/>
     </owl:Class>
     
 
@@ -4836,6 +4916,8 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Software development</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&activity;Software_Development"/>
+        <desc:replacedBy rdf:resource="&BRO;Software_Development_Resource"/>
     </owl:Class>
     
 
@@ -4848,6 +4930,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to information content entity that specifies, using a programming language, some algorithm.</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Source Code</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -4880,6 +4963,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software distribution that does not have any dependencies.  Software distributed in this manner can be run on a desktop computer.</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Standalone Application</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -4973,6 +5057,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Stochastic Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -5005,6 +5090,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Structured Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Structured_File"/>
     </owl:Class>
     
 
@@ -5037,6 +5123,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to applications, libraries, or software that creates a shortened version of text.</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Summarization</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Language_Summarization"/>
     </owl:Class>
     
 
@@ -5049,6 +5136,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Support</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Technical_Support"/>
     </owl:Class>
     
 
@@ -5135,6 +5223,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <desc:definition rdf:datatype="&xsd;string">Discrete data that consists of x, y, and z coordinates.</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Three Dimensional Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -5167,6 +5256,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that deliver software or application in toolkit fashion, whereby the kit components can be used independently of each other, or included as part of another program</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Toolkit</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Integration_and_Interoperability_Tool"/>
     </owl:Class>
     
 
@@ -5222,6 +5312,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Tutorials</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Tutorial"/>
     </owl:Class>
     
 
@@ -5244,6 +5335,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Unstructured Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Unstructured_Knowledge_Resource"/>
     </owl:Class>
     
 
@@ -5267,6 +5359,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <desc:definition rdf:datatype="&xsd;string">Discrete data that representents physical entities as XY coordinates.</desc:definition>
         <core:prefLabel rdf:datatype="&xsd;string">Vector Data</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
     </owl:Class>
     
 
@@ -5372,6 +5465,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">Web Service</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Computational_Service"/>
     </owl:Class>
     
 
@@ -5457,6 +5551,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
         <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
         <core:prefLabel rdf:datatype="&xsd;string">physico chemical models</core:prefLabel>
         <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <desc:replacedBy rdf:resource="&BRO;Physico-Chemical_Model"/>
     </owl:Class>
     
 
@@ -5713,1313 +5808,453 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
     
 
 
-    <!-- http://bioontology.org/ontologies/Activity.owl#Health_Services -->
-
-    <rdf:Description rdf:about="&activity;Health_Services">
-        <desc:definition rdf:datatype="&xsd;string">As defined in http://en.wikipedia.org/wiki/Health_services_research</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Health Services</core:prefLabel>
-    </rdf:Description>
-    
-
-
     <!-- http://bioontology.org/ontologies/Activity.owl#Heath_Services -->
 
-    <owl:NamedIndividual rdf:about="&activity;Heath_Services">
-        <desc:definition rdf:datatype="&xsd;string">As defined in http://en.wikipedia.org/wiki/Health_services_research</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Heath Services</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&activity;Health_Services"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&activity;Heath_Services"/>
     
 
 
     <!-- http://bioontology.org/ontologies/Activity.owl#Novel_Therapeutics -->
 
-    <owl:NamedIndividual rdf:about="&activity;Novel_Therapeutics">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Innovative therapeutics (http://en.wiktionary.org/wiki/therapeutics)</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Novel Therapeutics</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&activity;Therapeutics"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/Activity.owl#Software_Development -->
-
-    <rdf:Description rdf:about="&activity;Software_Development">
-        <core:prefLabel rdf:datatype="&xsd;string">Software Development</core:prefLabel>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/Activity.owl#Therapeutics -->
-
-    <rdf:Description rdf:about="&activity;Therapeutics">
-        <desc:definition rdf:datatype="&xsd;string">Innovative therapeutics (http://en.wiktionary.org/wiki/therapeutics)</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Therapeutics</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&activity;Novel_Therapeutics"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Anatomic_Atlas -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Anatomic_Atlas">
-        <desc:definition rdf:datatype="&xsd;string">A collection of tables, charts, or plates to illustrate anatomical structures.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Anatomic Atlas</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Atlas"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Atlas -->
-
-    <rdf:Description rdf:about="&BRO;Atlas">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides anatomical data represented by spatially indexed anatomical maps.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Atlas</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Anatomic_Atlas"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Automated_Natural_Language_Output -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Automated_Natural_Language_Output">
-        <core:prefLabel rdf:datatype="&xsd;string">Automated Natural Language Output</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Data file resulting from natural language processing.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Natural_Language_Processing"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Averaging_and_Agglomeration -->
-
-    <rdf:Description rdf:about="&BRO;Averaging_and_Agglomeration">
-        <core:prefLabel rdf:datatype="&xsd;string">Averaging and Agglomeration</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that performs signal processing by repeated measures of the signal and then calculates the expected value of the data set.</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Automated_Natural_Language_Output"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Averaging_and_Aglomeration -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Averaging_and_Aglomeration">
-        <core:prefLabel rdf:datatype="&xsd;string">Averaging and Aglomeration</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that performs signal processing by repeated measures of the signal and then calculates the expected value of the data set.</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Averaging_and_Agglomeration"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Backup_Archive_Service -->
-
-    <rdf:Description rdf:about="&BRO;Backup_Archive_Service">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides long-term storage for back-up copies of files. </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Backup Archive Service</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Averaging_and_Aglomeration"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Backup_Archives_and_Disaster_Recovery -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Backup_Archives_and_Disaster_Recovery">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides long-term storage for backup copies of files or for files that are no longer in active use, and the ability to retrieve backed up content in the event of a disaster that impacts the system in question,</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Backup Archives and Disaster Recovery</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Backup_Archive_Service"/>
-        <desc:replacedBy rdf:resource="&BRO;Disaster_Recovery_Service"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Backup_Archives_and_Disaster_Recovery"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Bibliographic_Resource -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Bibliographic_Resource">
-        <desc:definition rdf:datatype="&xsd;string">A resource that contains information about or access to published sources.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Bibliographic Resource</core:prefLabel>
-        <desc:replacedBy rdf:resource="&BRO;Bibliographic_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Bibliographic_Resource"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Binary_Executable -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Binary_Executable">
-        <core:prefLabel rdf:datatype="&xsd;string">Binary Executable</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to Software that contains data encoded in binary form and contains instructions for the computer to perform a given set of tasks.</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Binary_Executable"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Biochemical_Supply_Resource -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Biochemical_Supply_Resource">
-        <desc:definition rdf:datatype="&xsd;string">Biochemical (http://en.wikipedia.org/wiki/Biochemistry) supplies provided for a laboratory (http://en.wikipedia.org/wiki/Laboratory)</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Biochemical Supply Resource</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Reagent_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Biochemical_Supply_Resource"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Centrality_Analsysis -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Centrality_Analsysis">
-        <desc:definition rdf:datatype="&xsd;string">A Resource that provides access to a graph algorithm that uses ranking of network elements to identify the importance of elements in a network.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Centrality Analsysis</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Centrality_Analysis"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Centrality_Analysis -->
-
-    <rdf:Description rdf:about="&BRO;Centrality_Analysis">
-        <desc:definition rdf:datatype="&xsd;string">A Resource that provides access to a graph algorithm that uses ranking of network elements to identify the importance of elements in a network.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Centrality Analysis</core:prefLabel>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Clinical_Care_Data -->
-
-    <rdf:Description rdf:about="&BRO;Clinical_Care_Data">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides any type of data obtained in the course of caring for humans outside of measurements obtained in clinical trials.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Clinical Care Data</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Centrality_Analsysis"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Clinical_Chart -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Clinical_Chart">
-        <desc:definition rdf:datatype="&xsd;string">**previously was called Clinical_Charts_eg_Demographics
-we think this should be deleted</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Clinical Chart</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Narrative_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Clinical_Chart"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Clinical_Charts -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Clinical_Charts">
-        <desc:definition rdf:datatype="&xsd;string">**previously was called Clinical_Charts_eg_Demographics
-we think this should be deleted</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Clinical Charts</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Clinical_Chart"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Clinical_Charts"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Clinical_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Clinical_Data">
-        <desc:definition rdf:datatype="&xsd;string">Any type of data obtained in the course of caring for humans.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Clinical Data</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Clinical_Care_Data"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Clinical_Research_Data -->
-
-    <rdf:Description rdf:about="&BRO;Clinical_Research_Data">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides data on clinical trials and outcomes studies. </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Clinical Research Data</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Clinical_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Clinical_Trial_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Clinical_Trial_Data">
-        <desc:definition rdf:datatype="&xsd;string">A resource the provides access to data about subjects in a clinical trial; for example demographics, medical history, labs, procedures, etc.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Clinical Trial Data</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Clinical_Research_Data"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Computational_Service -->
-
-    <rdf:Description rdf:about="&BRO;Computational_Service">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides support for computer-related services such as database hosting and backup and disaster recovery.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Computational Service</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Clinical_Trial_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Connectivity_Matrix -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Connectivity_Matrix">
-        <desc:definition rdf:datatype="&xsd;string">A matrix is a subset of a network that contains node-edge-node connections of interest and are represented as a matrix.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Connectivity Matrix</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Connectivity_Matrix"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Continuous_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Continuous_Data">
-        <desc:definition rdf:datatype="&xsd;string">A data object that has infinite numbers of possible values. Quantitative data is often continuous such as weight, blood pressure.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Continuous Data</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Continuous_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Distribution -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Data_Distribution">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides data or allows users to access and utilize data</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Data Distribution</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Editor -->
-
-    <rdf:Description rdf:about="&BRO;Data_Editor">
-        <core:prefLabel rdf:datatype="&xsd;string">Data Editor</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, application, or toolkit that is able to alter information.</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Data_Distribution"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Object -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Data_Object">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides computational building blocks for complex data types, individual facts, statistics or items of information.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Data Object</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Data_Object"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Repository -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Data_Repository">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides data storage and maintenance, such as a database which accepts submissions of similar data for storage and use. For example, the cell centered database (CCDB) encourages submissions of anatomical images that will increase its&apos; holdings.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Data Repository</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Database"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource -->
-
-    <rdf:Description rdf:about="&BRO;Data_Resource">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides individual facts, statistics or items of information.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Data Resource</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Data_Repository"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Storage -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Data_Storage">
-        <core:prefLabel rdf:datatype="&xsd;string">Data Storage</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">thing stores data</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Storage_Repository"/>
-        <desc:replacedBy rdf:resource="&BRO;Data_Storage_Service"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Data_Storage"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Storage_Repository -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Data_Storage_Repository">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access through the Internet or archive to formatted digital or textual data.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Data Storage Repository</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Database_Software"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Storage_Service -->
-
-    <rdf:Description rdf:about="&BRO;Data_Storage_Service">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides data storage and maintenance, such as a database that accepts submissions of similar data for storage and use. For example, the cell centered database (CCDB) encourages submissions of anatomical images that will increase its&apos; holdings.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Data Storage Service</core:prefLabel>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Transform -->
-
-    <rdf:Description rdf:about="&BRO;Data_Transform">
-        <core:prefLabel rdf:datatype="&xsd;string">Data Transform</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that general data transformations.</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Data_Storage_Repository"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Transforms -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Data_Transforms">
-        <core:prefLabel rdf:datatype="&xsd;string">Data Transforms</core:prefLabel>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">General data transformations</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Transform"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Database -->
-
-    <rdf:Description rdf:about="&BRO;Database">
-        <desc:definition rdf:datatype="&xsd;string">A data resource that delivers its&apos; data by way of a &apos;database&apos;, which involves a structured data store and interrogation methods for data selection.</desc:definition>
-        <core:altLabel rdf:datatype="&xsd;string">Data Repository</core:altLabel>
-        <core:prefLabel rdf:datatype="&xsd;string">Database</core:prefLabel>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Database_Software -->
-
-    <rdf:Description rdf:about="&BRO;Database_Software">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to software, applications, or toolkits that are used in the development of database management systems.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Database Software</core:prefLabel>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Disaster_Recovery_Service -->
-
-    <rdf:Description rdf:about="&BRO;Disaster_Recovery_Service">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides the ability to retrieve archived content in the event of a disaster that impacts the system in question. </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Disaster Recovery Service</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Data_Transforms"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Discrete_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Discrete_Data">
-        <desc:definition rdf:datatype="&xsd;string">A data object that consists of separate, but finite set of values. </desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Discrete Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Discrete_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Document -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Document">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides any kind written item, as a book, article, or letter, esp. of a factual or informative nature.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Document</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Bibliographic_Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Dynamic_Model -->
-
-    <rdf:Description rdf:about="&BRO;Dynamic_Model">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides a simplified or symbolic representation representing the states of a system or network over time. </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Dynamic Model</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Document"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#EDA -->
 
-    <owl:NamedIndividual rdf:about="&BRO;EDA">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">EDA</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that performs exploratory data analysis methods.</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Exploratory_Data_Analysis"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;EDA"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Experimental_Measurment -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Experimental_Measurment">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to data from individual experiments.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Experimental Measurement</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Molecular_and_Cellular_Data"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Experimental_Measurment"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Expertise -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Expertise">
-        <desc:definition rdf:datatype="&xsd;string">A resource as an expert (http://en.wikipedia.org/wiki/Expert) who can answer questions, provide technical assistance, etc.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Expertise</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Exploratory_Data_Analysis -->
-
-    <rdf:Description rdf:about="&BRO;Exploratory_Data_Analysis">
-        <core:prefLabel rdf:datatype="&xsd;string">Exploratory Data Analysis</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that performs exploratory data analysis methods.</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Expertise"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Four_Dimensional_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Four_Dimensional_Data">
-        <desc:definition rdf:datatype="&xsd;string">3-D models evolving in time</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Four Dimensional Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Four_Dimensional_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Free_Text -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Free_Text">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Free Text</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Unstructured data in a format of alphanumeric characters.</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Funding_Resource -->
-
-    <rdf:Description rdf:about="&BRO;Funding_Resource">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides monetary support in the form of grants, contracts, or gifts for research, training, or education.</desc:definition>
-        <rdfs:comment rdf:datatype="&xsd;string">As per alignment with NIF resource type hierarchy.</rdfs:comment>
-        <core:prefLabel rdf:datatype="&xsd;string">Funding Resource</core:prefLabel>
-        <core:editorialNote rdf:datatype="&xsd;string">pending final vetting: are more subclasses needed, e.g. Foreign_Funding_Resource  and Local_Funding_Resource</core:editorialNote>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Viewer -->
-
-    <rdf:Description rdf:about="&BRO;Graph_Viewer">
-        <core:prefLabel rdf:datatype="&xsd;string">Graph Viewer</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to general graph visualization methods.</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Free_Text"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Graph_Viewers -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Graph_Viewers">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">General graph visualization resources</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Graph Viewers</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Graph_Viewer"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Graph_Viewers"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Heterogeneous_Funding_Resource -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Heterogeneous_Funding_Resource">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Heterogeneous Funding Resource</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Funding_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Heterogeneous_Funding_Resource"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#High_Dimensional_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;High_Dimensional_Data">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Discrete data that contains many variables. </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">High Dimensional Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tool -->
-
-    <rdf:Description rdf:about="&BRO;Integration_and_Interoperability_Tool">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to software or application that is used to enable (i) interoperability and association of data and/or (ii) pipeline of online tools.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Integration and Interoperability Tool</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;High_Dimensional_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Integration_and_Interoperability_Tools">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Integration and Interoperability Tools</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">These are resources that allow tool interoperability and resource integration and data mediation.</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Integration_and_Interoperability_Tool"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Interactive_Tool -->
-
-    <rdf:Description rdf:about="&BRO;Interactive_Tool">
-        <core:prefLabel rdf:datatype="&xsd;string">Interactive Tool</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that are used to enable user input of data and display corresponding information.</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Integration_and_Interoperability_Tools"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Interactive_Tools -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Interactive_Tools">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Interactive Tools</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Interactive_Tool"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Interactive_Tools"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Environment -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Knowledge_Environment">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to collaborative knowledge building, decision making, inference or discovery tools.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Knowledge Environment</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Structured_Knowledge_Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledgebase -->
-
-    <rdf:Description rdf:about="&BRO;Knowledgebase">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to facts and/or information, often in the form of rules that describe the knowledge in a logically consistent manner. </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Knowledgebase</core:prefLabel>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Language_Summarization -->
-
-    <rdf:Description rdf:about="&BRO;Language_Summarization">
-        <core:prefLabel rdf:datatype="&xsd;string">Language Summarization</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to applications, libraries, or software that creates a shortened version of text.</desc:definition>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#License -->
-
-    <rdf:Description rdf:about="&BRO;License">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to documented permission to do something, either from a government or under a law or regulation.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">License</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Knowledge_Environment"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#License_and_Terms_for_Redistribution -->
 
-    <owl:NamedIndividual rdf:about="&BRO;License_and_Terms_for_Redistribution">
-        <desc:definition rdf:datatype="&xsd;string">A license that describes the constraints for sharing the resource.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">License and Terms for Redistribution</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;License"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;License_and_Terms_for_Redistribution"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#License_and_Terms_for_Use -->
 
-    <owl:NamedIndividual rdf:about="&BRO;License_and_Terms_for_Use">
-        <desc:definition rdf:datatype="&xsd;string">A license that describes the constraints for using the resource.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">License and Terms for Use</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;License"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Linear_Algebra_Tool -->
-
-    <rdf:Description rdf:about="&BRO;Linear_Algebra_Tool">
-        <desc:definition rdf:datatype="&xsd;string">A resource which provides access to tools or functions that compute linear calculations on vector spaces.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Linear Algebra Tool</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;License_and_Terms_for_Use"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Linear_Algebra_Tools -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Linear_Algebra_Tools">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Linear Algebra Tools</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Linear_Algebra_Tool"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Manifold_Viewer -->
-
-    <rdf:Description rdf:about="&BRO;Manifold_Viewer">
-        <core:prefLabel rdf:datatype="&xsd;string">Manifold Viewer</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to general (hyper)volume visualization tools (e.g., volume rendering).</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Linear_Algebra_Tools"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Manifold_Viewers -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Manifold_Viewers">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">General (hyper)volume visualization tools (e.g., volume rendering).</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Manifold Viewers</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Manifold_Viewer"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Manifold_Viewers"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Matrix -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Matrix">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Matrix</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">The dimensions of the array in computer memory used to store the data acquired during a pulse sequence. Related to the number of phase-encoding steps, frequency-encoding points and number of slices.</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Matrix"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Modular_Component -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Modular_Component">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Modular Component</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to a software component.</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Modular_Component"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Trajectories -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Molecular_Trajectories">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Molecular Trajectories</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Molecular_Trajectory_Data"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Molecular_Trajectories"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_Trajectory_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Molecular_Trajectory_Data">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to kinetic information, usually quantitative, regarding biological system components over time.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Molecular Trajectory Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Dynamic_Model"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Molecular_and_Cellular_Data -->
-
-    <rdf:Description rdf:about="&BRO;Molecular_and_Cellular_Data">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides data related to molecular and cellular properties and their relationship to macroscopic parameters. </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Molecular and Cellular Data</core:prefLabel>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Narrative_Resource -->
-
-    <rdf:Description rdf:about="&BRO;Narrative_Resource">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides a literary work, book, story, textual description, or account of events, experiences, or the like, whether true or fictitious.  </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Narrative Resource</core:prefLabel>
-        <core:editorialNote rdf:datatype="&xsd;string">Work with NIF to define blog and wiki.</core:editorialNote>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Natural_Language_Processing -->
-
-    <rdf:Description rdf:about="&BRO;Natural_Language_Processing">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to software, library, or application that interprets human (natural) language into a machine-interpretable form.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Natural Language Processing</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Molecular_Trajectory_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Network_Editor -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Network_Editor">
-        <desc:definition rdf:datatype="&xsd;string">Deprecate</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Network Editor</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Editor"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Network_Model -->
-
-    <rdf:Description rdf:about="&BRO;Network_Model">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to a computational model representing objects and their relationships.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Network Model</core:prefLabel>
-        <core:editorialNote rdf:datatype="&xsd;string">Proposed children:
-- Bayesian network
-- Correlation network
-- Pathway network
-- Causality network
-
-e.g. Sage Bionetworks will be publishing exactly these types of models.</core:editorialNote>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Network_Editor"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Network_model -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Network_model">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Network model</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Network_Model"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Network_model"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Non_Computational_Service -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Non_Computational_Service">
-        <desc:definition rdf:datatype="&xsd;string">Biomedical Resources which are not predominantly computing (http://en.wikipedia.org/wiki/Computing) in nature.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Non Computational Service</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Non_Computational_Service"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Nonhuman_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Nonhuman_Data">
-        <desc:definition rdf:datatype="&xsd;string">Clinical data that is not derived from a person.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Nonhuman Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Clinical_Research_Data"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Numerical_Integrator -->
-
-    <rdf:Description rdf:about="&BRO;Numerical_Integrator">
-        <core:prefLabel rdf:datatype="&xsd;string">Numerical Integrator</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to tools or functions that calculate the numerical value of a definite integral.</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Nonhuman_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Numerical_Integrators -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Numerical_Integrators">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Numerical Integrators</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Numerical_Integrator"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Numerical_Method -->
-
-    <rdf:Description rdf:about="&BRO;Numerical_Method">
-        <core:prefLabel rdf:datatype="&xsd;string">Numerical Method</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to methods of numerical analysis or computational tools  (ala, GAMS: http://gams.nist.gov/).</desc:definition>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Numerical_Integrators"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Numerical_Methods -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Numerical_Methods">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">General numerical modeling and computational tools (ala, GAMS: http://gams.nist.gov/)</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Numerical Methods</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Numerical_Method"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Numerical_Methods"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Pass_Through_License -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Pass_Through_License">
-        <desc:definition rdf:datatype="&xsd;string">A license that grants the right of usage from a third party distributor to the end user.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Pass Through License</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;License"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Physico-Chemical_Model -->
-
-    <rdf:Description rdf:about="&BRO;Physico-Chemical_Model">
-        <core:prefLabel rdf:datatype="&xsd;string">Physico-Chemical Model</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that calculate solutions to physiological processes that involve chemical kinetics, compartments, or stochastic interactions.</desc:definition>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Portal -->
-
-    <rdf:Description rdf:about="&BRO;Portal">
-        <desc:definition rdf:datatype="&xsd;string">A Resource that provides a point of access to information on the World Wide Web, presenting information from diverse sources in a unified way.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Portal</core:prefLabel>
-        <core:editorialNote rdf:datatype="&xsd;string">pending final vetting: review NIF hierarchy for source of children terms.</core:editorialNote>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Pass_Through_License"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Portlet_Component -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Portlet_Component">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Portlet Component</core:prefLabel>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software portlet.</desc:definition>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Portal"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Portlet_Component"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Provenance -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Provenance">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Provenance</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Provenance"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Provenance_and_Intellectual_Property -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Provenance_and_Intellectual_Property">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Provenance and Intellectual Property</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Provenance_and_Intellectual_Property"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Publication -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Publication">
-        <desc:definition rdf:datatype="&xsd;string">A document that is publicly available.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Publication</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Bibliographic_Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Reagent_Resource -->
-
-    <rdf:Description rdf:about="&BRO;Reagent_Resource">
-        <desc:definition rdf:datatype="&xsd;string">A material resource that provides access to reagents, such as antibodies or drugs. Included in this definition are sites designed to work with individual service providers of reagents such as ExactAntigen who do not sell antibodies directly, but provide a catalog with pricing information for most commercial and noncommercial antibody providers. Note, reagents may be of organismal origin or not, but must be classified as macromolecules or molecules.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Reagent Resource</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Publication"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Research_Supplies -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Research_Supplies">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Material supplies provided for research (http://en.wikipedia.org/wiki/Research) purposes</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Research Supplies</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Resource -->
-
-    <rdf:Description rdf:about="&BRO;Resource">
-        <desc:definition rdf:datatype="&xsd;string">An entity that provides access (either in the open community or within an organization) to material, intellectual, financial, technological, or electronic means of carrying out research and development.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Resource</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Research_Supplies"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Scalar_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Scalar_Data">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Discrete data that is composed of individual data points as compared to.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Scalar Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Scalar_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Scripting_Language_and_Environment -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Scripting_Language_and_Environment">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Scripting Language and Environment</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Integration_and_Interoperability_Tool"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Scripting_Language_and_Environment"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Semantic_Network -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Semantic_Network">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Semantic Network</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Knowledgebase"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Semantic_Network"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Server -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Server">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides any combination of hardware or software designed to provide services to clients as defined in http://en.wikipedia.org/wiki/Server_(computing)</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Server</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Computational_Service"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Software_Development_Resource -->
-
-    <rdf:Description rdf:about="&BRO;Software_Development_Resource">
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, application, or toolkit that enable interactive tools for generating a computer program.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Software Development Resource</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Server"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Software_Distribution -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Software_Distribution">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software distribution that access to a computer program file or collection of files.
-
-</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Software Distribution</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Software_Distribution"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Software_Documentation -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Software_Documentation">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to instructions regarding how software operates or how to use it.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Software Documentation</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Bibliographic_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Software_Documentation"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Software_development -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Software_development">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Software development</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&activity;Software_Development"/>
-        <desc:replacedBy rdf:resource="&BRO;Software_Development_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Software_development"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Source_Code -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Source_Code">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to information content entity that specifies, using a programming language, some algorithm.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Source Code</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Source_Code"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Standalone_Application -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Standalone_Application">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software distribution that does not have any dependencies.  Software distributed in this manner can be run on a desktop computer.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Standalone Application</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Standalone_Application"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Stochastic_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Stochastic_Data">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Stochastic Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Stochastic_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Structured_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Structured_Data">
-        <desc:definition rdf:datatype="&xsd;string">A resource that distributes data that is organized in a purposeful manner</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Structured Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Structured_File"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Structured_File -->
-
-    <rdf:Description rdf:about="&BRO;Structured_File">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to an electronic document having and manifesting a clearly defined structure or organization that allows it to be executed. </desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Structured File</core:prefLabel>
-    </rdf:Description>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Structured_Knowledge_Resource -->
-
-    <rdf:Description rdf:about="&BRO;Structured_Knowledge_Resource">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to collection of data records arranged according to some semantic framework.  The semantic framework may be minimally expressive - such as a simple controlled vocabulary - or highly expressive such as a formally structured ontology.  Such resources may include only a representation of universal/classes/categories or may be linked to individual instance data typed according to a set of asserted classes (i.e., a knowledgebase).</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Structured Knowledge Resource</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Structured_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Summarization -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Summarization">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to applications, libraries, or software that creates a shortened version of text.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Summarization</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Language_Summarization"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Summarization"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Support -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Support">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides aid or assistance with a technology product.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Support</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Technical_Support"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Technical_Support -->
-
-    <rdf:Description rdf:about="&BRO;Technical_Support">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides aid or assistance with a technology product.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Technical Support</core:prefLabel>
-        <core:editorialNote rdf:datatype="&xsd;string">pending final vetting: refine definition</core:editorialNote>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Support"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Three_Dimensional_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Three_Dimensional_Data">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Discrete data that consists of x, y, and z coordinates.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Three Dimensional Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Three_Dimensional_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Toolkit -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Toolkit">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Resource that provides access to software, applications, or toolkits that deliver software or application in toolkit fashion, whereby the kit components can be used independently of each other, or included as part of another program</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Toolkit</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Integration_and_Interoperability_Tool"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Tutorial -->
-
-    <rdf:Description rdf:about="&BRO;Tutorial">
-        <desc:definition rdf:datatype="&xsd;string">An educational resource that is interactive and teaches by example.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Tutorial</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Toolkit"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Tutorials -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Tutorials">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Tutorials</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Tutorial"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Tutorials"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Unstructured_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Unstructured_Data">
-        <desc:definition rdf:datatype="&xsd;string">Data distribution that does not have a data model or has one that is not easily usable by a computer program. </desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Unstructured Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Unstructured_Knowledge_Resource"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Unstructured_Knowledge_Resource -->
-
-    <rdf:Description rdf:about="&BRO;Unstructured_Knowledge_Resource">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides access to collection of data or information that is not easily queryable without using metadata about the resource.</desc:definition>
-        <core:editorialNote rdf:datatype="&xsd;string">Suggested child terms: audio track, slide, and video per NIF.  Work with NIF to generate definitions.</core:editorialNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Unstructured Knowledge Resource</core:prefLabel>
-    </rdf:Description>
+    <owl:NamedIndividual rdf:about="&BRO;Unstructured_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Vector_Data -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Vector_Data">
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <desc:definition rdf:datatype="&xsd;string">Discrete data that representents physical entities as XY coordinates.</desc:definition>
-        <core:prefLabel rdf:datatype="&xsd;string">Vector Data</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Data_Resource"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Vector_Data"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Web_Service -->
 
-    <owl:NamedIndividual rdf:about="&BRO;Web_Service">
-        <desc:definition rdf:datatype="&xsd;string">A resource that provides a software system designed to support interoperable machine-to-machine interaction over a network. Web services are frequently Web APIs that can be accessed over a network, such as the Internet, and executed on a remote system hosting the requested services.</desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v3.0</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">Web Service</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Computational_Service"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;Web_Service"/>
     
 
 
     <!-- http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#physico_chemical_models -->
 
-    <owl:NamedIndividual rdf:about="&BRO;physico_chemical_models">
-        <desc:definition rdf:datatype="&xsd;string"></desc:definition>
-        <core:historyNote rdf:datatype="&xsd;string">Deprecated for BRO v2.7</core:historyNote>
-        <core:prefLabel rdf:datatype="&xsd;string">physico chemical models</core:prefLabel>
-        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-        <desc:replacedBy rdf:resource="&BRO;Physico-Chemical_Model"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="&BRO;physico_chemical_models"/>
     
 
 
@@ -7074,6 +6309,10 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
     <rdf:Description rdf:about="&owl;Thing">
         <owl:versionInfo rdf:datatype="&xsd;string">TODO:</owl:versionInfo>
     </rdf:Description>
+    <rdf:Description rdf:about="&core;Concept">
+        <umls:cui rdf:datatype="&xsd;string">X123456</umls:cui>
+        <umls:hasSTY rdf:datatype="&xsd;anyURI">http://bioportal.bioontology.org/ontologies/umls/sty/T028</umls:hasSTY>
+    </rdf:Description>
     <rdf:Description rdf:about="http://bioontology.org/ontologies/BiomedicalResources.owl#Environmental_Health_and_Safety">
         <core:prefLabel rdf:datatype="&xsd;string">Environmental Health and Safety Resource</core:prefLabel>
     </rdf:Description>
@@ -7081,5 +6320,5 @@ e.g. Sage Bionetworks will be publishing exactly these types of models.</core:ed
 
 
 
-<!-- Generated by the OWL API (version 3.3.1957) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
 
