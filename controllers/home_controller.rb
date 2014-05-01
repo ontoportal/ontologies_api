@@ -69,7 +69,7 @@ class HomeController < ApplicationController
       info = {}
       ld_classes.each do |cls|
         next if routes_by_class[cls].nil? || routes_by_class[cls].empty?
-        attributes = cls.attributes(:all)
+        attributes = (cls.attributes(:all) + cls.hypermedia_settings[:serialize_methods]).uniq
         attributes_info = {}
         attributes.each do |attribute|
           next if cls.hypermedia_settings[:serialize_never].include?(attribute)
