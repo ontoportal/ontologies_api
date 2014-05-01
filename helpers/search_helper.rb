@@ -24,16 +24,16 @@ module Sinatra
 
         if (params[EXACT_MATCH_PARAM] == "true")
           query = "\"#{RSolr.escape(text)}\""
-          params["qf"] = "prefLabelExact synonymExact"
+          params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact notation cui semanticType"
         elsif (text[-1] == '*')
           text = text[0..-2]
           query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest_ncbo"
-          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge notation resource_id cui semanticType"
+          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge resource_id notation cui semanticType"
           params["pf"] = "prefLabelSuggest^50"
         else
           query = RSolr.escape(text)
-          params["qf"] = "prefLabelExact^100 prefLabel^70 synonymExact^50 synonym^10 notation resource_id cui semanticType"
+          params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 notation cui semanticType"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
