@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 6c995078d4c15bdec5356b942d2f164ba8d2853a
+  revision: 6393f2d7233053e030b6ecbe4874eca4e68a4537
   branch: staging
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: b84441acfd4f46a8d7522182a7545b4c905dd241
+  revision: 2d894a0c527c47b880cff47daf8da2640682b291
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 24aede3cabc0f30a567fa4f40f8af16ae315a3d3
+  revision: 0853615f40d67cebeece6d8cdc30ed0f32249507
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -75,7 +75,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 106fa6f32c88b0845037a551705c09dd782f7de0
+  revision: 1cb3adaf2e47d1bc7189fc21e3395343276c488e
   branch: staging
   specs:
     sparql-client (1.0.4.1)
@@ -149,7 +149,7 @@ GEM
     minitest (4.7.5)
     mlanett-redis-lock (0.2.6)
       redis
-    multi_json (1.9.3)
+    multi_json (1.10.0)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
