@@ -52,10 +52,10 @@ gem 'capistrano-bundler', '~> 1.1.1'
 gem 'capistrano-rbenv', '~> 2.0.2'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', github: 'ncbo/goo', branch: 'staging'
+gem 'goo', github: 'ncbo/goo', branch: 'merge_treeview'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'staging'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'staging'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'staging'
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'merge_treeview'
+gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'merge_treeview'
 gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'staging'
 
 # Not versioned

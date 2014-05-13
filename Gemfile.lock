@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 6393f2d7233053e030b6ecbe4874eca4e68a4537
-  branch: staging
+  revision: efb3dbdfcebd94f569f7fe9d882f3f98689b2ec2
+  branch: merge_treeview
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: fcb0662acbadb7fc71b9b22914c91b8ed17ab691
-  branch: staging
+  revision: cf875f449a105fadc7b57d2e6857d1f4ae4e8686
+  branch: merge_treeview
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 3b87d5f93c762596859a2bbfcb8021469075395f
+  revision: 8fb74e1b47b0259a75dc7900aae7eb94baca3fb8
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: a9d5bc6d7e7ed0a5edb3aa37f06ad4440a4dd18e
-  branch: staging
+  revision: d3215fe297bfed44578b1586c6a14261b5b0b92c
+  branch: merge_treeview
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -176,7 +176,7 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rack-timeout (0.0.4)
-    rainbows (4.6.1)
+    rainbows (4.6.2)
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 4.8)
@@ -230,7 +230,7 @@ GEM
       tins (~> 1.0)
     thread_safe (0.3.3)
     tilt (1.4.1)
-    tins (1.1.0)
+    tins (1.2.0)
     treetop (1.5.3)
       polyglot (~> 0.3)
     tzinfo (1.1.0)
