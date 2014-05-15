@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 9abd739a930dc204f4b22561149e790a6a8d9c85
+  revision: ce1a24f7706be7dd5569505311c9aca308ecbfe3
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: f53743e255e79e83288a86b9acbf2938a06403b6
+  revision: 5d786436fb26b4e783bccdfd908bdc918fe5b440
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -154,7 +154,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
-    oj (2.9.0)
+    oj (2.9.2)
     polyglot (0.3.4)
     pony (1.8)
       mail (>= 2.0)
@@ -164,7 +164,7 @@ GEM
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.0.0)
+    rack-attack (4.0.1)
       rack
     rack-cache (1.2)
       rack (>= 0.4)
