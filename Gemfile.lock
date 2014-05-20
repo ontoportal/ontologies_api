@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: efb3dbdfcebd94f569f7fe9d882f3f98689b2ec2
-  branch: merge_treeview
+  revision: 44205368e3a4d5765e12a59c8f1bc8ef320ff14a
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: cf875f449a105fadc7b57d2e6857d1f4ae4e8686
-  branch: merge_treeview
+  revision: 25867b78f13f26fa197deca3df5d8a6f6416a5e1
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 7883db9e4a1655451b10beb9851c0a3c860e5767
+  revision: db31dcad7407becc89c99a8c160c140eee1aa12c
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 246039a7b6653eee3a9cd4f0373054a219159a7f
-  branch: merge_treeview
+  revision: e40752fdd72dacff7e285f9e326803343f90acdd
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -149,12 +149,12 @@ GEM
     minitest (4.7.5)
     mlanett-redis-lock (0.2.6)
       redis
-    multi_json (1.10.0)
+    multi_json (1.10.1)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
-    oj (2.9.0)
+    oj (2.9.3)
     polyglot (0.3.4)
     pony (1.8)
       mail (>= 2.0)
@@ -164,7 +164,7 @@ GEM
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.0.0)
+    rack-attack (4.0.1)
       rack
     rack-cache (1.2)
       rack (>= 0.4)
@@ -181,7 +181,7 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.8)
     raindrops (0.13.0)
-    rake (10.3.1)
+    rake (10.3.2)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
