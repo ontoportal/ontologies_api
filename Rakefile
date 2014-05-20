@@ -100,36 +100,34 @@ namespace :rainbows do
   end
 end
 
+def clear_cache(env)
+  require 'ontologies_linked_data'
+  require 'ncbo_annotator'
+  require 'ncbo_cron'
+  require 'redis'
+  require_relative 'config/config'
+  require_relative "config/environments/#{env}.rb"
+  LinkedData::HTTPCache.invalidate_all
+  redis = Redis.new(host: LinkedData.settings.goo_redis_host, port: LinkedData.settings.goo_redis_port)
+  redis.flushdb
+  `rm -rf cache/`
+end
+
 namespace :cache do
   namespace :clear do
     desc "Clear HTTP cache (production redis and Rack::Cache)"
     task :production do
-      require 'ontologies_linked_data'
-      require 'ncbo_annotator'
-      require_relative "config/config"
-      require_relative 'config/environments/production.rb'
-      LinkedData::HTTPCache.invalidate_all
-      `rm -rf cache/`
+      clear_cache("production")
     end
-    
+
     desc "Clear HTTP cache (staging redis and Rack::Cache)"
     task :staging do
-      require 'ontologies_linked_data'
-      require 'ncbo_annotator'
-      require_relative "config/config"
-      require_relative 'config/environments/staging.rb'
-      LinkedData::HTTPCache.invalidate_all
-      `rm -rf cache/`
+      clear_cache("staging")
     end
 
     desc "Clear HTTP cache (development redis and Rack::Cache)"
     task :development do
-      require 'ontologies_linked_data'
-      require 'ncbo_annotator'
-      require_relative "config/config"
-      require_relative 'config/environments/development.rb'
-      LinkedData::HTTPCache.invalidate_all
-      `rm -rf cache/`
+      clear_cache("development")
     end
   end
 end
