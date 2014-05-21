@@ -239,6 +239,8 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    unicorn-worker-killer (0.4.2)
+      unicorn (~> 4)
     uuid (2.3.7)
       macaddr (~> 1.0)
 
@@ -284,3 +286,5 @@ DEPENDENCIES
   sinatra-advanced-routes
   sinatra-contrib (~> 1.0)
   sparql-client!
+  unicorn
+  unicorn-worker-killer
