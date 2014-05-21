@@ -31,7 +31,9 @@ gem 'minitest', '~> 4.0'
 gem 'cube-ruby', require: 'cube'
 
 # HTTP server
+gem 'unicorn'
 gem 'rainbows'
+gem 'unicorn-worker-killer'
 
 # Debugging
 gem 'pry', :group => :development
