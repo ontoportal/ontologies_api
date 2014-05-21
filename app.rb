@@ -120,6 +120,11 @@ if LinkedData.settings.enable_http_cache
     entitystore: "redis://#{redis_host_port}/0/entitystore"
 end
 
+# Initialize unicorn Worker killer to mitigate unicorn worker memory bloat 
+if LinkedData::OntologiesAPI.settings.enable_unicorn_workerkiller
+  require_relative 'config/unicorn_workerkiller'
+end
+
 # Initialize the app
 require_relative 'init'
 
