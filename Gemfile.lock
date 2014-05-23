@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 9c7f674f06568356344842761df25f491e877cf8
+  revision: e03bb8ec358d230f69ea6df2f7b43d8c662dc4e8
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2ac76543265557b8c3d4738c3522a3072ddbde86
+  revision: 246a4262ca1cd6da59d1c6344b83bf9773321fc4
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -145,7 +145,7 @@ GEM
       mime-types
       treetop (>= 1.4.5)
     method_source (0.8.2)
-    mime-types (2.2)
+    mime-types (2.3)
     minitest (4.7.5)
     mlanett-redis-lock (0.2.6)
       redis
@@ -164,7 +164,7 @@ GEM
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.0.1)
+    rack-attack (4.1.0)
       rack
     rack-cache (1.2)
       rack (>= 0.4)
