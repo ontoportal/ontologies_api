@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: e03bb8ec358d230f69ea6df2f7b43d8c662dc4e8
+  revision: ce7a19025d2f88662eb984993aadab39d1667831
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -233,7 +233,7 @@ GEM
     tins (1.3.0)
     treetop (1.5.3)
       polyglot (~> 0.3)
-    tzinfo (1.1.0)
+    tzinfo (1.2.0)
       thread_safe (~> 0.1)
     unicorn (4.8.3)
       kgio (~> 2.6)
