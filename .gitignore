@@ -30,11 +30,11 @@ bin/**
 **.DS_Store
 
 # Support local configs
-config/environments/production.rb
-config/environments/test.rb
-config/environments/development.rb
+config/environments/*
+!config/environments/config.rb
+!config/environments/config.rb.sample
 
-#ignore capistrano deployment 
+#ignore capistrano deployment
 config/deploy/*
 
 # Ignore generated test data
