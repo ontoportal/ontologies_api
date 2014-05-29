@@ -37,7 +37,7 @@ class TestMetricsController < TestCase
       @@data.each do |k,v|
         assert_equal(m[k], v)
       end
-      assert m["@id"] == m["submission"].first + "/metrics" rescue binding.pry
+      assert m["@id"] == m["submission"].first + "/metrics"
     end
   end
 

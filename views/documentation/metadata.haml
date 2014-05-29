@@ -24,17 +24,20 @@
       %th <abbr title="Unique attributes will have a unique value across all of the resources of this type.">Unique</abbr>
       %th <abbr title="Required attributes will always need to be present in order for the resource to be valid">Required</abbr>
       %th <abbr title="List indicates if the attribute contains a list or single value">List</abbr>
-      %th <abbr title="Cardinality determines how many values are allowed for an attribute. min=>1 means at least one, max=>1 means no more than one.">Cardinality</abbr>
       %th <abbr title="Some attributes contain a link to another resource. This is indicated by the `type` column.">Type</abbr>
+    -attr_rows = []
     -@metadata[:attributes].each do |attr, values|
+      -attr_rows << [attr.to_s, values[:shows_default], values[:unique], values[:required], values[:list], values[:type].to_s + "&nbsp;"]
+    / Sort to surface the 'true' values, but the fields are mangled badly here :(
+    -attr_rows.sort! {|a,b| b[1].to_s.gsub("&nbsp;", "") <=> a[1].to_s.gsub("&nbsp;", "")}
+    -attr_rows.each do |row|
       %tr
-        %td= attr.to_s
-        %td= values[:shows_default]
-        %td= values[:unique]
-        %td= values[:required]
-        %td= values[:list]
-        %td= values[:cardinality]
-        %td= values[:type].to_s + "&nbsp;"
+        %td= row[0]
+        %td= row[1]
+        %td= row[2]
+        %td= row[3]
+        %td= row[4]
+        %td= row[5]
 
   -links = LinkedData::Hypermedia.generate_links(sample_objects[@metadata[:cls].type_uri])
   -if links && !links.empty?

@@ -48,6 +48,7 @@ class OntologySubmissionsController < ApplicationController
 
     ##
     # Update an existing submission of an ontology
+    REQUIRES_REPROCESS = ["prefLabelProperty", "definitionProperty", "synonymProperty", "authorProperty", "classType", "hierarchyProperty", "obsoleteProperty", "obsoleteParent"]
     patch '/:ontology_submission_id' do
       ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
@@ -61,6 +62,10 @@ class OntologySubmissionsController < ApplicationController
 
       if submission.valid?
         submission.save
+        if (params.keys & REQUIRES_REPROCESS).length > 0 || request_has_file?
+          cron = NcboCron::Models::OntologySubmissionParser.new
+          cron.queue_submission(submission, {all: true})
+        end
       else
         error 422, submission.errors
       end

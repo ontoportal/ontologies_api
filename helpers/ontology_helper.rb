@@ -36,6 +36,12 @@ module Sinatra
       end
 
       ##
+      # Checks to see if the request has a file attached
+      def request_has_file?
+        @params.any? {|p,v| v.instance_of?(Hash) && v.key?(:tempfile) && v[:tempfile].instance_of?(Tempfile)}
+      end
+
+      ##
       # Looks for a file that was included as a multipart in a request
       def file_from_request
         @params.each do |param, value|
