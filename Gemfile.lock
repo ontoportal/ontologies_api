@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 66e8543a49e25205777d8971228cf9a4b8e201f4
+  revision: 619e4b1bc5073e99926413242f57a5f892b95b32
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 39a3ef76b98943b24edb8a6996b12e3d33fe56fb
+  revision: bec5a7a2647f21b16d8b88549883b07aebccd61f
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 834f6244a809e9e4c3617c539043f521f10fef9b
+  revision: 030410fe054c53019370b6e99037858c920ac8a8
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -184,7 +184,7 @@ GEM
       addressable (>= 2.2)
     recursive-open-struct (0.4.5)
     redcarpet (3.1.2)
-    redis (3.0.7)
+    redis (3.1.0)
     redis-activesupport (3.2.5)
       activesupport (~> 3.2.0)
       redis-store (~> 1.1.0)
