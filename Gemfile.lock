@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 69f3642c72673457af17ebb3fd6f6f505c0e0ddc
+  revision: 66e8543a49e25205777d8971228cf9a4b8e201f4
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: c9d4fbfc5daddda9faf92f7a166e24ae4b413f23
+  revision: 39a3ef76b98943b24edb8a6996b12e3d33fe56fb
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: bd68a4b6d0401b6c8bbe59614f499562c08cd128
+  revision: 834f6244a809e9e4c3617c539043f521f10fef9b
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -127,6 +127,7 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.0)
+    colorize (0.7.3)
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.3)
@@ -140,10 +141,8 @@ GEM
     libxml-ruby (2.7.0)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mail (2.2.7)
-      activesupport (>= 2.3.6)
-      mime-types
-      treetop (>= 1.4.5)
+    mail (2.6.0)
+      mime-types (>= 1.16, < 3)
     method_source (0.8.2)
     mime-types (2.3)
     minitest (4.7.5)
@@ -155,7 +154,6 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     oj (2.9.4)
-    polyglot (0.3.4)
     pony (1.8)
       mail (>= 2.0)
     pry (0.9.12.6)
@@ -199,7 +197,7 @@ GEM
       mime-types (>= 1.16)
     rsolr (1.0.10)
       builder (>= 2.1.2)
-    rubyzip (1.1.3)
+    rubyzip (1.1.4)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     simplecov (0.8.2)
@@ -221,19 +219,14 @@ GEM
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
     slop (3.5.0)
-    sshkit (1.4.0)
+    sshkit (1.5.1)
+      colorize
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-      term-ansicolor
     systemu (2.6.4)
-    term-ansicolor (1.3.0)
-      tins (~> 1.0)
     thread_safe (0.3.4)
     tilt (1.4.1)
-    tins (1.3.0)
-    treetop (1.5.3)
-      polyglot (~> 0.3)
-    tzinfo (1.2.0)
+    tzinfo (1.2.1)
       thread_safe (~> 0.1)
     unicorn (4.8.3)
       kgio (~> 2.6)
