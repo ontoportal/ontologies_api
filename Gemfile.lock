@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 27ad09961a0ed2f3754cc8d9af58e07fa5c23806
+  revision: 97511cff3dff25ed6dfcdb19641af3e48de34641
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 9c3edd47add3377244ab4a910a986396242dee25
+  revision: fd804e7b3d334b2447fb7791f431cce9be72834b
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 1074a3067bc440b82749f0951bc671b3a076d912
+  revision: d4e6a0c2e6404f6490d96c1b4d89a0961ac796e7
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -130,7 +130,7 @@ GEM
     colorize (0.7.3)
     cube-ruby (0.0.3)
     dante (0.2.0)
-    docile (1.1.3)
+    docile (1.1.4)
     haml (4.0.5)
       tilt
     i18n (0.6.9)
