@@ -1,0 +1,40 @@
+format-version: 1.2
+date: 14:11:2012 19:19
+auto-generated-by: ONTO-PERL 1.38
+subsetdef: Drugable "Drugable Genome Project"
+subsetdef: goslim_candida "Candida GO slim"
+subsetdef: goslim_generic "Generic GO slim"
+subsetdef: goslim_pir "PIR GO slim"
+subsetdef: goslim_plant "Plant GO slim"
+subsetdef: goslim_pombe "Fission yeast GO slim"
+subsetdef: goslim_yeast "Yeast GO slim"
+subsetdef: gosubset_prok "Prokaryotic GO subset"
+subsetdef: high_level_annotation_qc "High-level terms not to be used for direct annotation"
+subsetdef: PSI-MI_slim "Subset of PSI-MI"
+subsetdef: PSI-MOD_slim "subset of protein modifications"
+synonymtypedef: DeltaMass-label "Label from MS DeltaMass" EXACT
+synonymtypedef: PSI-MI-alternate "Alternate label curated by PSI-MI" EXACT
+synonymtypedef: PSI-MI-short "Unique short label curated by PSI-MI" EXACT
+synonymtypedef: PSI-MOD-alternate "Alternate label curated by PSI-MOD" EXACT
+synonymtypedef: PSI-MOD-short "Unique short label curated by PSI-MOD" EXACT
+synonymtypedef: PSI-MS-label "Agreed label from MS community" RELATED
+synonymtypedef: RESID-alternate "Alternate name from RESID" EXACT
+synonymtypedef: RESID-misnomer "Misnomer label from RESID" RELATED
+synonymtypedef: RESID-name "Name from RESID" EXACT
+synonymtypedef: RESID-systematic "Systematic name from RESID" EXACT
+synonymtypedef: systematic_synonym "Systematic synonym" EXACT
+synonymtypedef: UniMod-alternate "Alternate name from UniMod" RELATED
+synonymtypedef: UniMod-description "Description (full_name) from UniMod" RELATED
+synonymtypedef: UniMod-interim "Interim label from UniMod" RELATED
+synonymtypedef: UniMod-label "Label (title) from UniMod" RELATED
+synonymtypedef: UniProt-feature "Protein feature description from UniProtKB" EXACT
+default-namespace: gene_expression_ontology
+remark: Union of ontologies
+
+[Term]
+id: BioPAX:Pathway
+name: pathway
+def: "A set or series of interactions, often forming a net"work, which biologists have found useful to group together for organizational, historic, biophysical or other reasons." [BioPAX:Pathway]
+xref: BioPAX:Pathway
+is_a: SIO:010529 ! collection of chemical reactions
+
