@@ -7,7 +7,7 @@ class TestValidateOntologyFileController < TestCase
     ontfile_path = File.expand_path("../../data/ontology_files/gexo.obo", __FILE__)
     ontfile = Rack::Test::UploadedFile.new(ontfile_path, "text/plain")
     post "/validate_ontology_file", ontology_file: ontfile
-    assert last_response.ok?
+    assert_equal 200, last_response.status
     process_id = MultiJson.load(last_response.body)["process_id"]
     response = "processing"
     while response == "processing"
@@ -21,7 +21,7 @@ class TestValidateOntologyFileController < TestCase
     ontfile_path = File.expand_path("../../data/ontology_files/BRO_v3.1.owl", __FILE__)
     ontfile = Rack::Test::UploadedFile.new(ontfile_path, "text/plain")
     post "/validate_ontology_file", ontology_file: ontfile
-    assert last_response.ok?
+    assert_equal 200, last_response.status
     process_id = MultiJson.load(last_response.body)["process_id"]
     response = "processing"
     while response == "processing"
