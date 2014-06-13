@@ -10,9 +10,9 @@ class ValidateOntologyFileController < ApplicationController
       ontfile = params["ontology_file"][:tempfile]
       ontfilename = params["ontology_file"][:filename]
       process_id = "#{Time.now.to_i}_#{ontfilename}"
-      pid = fork do
+      pid = Process.fork do
         parser = LinkedData::Parser::OWLAPICommand.new(ontfile.path, tmpdir, logger: log)
-        error = ["error not found"]
+        error = []
         begin
           missing_imports = parser.call_owlapi_java_command[1]
         rescue
@@ -23,7 +23,7 @@ class ValidateOntologyFileController < ApplicationController
           ontfile.close
         end
         error.unshift("Could not download imports: #{missing_imports.join(",")}") if missing_imports && !missing_imports.empty?
-          redis.setex process_id, 360, MultiJson.dump(error)
+        redis.setex process_id, 360, MultiJson.dump(error)
       end
       Process.detach(pid)
       redis.setex process_id, 360, MultiJson.dump("processing")
