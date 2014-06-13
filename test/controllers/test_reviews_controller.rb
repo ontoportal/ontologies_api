@@ -2,7 +2,7 @@ require_relative '../test_case'
 
 class TestReviewsController < TestCase
 
-  DEBUG_MESSAGES = true
+  DEBUG_MESSAGES = false
 
   # JSON Schema
   # This could be in the Review model, see
