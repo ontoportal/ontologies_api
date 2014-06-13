@@ -50,10 +50,14 @@ GIT
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
 <<<<<<< HEAD
+<<<<<<< HEAD
   revision: 030410fe054c53019370b6e99037858c920ac8a8
   branch: master
 =======
   revision: e9b53919fe4fc3d6c2cc227a4f26a9c23d5cb4a8
+=======
+  revision: 55ffac0b7b3567efa1357d583e2d1fe889f9ee2c
+>>>>>>> c301d43... Gemfile.lock update
   branch: staging
 >>>>>>> 80da0c1... Gemfile.lock update
   specs:
