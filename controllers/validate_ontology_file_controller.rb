@@ -15,6 +15,7 @@ class ValidateOntologyFileController < ApplicationController
         error = ["error not found"]
         begin
           missing_imports = parser.call_owlapi_java_command[1]
+        rescue
         ensure
           buf.rewind
           error_lines = buf.read.split("\n")
