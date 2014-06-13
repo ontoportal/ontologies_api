@@ -3,7 +3,7 @@ require 'multi_json'
 class ValidateOntologyFileController < ApplicationController
   namespace "/validate_ontology_file" do
     post do
-      error 401, "Must provide ontology file using `ontology_file` field" unless params["ontology_file"]
+      error 422, "Must provide ontology file using `ontology_file` field" unless params["ontology_file"]
       buf = StringIO.new
       log = Logger.new(buf)
       tmpdir = Dir.tmpdir
