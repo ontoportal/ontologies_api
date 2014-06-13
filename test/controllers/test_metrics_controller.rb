@@ -82,7 +82,7 @@ class TestMetricsController < TestCase
   end
 
   def test_metrics_missing
-    skip "Test takes 160+ seconds to run, we should investigate"
+    skip "Test takes 160+ seconds to run, disable until we investigate"
     # test for zero ontologies without metrics (created by before_suite)
     get '/metrics/missing'
     assert last_response.ok?
