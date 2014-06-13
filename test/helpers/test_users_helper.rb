@@ -29,6 +29,10 @@ class TestUsersHelper < TestCaseHelpers
     LinkedData.settings.enable_security = true
   end
 
+  def self.after_suite
+    LinkedData.settings.enable_security = @@old_security_setting
+  end
+
   def test_filtered_list
     get "/ontologies?apikey=#{@@user.apikey}"
     assert last_response.ok?
