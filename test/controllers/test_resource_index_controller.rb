@@ -447,6 +447,7 @@ class TestResourceIndexController < TestCase
   end
 
   def test_get_resource_element_annotations
+    skip "This test takes 160+ seconds, disabling until new RI is implemented"
     skip "redis unavailable" unless @@redis_available
 
     #resource_id = 'PM'  # PubMed
