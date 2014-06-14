@@ -4,13 +4,15 @@ class ValidateOntologyFileController < ApplicationController
   namespace "/validate_ontology_file" do
     post do
       error 422, "Must provide ontology file using `ontology_file` field" unless params["ontology_file"]
-      buf = StringIO.new
-      log = Logger.new(buf)
-      tmpdir = Dir.tmpdir
-      ontfile = params["ontology_file"][:tempfile]
       ontfilename = params["ontology_file"][:filename]
       process_id = "#{Time.now.to_i}_#{ontfilename}"
-      pid = Process.fork do
+      redis.setex process_id, 360, MultiJson.dump("processing")
+      fork = false
+      proc = Proc.new {
+        buf = StringIO.new
+        log = Logger.new(buf)
+        tmpdir = Dir.tmpdir
+        ontfile = params["ontology_file"][:tempfile]
         parser = LinkedData::Parser::OWLAPICommand.new(ontfile.path, tmpdir, logger: log)
         error = []
         begin
@@ -24,9 +26,17 @@ class ValidateOntologyFileController < ApplicationController
         end
         error.unshift("Could not download imports: #{missing_imports.join(",")}") if missing_imports && !missing_imports.empty?
         redis.setex process_id, 360, MultiJson.dump(error)
+      }
+
+      if fork
+        pid = Process.fork do
+          proc.call
+        end
+        Process.detach(pid)
+      else
+        proc.call
       end
-      Process.detach(pid)
-      redis.setex process_id, 360, MultiJson.dump("processing")
+
       reply(process_id: process_id)
     end
 
