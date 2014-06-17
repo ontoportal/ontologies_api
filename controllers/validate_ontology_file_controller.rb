@@ -7,7 +7,6 @@ class ValidateOntologyFileController < ApplicationController
       ontfilename = params["ontology_file"][:filename]
       process_id = "#{Time.now.to_i}_#{ontfilename}"
       redis.setex process_id, 360, MultiJson.dump("processing")
-      fork = false
       proc = Proc.new {
         buf = StringIO.new
         log = Logger.new(buf)
@@ -28,6 +27,7 @@ class ValidateOntologyFileController < ApplicationController
         redis.setex process_id, 360, MultiJson.dump(error)
       }
 
+      fork = true
       if fork
         pid = Process.fork do
           proc.call
