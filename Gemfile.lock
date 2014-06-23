@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: d8d2c3466205a555784e069d9ecef86f0b8416ff
+  revision: b6a6f8d492ebc7e85cd496f90363b0955b4ad4aa
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d1da7d2fedef078923bb90cab00d55295a5726da
+  revision: 620eebb2ef007b72b81af756ff1316596405d819
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 7a1738dd0342dd9628ab48daa09b4fda91097608
+  revision: 84cad43c84c394197af578143a3154eff153c881
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -154,7 +154,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     oj (2.9.6)
-    pony (1.8)
+    pony (1.9)
       mail (>= 2.0)
     pry (0.10.0)
       coderay (~> 1.1.0)
