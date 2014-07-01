@@ -47,7 +47,6 @@ set :use_sudo, false
 
 # Default value for default_env is {}
 set :default_env, { 
-  'NCBO_BRANCH' => "#{NCBO_BRANCH}"
 }
 
 # Default value for keep_releases is 5
@@ -75,8 +74,8 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       # execute :touch, release_path.join('tmp/restart.txt')
-      execute "whoami"
-      execute "/etc/init.d/unicorn restart; echo" #Execute doesn't read return code from unicorn init.d script for some odd reason so forcing it to true
+      execute "/etc/init.d/unicorn restart"
+      execute "sleep 10"
     end
   end
 
@@ -84,12 +83,12 @@ namespace :deploy do
   after :get_config, :restart
 #  after :publishing, :restart
 
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
+#  after :restart, :clear_cache do
+#    on roles(:web), in: :groups, limit: 3, wait: 10 do
+#       Here we can do anything such as:
+#       within release_path do
+#         execute :rake, 'cache:clear'
+#       end
+#    end
   end
 end

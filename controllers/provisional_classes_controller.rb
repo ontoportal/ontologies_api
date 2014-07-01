@@ -8,6 +8,14 @@ class ProvisionalClassesController < ApplicationController
     reply ont.provisionalClasses
   end
 
+  # Display provisional classes for a particular user
+  get "/users/:user/provisional_classes" do
+    check_last_modified_collection(LinkedData::Models::ProvisionalClass)
+    user = User.find(params["user"]).include(provisionalClasses: LinkedData::Models::ProvisionalClass.goo_attrs_to_load(includes_param)).first
+    error 404, "User #{user} not found. Please provide a valid user to retrieve provisonal classes." if user.nil?
+    reply user.provisionalClasses
+  end
+
   namespace "/provisional_classes" do
     # Display all provisional_classes
     get do

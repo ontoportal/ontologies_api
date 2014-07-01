@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 701e27b5a6175e6ec92a375b7fe2a050e10389d9
-  branch: master
+  revision: 5e1bc5d80b93bfc2212775ee604841645814f784
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 619e4b1bc5073e99926413242f57a5f892b95b32
-  branch: master
+  revision: b6a6f8d492ebc7e85cd496f90363b0955b4ad4aa
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: bec5a7a2647f21b16d8b88549883b07aebccd61f
-  branch: master
+  revision: 620eebb2ef007b72b81af756ff1316596405d819
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: a7cbd65878d29b14c46399f7fd13da4cbc4bb015
-  branch: master
+  revision: 84cad43c84c394197af578143a3154eff153c881
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -154,7 +154,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     oj (2.9.6)
-    pony (1.8)
+    pony (1.9)
       mail (>= 2.0)
     pry (0.10.0)
       coderay (~> 1.1.0)
