@@ -108,7 +108,7 @@ def clear_cache(env)
   require_relative 'config/config'
   require_relative "config/environments/#{env}.rb"
   LinkedData::HTTPCache.invalidate_all
-  redis = Redis.new(host: LinkedData.settings.goo_redis_host, port: LinkedData.settings.goo_redis_port)
+  redis = Redis.new(host: LinkedData.settings.goo_redis_host, port: LinkedData.settings.goo_redis_port, timeout: 30)
   redis.flushdb
   `rm -rf cache/`
 end
