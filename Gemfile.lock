@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: e189f392ce9cc4746da4d4e075d4602e945f41a1
+  revision: 39fd749346e2ef9c7f96499edbe335681ef4e899
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 223f9da5fa246dc1f2343321e99435236e847561
+  revision: 347c8cc1c6756779b4bb6fc7e98d65d1e5b0bae9
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 28aaf5567b0816613cdb2e072eb1bd7fbe61e0e6
+  revision: 704528011e0b9bd23e92b09da69fd213ad59065e
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -194,8 +194,8 @@ GEM
       redis-store (~> 1.1.0)
     redis-store (1.1.4)
       redis (>= 2.2)
-    rest-client (1.7.0)
-      mime-types (~> 2.0)
+    rest-client (1.7.1)
+      mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     rsolr (1.0.10)
       builder (>= 2.1.2)
