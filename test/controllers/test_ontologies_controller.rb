@@ -185,6 +185,19 @@ class TestOntologiesController < TestCase
     # see also test_ontologies_submissions_controller::test_download_submission
   end
 
+  def test_download_ontology_csv
+    num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+    ont = onts.first
+    acronym = created_ont_acronyms.first
+    
+    get "/ontologies/#{acronym}/download?download_format=csv"
+    assert_equal(200, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
+
+    # Download should fail with a 400 status.
+    get "/ontologies/#{acronym}/download?download_format=csr"
+    assert_equal(400, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
+  end
+
   #def test_download_restricted_ontology
   #  num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
   #  assert_equal(1, num_onts_created, msg="Failed to create 1 ontology?")

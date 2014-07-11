@@ -103,7 +103,18 @@ class OntologiesController < ApplicationController
       latest_submission = ont.latest_submission(status: :rdf)  # Should resolve to latest successfully loaded submission
       error 404, "There is no latest submission loaded for download" if latest_submission.nil?
       latest_submission.bring(:uploadFilePath)
-      file_path = latest_submission.uploadFilePath
+
+      download_format = params["download_format"]
+      if download_format.nil?
+        file_path = latest_submission.uploadFilePath
+      elsif download_format.downcase != 'csv'
+        error 400, "Invalid download format: #{download_format}."
+      else
+        path_array = Pathname(latest_submission.uploadFilePath).each_filename.to_a
+        path_array[-1] = acronym + '.csv'
+        file_path = File.join(path_array)
+      end
+
       if File.readable? file_path
         send_file file_path, :filename => File.basename(file_path)
       else
