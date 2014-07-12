@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 12f60058a7938c3a0e2b3968cf477652e21697cb
+  revision: f675ef0641f594a9599ef915774afe24fbcd63de
   branch: staging
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 347c8cc1c6756779b4bb6fc7e98d65d1e5b0bae9
+  revision: 9e94c295dcc65a61a0017a12019b1486a56da3de
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: df8b190447b01b8c55d29b1f7592052d4e0fe339
+  revision: 5439b788d13119c865222796241209d876ef3593
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -155,7 +155,7 @@ GEM
     net-ssh (2.9.1)
     netrc (0.7.7)
     oj (2.9.9)
-    pony (1.9)
+    pony (1.10)
       mail (>= 2.0)
     pry (0.10.0)
       coderay (~> 1.1.0)
