@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f9c1f7e7d38ec11e352f77cfd720028a5c2a4165
+  revision: 514942aa6646ac017e05dc5877f0e1fb30e53eb7
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: f970d23ebe54664b3a5f9e1c44a28da6d5f6263f
+  revision: 567b7855f69da880594865724bd7f8ceb6bb5e53
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -202,7 +202,7 @@ GEM
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    simplecov (0.8.2)
+    simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
       simplecov-html (~> 0.8.0)
