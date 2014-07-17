@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 00cb0c85e35f640ef50bd5f1167bccd2bb1c476e
+  revision: f970d23ebe54664b3a5f9e1c44a28da6d5f6263f
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -135,7 +135,7 @@ GEM
       tilt
     i18n (0.6.11)
     json (1.8.1)
-    json-schema (2.2.2)
+    json-schema (2.2.3)
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
