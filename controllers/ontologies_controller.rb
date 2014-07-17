@@ -110,9 +110,8 @@ class OntologiesController < ApplicationController
       elsif download_format.downcase != 'csv'
         error 400, "Invalid download format: #{download_format}."
       else
-        path_array = Pathname(latest_submission.uploadFilePath).each_filename.to_a
-        path_array[-1] = acronym + '.csv'
-        file_path = File.join(path_array)
+        latest_submission.bring(ontology: [:acronym])
+        file_path = latest_submission.csv_path
       end
 
       if File.readable? file_path
