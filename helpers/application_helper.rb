@@ -378,7 +378,7 @@ module Sinatra
       end
 
       def current_user
-        env["REMOTE_USER"]
+        env["REMOTE_USER"] || LinkedData::Models::User.new
       end
 
       def include_param_contains?(str)

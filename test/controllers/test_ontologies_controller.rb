@@ -182,14 +182,13 @@ class TestOntologiesController < TestCase
     # Clear restrictions on downloads
     LinkedData::OntologiesAPI.settings.restrict_download = []
     # see also test_ontologies_submissions_controller::test_download_submission
-    # see also test_ontologies_submissions_controller::test_download_submission
   end
 
   def test_download_ontology_csv
     num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
     ont = onts.first
     acronym = created_ont_acronyms.first
-    
+
     get "/ontologies/#{acronym}/download?download_format=csv"
     assert_equal(200, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
 
