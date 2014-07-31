@@ -16,7 +16,8 @@ class ValidateOntologyFileController < ApplicationController
         error = []
         begin
           missing_imports = parser.call_owlapi_java_command[1]
-        rescue
+        rescue => e
+          puts "Parsing in validator failed: #{e.message}"
         ensure
           buf.rewind
           error_lines = buf.read.split("\n")
