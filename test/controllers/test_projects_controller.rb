@@ -121,6 +121,29 @@ class TestProjectsController < TestCase
     #_project_get_success(@p.acronym, true)
   end
 
+  def test_project_creator_multiple
+    u1 = LinkedData::Models::User.new(username: 'Test User 1', email: 'user1@example.org', password: 'password')
+    u1.save
+    assert u1.valid?, u1.errors
+
+    u2 = LinkedData::Models::User.new(username: 'Test User 2', email: 'user2@example.org', password: 'password')
+    u2.save
+    assert u2.valid?, u2.errors
+
+    params = { acronym: 'TSTPRJ', creator: [u1.username, u2.username], description: 'Description of TSTPRJ' }
+    put "/projects/#{params[:acronym]}", MultiJson.dump(params), "CONTENT_TYPE" => "application/json"    
+    assert_equal 201, last_response.status, last_response.body
+
+    get "/projects/#{params[:acronym]}"
+    assert last_response.ok?
+    body = MultiJson.load(last_response.body)
+    assert_equal(2, body['creator'].count)
+    
+    body['creator'].sort! { |a,b| a <=> b }
+    assert_equal(u1.id.to_s, body['creator'].first)
+    assert_equal(u2.id.to_s, body['creator'].last)
+  end
+
   def test_project_delete
     _project_delete(@p.acronym)
     _project_get_failure(@p.acronym)
