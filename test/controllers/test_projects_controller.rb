@@ -22,7 +22,7 @@ class TestProjectsController < TestCase
       "@type":{ "type":"string", "format":"uri", "required": true },
       "acronym":{ "type":"string", "required": true },
       "name":{ "type":"string", "required": true },
-      "creator":{ "type":"string", "required": true },
+      "creator":{ "type":"array", "required": true },
       "created":{ "type":"string", "format":"datetime", "required": true },
       "homePage":{ "type":"string", "format":"uri", "required": true },
       "description":{ "type":"string", "required": true },
@@ -51,7 +51,7 @@ class TestProjectsController < TestCase
     @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: [@user])
     @ont.save
     @p = LinkedData::Models::Project.new
-    @p.creator = @user
+    @p.creator = [@user]
     @p.created = DateTime.now
     @p.name = "Test Project" # must be a valid URI
     @p.acronym = "TP"
@@ -65,7 +65,7 @@ class TestProjectsController < TestCase
         name: @p.name,
         description: @p.description,
         homePage: @p.homePage.to_s,
-        creator: @p.creator.username,
+        creator: @p.creator.map {|u| u.username},
         created: @p.created,
         institution: @p.institution,
         ontologyUsed: [@p.ontologyUsed.first.acronym]
