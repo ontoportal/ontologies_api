@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 04afcb2603ff8735e330287c53df920d16b84fbc
+  revision: b242b80210178ac37a6d0f070447eca5273c1755
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: cd1de68026ca85f32758cb75eada267e2601bac2
+  revision: e326d275c71f74a01de442fdd27cc2d17a221e1b
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 19ca8f002cd4c1ab910a306bbb35d88a3fa0f2a6
+  revision: 5976e280d79f7ba0c4d2e5278edf07133a13330f
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -120,8 +120,8 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
-    capistrano-bundler (1.1.2)
-      capistrano (~> 3.0)
+    capistrano-bundler (1.1.3)
+      capistrano (~> 3.1)
       sshkit (~> 1.2)
     capistrano-rbenv (2.0.2)
       capistrano (~> 3.1)
@@ -154,7 +154,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.7.7)
-    oj (2.9.9)
+    oj (2.10.0)
     pony (1.10)
       mail (>= 2.0)
     pry (0.10.0)
