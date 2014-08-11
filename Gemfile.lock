@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 04afcb2603ff8735e330287c53df920d16b84fbc
+  revision: 60e1898c7921768b8c9e5bfe14f847353c30afbf
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: cd1de68026ca85f32758cb75eada267e2601bac2
+  revision: 7639bc77dcf26d4b97cf5b38842670d0b0e1bd0c
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: fc433847150298a297cc8e8ca27910931b58152d
+  revision: 38dac7756890ba04dee073f7a2683d5af4be04bf
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -59,6 +59,7 @@ GIT
       json
       libxml-ruby
       multi_json
+      ncbo_resource_index
       oj
       pony
       rack
@@ -68,10 +69,11 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 11d7d1b952ab06caa43f25e547fe1e719deff562
+  revision: bfd5965cef5db3f578569c6194c2a289f6be2bde
   specs:
-    resource_index (0.0.1)
+    ncbo_resource_index (0.0.1)
       elasticsearch
+      mysql2
       pony
       ref
       ruby-xxHash
@@ -125,8 +127,8 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
-    capistrano-bundler (1.1.2)
-      capistrano (~> 3.0)
+    capistrano-bundler (1.1.3)
+      capistrano (~> 3.1)
       sshkit (~> 1.2)
     capistrano-rbenv (2.0.2)
       capistrano (~> 3.1)
@@ -174,7 +176,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.7.7)
-    oj (2.9.9)
+    oj (2.10.0)
     pony (1.10)
       mail (>= 2.0)
     pry (0.10.0)
@@ -224,7 +226,7 @@ GEM
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.12.0)
+    sequel (4.13.0)
     simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
@@ -254,7 +256,7 @@ GEM
     tilt (1.4.1)
     typhoeus (0.6.9)
       ethon (>= 0.7.1)
-    tzinfo (1.2.1)
+    tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unicorn (4.8.3)
       kgio (~> 2.6)
@@ -284,6 +286,7 @@ DEPENDENCIES
   ncbo_annotator!
   ncbo_cron!
   ncbo_resolver!
+  ncbo_resource_index!
   oj (~> 2.0)
   ontologies_linked_data!
   pry
@@ -301,7 +304,6 @@ DEPENDENCIES
   redis (~> 3.0)
   redis-activesupport
   redis-rack-cache (~> 1.0)
-  resource_index!
   shotgun!
   simplecov
   sinatra (~> 1.0)
