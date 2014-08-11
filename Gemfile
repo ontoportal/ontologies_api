@@ -61,5 +61,15 @@ gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'staging'
 gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'staging'
 
 # Not versioned
-gem 'ncbo_resolver', github: "ncbo/ncbo_resolver"
-gem 'ncbo_resource_index_client', github: 'ncbo/resource_index_ruby_client'
+gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'
+gem 'ncbo_resource_index', github: 'ncbo/resource_index'
+
+# ResourceIndex dependencies (managed per-platform)
+platform :ruby do
+  gem 'sqlite3'
+  gem 'mysql2'
+end
+
+platform :jruby do
+  gem 'jdbc-sqlite3'
+end
