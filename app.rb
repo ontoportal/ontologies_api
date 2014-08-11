@@ -13,7 +13,7 @@ require 'multi_json'
 require 'ontologies_linked_data'
 require 'ncbo_annotator'
 require 'ncbo_cron'
-require 'resource_index'
+require 'ncbo_resource_index'
 
 # Require middleware
 require 'rack/accept'

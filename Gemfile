@@ -62,7 +62,7 @@ gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'staging'
 
 # Not versioned
 gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'
-gem 'resource_index', github: 'ncbo/resource_index'
+gem 'ncbo_resource_index', github: 'ncbo/resource_index'
 
 # ResourceIndex dependencies (managed per-platform)
 platform :ruby do
