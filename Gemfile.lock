@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 73b124001329c7289c59a6f0a8daddcbf703da8d
+  revision: 0b7931f42750bb81559b2bf511ce48ca91140bdb
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 834ee351a4983bf51f57540caeab28d0ac0f9b7b
+  revision: 33ba5defdf08ca8d4f0eb271dd06e5468666a9a8
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -78,7 +78,6 @@ GIT
       ref
       ruby-xxHash
       sequel
-      sqlite3
       typhoeus
 
 GIT
@@ -247,7 +246,6 @@ GEM
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
     slop (3.6.0)
-    sqlite3 (1.3.9)
     sshkit (1.5.1)
       colorize
       net-scp (>= 1.1.2)
@@ -279,11 +277,9 @@ DEPENDENCIES
   cube-ruby
   goo!
   haml
-  jdbc-sqlite3
   json-schema (~> 2.0)
   minitest (~> 4.0)
   multi_json (~> 1.0)
-  mysql2
   ncbo_annotator!
   ncbo_cron!
   ncbo_resolver!
@@ -311,6 +307,5 @@ DEPENDENCIES
   sinatra-advanced-routes
   sinatra-contrib (~> 1.0)
   sparql-client!
-  sqlite3
   unicorn
   unicorn-worker-killer

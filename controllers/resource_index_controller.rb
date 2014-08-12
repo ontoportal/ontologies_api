@@ -1,4 +1,4 @@
-require 'resource_index'
+require 'ncbo_resource_index'
 
 class ResourceIndexController < ApplicationController
   TWENTYFOUR_HOURS  = 60 * 60 * 24
