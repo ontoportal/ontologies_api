@@ -4,16 +4,6 @@ class TestMappingsController < TestCase
 
   def self.before_suite
 
-    LinkedData::Models::TermMapping.all.each do |m|
-      m.delete
-    end
-    LinkedData::Models::Mapping.all.each do |m|
-      m.delete
-    end
-    LinkedData::Models::MappingProcess.all.each do |m|
-      m.delete
-    end
-
     ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
@@ -23,8 +13,7 @@ class TestMappingsController < TestCase
         ont.delete
       end
     end
-    bro_count, bro_acros, bro =
-      LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+    LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
       process_submission: true,
       acronym: "BRO-TEST-MAP",
       name: "BRO-TEST-MAP",
@@ -32,8 +21,7 @@ class TestMappingsController < TestCase
       ont_count: 1,
       submission_count: 1
     })
-    cno_count, cno_acronyms, cno =
-      LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+    LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
       process_submission: true,
       acronym: "CNO-TEST-MAP",
       name: "CNO-TEST-MAP",
@@ -41,8 +29,7 @@ class TestMappingsController < TestCase
       ont_count: 1,
       submission_count: 1
     })
-    fake_count, fake_acronyms, fake =
-      LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+    LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
       process_submission: true,
       acronym: "FAKE-TEST-MAP",
       name: "FAKE-TEST-MAP",
@@ -50,27 +37,6 @@ class TestMappingsController < TestCase
       ont_count: 1,
       submission_count: 1
     })
-
-
-    mappings = [LinkedData::Mappings::CUI,
-             LinkedData::Mappings::SameURI,
-             LinkedData::Mappings::Loom]
-
-    fake = fake.first
-    cno = cno.first
-    bro = bro .first
-    mappings.each do |process|
-      begin
-        tmp_log = Logger.new(TestLogFile.new)
-        process.new(fake,cno,tmp_log).start()
-        process.new(fake,bro,tmp_log).start()
-        process.new(bro,cno,tmp_log).start()
-      rescue Exception => e
-        puts "Error, logged in #{tmp_log.instance_variable_get("@logdev").dev.path}"
-        raise e
-      end
-
-    end
   end
 
   def delete_manual_mapping
