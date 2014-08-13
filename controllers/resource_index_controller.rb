@@ -27,12 +27,12 @@ class ResourceIndexController < ApplicationController
       reply ResourceIndex::Resource.populated
     end
 
-    # Return specific resources
-    get "/resources/:resources" do
+    # Return a specific resource
+    get "/resources/:resource" do
       format_params(params)
-      resources = params["resources"].map {|res_id| ResourceIndex::Resource.find(res_id)}.compact.sort {|a,b| a.name.downcase <=> b.name.downcase}
-      error 404, "Could not find resource #{params['resources'].join(', ')}" if resources.empty?
-      reply resources
+      resource = ResourceIndex::Resource.find(params["resource"])
+      error 404, "Could not find resource #{params['resources'].join(', ')}" unless resource
+      reply resource
     end
 
     get '/resources/:resources/search' do
@@ -45,12 +45,12 @@ class ResourceIndexController < ApplicationController
     end
 
     # Return a specific element from a specific resource
-    get "/resources/:resources/documents/:documents" do
+    get "/resources/:resources/documents/:document" do
       format_params(params)
-      result = ResourceIndex::Document.find(params["documents"], params["resources"], options)
-      check404(result, "No element found.")
-      element = massage_element(result, options[:elementDetails])
-      reply element
+      error 422, "You may only specify a single resource" if params["resources"].length > 1
+      document = ResourceIndex::Document.find(params["resources"].first, params["document"])
+      error 404, "No document with id #{params['document']} found" unless document
+      reply document
     end
 
   end # namespace "/resource_index"
