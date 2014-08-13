@@ -1,11 +1,18 @@
 require 'ncbo_resource_index'
 
 class ResourceIndexController < ApplicationController
-  TWENTYFOUR_HOURS  = 60 * 60 * 24
-
   namespace "/resource_index" do
 
     get do
+      path = request.path
+      links = {
+        resources: "#{path}/resources",
+        resource: "#{path}/resources/{resource_id}",
+        resource_documents: "#{path}/resources/{resource_id}/documents/{document_id}",
+        counts: "#{path}/counts?classes[{ontology_id}]={class_id}",
+        search: "#{path}/{resource_id}/search?classes[{ontology_id}]={class_id}"
+      }
+      reply ({links: links})
     end
 
     get '/counts' do
@@ -17,14 +24,13 @@ class ResourceIndexController < ApplicationController
 
     # Return all resources
     get "/resources" do
-      # expires TWENTYFOUR_HOURS, :public
-      reply RI::Resource.populated
+      reply ResourceIndex::Resource.populated
     end
 
     # Return specific resources
     get "/resources/:resources" do
       format_params(params)
-      resources = params["resources"].map {|res_id| RI::Resource.find(res_id)}.compact.sort {|a,b| a.name.downcase <=> b.name.downcase}
+      resources = params["resources"].map {|res_id| ResourceIndex::Resource.find(res_id)}.compact.sort {|a,b| a.name.downcase <=> b.name.downcase}
       error 404, "Could not find resource #{params['resources'].join(', ')}" if resources.empty?
       reply resources
     end
@@ -39,9 +45,9 @@ class ResourceIndexController < ApplicationController
     end
 
     # Return a specific element from a specific resource
-    get "/resources/:resources/elements/:elements" do
+    get "/resources/:resources/documents/:documents" do
       format_params(params)
-      result = NCBO::ResourceIndex.element(params["elements"], params["resources"], options)
+      result = ResourceIndex::Document.find(params["documents"], params["resources"], options)
       check404(result, "No element found.")
       element = massage_element(result, options[:elementDetails])
       reply element
