@@ -4,13 +4,13 @@ class ResourceIndexController < ApplicationController
   namespace "/resource_index" do
 
     get do
-      path = request.path
+      ri = "resource_index"
       links = {
-        resources: "#{path}/resources",
-        resource: "#{path}/resources/{resource_id}",
-        resource_documents: "#{path}/resources/{resource_id}/documents/{document_id}",
-        counts: "#{path}/counts?classes[{ontology_id}]={class_id}",
-        search: "#{path}/{resource_id}/search?classes[{ontology_id}]={class_id}"
+        resources: "#{LinkedData.settings.rest_url_prefix}#{ri}/resources",
+        resource: "#{LinkedData.settings.rest_url_prefix}#{ri}/resources/{resource_id}",
+        resource_documents: "#{LinkedData.settings.rest_url_prefix}#{ri}/resources/{resource_id}/documents/{document_id}",
+        counts: "#{LinkedData.settings.rest_url_prefix}#{ri}/counts?classes[{ontology_id}]={class_id}",
+        search: "#{LinkedData.settings.rest_url_prefix}#{ri}/{resource_id}/search?classes[{ontology_id}]={class_id}"
       }
       reply ({links: links})
     end
