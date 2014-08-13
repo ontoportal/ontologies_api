@@ -31,7 +31,7 @@ class ResourceIndexController < ApplicationController
     get "/resources/:resource" do
       format_params(params)
       resource = ResourceIndex::Resource.find(params["resource"])
-      error 404, "Could not find resource #{params['resources'].join(', ')}" unless resource
+      error 404, "Could not find resource #{(params['resources'] || []).join(', ')}" unless resource
       reply resource
     end
 
