@@ -26,6 +26,7 @@ gem 'redis-activesupport'
 # Testing
 gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '~> 4.0'
+gem 'minitest-stub_any_instance'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
