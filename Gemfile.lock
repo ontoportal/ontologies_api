@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 60e1898c7921768b8c9e5bfe14f847353c30afbf
+  revision: c353a65d469513f0481ad3419dc55cabbd2e6e1e
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 0b7931f42750bb81559b2bf511ce48ca91140bdb
+  revision: 323f3468fd61380bcd5c7cb1d8958c2c1b5d683e
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 33ba5defdf08ca8d4f0eb271dd06e5468666a9a8
+  revision: ee5a7948b0910a425a2add8db768c963c1e12197
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: d752722241fbc18e2c220ec079874431a1949e7d
+  revision: 2fdcce8a4ece453a43ed9a620728d8bbdd9a57be
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -166,6 +166,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.3)
     minitest (4.7.5)
+    minitest-stub_any_instance (1.0.0)
     mlanett-redis-lock (0.2.6)
       redis
     multi_json (1.10.1)
@@ -279,6 +280,7 @@ DEPENDENCIES
   haml
   json-schema (~> 2.0)
   minitest (~> 4.0)
+  minitest-stub_any_instance
   multi_json (~> 1.0)
   ncbo_annotator!
   ncbo_cron!
