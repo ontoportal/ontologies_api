@@ -53,47 +53,6 @@ class TestMappingsController < TestCase
     end
   end
 
-  def certify_mapping(mapping)
-    procs = 0
-    if mapping["classes"].map { |x| x["@id"] }.flatten.uniq.length == 1
-      assert mapping["process"].length == 1
-      assert (mapping["process"].map { |x| x["name"] }.index "same_uris") != nil
-      procs += 1
-    end
-    labels = []
-    syns = []
-    cuis = []
-    mapping["classes"].each do |term|
-      ont_acr = term["links"]["ontology"].split("/")[-1]
-      s = LinkedData::Models::Ontology.find(ont_acr).first
-                .latest_submission
-      c = LinkedData::Models::Class.find(RDF::URI.new(term["@id"])).in(s)
-                               .include(:prefLabel,:synonym, :cui)
-                               .first
-      assert c
-      cuis += c.cui if c.cui
-      labels << transmform_literal(c.prefLabel)
-      syns << c.synonym.map { |x| transmform_literal(x) }
-    end
-    if cuis.length == 2 && cuis.uniq.length == 1
-      assert (mapping["process"].map { |x| x["name"] }.index "cui") != nil
-      procs += 1
-    end
-    if labels.length == 2 && labels.uniq.length == 1
-      if mapping["classes"].map { |x| x["@id"] }.flatten.uniq.length > 1
-        processes = mapping["process"].map { |x| x["name"] }
-        assert processes.index("loom") != nil || processes.index("cui") != nil
-        procs += 1
-      end
-    elsif syns[0].index(labels[1]) || syns[1].index(labels[0])
-      if mapping["classes"].map { |x| x["@id"] }.flatten.uniq.length > 1
-        assert (mapping["process"].map { |x| x["name"] }.index "loom") != nil
-        procs += 1
-      end
-    end
-    assert procs > 0
-  end
-
   def test_mappings_for_class
     ontology = "BRO-TEST-MAP-0"
     cls = "http://bioontology.org/ontologies/Activity.owl#IRB"
@@ -101,13 +60,16 @@ class TestMappingsController < TestCase
     get "/ontologies/#{ontology}/classes/#{cls}/mappings"
     assert last_response.ok?
     mappings = MultiJson.load(last_response.body)
-    assert_equal 2, mappings.length
+    assert_equal 3, mappings.length
     mapped_to = []
-    mapped_to_data= ["http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf",
-       "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"].sort
+    mapped_to_data= [
+"http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf",
+"http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#fakething",
+"http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"].sort
 
     mappings.each do |mapping|
-      assert mapping["process"].first["name"] == "cui"
+      assert mapping["process"] == nil
+      assert mapping["type"] == "CUI"
       mapping["classes"].each do |cls|
         if cls["@id"] == "http://bioontology.org/ontologies/Activity.owl#IRB"
           assert cls["links"]["ontology"].split("/").last == "BRO-TEST-MAP-0"
@@ -116,27 +78,17 @@ class TestMappingsController < TestCase
           assert cls["links"]["ontology"].split("/").last == "FAKE-TEST-MAP-0"
           mapped_to << cls["@id"]
         end
-        if cls["@id"] == "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"
+        if cls["@id"] == "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#fakething"
+          assert cls["links"]["ontology"].split("/").last == "CNO-TEST-MAP-0"
+          mapped_to << cls["@id"]
+        end
+         if cls["@id"] == "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"
           assert cls["links"]["ontology"].split("/").last == "CNO-TEST-MAP-0"
           mapped_to << cls["@id"]
         end
       end
     end
     assert mapped_to_data == mapped_to.flatten.sort
-  end
-
-
-  # NOTE: this is the loom transform literal to test round trip mappings
-  # This needs to be changed if equivalent function is changed in:
-  # LinkedData::Mappings:::Loom
-  def transmform_literal(lit)
-    res = []
-    lit.each_char do |c|
-      if (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
-        res << c.downcase
-      end
-    end
-    return res.join ''
   end
 
   def test_mappings_for_ontology
@@ -147,6 +99,7 @@ class TestMappingsController < TestCase
     mappings = MultiJson.load(last_response.body)
 
     #pages
+    binding.pry
     assert mappings["page"] == 1
     assert mappings["pageCount"] == 1
     assert mappings["prevPage"] == nil

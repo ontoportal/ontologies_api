@@ -6,16 +6,14 @@ class MappingsController < ApplicationController
     submission = ontology.latest_submission
     cls_id = @params[:cls]
     cls = LinkedData::Models::Class.find(RDF::URI.new(cls_id)).in(submission).first
-    reply 404, "Class with id `#{class_id}` not found in ontology `#{acronym}`" if cls.nil?
+    if cls.nil?
+      reply 404, "Class with id `#{class_id}` not found in ontology `#{acronym}`" 
+    end
 
-
-    mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology, term: cls.id ])
-                                 .include(terms: [ :term, ontology: [ :acronym ] ])
-                                 .include(process: [:name, :owner ])
-                                 .no_graphs
-                                 .all
-    res = filter_mappings_with_no_ontology(mappings)
-    reply res
+    mappings = LinkedData::Mappings.mappings_ontology(submission,
+                                                      0,0,
+                                                      cls.id)
+    reply mappings
   end
 
   # Get mappings for an ontology
