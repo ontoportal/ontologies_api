@@ -19,14 +19,18 @@ class MappingsController < ApplicationController
   # Get mappings for an ontology
   get '/ontologies/:ontology/mappings' do
     ontology = ontology_from_acronym(@params[:ontology])
+    if ontology.nil?
+        error(404, "Ontology not found")
+    end
     page, size = page_params
-    mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology ])
-                                 .include(terms: [ :term, ontology: [ :acronym ] ])
-                                 .include(process: [:name, :owner ])
-                                 .no_graphs
-                                 .page(page,size)
-                                 .all
-    reply filter_mappings_with_no_ontology(mappings)
+    submission = ontology.latest_submission
+    if submission.nil?
+        error(404, "Submission not found for ontology " + ontology.acronym)
+    end
+    mappings = LinkedData::Mappings.mappings_ontology(submission,
+                                                      page,size,
+                                                      nil)
+    reply mappings
   end
 
   namespace "/mappings" do
@@ -34,21 +38,24 @@ class MappingsController < ApplicationController
     get do
       ontologies = ontology_objects_from_params
       if ontologies.length != 2
-        error(400, "/mappings/ endpoint only supports filtering on two ontologies using `?ontologies=ONT1,ONT2`")
+        error(400, 
+              "/mappings/ endpoint only supports filtering " +
+              "on two ontologies using `?ontologies=ONT1,ONT2`")
       end
 
       page, size = page_params
-
-      mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontologies.first ])
-      if ontologies.length > 1
-        mappings.and(terms: [ontology: ontologies[1] ])
+      ont1 = ontologies.first
+      ont2 = ontologies[1]
+      sub1, sub2 = ont1.latest_submission, ont2.latest_submission
+      if sub1.nil?
+        error(404, "Submission not found for ontology " + ontologies[0].id.to_s)
       end
-      mappings = mappings.include(terms: [ :term, ontology: [ :acronym ] ])
-                  .include(process: [:name, :owner ])
-                  .no_graphs
-                  .page(page,size)
-                  .all
-      reply filter_mappings_with_no_ontology(mappings)
+      if sub2.nil?
+        error(404, "Submission not found for ontology " + ontologies[1].id.to_s)
+      end
+      mappings = LinkedData::Mappings.mappings_ontologies(sub1,sub2,
+                                                          page,size)
+      reply mappings
     end
 
     get "/recent" do
@@ -60,23 +67,6 @@ class MappingsController < ApplicationController
         #we load extra mappings because the filter might remove some
         reply filter_mappings_with_no_ontology(mappings)
         reply mappings[0..size-1]
-      end
-    end
-
-    # Display a single mapping
-    get '/:mapping' do
-      mapping_id = RDF::URI.new(params[:mapping])
-      mapping = LinkedData::Models::Mapping.find(mapping_id)
-                  .no_graphs
-                  .include(terms: [:ontology, :term ])
-                  .include(process: LinkedData::Models::MappingProcess.attributes)
-                  .first
-      if mapping
-        onts = mapping.terms.map {|t| t.ontology }
-        LinkedData::Models::Ontology.where.models(onts).include(:acronym).all
-        reply filter_mappings_with_no_ontology([mapping]).first
-      else
-        error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       end
     end
 

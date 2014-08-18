@@ -39,82 +39,39 @@ class TestMappingsController < TestCase
     })
   end
 
-  def delete_manual_mapping
-    manual_mapping = LinkedData::Models::Mapping.where(process: [name: "REST Mapping"])
-                               .include(process: [:name])
-                               .all
-    manual_mapping.each do |m|
-      m.process.each do |p|
-        updated = LinkedData::Mappings.disconnect_mapping_process(m.id,p)
-        if updated.process.length == 0
-          LinkedData::Mappings.delete_mapping(m)
-        end
-      end
-    end
-  end
-
-  def test_mappings_for_class
-    ontology = "BRO-TEST-MAP-0"
-    cls = "http://bioontology.org/ontologies/Activity.owl#IRB"
-    cls= CGI.escape(cls)
-    get "/ontologies/#{ontology}/classes/#{cls}/mappings"
-    assert last_response.ok?
-    mappings = MultiJson.load(last_response.body)
-    assert_equal 3, mappings.length
-    mapped_to = []
-    mapped_to_data= [
-"http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf",
-"http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#fakething",
-"http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"].sort
-
-    mappings.each do |mapping|
-      assert mapping["process"] == nil
-      assert mapping["type"] == "CUI"
-      mapping["classes"].each do |cls|
-        if cls["@id"] == "http://bioontology.org/ontologies/Activity.owl#IRB"
-          assert cls["links"]["ontology"].split("/").last == "BRO-TEST-MAP-0"
-        end
-        if cls["@id"] == "http://www.semanticweb.org/manuelso/ontologies/mappings/fake/federalf"
-          assert cls["links"]["ontology"].split("/").last == "FAKE-TEST-MAP-0"
-          mapped_to << cls["@id"]
-        end
-        if cls["@id"] == "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#fakething"
-          assert cls["links"]["ontology"].split("/").last == "CNO-TEST-MAP-0"
-          mapped_to << cls["@id"]
-        end
-         if cls["@id"] == "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000160"
-          assert cls["links"]["ontology"].split("/").last == "CNO-TEST-MAP-0"
-          mapped_to << cls["@id"]
-        end
-      end
-    end
-    assert mapped_to_data == mapped_to.flatten.sort
-  end
-
   def test_mappings_for_ontology
-    delete_manual_mapping()
     ontology = "BRO-TEST-MAP-0"
     get "/ontologies/#{ontology}/mappings"
     assert last_response.ok?
     mappings = MultiJson.load(last_response.body)
 
     #pages
-    binding.pry
     assert mappings["page"] == 1
     assert mappings["pageCount"] == 1
     assert mappings["prevPage"] == nil
     assert mappings["nextPage"] == nil
 
-    assert_equal 20, mappings["collection"].length
+    assert_equal 18, mappings["collection"].length
     mappings = mappings["collection"]
 
     mappings.each do |mapping|
-      certify_mapping(mapping)
+      assert mapping["classes"].length, 2
+      origin = nil
+      mapping["classes"].each do |c|
+        assert c["@type"]["owl#Class"] != nil
+        assert c["links"] != nil
+        assert c["links"]["ontology"] != nil
+        if c["links"]["ontology"][ontology] != nil
+          origin = c["@id"]
+        end
+      end
+      #Linked data already tests for correct mappings
+      #in API we just need to test for the data structure
+      assert origin != nil
     end
   end
 
   def test_mappings_between_ontologies
-    delete_manual_mapping()
     bro_uri = LinkedData::Models::Ontology.find("BRO-TEST-MAP-0").first.id.to_s
     fake_uri = LinkedData::Models::Ontology.find("FAKE-TEST-MAP-0").first.id.to_s
     ontologies_params = [
@@ -122,6 +79,7 @@ class TestMappingsController < TestCase
       "#{bro_uri},#{fake_uri}",
     ]
     ontologies_params.each do |ontologies|
+      ont1, ont2 = ontologies.split(",")
       get "/mappings/?ontologies=#{ontologies}"
       assert last_response.ok?
       mappings = MultiJson.load(last_response.body)
@@ -131,38 +89,45 @@ class TestMappingsController < TestCase
       assert mappings["prevPage"] == nil
       assert mappings["nextPage"] == nil
 
-      assert_equal 11, mappings["collection"].length
+      assert_equal 8, mappings["collection"].length
       mappings = mappings["collection"]
-
       mappings.each do |mapping|
-        certify_mapping(mapping)
+        assert mapping["classes"].length, 2
+        mapping["classes"].each do |c|
+          assert c["@type"]["owl#Class"] != nil
+          assert c["links"] != nil
+          assert c["links"]["ontology"] != nil
+
+          class_ont = c["links"]["ontology"]
+          assert class_ont[ont1] != nil || class_ont[ont2] != nil
+        end
       end
     end
   end
 
   def test_mappings_for_ontology_pages
-    delete_manual_mapping()
     ontology = "BRO-TEST-MAP-0"
-    pagesize = 6
+    pagesize = 4
     page = 1
     next_page = nil
+    total = 0
     begin
       get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{page}"
       assert last_response.ok?
       mappings = MultiJson.load(last_response.body)
       #pages
       assert mappings["page"] == page
-      assert_equal (page == 4 ? 2 : 6), mappings["collection"].length
-      assert mappings["pageCount"] == 4
+      assert mappings["pageCount"] == 5
+      assert_equal (page == 5 ? 2 : 4), mappings["collection"].length
+      assert mappings["pageCount"] == 5
       assert mappings["prevPage"] == (page > 1 ? page - 1 : nil)
-      assert mappings["nextPage"] == (page < 4 ? page + 1 : nil)
+      assert mappings["nextPage"] == (page < 5 ? page + 1 : nil)
       next_page = mappings["nextPage"]
       mappings = mappings["collection"]
-      mappings.each do |mapping|
-        certify_mapping(mapping)
-      end
+      total += mappings.length
       page = next_page
     end while (next_page)
+    assert total == 18
   end
 
   def test_mappings
@@ -172,23 +137,12 @@ class TestMappingsController < TestCase
   end
 
   def test_get_single_mapping
-    count = 0
-    LinkedData::Models::Mapping.all.each do |m|
-      m_id = CGI.escape(m.id.to_s)
-      get "/mappings/#{m_id}"
-      assert last_response.status == 200
-      mapping = MultiJson.load(last_response.body)
-      if mapping["process"].select { |x| x["name"] == "REST Mapping" }.length > 0
-        next #skip manual mappings
-      end
-      certify_mapping(mapping)
-      count += 1
-    end
-    assert count > 10
+    #not supported
+    get "/mappings/some_fake_id"
+    assert !last_response.ok?
   end
 
   def test_create_mapping
-    delete_manual_mapping
 
     mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
@@ -326,7 +280,6 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_statistics
-    delete_manual_mapping()
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
@@ -344,7 +297,6 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_statistics_for_ontology
-    delete_manual_mapping()
     ontology = "BRO-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
