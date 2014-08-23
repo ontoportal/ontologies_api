@@ -64,8 +64,6 @@ class MappingsController < ApplicationController
         error 422, "Recent mappings only processes calls under 50"
       else
         mappings = LinkedData::Mappings.recent_user_mappings(size + 15)
-        #we load extra mappings because the filter might remove some
-        reply filter_mappings_with_no_ontology(mappings)
         reply mappings[0..size-1]
       end
     end
