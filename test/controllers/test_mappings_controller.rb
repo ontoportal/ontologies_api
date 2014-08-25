@@ -195,12 +195,12 @@ class TestMappingsController < TestCase
     get "/mappings/recent/"
     assert last_response.status == 200
     response = MultiJson.load(last_response.body)
-    assert (response.length == 4)
+    assert (response.length == 5)
     date = nil
     response.each do |x|
-      assert rest_mappings.map { |x| x.id.to_s.split("/")[-1] }
-                  .include?(response.first["@id"].to_s.split("/")[-1])
-      date_x = DateTime.iso8601(response.first["process"].first["date"])
+      assert x["classes"].length == 2
+      assert x["process"] != nil
+      date_x = DateTime.iso8601(x["process"]["date"])
       if date
         assert date >= date_x
       end
