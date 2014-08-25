@@ -58,12 +58,23 @@ class MappingsController < ApplicationController
       reply mappings
     end
 
+    # Display a single mapping - only rest
+    get '/:mapping' do
+      mapping_id = RDF::URI.new(params[:mapping])
+      mapping = LinkedData::Mappings.get_rest_mapping(mapping_id)
+      if mapping
+        reply mapping
+      else
+        error(404, "Mapping with id `#{mapping_id.to_s}` not found")
+      end
+    end
+
     get "/recent" do
       size = params[:size] || 5
       if size > 50
         error 422, "Recent mappings only processes calls under 50"
       else
-        mappings = LinkedData::Mappings.recent_user_mappings(size + 15)
+        mappings = LinkedData::Mappings.recent_rest_mappings(size + 15)
         reply mappings[0..size-1]
       end
     end
@@ -124,37 +135,11 @@ class MappingsController < ApplicationController
     # Delete a mapping
     delete '/:mapping' do
       mapping_id = RDF::URI.new(replace_url_prefix(params[:mapping]))
-      mapping = LinkedData::Models::Mapping.find(mapping_id)
-                  .include(terms: [:ontology, :term ])
-                  .include(process: LinkedData::Models::MappingProcess.attributes)
-                  .first
-
+      mapping = LinkedData::Mappings.delete_rest_mapping(mapping_id)
       if mapping.nil?
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       else
-        deleted = false
-        disconnected = 0
-        mapping.process.each do |p|
-          if p.date
-            disconnected += 1
-            mapping_updated = LinkedData::Mappings.disconnect_mapping_process(mapping.id,p)
-            if mapping_updated.process.length == 0
-              deleted = true
-              LinkedData::Mappings.delete_mapping(mapping_updated)
-              break
-            end
-          end
-        end
-
-        if deleted
-          halt 204
-        else
-          if disconnected > 0
-            halt 204
-          else
-            reply(400, "This mapping only contains automatic processes. Nothing has been deleted")
-          end
-        end
+        halt 204
       end
     end
   end
@@ -173,13 +158,6 @@ class MappingsController < ApplicationController
       reply LinkedData::Mappings.mapping_counts_for_ontology(ontology)
     end
 
-    # Classes with lots of mappings
-    get '/ontologies/:ontology/popular_classes' do
-    end
-
-    # Users with lots of mappings
-    get '/ontologies/:ontology/users' do
-    end
   end
 
 end

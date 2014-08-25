@@ -198,6 +198,8 @@ class TestMappingsController < TestCase
     assert (response.length == 5)
     date = nil
     response.each do |x|
+      binding.pry
+      assert x["@id"] != nil
       assert x["classes"].length == 2
       assert x["process"] != nil
       date_x = DateTime.iso8601(x["process"]["date"])
@@ -209,15 +211,26 @@ class TestMappingsController < TestCase
   end
 
   def test_delete_mapping
-    mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Pattern_Recognition",
-      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Pattern_Inference_Algorithm",
-      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Pattern_Inference_Algorithm" ]
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
+    assert LinkedData::Models::RestBackupMapping.all.count == 0
+    rest_predicate = LinkedData::Mappings.mapping_predicates()["REST"][0]
+    epr = Goo.sparql_query_client(:main)
+    epr.query("SELECT (count(?s) as ?c) WHERE { ?s <#{rest_predicate}> ?o . }")
+          .each do |sol|
+      assert sol[:c].object == 0
+    end
+
+    mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
+      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools" ]
     mapping_ont_a = ["BRO-TEST-MAP-0","BRO-TEST-MAP-0","BRO-TEST-MAP-0"]
 
 
     mapping_term_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000202",
       "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
-      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203" ]
+      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000205" ]
     mapping_ont_b = ["CNO-TEST-MAP-0","CNO-TEST-MAP-0","CNO-TEST-MAP-0"]
 
     relations = [ "http://www.w3.org/2004/02/skos/core#exactMatch",
@@ -225,41 +238,57 @@ class TestMappingsController < TestCase
                   "http://www.w3.org/2004/02/skos/core#relatedMatch" ]
 
     3.times do |i|
-      terms = []
-      terms << { ontology: mapping_ont_a[i], term: [mapping_term_a[i]] }
-      terms << { ontology: mapping_ont_b[i], term: [mapping_term_b[i]] }
-      mapping = { terms: terms,
+      classes = {}
+      classes[mapping_term_a[i]] = mapping_ont_a[i]
+      classes[mapping_term_b[i]] = mapping_ont_b[i]
+
+      mapping = { classes: classes,
                   comment: "comment for mapping test #{i}",
                   relation: relations[i],
                   creator: "http://data.bioontology.org/users/tim"
       }
-      post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
+
+      post "/mappings/", 
+            MultiJson.dump(mapping), 
+            "CONTENT_TYPE" => "application/json"
+
       assert last_response.status == 201
       response = MultiJson.load(last_response.body)
-      mapping_id = CGI.escape(response["@id"])
-      delete "/mappings/#{mapping_id}"
-      assert last_response.status == 204
-      get "/mappings/#{mapping_id}"
-      assert last_response.status == 404
+      assert response["process"]["comment"] == "comment for mapping test #{i}"
+      assert response["process"]["creator"]["users/tim"]
+      assert response["process"]["relation"] == relations[i]
+      assert response["process"]["date"] != nil
+      response["classes"].each do |cls|
+        if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]
+          assert cls["@id"] == mapping_term_a[i]
+        elsif cls["links"]["ontology"].split("/")[-1] == mapping_ont_b[i]
+          assert cls["@id"] == mapping_term_b[i]
+        else
+          assert 1==0, "uncontrolled mapping response in post"
+        end
+      end
+      sleep(1.2) # to ensure different in times in dates. Later test on recent mappings
     end
 
-    #delete a loom mapping
-    #nothing should happen
-    LinkedData::Models::Mapping.all.each do |m|
+    LinkedData::Models::RestBackupMapping.all.each do |m|
       m_id = CGI.escape(m.id.to_s)
       get "/mappings/#{m_id}"
       assert last_response.status == 200
       mapping = MultiJson.load(last_response.body)
-      if mapping["process"].select { |x| x["name"] == "REST Mapping" }.length >  0
-        next #skip manual mappings
-      end
+      assert mapping["classes"].length == 2
+      assert mapping["process"] != nil
       delete "/mappings/#{m_id}"
-      assert last_response.status == 400
+      assert last_response.status == 204
       get "/mappings/#{m_id}"
-      assert last_response.status == 200
-      break #one is enough for testing
+      assert last_response.status == 404
     end
-
+    assert LinkedData::Models::RestBackupMapping.all.count == 0
+    
+    epr = Goo.sparql_query_client(:main)
+    epr.query("SELECT (count(?s) as ?c) WHERE { ?s <#{rest_predicate}> ?o . }")
+          .each do |sol|
+      assert sol[:c].object == 0
+    end
   end
 
   def test_mappings_statistics
