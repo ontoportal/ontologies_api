@@ -148,14 +148,22 @@ class MappingsController < ApplicationController
 
     get '/ontologies' do
       expires 86400, :public
-      reply LinkedData::Mappings.mapping_counts_per_ontology()
+      reply LinkedData::Mappings.mapping_counts()
     end
 
     # Statistics for an ontology
     get '/ontologies/:ontology' do
       expires 86400, :public
       ontology = ontology_from_acronym(@params[:ontology])
-      reply LinkedData::Mappings.mapping_counts_for_ontology(ontology)
+      if ontology.nil?
+        error(404, "Ontology #{@params[:ontology]} not found")
+      end
+      sub = ontology.latest_submission
+      if sub.nil?
+        error(404, "Ontology #{@params[:ontology]} does not have a submission")
+      end
+  
+      reply LinkedData::Mappings.mapping_ontologies_count(sub1,sub2)
     end
 
   end

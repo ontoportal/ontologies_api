@@ -295,17 +295,10 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    data = {"BRO-TEST-MAP-0"=>20,
-            "CNO-TEST-MAP-0"=>19,
-            "FAKE-TEST-MAP-0"=>21}
+    data = {"BRO-TEST-MAP-0"=>18,
+            "CNO-TEST-MAP-0"=>20,
+            "FAKE-TEST-MAP-0"=>18}
     assert_equal data, stats
-    data.each_key do |acr|
-          mappings_acr = LinkedData::Models::Mapping
-            .where(terms: [
-              ontology: LinkedData::Models::Ontology.find(acr).first
-                          ]).all
-          assert mappings_acr.count == data[acr]
-    end
   end
 
   def test_mappings_statistics_for_ontology
@@ -313,6 +306,7 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
+    binding.pry
     assert_equal 9, stats["CNO-TEST-MAP-0"]
     assert_equal 11, stats["FAKE-TEST-MAP-0"]
     stats.each_key do |acr|
