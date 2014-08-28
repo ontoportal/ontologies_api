@@ -27,6 +27,14 @@ class ResourceIndexController < ApplicationController
       reply ResourceIndex::Resource.populated
     end
 
+    # Needs to be prior to the /resources/:resource route
+    get '/resources/search' do
+      format_params(params)
+      classes = get_classes(params)
+      error 404, "You must provide valid `classes` to search the Resource Index" if classes.empty?
+      reply classes.ri_docs_all_resources_page(params)
+    end
+
     # Return a specific resource
     get "/resources/:resource" do
       format_params(params)
