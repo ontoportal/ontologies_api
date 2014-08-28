@@ -23,12 +23,13 @@ module Sinatra
         params["lowercaseOperators"] = "true"
         params["fl"] = "*,score"
 
-        text.gsub!(/\*+$/, '')
+        # text.gsub!(/\*+$/, '')
 
         if (params[EXACT_MATCH_PARAM] == "true")
           query = "\"#{RSolr.escape(text)}\""
           params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact notation cui semanticType"
-        elsif (params[SUGGEST_PARAM] == "true")
+        elsif (params[SUGGEST_PARAM] == "true" || text[-1] == '*')
+          text.gsub!(/\*+$/, '')
           query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest_ncbo"
           params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge resource_id notation cui semanticType"
