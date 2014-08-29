@@ -163,7 +163,7 @@ class MappingsController < ApplicationController
         error(404, "Ontology #{@params[:ontology]} does not have a submission")
       end
   
-      reply LinkedData::Mappings.mapping_ontologies_count(sub1,sub2)
+      reply LinkedData::Mappings.mapping_ontologies_count(sub,nil)
     end
 
   end
