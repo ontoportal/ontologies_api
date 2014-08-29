@@ -306,8 +306,7 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    binding.pry
-    assert_equal 9, stats["CNO-TEST-MAP-0"]
+    assert_equal 13, stats["CNO-TEST-MAP-0"]
     assert_equal 11, stats["FAKE-TEST-MAP-0"]
     stats.each_key do |acr|
           mappings_acr = LinkedData::Models::Mapping
