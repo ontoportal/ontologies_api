@@ -130,7 +130,8 @@ class TestProjectsController < TestCase
     u2.save
     assert u2.valid?, u2.errors
 
-    params = { acronym: 'TSTPRJ', creator: [u1.username, u2.username], description: 'Description of TSTPRJ' }
+    params = { name: @p.name, acronym: 'TSTPRJ', creator: [u1.username, u2.username], 
+               description: 'Description of TSTPRJ', homePage: @p.homePage }
     put "/projects/#{params[:acronym]}", MultiJson.dump(params), "CONTENT_TYPE" => "application/json"
     assert_equal 201, last_response.status, last_response.body
 
