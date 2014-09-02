@@ -3,6 +3,7 @@ require 'sinatra/base'
 module Sinatra
   module Helpers
     module ResourceIndexHelper
+      BOOL_MAP = {"and" => :must, "or" => :should}
 
       def classes_error(params)
         msg = "Malformed parameters. Try:\n"
@@ -44,6 +45,9 @@ module Sinatra
         offset, limit = offset_and_limit(page, page_size)
         params[:from] = offset unless offset.nil?
         params[:size] = limit unless limit.nil?
+
+        params[:bool] = BOOL_MAP[params.delete("boolean_operator").to_s.downcase]
+        params[:expand] = params["expand_hierarchy"].downcase.eql?("true")
 
         if params["elements"].is_a? String
           params["elements"] = params["elements"].split(',')
