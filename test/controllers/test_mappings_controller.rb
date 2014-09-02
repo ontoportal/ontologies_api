@@ -189,8 +189,25 @@ class TestMappingsController < TestCase
           assert 1==0, "uncontrolled mapping response in post"
         end
       end
-      sleep(1.2) # to ensure different in times in dates. Later test on recent mappings
+      # to ensure different in times in dates. Later test on recent mappings
+      sleep(1.2) 
     end
+
+    #there three mappings in BRO with processes
+    ontology = "BRO-TEST-MAP-0"
+    get "/ontologies/#{ontology}/mappings?pagesize=1000&page=1"
+    assert last_response.ok?
+    mappings = MultiJson.load(last_response.body)
+    mappings = mappings["collection"]
+    assert mappings.length == 21
+    rest_count = 0
+    mappings.each do |x|
+      if x["process"] != nil
+        rest_count += 1
+        #assert x["@id"] != nil
+      end
+    end
+    assert rest_count == 3
 
     get "/mappings/recent/"
     assert last_response.status == 200
@@ -198,7 +215,6 @@ class TestMappingsController < TestCase
     assert (response.length == 5)
     date = nil
     response.each do |x|
-      binding.pry
       assert x["@id"] != nil
       assert x["classes"].length == 2
       assert x["process"] != nil
@@ -292,6 +308,9 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_statistics
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
@@ -302,29 +321,20 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_statistics_for_ontology
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
     ontology = "BRO-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    assert_equal 13, stats["CNO-TEST-MAP-0"]
-    assert_equal 11, stats["FAKE-TEST-MAP-0"]
-    stats.each_key do |acr|
-          mappings_acr = LinkedData::Models::Mapping
-            .where(terms: [
-              ontology:
-              LinkedData::Models::Ontology.find("BRO-TEST-MAP-0").first
-                          ])
-            .and(terms: [ontology:
-              LinkedData::Models::Ontology.find(acr).first
-                          ])
-            .all
-          assert mappings_acr.count == stats[acr]
-    end
+    assert_equal 10, stats["CNO-TEST-MAP-0"]
+    assert_equal 8, stats["FAKE-TEST-MAP-0"]
     ontology = "FAKE-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    assert_equal 11, stats["BRO-TEST-MAP-0"]
+    assert_equal 8, stats["BRO-TEST-MAP-0"]
     assert_equal 10, stats["CNO-TEST-MAP-0"]
   end
 

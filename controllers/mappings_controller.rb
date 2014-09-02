@@ -58,6 +58,16 @@ class MappingsController < ApplicationController
       reply mappings
     end
 
+    get "/recent" do
+      size = params[:size] || 5
+      if size > 50
+        error 422, "Recent mappings only processes calls under 50"
+      else
+        mappings = LinkedData::Mappings.recent_rest_mappings(size + 15)
+        reply mappings[0..size-1]
+      end
+    end
+
     # Display a single mapping - only rest
     get '/:mapping' do
       mapping_id = RDF::URI.new(params[:mapping])
@@ -66,16 +76,6 @@ class MappingsController < ApplicationController
         reply mapping
       else
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
-      end
-    end
-
-    get "/recent" do
-      size = params[:size] || 5
-      if size > 50
-        error 422, "Recent mappings only processes calls under 50"
-      else
-        mappings = LinkedData::Mappings.recent_rest_mappings(size + 15)
-        reply mappings[0..size-1]
       end
     end
 
@@ -105,7 +105,7 @@ class MappingsController < ApplicationController
         end
         submission.bring(ontology: [:acronym])
         c = LinkedData::Models::Class.find(RDF::URI.new(class_id))
-                                    .in(o.latest_submission)
+                                    .in(submission)
                                     .first
         if c.nil?
           error(400, "Class ID `#{id}` not found in `#{submission.id.to_s}`")

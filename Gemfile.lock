@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
   revision: f675ef0641f594a9599ef915774afe24fbcd63de
-  branch: staging
+  branch: implicit_mappings
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: c353a65d469513f0481ad3419dc55cabbd2e6e1e
-  branch: staging
+  revision: 785768b4ad0f2eed3a99c1dad6c04e8da8beb0a0
+  branch: implicit_mappings
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 323f3468fd61380bcd5c7cb1d8958c2c1b5d683e
-  branch: staging
+  revision: 0b7931f42750bb81559b2bf511ce48ca91140bdb
+  branch: implicit_mappings
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: ee5a7948b0910a425a2add8db768c963c1e12197
-  branch: staging
+  revision: 6b0223e46868517b8085edc860825b59b76dad6b
+  branch: implicit_mappings
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -83,7 +83,7 @@ GIT
 GIT
   remote: git://github.com/ncbo/sparql-client.git
   revision: fff5f36779bb630652922e5c4b5a558f026e0e2d
-  branch: staging
+  branch: implicit_mappings
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
