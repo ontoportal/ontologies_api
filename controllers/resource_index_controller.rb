@@ -18,13 +18,21 @@ class ResourceIndexController < ApplicationController
     get '/counts' do
       format_params(params)
       classes = get_classes(params)
-      error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
-      reply classes.ri_counts(params["resources"])
+      error 404, "You must provide valid `classes` to search the Resource Index" if classes.empty?
+      reply classes.ri_counts(params["resources"], params)
     end
 
     # Return all resources
     get "/resources" do
       reply ResourceIndex::Resource.populated
+    end
+
+    # Needs to be prior to the /resources/:resource route
+    get '/resources/search' do
+      format_params(params)
+      classes = get_classes(params)
+      error 404, "You must provide valid `classes` to search the Resource Index" if classes.empty?
+      reply classes.ri_docs_all_resources_page(params)
     end
 
     # Return a specific resource
@@ -38,7 +46,7 @@ class ResourceIndexController < ApplicationController
     get '/resources/:resources/search' do
       format_params(params)
       classes = get_classes(params)
-      error 404, "You must provide valid `classes` to retrieve resources" if classes.empty?
+      error 404, "You must provide valid `classes` to search the Resource Index" if classes.empty?
       error 422, "You may only specify a single resource" if params["resources"].length > 1
       resource = params["resources"].first
       reply classes.ri_docs_page(resource, params)

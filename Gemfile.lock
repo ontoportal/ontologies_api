@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
   revision: f675ef0641f594a9599ef915774afe24fbcd63de
-  branch: implicit_mappings
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -17,7 +17,7 @@ GIT
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
   revision: 785768b4ad0f2eed3a99c1dad6c04e8da8beb0a0
-  branch: implicit_mappings
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 0b7931f42750bb81559b2bf511ce48ca91140bdb
-  branch: implicit_mappings
+  revision: 0b5e9c4b6c8d236562566ece558a65b543010c10
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6b0223e46868517b8085edc860825b59b76dad6b
-  branch: implicit_mappings
+  revision: eb2bb7e7b400a3283728889a58f24f85b0f1fdba
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 2fdcce8a4ece453a43ed9a620728d8bbdd9a57be
+  revision: 8580fafedcfb34de9ad8e83395f2f517aaf5a0e7
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -83,7 +83,7 @@ GIT
 GIT
   remote: git://github.com/ncbo/sparql-client.git
   revision: fff5f36779bb630652922e5c4b5a558f026e0e2d
-  branch: implicit_mappings
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -177,10 +177,10 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.7.7)
-    oj (2.10.0)
+    oj (2.10.2)
     pony (1.10)
       mail (>= 2.0)
-    pry (0.10.0)
+    pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
@@ -227,7 +227,7 @@ GEM
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.13.0)
+    sequel (4.14.0)
     simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
