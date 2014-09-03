@@ -40,6 +40,9 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_for_ontology
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
     ontology = "BRO-TEST-MAP-0"
     get "/ontologies/#{ontology}/mappings"
     assert last_response.ok?
@@ -151,6 +154,9 @@ class TestMappingsController < TestCase
   end
 
   def test_create_mapping
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
 
     mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
