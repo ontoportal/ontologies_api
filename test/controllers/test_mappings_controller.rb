@@ -72,6 +72,9 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_between_ontologies
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
     bro_uri = LinkedData::Models::Ontology.find("BRO-TEST-MAP-0").first.id.to_s
     fake_uri = LinkedData::Models::Ontology.find("FAKE-TEST-MAP-0").first.id.to_s
     ontologies_params = [
@@ -106,6 +109,9 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_for_ontology_pages
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
     ontology = "BRO-TEST-MAP-0"
     pagesize = 4
     page = 1
