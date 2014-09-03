@@ -56,6 +56,8 @@ class TestMappingsController < TestCase
 
     mappings.each do |mapping|
       assert mapping["classes"].length, 2
+      assert mapping["type"] != nil
+      assert mapping["type"].length > 0
       origin = nil
       mapping["classes"].each do |c|
         assert c["@type"]["owl#Class"] != nil
