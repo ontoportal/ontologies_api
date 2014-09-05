@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ed62b76848e717a59792505febeff2cd9205dd49
+  revision: 3b40148a3f271ef7d1182d3f34bfa3e1e3752cf0
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 5b6700f952f8813287bfdd416af4b0300b6217ab
+  revision: 8e75401e24eac92fcd1e31209d5a5c779742f438
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 2f65cdbb86cbb300d63dd2296e9c33b8e7253002
+  revision: 2ac0e802a2354787275b9a8435310f67aa603f5f
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -155,7 +155,7 @@ GEM
       tilt
     i18n (0.6.11)
     json (1.8.1)
-    json-schema (2.2.4)
+    json-schema (2.2.5)
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
