@@ -12,6 +12,7 @@ module Sinatra
       INCLUDE_PROPERTIES_PARAM = "include_properties"
       SUBTREE_ID_PARAM = "subtree_root"     # NCBO-603
       OBSOLETE_PARAM = "include_obsolete"   # NCBO-603
+      SUGGEST_PARAM = "suggest" # NCBO-932
 
       def get_edismax_query(text, params={})
         validate_params_solr_population()
@@ -22,11 +23,13 @@ module Sinatra
         params["lowercaseOperators"] = "true"
         params["fl"] = "*,score"
 
+        # text.gsub!(/\*+$/, '')
+
         if (params[EXACT_MATCH_PARAM] == "true")
           query = "\"#{RSolr.escape(text)}\""
           params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact notation cui semanticType"
-        elsif (text[-1] == '*')
-          text = text[0..-2]
+        elsif (params[SUGGEST_PARAM] == "true" || text[-1] == '*')
+          text.gsub!(/\*+$/, '')
           query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest_ncbo"
           params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge resource_id notation cui semanticType"

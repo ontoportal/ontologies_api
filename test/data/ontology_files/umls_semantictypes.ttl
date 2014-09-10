@@ -1,0 +1,672 @@
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix umls: <http://bioportal.bioontology.org/ontologies/umls/> .
+
+<http://purl.bioontology.org/ontology/STY/T116> a owl:Class ;
+	skos:notation "T116"^^xsd:string ;
+	skos:prefLabel "Amino Acid, Peptide, or Protein"@en .
+
+<http://purl.bioontology.org/ontology/STY/T121> a owl:Class ;
+	skos:notation "T121"^^xsd:string ;
+	skos:prefLabel "Pharmacologic Substance"@en .
+
+<http://purl.bioontology.org/ontology/STY/T130> a owl:Class ;
+	skos:notation "T130"^^xsd:string ;
+	skos:prefLabel "Indicator, Reagent, or Diagnostic Aid"@en .
+
+<http://purl.bioontology.org/ontology/STY/T119> a owl:Class ;
+	skos:notation "T119"^^xsd:string ;
+	skos:prefLabel "Lipid"@en .
+
+<http://purl.bioontology.org/ontology/STY/T126> a owl:Class ;
+	skos:notation "T126"^^xsd:string ;
+	skos:prefLabel "Enzyme"@en .
+
+<http://purl.bioontology.org/ontology/STY/T123> a owl:Class ;
+	skos:notation "T123"^^xsd:string ;
+	skos:prefLabel "Biologically Active Substance"@en .
+
+<http://purl.bioontology.org/ontology/STY/T109> a owl:Class ;
+	skos:notation "T109"^^xsd:string ;
+	skos:prefLabel "Organic Chemical"@en .
+
+<http://purl.bioontology.org/ontology/STY/T131> a owl:Class ;
+	skos:notation "T131"^^xsd:string ;
+	skos:prefLabel "Hazardous or Poisonous Substance"@en .
+
+<http://purl.bioontology.org/ontology/STY/T110> a owl:Class ;
+	skos:notation "T110"^^xsd:string ;
+	skos:prefLabel "Steroid"@en .
+
+<http://purl.bioontology.org/ontology/STY/T125> a owl:Class ;
+	skos:notation "T125"^^xsd:string ;
+	skos:prefLabel "Hormone"@en .
+
+<http://purl.bioontology.org/ontology/STY/T114> a owl:Class ;
+	skos:notation "T114"^^xsd:string ;
+	skos:prefLabel "Nucleic Acid, Nucleoside, or Nucleotide"@en .
+
+<http://purl.bioontology.org/ontology/STY/T111> a owl:Class ;
+	skos:notation "T111"^^xsd:string ;
+	skos:prefLabel "Eicosanoid"@en .
+
+<http://purl.bioontology.org/ontology/STY/T118> a owl:Class ;
+	skos:notation "T118"^^xsd:string ;
+	skos:prefLabel "Carbohydrate"@en .
+
+<http://purl.bioontology.org/ontology/STY/T124> a owl:Class ;
+	skos:notation "T124"^^xsd:string ;
+	skos:prefLabel "Neuroreactive Substance or Biogenic Amine"@en .
+
+<http://purl.bioontology.org/ontology/STY/T127> a owl:Class ;
+	skos:notation "T127"^^xsd:string ;
+	skos:prefLabel "Vitamin"@en .
+
+<http://purl.bioontology.org/ontology/STY/T195> a owl:Class ;
+	skos:notation "T195"^^xsd:string ;
+	skos:prefLabel "Antibiotic"@en .
+
+<http://purl.bioontology.org/ontology/STY/T129> a owl:Class ;
+	skos:notation "T129"^^xsd:string ;
+	skos:prefLabel "Immunologic Factor"@en .
+
+<http://purl.bioontology.org/ontology/STY/T024> a owl:Class ;
+	skos:notation "T024"^^xsd:string ;
+	skos:prefLabel "Tissue"@en .
+
+<http://purl.bioontology.org/ontology/STY/T115> a owl:Class ;
+	skos:notation "T115"^^xsd:string ;
+	skos:prefLabel "Organophosphorus Compound"@en .
+
+<http://purl.bioontology.org/ontology/STY/T073> a owl:Class ;
+	skos:notation "T073"^^xsd:string ;
+	skos:prefLabel "Manufactured Object"@en .
+
+<http://purl.bioontology.org/ontology/STY/T081> a owl:Class ;
+	skos:notation "T081"^^xsd:string ;
+	skos:prefLabel "Quantitative Concept"@en .
+
+<http://purl.bioontology.org/ontology/STY/T170> a owl:Class ;
+	skos:notation "T170"^^xsd:string ;
+	skos:prefLabel "Intellectual Product"@en .
+
+<http://purl.bioontology.org/ontology/STY/T029> a owl:Class ;
+	skos:notation "T029"^^xsd:string ;
+	skos:prefLabel "Body Location or Region"@en .
+
+<http://purl.bioontology.org/ontology/STY/T184> a owl:Class ;
+	skos:notation "T184"^^xsd:string ;
+	skos:prefLabel "Sign or Symptom"@en .
+
+<http://purl.bioontology.org/ontology/STY/T033> a owl:Class ;
+	skos:notation "T033"^^xsd:string ;
+	skos:prefLabel "Finding"@en .
+
+<http://purl.bioontology.org/ontology/STY/T191> a owl:Class ;
+	skos:notation "T191"^^xsd:string ;
+	skos:prefLabel "Neoplastic Process"@en .
+
+<http://purl.bioontology.org/ontology/STY/T023> a owl:Class ;
+	skos:notation "T023"^^xsd:string ;
+	skos:prefLabel "Body Part, Organ, or Organ Component"@en .
+
+<http://purl.bioontology.org/ontology/STY/T005> a owl:Class ;
+	skos:notation "T005"^^xsd:string ;
+	skos:prefLabel "Virus"@en .
+
+<http://purl.bioontology.org/ontology/STY/T047> a owl:Class ;
+	skos:notation "T047"^^xsd:string ;
+	skos:prefLabel "Disease or Syndrome"@en .
+
+<http://purl.bioontology.org/ontology/STY/T019> a owl:Class ;
+	skos:notation "T019"^^xsd:string ;
+	skos:prefLabel "Congenital Abnormality"@en .
+
+<http://purl.bioontology.org/ontology/STY/T169> a owl:Class ;
+	skos:notation "T169"^^xsd:string ;
+	skos:prefLabel "Functional Concept"@en .
+
+<http://purl.bioontology.org/ontology/STY/T190> a owl:Class ;
+	skos:notation "T190"^^xsd:string ;
+	skos:prefLabel "Anatomical Abnormality"@en .
+
+<http://purl.bioontology.org/ontology/STY/T037> a owl:Class ;
+	skos:notation "T037"^^xsd:string ;
+	skos:prefLabel "Injury or Poisoning"@en .
+
+<http://purl.bioontology.org/ontology/STY/T022> a owl:Class ;
+	skos:notation "T022"^^xsd:string ;
+	skos:prefLabel "Body System"@en .
+
+<http://purl.bioontology.org/ontology/STY/T018> a owl:Class ;
+	skos:notation "T018"^^xsd:string ;
+	skos:prefLabel "Embryonic Structure"@en .
+
+<http://purl.bioontology.org/ontology/STY/T046> a owl:Class ;
+	skos:notation "T046"^^xsd:string ;
+	skos:prefLabel "Pathologic Function"@en .
+
+<http://purl.bioontology.org/ontology/STY/T101> a owl:Class ;
+	skos:notation "T101"^^xsd:string ;
+	skos:prefLabel "Patient or Disabled Group"@en .
+
+<http://purl.bioontology.org/ontology/STY/T093> a owl:Class ;
+	skos:notation "T093"^^xsd:string ;
+	skos:prefLabel "Health Care Related Organization"@en .
+
+<http://purl.bioontology.org/ontology/STY/T089> a owl:Class ;
+	skos:notation "T089"^^xsd:string ;
+	skos:prefLabel "Regulation or Law"@en .
+
+<http://purl.bioontology.org/ontology/STY/T061> a owl:Class ;
+	skos:notation "T061"^^xsd:string ;
+	skos:prefLabel "Therapeutic or Preventive Procedure"@en .
+
+<http://purl.bioontology.org/ontology/STY/T062> a owl:Class ;
+	skos:notation "T062"^^xsd:string ;
+	skos:prefLabel "Research Activity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T041> a owl:Class ;
+	skos:notation "T041"^^xsd:string ;
+	skos:prefLabel "Mental Process"@en .
+
+<http://purl.bioontology.org/ontology/STY/T055> a owl:Class ;
+	skos:notation "T055"^^xsd:string ;
+	skos:prefLabel "Individual Behavior"@en .
+
+<http://purl.bioontology.org/ontology/STY/T004> a owl:Class ;
+	skos:notation "T004"^^xsd:string ;
+	skos:prefLabel "Fungus"@en .
+
+<http://purl.bioontology.org/ontology/STY/T060> a owl:Class ;
+	skos:notation "T060"^^xsd:string ;
+	skos:prefLabel "Diagnostic Procedure"@en .
+
+<http://purl.bioontology.org/ontology/STY/T070> a owl:Class ;
+	skos:notation "T070"^^xsd:string ;
+	skos:prefLabel "Natural Phenomenon or Process"@en .
+
+<http://purl.bioontology.org/ontology/STY/T197> a owl:Class ;
+	skos:notation "T197"^^xsd:string ;
+	skos:prefLabel "Inorganic Chemical"@en .
+
+<http://purl.bioontology.org/ontology/STY/T057> a owl:Class ;
+	skos:notation "T057"^^xsd:string ;
+	skos:prefLabel "Occupational Activity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T083> a owl:Class ;
+	skos:notation "T083"^^xsd:string ;
+	skos:prefLabel "Geographic Area"@en .
+
+<http://purl.bioontology.org/ontology/STY/T074> a owl:Class ;
+	skos:notation "T074"^^xsd:string ;
+	skos:prefLabel "Medical Device"@en .
+
+<http://purl.bioontology.org/ontology/STY/T002> a owl:Class ;
+	skos:notation "T002"^^xsd:string ;
+	skos:prefLabel "Plant"@en .
+
+<http://purl.bioontology.org/ontology/STY/T065> a owl:Class ;
+	skos:notation "T065"^^xsd:string ;
+	skos:prefLabel "Educational Activity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T092> a owl:Class ;
+	skos:notation "T092"^^xsd:string ;
+	skos:prefLabel "Organization"@en .
+
+<http://purl.bioontology.org/ontology/STY/T204> a owl:Class ;
+	skos:notation "T204"^^xsd:string ;
+	skos:prefLabel "Eukaryote"@en .
+
+<http://purl.bioontology.org/ontology/STY/T025> a owl:Class ;
+	skos:notation "T025"^^xsd:string ;
+	skos:prefLabel "Cell"@en .
+
+<http://purl.bioontology.org/ontology/STY/T196> a owl:Class ;
+	skos:notation "T196"^^xsd:string ;
+	skos:prefLabel "Element, Ion, or Isotope"@en .
+
+<http://purl.bioontology.org/ontology/STY/T067> a owl:Class ;
+	skos:notation "T067"^^xsd:string ;
+	skos:prefLabel "Phenomenon or Process"@en .
+
+<http://purl.bioontology.org/ontology/STY/T080> a owl:Class ;
+	skos:notation "T080"^^xsd:string ;
+	skos:prefLabel "Qualitative Concept"@en .
+
+<http://purl.bioontology.org/ontology/STY/T102> a owl:Class ;
+	skos:notation "T102"^^xsd:string ;
+	skos:prefLabel "Group Attribute"@en .
+
+<http://purl.bioontology.org/ontology/STY/T098> a owl:Class ;
+	skos:notation "T098"^^xsd:string ;
+	skos:prefLabel "Population Group"@en .
+
+<http://purl.bioontology.org/ontology/STY/T040> a owl:Class ;
+	skos:notation "T040"^^xsd:string ;
+	skos:prefLabel "Organism Function"@en .
+
+<http://purl.bioontology.org/ontology/STY/T034> a owl:Class ;
+	skos:notation "T034"^^xsd:string ;
+	skos:prefLabel "Laboratory or Test Result"@en .
+
+<http://purl.bioontology.org/ontology/STY/T201> a owl:Class ;
+	skos:notation "T201"^^xsd:string ;
+	skos:prefLabel "Clinical Attribute"@en .
+
+<http://purl.bioontology.org/ontology/STY/T097> a owl:Class ;
+	skos:notation "T097"^^xsd:string ;
+	skos:prefLabel "Professional or Occupational Group"@en .
+
+<http://purl.bioontology.org/ontology/STY/T064> a owl:Class ;
+	skos:notation "T064"^^xsd:string ;
+	skos:prefLabel "Governmental or Regulatory Activity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T054> a owl:Class ;
+	skos:notation "T054"^^xsd:string ;
+	skos:prefLabel "Social Behavior"@en .
+
+<http://purl.bioontology.org/ontology/STY/T007> a owl:Class ;
+	skos:notation "T007"^^xsd:string ;
+	skos:prefLabel "Bacterium"@en .
+
+<http://purl.bioontology.org/ontology/STY/T044> a owl:Class ;
+	skos:notation "T044"^^xsd:string ;
+	skos:prefLabel "Molecular Function"@en .
+
+<http://purl.bioontology.org/ontology/STY/T053> a owl:Class ;
+	skos:notation "T053"^^xsd:string ;
+	skos:prefLabel "Behavior"@en .
+
+<http://purl.bioontology.org/ontology/STY/T069> a owl:Class ;
+	skos:notation "T069"^^xsd:string ;
+	skos:prefLabel "Environmental Effect of Humans"@en .
+
+<http://purl.bioontology.org/ontology/STY/T039> a owl:Class ;
+	skos:notation "T039"^^xsd:string ;
+	skos:prefLabel "Physiologic Function"@en .
+
+<http://purl.bioontology.org/ontology/STY/T103> a owl:Class ;
+	skos:notation "T103"^^xsd:string ;
+	skos:prefLabel "Chemical"@en .
+
+<http://purl.bioontology.org/ontology/STY/T122> a owl:Class ;
+	skos:notation "T122"^^xsd:string ;
+	skos:prefLabel "Biomedical or Dental Material"@en .
+
+<http://purl.bioontology.org/ontology/STY/T015> a owl:Class ;
+	skos:notation "T015"^^xsd:string ;
+	skos:prefLabel "Mammal"@en .
+
+<http://purl.bioontology.org/ontology/STY/T020> a owl:Class ;
+	skos:notation "T020"^^xsd:string ;
+	skos:prefLabel "Acquired Abnormality"@en .
+
+<http://purl.bioontology.org/ontology/STY/T030> a owl:Class ;
+	skos:notation "T030"^^xsd:string ;
+	skos:prefLabel "Body Space or Junction"@en .
+
+<http://purl.bioontology.org/ontology/STY/T026> a owl:Class ;
+	skos:notation "T026"^^xsd:string ;
+	skos:prefLabel "Cell Component"@en .
+
+<http://purl.bioontology.org/ontology/STY/T043> a owl:Class ;
+	skos:notation "T043"^^xsd:string ;
+	skos:prefLabel "Cell Function"@en .
+
+<http://purl.bioontology.org/ontology/STY/T059> a owl:Class ;
+	skos:notation "T059"^^xsd:string ;
+	skos:prefLabel "Laboratory Procedure"@en .
+
+<http://purl.bioontology.org/ontology/STY/T052> a owl:Class ;
+	skos:notation "T052"^^xsd:string ;
+	skos:prefLabel "Activity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T056> a owl:Class ;
+	skos:notation "T056"^^xsd:string ;
+	skos:prefLabel "Daily or Recreational Activity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T079> a owl:Class ;
+	skos:notation "T079"^^xsd:string ;
+	skos:prefLabel "Temporal Concept"@en .
+
+<http://purl.bioontology.org/ontology/STY/T091> a owl:Class ;
+	skos:notation "T091"^^xsd:string ;
+	skos:prefLabel "Biomedical Occupation or Discipline"@en .
+
+<http://purl.bioontology.org/ontology/STY/T042> a owl:Class ;
+	skos:notation "T042"^^xsd:string ;
+	skos:prefLabel "Organ or Tissue Function"@en .
+
+<http://purl.bioontology.org/ontology/STY/T192> a owl:Class ;
+	skos:notation "T192"^^xsd:string ;
+	skos:prefLabel "Receptor"@en .
+
+<http://purl.bioontology.org/ontology/STY/T031> a owl:Class ;
+	skos:notation "T031"^^xsd:string ;
+	skos:prefLabel "Body Substance"@en .
+
+<http://purl.bioontology.org/ontology/STY/T048> a owl:Class ;
+	skos:notation "T048"^^xsd:string ;
+	skos:prefLabel "Mental or Behavioral Dysfunction"@en .
+
+<http://purl.bioontology.org/ontology/STY/T058> a owl:Class ;
+	skos:notation "T058"^^xsd:string ;
+	skos:prefLabel "Health Care Activity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T120> a owl:Class ;
+	skos:notation "T120"^^xsd:string ;
+	skos:prefLabel "Chemical Viewed Functionally"@en .
+
+<http://purl.bioontology.org/ontology/STY/T100> a owl:Class ;
+	skos:notation "T100"^^xsd:string ;
+	skos:prefLabel "Age Group"@en .
+
+<http://purl.bioontology.org/ontology/STY/T171> a owl:Class ;
+	skos:notation "T171"^^xsd:string ;
+	skos:prefLabel "Language"@en .
+
+<http://purl.bioontology.org/ontology/STY/T032> a owl:Class ;
+	skos:notation "T032"^^xsd:string ;
+	skos:prefLabel "Organism Attribute"@en .
+
+<http://purl.bioontology.org/ontology/STY/T095> a owl:Class ;
+	skos:notation "T095"^^xsd:string ;
+	skos:prefLabel "Self-help or Relief Organization"@en .
+
+<http://purl.bioontology.org/ontology/STY/T078> a owl:Class ;
+	skos:notation "T078"^^xsd:string ;
+	skos:prefLabel "Idea or Concept"@en .
+
+<http://purl.bioontology.org/ontology/STY/T090> a owl:Class ;
+	skos:notation "T090"^^xsd:string ;
+	skos:prefLabel "Occupation or Discipline"@en .
+
+<http://purl.bioontology.org/ontology/STY/T167> a owl:Class ;
+	skos:notation "T167"^^xsd:string ;
+	skos:prefLabel "Substance"@en .
+
+<http://purl.bioontology.org/ontology/STY/T068> a owl:Class ;
+	skos:notation "T068"^^xsd:string ;
+	skos:prefLabel "Human-caused Phenomenon or Process"@en .
+
+<http://purl.bioontology.org/ontology/STY/T168> a owl:Class ;
+	skos:notation "T168"^^xsd:string ;
+	skos:prefLabel "Food"@en .
+
+<http://purl.bioontology.org/ontology/STY/T028> a owl:Class ;
+	skos:notation "T028"^^xsd:string ;
+	skos:prefLabel "Gene or Genome"@en .
+
+<http://purl.bioontology.org/ontology/STY/T014> a owl:Class ;
+	skos:notation "T014"^^xsd:string ;
+	skos:prefLabel "Reptile"@en .
+
+<http://purl.bioontology.org/ontology/STY/T050> a owl:Class ;
+	skos:notation "T050"^^xsd:string ;
+	skos:prefLabel "Experimental Model of Disease"@en .
+
+<http://purl.bioontology.org/ontology/STY/T045> a owl:Class ;
+	skos:notation "T045"^^xsd:string ;
+	skos:prefLabel "Genetic Function"@en .
+
+<http://purl.bioontology.org/ontology/STY/T104> a owl:Class ;
+	skos:notation "T104"^^xsd:string ;
+	skos:prefLabel "Chemical Viewed Structurally"@en .
+
+<http://purl.bioontology.org/ontology/STY/T011> a owl:Class ;
+	skos:notation "T011"^^xsd:string ;
+	skos:prefLabel "Amphibian"@en .
+
+<http://purl.bioontology.org/ontology/STY/T013> a owl:Class ;
+	skos:notation "T013"^^xsd:string ;
+	skos:prefLabel "Fish"@en .
+
+<http://purl.bioontology.org/ontology/STY/T094> a owl:Class ;
+	skos:notation "T094"^^xsd:string ;
+	skos:prefLabel "Professional Society"@en .
+
+<http://purl.bioontology.org/ontology/STY/T087> a owl:Class ;
+	skos:notation "T087"^^xsd:string ;
+	skos:prefLabel "Amino Acid Sequence"@en .
+
+<http://purl.bioontology.org/ontology/STY/T066> a owl:Class ;
+	skos:notation "T066"^^xsd:string ;
+	skos:prefLabel "Machine Activity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T185> a owl:Class ;
+	skos:notation "T185"^^xsd:string ;
+	skos:prefLabel "Classification"@en .
+
+<http://purl.bioontology.org/ontology/STY/T049> a owl:Class ;
+	skos:notation "T049"^^xsd:string ;
+	skos:prefLabel "Cell or Molecular Dysfunction"@en .
+
+<http://purl.bioontology.org/ontology/STY/T008> a owl:Class ;
+	skos:notation "T008"^^xsd:string ;
+	skos:prefLabel "Animal"@en .
+
+<http://purl.bioontology.org/ontology/STY/T051> a owl:Class ;
+	skos:notation "T051"^^xsd:string ;
+	skos:prefLabel "Event"@en .
+
+<http://purl.bioontology.org/ontology/STY/T038> a owl:Class ;
+	skos:notation "T038"^^xsd:string ;
+	skos:prefLabel "Biologic Function"@en .
+
+<http://purl.bioontology.org/ontology/STY/T194> a owl:Class ;
+	skos:notation "T194"^^xsd:string ;
+	skos:prefLabel "Archaeon"@en .
+
+<http://purl.bioontology.org/ontology/STY/T086> a owl:Class ;
+	skos:notation "T086"^^xsd:string ;
+	skos:prefLabel "Nucleotide Sequence"@en .
+
+<http://purl.bioontology.org/ontology/STY/T012> a owl:Class ;
+	skos:notation "T012"^^xsd:string ;
+	skos:prefLabel "Bird"@en .
+
+<http://purl.bioontology.org/ontology/STY/T063> a owl:Class ;
+	skos:notation "T063"^^xsd:string ;
+	skos:prefLabel "Molecular Biology Research Technique"@en .
+
+<http://purl.bioontology.org/ontology/STY/T017> a owl:Class ;
+	skos:notation "T017"^^xsd:string ;
+	skos:prefLabel "Anatomical Structure"@en .
+
+<http://purl.bioontology.org/ontology/STY/T082> a owl:Class ;
+	skos:notation "T082"^^xsd:string ;
+	skos:prefLabel "Spatial Concept"@en .
+
+<http://purl.bioontology.org/ontology/STY/T088> a owl:Class ;
+	skos:notation "T088"^^xsd:string ;
+	skos:prefLabel "Carbohydrate Sequence"@en .
+
+<http://purl.bioontology.org/ontology/STY/T099> a owl:Class ;
+	skos:notation "T099"^^xsd:string ;
+	skos:prefLabel "Family Group"@en .
+
+<http://purl.bioontology.org/ontology/STY/T001> a owl:Class ;
+	skos:notation "T001"^^xsd:string ;
+	skos:prefLabel "Organism"@en .
+
+<http://purl.bioontology.org/ontology/STY/T075> a owl:Class ;
+	skos:notation "T075"^^xsd:string ;
+	skos:prefLabel "Research Device"@en .
+
+<http://purl.bioontology.org/ontology/STY/T096> a owl:Class ;
+	skos:notation "T096"^^xsd:string ;
+	skos:prefLabel "Group"@en .
+
+<http://purl.bioontology.org/ontology/STY/T072> a owl:Class ;
+	skos:notation "T072"^^xsd:string ;
+	skos:prefLabel "Physical Object"@en .
+
+<http://purl.bioontology.org/ontology/STY/T071> a owl:Class ;
+	skos:notation "T071"^^xsd:string ;
+	skos:prefLabel "Entity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T200> a owl:Class ;
+	skos:notation "T200"^^xsd:string ;
+	skos:prefLabel "Clinical Drug"@en .
+
+<http://purl.bioontology.org/ontology/STY/T085> a owl:Class ;
+	skos:notation "T085"^^xsd:string ;
+	skos:prefLabel "Molecular Sequence"@en .
+
+<http://purl.bioontology.org/ontology/STY/T077> a owl:Class ;
+	skos:notation "T077"^^xsd:string ;
+	skos:prefLabel "Conceptual Entity"@en .
+
+<http://purl.bioontology.org/ontology/STY/T010> a owl:Class ;
+	skos:notation "T010"^^xsd:string ;
+	skos:prefLabel "Vertebrate"@en .
+
+<http://purl.bioontology.org/ontology/STY/T016> a owl:Class ;
+	skos:notation "T016"^^xsd:string ;
+	skos:prefLabel "Human"@en .
+
+<http://purl.bioontology.org/ontology/STY/T203> a owl:Class ;
+	skos:notation "T203"^^xsd:string ;
+	skos:prefLabel "Drug Delivery Device"@en .
+
+<http://purl.bioontology.org/ontology/STY/T021> a owl:Class ;
+	skos:notation "T021"^^xsd:string ;
+	skos:prefLabel "Fully Formed Anatomical Structure"@en .
+
+<http://purl.bioontology.org/ontology/STY/T116> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T109> .
+<http://purl.bioontology.org/ontology/STY/T121> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T120> .
+<http://purl.bioontology.org/ontology/STY/T130> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T120> .
+<http://purl.bioontology.org/ontology/STY/T119> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T109> .
+<http://purl.bioontology.org/ontology/STY/T126> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T123> .
+<http://purl.bioontology.org/ontology/STY/T123> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T120> .
+<http://purl.bioontology.org/ontology/STY/T109> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T104> .
+<http://purl.bioontology.org/ontology/STY/T131> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T120> .
+<http://purl.bioontology.org/ontology/STY/T110> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T119> .
+<http://purl.bioontology.org/ontology/STY/T125> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T123> .
+<http://purl.bioontology.org/ontology/STY/T114> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T109> .
+<http://purl.bioontology.org/ontology/STY/T111> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T119> .
+<http://purl.bioontology.org/ontology/STY/T118> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T109> .
+<http://purl.bioontology.org/ontology/STY/T124> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T123> .
+<http://purl.bioontology.org/ontology/STY/T127> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T123> .
+<http://purl.bioontology.org/ontology/STY/T195> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T121> .
+<http://purl.bioontology.org/ontology/STY/T129> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T123> .
+<http://purl.bioontology.org/ontology/STY/T024> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T021> .
+<http://purl.bioontology.org/ontology/STY/T115> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T109> .
+<http://purl.bioontology.org/ontology/STY/T073> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T072> .
+<http://purl.bioontology.org/ontology/STY/T081> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T078> .
+<http://purl.bioontology.org/ontology/STY/T170> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T029> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T082> .
+<http://purl.bioontology.org/ontology/STY/T184> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T033> .
+<http://purl.bioontology.org/ontology/STY/T033> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T191> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T047> .
+<http://purl.bioontology.org/ontology/STY/T023> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T021> .
+<http://purl.bioontology.org/ontology/STY/T005> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T001> .
+<http://purl.bioontology.org/ontology/STY/T047> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T046> .
+<http://purl.bioontology.org/ontology/STY/T019> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T190> .
+<http://purl.bioontology.org/ontology/STY/T169> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T078> .
+<http://purl.bioontology.org/ontology/STY/T190> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T017> .
+<http://purl.bioontology.org/ontology/STY/T037> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T067> .
+<http://purl.bioontology.org/ontology/STY/T022> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T169> .
+<http://purl.bioontology.org/ontology/STY/T018> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T017> .
+<http://purl.bioontology.org/ontology/STY/T046> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T038> .
+<http://purl.bioontology.org/ontology/STY/T101> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T096> .
+<http://purl.bioontology.org/ontology/STY/T093> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T092> .
+<http://purl.bioontology.org/ontology/STY/T089> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T170> .
+<http://purl.bioontology.org/ontology/STY/T061> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T058> .
+<http://purl.bioontology.org/ontology/STY/T062> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T057> .
+<http://purl.bioontology.org/ontology/STY/T041> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T040> .
+<http://purl.bioontology.org/ontology/STY/T055> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T053> .
+<http://purl.bioontology.org/ontology/STY/T004> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T204> .
+<http://purl.bioontology.org/ontology/STY/T060> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T058> .
+<http://purl.bioontology.org/ontology/STY/T070> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T067> .
+<http://purl.bioontology.org/ontology/STY/T197> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T104> .
+<http://purl.bioontology.org/ontology/STY/T057> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T052> .
+<http://purl.bioontology.org/ontology/STY/T083> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T082> .
+<http://purl.bioontology.org/ontology/STY/T074> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T073> .
+<http://purl.bioontology.org/ontology/STY/T002> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T204> .
+<http://purl.bioontology.org/ontology/STY/T065> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T057> .
+<http://purl.bioontology.org/ontology/STY/T092> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T204> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T001> .
+<http://purl.bioontology.org/ontology/STY/T025> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T021> .
+<http://purl.bioontology.org/ontology/STY/T196> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T104> .
+<http://purl.bioontology.org/ontology/STY/T067> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T051> .
+<http://purl.bioontology.org/ontology/STY/T080> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T078> .
+<http://purl.bioontology.org/ontology/STY/T102> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T098> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T096> .
+<http://purl.bioontology.org/ontology/STY/T040> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T039> .
+<http://purl.bioontology.org/ontology/STY/T034> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T033> .
+<http://purl.bioontology.org/ontology/STY/T201> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T032> .
+<http://purl.bioontology.org/ontology/STY/T097> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T096> .
+<http://purl.bioontology.org/ontology/STY/T064> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T057> .
+<http://purl.bioontology.org/ontology/STY/T054> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T053> .
+<http://purl.bioontology.org/ontology/STY/T007> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T001> .
+<http://purl.bioontology.org/ontology/STY/T044> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T039> .
+<http://purl.bioontology.org/ontology/STY/T053> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T052> .
+<http://purl.bioontology.org/ontology/STY/T069> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T068> .
+<http://purl.bioontology.org/ontology/STY/T039> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T038> .
+<http://purl.bioontology.org/ontology/STY/T103> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T167> .
+<http://purl.bioontology.org/ontology/STY/T122> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T120> .
+<http://purl.bioontology.org/ontology/STY/T015> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T010> .
+<http://purl.bioontology.org/ontology/STY/T020> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T190> .
+<http://purl.bioontology.org/ontology/STY/T030> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T082> .
+<http://purl.bioontology.org/ontology/STY/T026> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T021> .
+<http://purl.bioontology.org/ontology/STY/T043> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T039> .
+<http://purl.bioontology.org/ontology/STY/T059> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T058> .
+<http://purl.bioontology.org/ontology/STY/T052> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T051> .
+<http://purl.bioontology.org/ontology/STY/T056> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T052> .
+<http://purl.bioontology.org/ontology/STY/T079> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T078> .
+<http://purl.bioontology.org/ontology/STY/T091> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T090> .
+<http://purl.bioontology.org/ontology/STY/T042> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T039> .
+<http://purl.bioontology.org/ontology/STY/T192> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T123> .
+<http://purl.bioontology.org/ontology/STY/T031> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T167> .
+<http://purl.bioontology.org/ontology/STY/T048> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T047> .
+<http://purl.bioontology.org/ontology/STY/T058> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T057> .
+<http://purl.bioontology.org/ontology/STY/T120> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T103> .
+<http://purl.bioontology.org/ontology/STY/T100> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T096> .
+<http://purl.bioontology.org/ontology/STY/T171> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T032> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T095> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T092> .
+<http://purl.bioontology.org/ontology/STY/T078> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T090> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T167> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T072> .
+<http://purl.bioontology.org/ontology/STY/T068> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T067> .
+<http://purl.bioontology.org/ontology/STY/T168> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T167> .
+<http://purl.bioontology.org/ontology/STY/T028> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T021> .
+<http://purl.bioontology.org/ontology/STY/T014> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T010> .
+<http://purl.bioontology.org/ontology/STY/T050> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T046> .
+<http://purl.bioontology.org/ontology/STY/T045> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T044> .
+<http://purl.bioontology.org/ontology/STY/T104> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T103> .
+<http://purl.bioontology.org/ontology/STY/T011> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T010> .
+<http://purl.bioontology.org/ontology/STY/T013> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T010> .
+<http://purl.bioontology.org/ontology/STY/T094> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T092> .
+<http://purl.bioontology.org/ontology/STY/T087> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T085> .
+<http://purl.bioontology.org/ontology/STY/T066> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T052> .
+<http://purl.bioontology.org/ontology/STY/T185> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T170> .
+<http://purl.bioontology.org/ontology/STY/T049> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T046> .
+<http://purl.bioontology.org/ontology/STY/T008> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T204> .
+<http://purl.bioontology.org/ontology/STY/T051> rdfs:subClassOf owl:Thing .
+<http://purl.bioontology.org/ontology/STY/T038> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T070> .
+<http://purl.bioontology.org/ontology/STY/T194> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T001> .
+<http://purl.bioontology.org/ontology/STY/T086> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T085> .
+<http://purl.bioontology.org/ontology/STY/T012> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T010> .
+<http://purl.bioontology.org/ontology/STY/T063> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T062> .
+<http://purl.bioontology.org/ontology/STY/T017> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T072> .
+<http://purl.bioontology.org/ontology/STY/T082> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T078> .
+<http://purl.bioontology.org/ontology/STY/T088> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T085> .
+<http://purl.bioontology.org/ontology/STY/T099> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T096> .
+<http://purl.bioontology.org/ontology/STY/T001> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T072> .
+<http://purl.bioontology.org/ontology/STY/T075> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T073> .
+<http://purl.bioontology.org/ontology/STY/T096> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T077> .
+<http://purl.bioontology.org/ontology/STY/T072> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T071> .
+<http://purl.bioontology.org/ontology/STY/T071> rdfs:subClassOf owl:Thing .
+<http://purl.bioontology.org/ontology/STY/T200> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T073> .
+<http://purl.bioontology.org/ontology/STY/T085> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T082> .
+<http://purl.bioontology.org/ontology/STY/T077> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T071> .
+<http://purl.bioontology.org/ontology/STY/T010> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T008> .
+<http://purl.bioontology.org/ontology/STY/T016> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T015> .
+<http://purl.bioontology.org/ontology/STY/T203> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T074> .
+<http://purl.bioontology.org/ontology/STY/T021> rdfs:subClassOf <http://purl.bioontology.org/ontology/STY/T017> .

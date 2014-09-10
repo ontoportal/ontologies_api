@@ -27,6 +27,7 @@ gem 'redis-activesupport'
 # Testing
 gem 'simplecov', :require => false, :group => :test
 gem 'minitest', '~> 4.0'
+gem 'minitest-stub_any_instance'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
@@ -62,5 +63,5 @@ gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
 gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'master'
 
 # Not versioned
-gem 'ncbo_resolver', github: "ncbo/ncbo_resolver"
-gem 'ncbo_resource_index_client', github: 'ncbo/resource_index_ruby_client'
+gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'
+gem 'ncbo_resource_index', github: 'ncbo/resource_index'

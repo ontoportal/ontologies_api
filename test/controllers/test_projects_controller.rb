@@ -22,7 +22,7 @@ class TestProjectsController < TestCase
       "@type":{ "type":"string", "format":"uri", "required": true },
       "acronym":{ "type":"string", "required": true },
       "name":{ "type":"string", "required": true },
-      "creator":{ "type":"string", "required": true },
+      "creator":{ "type":"array", "required": true },
       "created":{ "type":"string", "format":"datetime", "required": true },
       "homePage":{ "type":"string", "format":"uri", "required": true },
       "description":{ "type":"string", "required": true },
@@ -51,7 +51,7 @@ class TestProjectsController < TestCase
     @ont = LinkedData::Models::Ontology.new(acronym: "TST", name: "TEST ONTOLOGY", administeredBy: [@user])
     @ont.save
     @p = LinkedData::Models::Project.new
-    @p.creator = @user
+    @p.creator = [@user]
     @p.created = DateTime.now
     @p.name = "Test Project" # must be a valid URI
     @p.acronym = "TP"
@@ -65,7 +65,7 @@ class TestProjectsController < TestCase
         name: @p.name,
         description: @p.description,
         homePage: @p.homePage.to_s,
-        creator: @p.creator.username,
+        creator: @p.creator.map {|u| u.username},
         created: @p.created,
         institution: @p.institution,
         ontologyUsed: [@p.ontologyUsed.first.acronym]
@@ -119,6 +119,30 @@ class TestProjectsController < TestCase
     _project_get_success(@p.acronym)
     # TODO: validate the data updated
     #_project_get_success(@p.acronym, true)
+  end
+
+  def test_project_creator_multiple
+    u1 = LinkedData::Models::User.new(username: 'Test User 1', email: 'user1@example.org', password: 'password')
+    u1.save
+    assert u1.valid?, u1.errors
+
+    u2 = LinkedData::Models::User.new(username: 'Test User 2', email: 'user2@example.org', password: 'password')
+    u2.save
+    assert u2.valid?, u2.errors
+
+    params = { name: @p.name, acronym: 'TSTPRJ', creator: [u1.username, u2.username], 
+               description: 'Description of TSTPRJ', homePage: @p.homePage }
+    put "/projects/#{params[:acronym]}", MultiJson.dump(params), "CONTENT_TYPE" => "application/json"
+    assert_equal 201, last_response.status, last_response.body
+
+    get "/projects/#{params[:acronym]}"
+    assert last_response.ok?
+    body = MultiJson.load(last_response.body)
+    assert_equal(2, body['creator'].count)
+
+    body['creator'].sort! { |a,b| a <=> b }
+    assert_equal(u1.id.to_s, body['creator'].first)
+    assert_equal(u2.id.to_s, body['creator'].last)
   end
 
   def test_project_delete

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 9b03b2d64a8c7e1429919fc04a15abcc6d9a09d5
+  revision: 3e43227d029660e2ca669a20dea197b0f5a2d256
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: babf3b0c3b12f572717f8d4e8b3995e836a0e043
+  revision: 6822793c367bf76ff6663ca852080eead9106cc3
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 46af50ba2736bbd802dc459a83f5e419efc2707e
+  revision: 8ccee06183597154079bad98ffa6dfd35bf62ef9
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2522b75844f322538d743b71169cf504bf3f2185
+  revision: 5f2ac30d7b0261ff9cbf15b034af5c90565d9b55
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -59,6 +59,7 @@ GIT
       json
       libxml-ruby
       multi_json
+      ncbo_resource_index
       oj
       pony
       rack
@@ -67,15 +68,21 @@ GIT
       rubyzip
 
 GIT
-  remote: git://github.com/ncbo/resource_index_ruby_client.git
-  revision: d5676f865c61d852e3e32a5973a8bafe8451330e
+  remote: git://github.com/ncbo/resource_index.git
+  revision: 2ac0e802a2354787275b9a8435310f67aa603f5f
   specs:
-    ncbo_resource_index_client (1.6.1)
-      libxml-ruby (~> 2.7.0)
+    ncbo_resource_index (0.0.1)
+      elasticsearch
+      mysql2
+      pony
+      ref
+      ruby-xxHash
+      sequel
+      typhoeus
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: e8793cdfd9e4e514de86290173e75ca45e314f8b
+  revision: 3de6cfdb33f69e2d0240215b45b67bddc077ca96
   branch: master
   specs:
     sparql-client (1.0.4.1)
@@ -120,8 +127,8 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
-    capistrano-bundler (1.1.2)
-      capistrano (~> 3.0)
+    capistrano-bundler (1.1.3)
+      capistrano (~> 3.1)
       sshkit (~> 1.2)
     capistrano-rbenv (2.0.2)
       capistrano (~> 3.1)
@@ -131,11 +138,24 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
+    elasticsearch (1.0.5)
+      elasticsearch-api (= 1.0.5)
+      elasticsearch-transport (= 1.0.5)
+    elasticsearch-api (1.0.5)
+      multi_json
+    elasticsearch-transport (1.0.5)
+      faraday
+      multi_json
+    ethon (0.7.1)
+      ffi (>= 1.3.0)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
+    ffi (1.9.3)
     haml (4.0.5)
       tilt
     i18n (0.6.11)
     json (1.8.1)
-    json-schema (2.2.4)
+    json-schema (2.2.5)
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
@@ -146,18 +166,21 @@ GEM
     method_source (0.8.2)
     mime-types (2.3)
     minitest (4.7.5)
+    minitest-stub_any_instance (1.0.0)
     mlanett-redis-lock (0.2.6)
       redis
     multi_json (1.10.1)
+    multipart-post (2.0.0)
+    mysql2 (0.3.16)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.7.7)
-    oj (2.9.9)
+    oj (2.10.2)
     pony (1.10)
       mail (>= 2.0)
-    pry (0.10.0)
+    pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
@@ -194,14 +217,17 @@ GEM
       redis-store (~> 1.1.0)
     redis-store (1.1.4)
       redis (>= 2.2)
+    ref (1.0.5)
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     rsolr (1.0.10)
       builder (>= 2.1.2)
+    ruby-xxHash (0.1.1)
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
+    sequel (4.14.0)
     simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
@@ -228,7 +254,9 @@ GEM
     systemu (2.6.4)
     thread_safe (0.3.4)
     tilt (1.4.1)
-    tzinfo (1.2.1)
+    typhoeus (0.6.9)
+      ethon (>= 0.7.1)
+    tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unicorn (4.8.3)
       kgio (~> 2.6)
@@ -253,11 +281,12 @@ DEPENDENCIES
   haml
   json-schema (~> 2.0)
   minitest (~> 4.0)
+  minitest-stub_any_instance
   multi_json (~> 1.0)
   ncbo_annotator!
   ncbo_cron!
   ncbo_resolver!
-  ncbo_resource_index_client!
+  ncbo_resource_index!
   oj (~> 2.0)
   ontologies_linked_data!
   pry

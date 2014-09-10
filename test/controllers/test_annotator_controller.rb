@@ -294,6 +294,7 @@ eos
 
   #TODO: this method is duplicated in NCBO_ANNOTATOR
   def self.mapping_test_set
+    Goo.sparql_data_client.delete_graph(LinkedData::Models::MappingProcess.type_uri)
     terms_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Resource",
                "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data",
                "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Data_Resource",
@@ -307,21 +308,37 @@ eos
 
     user_creator = LinkedData::Models::User.where.include(:username).page(1,100).first
     if user_creator.nil?
-      u = LinkedData::Models::User.new(username: "tim", email: "tim@example.org", password: "password")
+      u = LinkedData::Models::User.new(username: "tim",
+                                       email: "tim@example.org",
+                                       password: "password")
       u.save
       user_creator = LinkedData::Models::User.where.include(:username).page(1,100).first
     end
-    process = LinkedData::Models::MappingProcess.new(:creator => user_creator, :name => "TEST Mapping Annotator")
+    process = LinkedData::Models::MappingProcess.new(
+      :creator => user_creator, :name => "TEST Mapping Annotator")
     process.date = DateTime.now
     process.relation = RDF::URI.new("http://bogus.relation.com/predicate")
     process.save
 
     4.times do |i|
-      term_mappings = []
-      term_mappings << LinkedData::Mappings.create_term_mapping([RDF::URI.new(terms_a[i])], onts_a[i])
-      term_mappings << LinkedData::Mappings.create_term_mapping([RDF::URI.new(terms_b[i])], onts_b[i])
-      mapping_id = LinkedData::Mappings.create_mapping(term_mappings)
-      LinkedData::Mappings.connect_mapping_process(mapping_id, process)
+        classes = []
+        class_id = terms_a[i]
+        ont_acr = onts_a[i]
+        sub = LinkedData::Models::Ontology.find(ont_acr).first.latest_submission
+        sub.bring(ontology: [:acronym])
+        c = LinkedData::Models::Class.find(RDF::URI.new(class_id))
+                                    .in(sub)
+                                    .first
+        classes << c
+        class_id = terms_b[i]
+        ont_acr = onts_b[i]
+        sub = LinkedData::Models::Ontology.find(ont_acr).first.latest_submission
+        sub.bring(ontology: [:acronym])
+        c = LinkedData::Models::Class.find(RDF::URI.new(class_id))
+                                    .in(sub)
+                                    .first
+        classes << c
+        LinkedData::Mappings.create_rest_mapping(classes,process)
     end
   end
 
