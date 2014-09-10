@@ -19,7 +19,7 @@ class ResourceIndexController < ApplicationController
       format_params(params)
       classes = get_classes(params)
       error 404, "You must provide valid `classes` to search the Resource Index" if classes.empty?
-      reply classes.ri_counts(params["resources"])
+      reply classes.ri_counts(params["resources"], params)
     end
 
     # Return all resources
