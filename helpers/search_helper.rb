@@ -13,6 +13,7 @@ module Sinatra
       SUBTREE_ID_PARAM = "subtree_root"     # NCBO-603
       OBSOLETE_PARAM = "include_obsolete"   # NCBO-603
       SUGGEST_PARAM = "suggest" # NCBO-932
+      ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
 
       def get_edismax_query(text, params={})
         validate_params_solr_population()
@@ -22,6 +23,7 @@ module Sinatra
         params["stopwords"] = "true"
         params["lowercaseOperators"] = "true"
         params["fl"] = "*,score"
+        params[INCLUDE_VIEWS_PARAM] = params[ALSO_SEARCH_VIEWS] if params[ALSO_SEARCH_VIEWS]
 
         # text.gsub!(/\*+$/, '')
 
