@@ -98,15 +98,28 @@ class OntologySubmissionsController < ApplicationController
       submission = ont.submission(params['ontology_submission_id'].to_i)
       error 404, "There is no such submission for download" if submission.nil?
       file_path = submission.uploadFilePath
+
+      download_format = params["download_format"].downcase
+      allowed_formats = ["csv", "rdf"]
+      if download_format.nil?
+        file_path = submission.uploadFilePath
+      elsif ([download_format] - allowed_formats).length > 0
+        error 400, "Invalid download format: #{download_format}."
+      elsif download_format.eql?("csv")
+        if ont.latest_submission.id != submission.id
+          error 400, "Invalid download format: #{download_format}."
+        else
+          latest_submission.bring(ontology: [:acronym])
+          file_path = submission.csv_path
+        end
+      elsif download_format.eql?("rdf")
+        file_path = submission.rdf_path
+      end
+
       if File.readable? file_path
         send_file file_path, :filename => File.basename(file_path)
       else
-        if submission.pullLocation
-          # Suggest using the submission.pullLocation if uploadFilePath fails.
-          error 500, "Cannot read submission upload file: #{file_path}, try #{submission.pullLocation}"
-        else
-          error 500, "Cannot read submission upload file: #{file_path}"
-        end
+        error 500, "Cannot read submission upload file: #{file_path}"
       end
     end
 

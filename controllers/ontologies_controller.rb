@@ -105,14 +105,17 @@ class OntologiesController < ApplicationController
       error 404, "There is no latest submission loaded for download" if latest_submission.nil?
       latest_submission.bring(:uploadFilePath)
 
-      download_format = params["download_format"]
+      download_format = params["download_format"].downcase
+      allowed_formats = ["csv", "rdf"]
       if download_format.nil?
         file_path = latest_submission.uploadFilePath
-      elsif download_format.downcase != 'csv'
+      elsif ([download_format] - allowed_formats).length > 0
         error 400, "Invalid download format: #{download_format}."
-      else
+      elsif download_format.eql?("csv")
         latest_submission.bring(ontology: [:acronym])
         file_path = latest_submission.csv_path
+      elsif download_format.eql?("rdf")
+        file_path = latest_submission.rdf_path
       end
 
       if File.readable? file_path
