@@ -125,5 +125,18 @@ class TestOntologySubmissionsController < TestCase
     # see also test_ontologies_controller::test_download_ontology
   end
 
+  def test_download_ontology_submission_rdf
+    count, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+    acronym = created_ont_acronyms.first
+    ont = onts.first
+    sub = ont.submissions.first
+
+    get "/ontologies/#{acronym}/submissions/#{sub.submissionId}/download?download_format=rdf"
+    assert_equal(200, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
+
+    # Download should fail with a 400 status.
+    get "/ontologies/#{acronym}/submissions/#{sub.submissionId}/download?download_format=csr"
+    assert_equal(400, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
+  end
 
 end

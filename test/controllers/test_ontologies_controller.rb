@@ -197,13 +197,23 @@ class TestOntologiesController < TestCase
     assert_equal(400, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
   end
 
+  def test_download_ontology_rdf
+    created_ont_acronyms = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)[1]
+    acronym = created_ont_acronyms.first
+
+    get "/ontologies/#{acronym}/download?download_format=rdf"
+    assert_equal(200, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
+
+    # Download should fail with a 400 status.
+    get "/ontologies/#{acronym}/download?download_format=csr"
+    assert_equal(400, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
+  end
+
   private
 
   def check400(response)
     assert response.status >= 400
     assert MultiJson.load(response.body)["errors"]
   end
-
-
 
 end
