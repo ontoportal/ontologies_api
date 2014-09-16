@@ -197,29 +197,6 @@ class TestOntologiesController < TestCase
     assert_equal(400, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
   end
 
-  #def test_download_restricted_ontology
-  #  num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
-  #  assert_equal(1, num_onts_created, msg="Failed to create 1 ontology?")
-  #  assert_equal(1, onts.length, msg="Failed to create 1 ontology?")
-  #  ont = onts.first
-  #  assert_instance_of(Ontology, ont, msg="ont is not a #{Ontology.class}")
-  #  # Add restriction on download
-  #  acronym = created_ont_acronyms.first
-  #  LinkedData::OntologiesAPI.settings.restrict_download = [acronym]
-  #  # Try download
-  #  get "/ontologies/#{acronym}/download"
-  #  # download should fail with a 403 status
-  #  assert_equal(403, last_response.status, msg='failed to restrict download for ontology : ' + get_errors(last_response))
-  #  # Clear restrictions on downloads
-  #  LinkedData::OntologiesAPI.settings.restrict_download = []
-  #  # see also test_ontologies_submissions_controller::test_download_submission
-  #end
-
-  def test_ontology_properties
-    # not implemented yet
-  end
-
-
   private
 
   def check400(response)

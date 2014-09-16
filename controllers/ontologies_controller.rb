@@ -122,12 +122,6 @@ class OntologiesController < ApplicationController
       end
     end
 
-    ##
-    # Properties for given ontology
-    # get '/:acronym/properties' do
-    #   error 500, "Not implemented"
-    # end
-
     private
 
     def create_ontology

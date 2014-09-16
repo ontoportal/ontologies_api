@@ -131,12 +131,6 @@ class OntologySubmissionsController < ApplicationController
       end
     end
 
-    ##
-    # Properties for given submission
-    # get '/:ontology_submission_id/properties' do
-    #   error 500, "Not implemented"
-    # end
-
   end
 
 
