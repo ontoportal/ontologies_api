@@ -106,7 +106,7 @@ class OntologiesController < ApplicationController
 
       download_format = params["download_format"].to_s.downcase
       allowed_formats = ["csv", "rdf"]
-      if download_format.nil?
+      if download_format.empty?
         file_path = latest_submission.uploadFilePath
       elsif ([download_format] - allowed_formats).length > 0
         error 400, "Invalid download format: #{download_format}."
