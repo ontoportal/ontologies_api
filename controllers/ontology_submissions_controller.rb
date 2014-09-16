@@ -99,7 +99,7 @@ class OntologySubmissionsController < ApplicationController
       error 404, "There is no such submission for download" if submission.nil?
       file_path = submission.uploadFilePath
 
-      download_format = params["download_format"].downcase
+      download_format = params["download_format"].to_s.downcase
       allowed_formats = ["csv", "rdf"]
       if download_format.nil?
         file_path = submission.uploadFilePath

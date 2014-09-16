@@ -105,7 +105,7 @@ class OntologiesController < ApplicationController
       error 404, "There is no latest submission loaded for download" if latest_submission.nil?
       latest_submission.bring(:uploadFilePath)
 
-      download_format = params["download_format"].downcase
+      download_format = params["download_format"].to_s.downcase
       allowed_formats = ["csv", "rdf"]
       if download_format.nil?
         file_path = latest_submission.uploadFilePath
