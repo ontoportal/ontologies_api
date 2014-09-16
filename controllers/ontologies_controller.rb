@@ -94,9 +94,8 @@ class OntologiesController < ApplicationController
     # Download the latest submission for an ontology
     get '/:acronym/download' do
       acronym = params["acronym"]
-      ont = Ontology.find(acronym).first
+      ont = Ontology.find(acronym).include(Ontology.goo_attrs_to_load).first
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
-      ont.bring(:viewingRestriction)
       check_access(ont)
       restricted_download = LinkedData::OntologiesAPI.settings.restrict_download.include?(acronym)
       error 403, "License restrictions on download for #{acronym}" if restricted_download && !current_user.admin?
