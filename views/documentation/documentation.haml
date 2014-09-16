@@ -112,6 +112,10 @@
           %td include_links
           %td {true|false} (defaults to true)
           %td Turn off the hypermedia link serialization. This will reduce the response size significantly for some calls, speeding up transmission and parse time.
+        %tr
+          %td download_format
+          %td {csv|rdf} (defaults to user-uploaded file format)
+          %td Allows you to specify alternative formats for ontology file downloads for ontology and ontology submission download endpoints. CSV is only available for the most recent submission.
 
       %h2#nav_non_rest Search, Annotator, Recommender, and Resource Index Endpoints
 
