@@ -94,9 +94,9 @@ class OntologiesController < ApplicationController
     # Download the latest submission for an ontology
     get '/:acronym/download' do
       acronym = params["acronym"]
-      ont = Ontology.find(acronym).first
+      ont = Ontology.find(acronym).include(Ontology.goo_attrs_to_load).first
+      ont.bring(:viewingRestriction) if ont.bring?(:viewingRestriction)
       error 422, "You must provide an existing `acronym` to download" if ont.nil?
-      ont.bring(:viewingRestriction)
       check_access(ont)
       restricted_download = LinkedData::OntologiesAPI.settings.restrict_download.include?(acronym)
       error 403, "License restrictions on download for #{acronym}" if restricted_download && !current_user.admin?
@@ -105,9 +105,9 @@ class OntologiesController < ApplicationController
       error 404, "There is no latest submission loaded for download" if latest_submission.nil?
       latest_submission.bring(:uploadFilePath)
 
-      download_format = params["download_format"].downcase
+      download_format = params["download_format"].to_s.downcase
       allowed_formats = ["csv", "rdf"]
-      if download_format.nil?
+      if download_format.empty?
         file_path = latest_submission.uploadFilePath
       elsif ([download_format] - allowed_formats).length > 0
         error 400, "Invalid download format: #{download_format}."

@@ -209,6 +209,51 @@ class TestOntologiesController < TestCase
     assert_equal(400, last_response.status, msg="Download failure for '#{acronym}' ontology: " + get_errors(last_response))
   end
 
+  def test_download_acl_only
+    ont = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)[2].first
+    ont.bring_remaining
+    acronym = ont.acronym
+
+    begin
+      allowed_user = User.new({
+        username: "allowed",
+        email: "test@example.org",
+        password: "12345"
+      })
+      allowed_user.save
+      blocked_user = User.new({
+        username: "blocked",
+        email: "test@example.org",
+        password: "12345"
+      })
+      blocked_user.save
+
+      ont.acl = [allowed_user]
+      ont.viewingRestriction = "private"
+      ont.save
+
+      LinkedData.settings.enable_security = true
+
+      get "/ontologies/#{acronym}/download?apikey=#{allowed_user.apikey}"
+      assert_equal(200, last_response.status, msg="User who is in ACL couldn't download ontology")
+
+      get "/ontologies/#{acronym}/download?apikey=#{blocked_user.apikey}"
+      assert_equal(403, last_response.status, msg="User who isn't in ACL could download ontology")
+
+      admin = ont.administeredBy.first
+      admin.bring(:apikey)
+      get "/ontologies/#{acronym}/download?apikey=#{admin.apikey}"
+      assert_equal(200, last_response.status, msg="Admin couldn't download ontology")
+    ensure
+      LinkedData.settings.enable_security = false
+      del = User.find("allowed").first
+      del.delete if del
+      del = User.find("blocked").first
+      del.delete if del
+    end
+  end
+
+
   private
 
   def check400(response)
