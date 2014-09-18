@@ -112,6 +112,10 @@
           %td include_links
           %td {true|false} (defaults to true)
           %td Turn off the hypermedia link serialization. This will reduce the response size significantly for some calls, speeding up transmission and parse time.
+        %tr
+          %td download_format
+          %td {csv|rdf} (defaults to user-uploaded file format)
+          %td Allows you to specify alternative formats for ontology file downloads for ontology and ontology submission download endpoints. CSV is only available for the most recent submission.
 
       %h2#nav_non_rest Search, Annotator, Recommender, and Resource Index Endpoints
 
@@ -136,7 +140,7 @@
               %li ontologies={ontology_id1,ontology_id2,ontology_id3}
               %li exact_match={true|false}  // default = false
               %li suggest={true|false}  // default = false. Will perform a search specifically geared towards type-ahead suggestions.
-              %li include_views={true|false}  // default = false
+              %li also_search_views={true|false}  // default = false
               %li require_definition={true|false}  // default = false
               %li include_properties={true|false}  // default = false
               %li include_obsolete={true|false}  // default = false (exclude obsolete terms)
