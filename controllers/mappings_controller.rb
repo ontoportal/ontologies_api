@@ -159,7 +159,7 @@ class MappingsController < ApplicationController
       expires 86400, :public
       persistent_counts = {}
       LinkedData::Models::MappingCount.where(pair_count: false)
-      .include(:all)
+      .include(:ontologies,:count)
       .all
       .each do |m|
         persistent_counts[m.ontologies.first] = m.count
@@ -181,8 +181,8 @@ class MappingsController < ApplicationController
   
       persistent_counts = {}
       LinkedData::Models::MappingCount.where(pair_count: true)
-                                      .and(ontologies: [ontology.acronym])
-      .include(:all)
+                                      .and(ontologies: ontology.acronym)
+      .include(:ontologies,:count)
       .all
       .each do |m|
         other = m.ontologies.first
