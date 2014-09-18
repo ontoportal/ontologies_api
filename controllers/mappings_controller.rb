@@ -158,7 +158,8 @@ class MappingsController < ApplicationController
     get '/ontologies' do
       expires 86400, :public
       persistent_counts = {}
-      LinkedData::Models::MappingCount.where(pair_count: false)
+      f = Goo::Filter.new(:pair_count) == false
+      LinkedData::Models::MappingCount.where.filter(f)
       .include(:ontologies,:count)
       .all
       .each do |m|
