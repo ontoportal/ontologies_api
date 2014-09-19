@@ -14,6 +14,11 @@ module Sinatra
       OBSOLETE_PARAM = "include_obsolete"   # NCBO-603
       SUGGEST_PARAM = "suggest" # NCBO-932
       ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
+      MATCH_HTML_PRE = "<em>"
+      MATCH_HTML_POST = "</em>"
+      MATCH_TYPE_PREFLABEL = "prefLabel"
+      MATCH_TYPE_SYNONYM = "synonym"
+      MATCH_TYPE_PROPERTY = "property"
 
       def get_edismax_query(text, params={})
         validate_params_solr_population()
@@ -38,6 +43,14 @@ module Sinatra
           params["pf"] = "prefLabelSuggest^50"
         else
           query = RSolr.escape(text)
+
+          # highlighting is used to determine the field that got matched
+          params["hl"] = "on"
+          params["hl.fl"] = "prefLabel synonym"
+          params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
+          params["hl.simple.pre"] = MATCH_HTML_PRE
+          params["hl.simple.post"] = MATCH_HTML_POST
+
           params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 notation cui semanticType"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
@@ -69,6 +82,27 @@ module Sinatra
         params["q"] = query
 
         return query
+      end
+
+      def add_matched_fields(solr_response)
+        match = MATCH_TYPE_PREFLABEL
+        all_matches = {}
+
+        solr_response["highlighting"].each do |key, matches|
+          largest_count = 0
+
+          matches.each do |match_type, val|
+            count = val[0].scan(MATCH_HTML_PRE).count
+
+            if count > largest_count
+              largest_count = count
+              match = match_type
+            end
+          end
+          all_matches[key] = match
+        end
+
+        solr_response["match_types"] = all_matches
       end
 
       def escape_text(text)
