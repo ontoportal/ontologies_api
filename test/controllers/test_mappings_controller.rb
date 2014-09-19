@@ -37,6 +37,7 @@ class TestMappingsController < TestCase
       ont_count: 1,
       submission_count: 1
     })
+    NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
   end
 
   def test_mappings_for_ontology
@@ -208,6 +209,7 @@ class TestMappingsController < TestCase
     end
 
     #there three mappings in BRO with processes
+    NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
     ontology = "BRO-TEST-MAP-0"
     get "/ontologies/#{ontology}/mappings?pagesize=1000&page=1"
     assert last_response.ok?
@@ -325,6 +327,8 @@ class TestMappingsController < TestCase
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
+    NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
+    assert LinkedData::Models::MappingCount.where.all.length > 2
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
@@ -338,6 +342,8 @@ class TestMappingsController < TestCase
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
+    NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
+    assert LinkedData::Models::MappingCount.where.all.length > 2
     ontology = "BRO-TEST-MAP-0"
     get "/mappings/statistics/ontologies/#{ontology}"
     assert last_response.ok?
