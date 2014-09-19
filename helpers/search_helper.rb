@@ -20,6 +20,20 @@ module Sinatra
       MATCH_TYPE_SYNONYM = "synonym"
       MATCH_TYPE_PROPERTY = "property"
 
+      MATCH_TYPE_MAP = {
+          "resource_id" => "id",
+          MATCH_TYPE_PREFLABEL => MATCH_TYPE_PREFLABEL,
+          "prefLabelExact" => MATCH_TYPE_PREFLABEL,
+          "prefLabelSuggestEdge" => MATCH_TYPE_PREFLABEL,
+          MATCH_TYPE_SYNONYM => MATCH_TYPE_SYNONYM,
+          "synonymExact" => MATCH_TYPE_SYNONYM,
+          "synonymSuggestEdge" => MATCH_TYPE_SYNONYM,
+          MATCH_TYPE_PROPERTY => MATCH_TYPE_PROPERTY,
+          "notation" => "notation",
+          "cui" => "cui",
+          "semanticType" => "semanticType"
+      }
+
       def get_edismax_query(text, params={})
         validate_params_solr_population()
         raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
@@ -30,29 +44,30 @@ module Sinatra
         params["fl"] = "*,score"
         params[INCLUDE_VIEWS_PARAM] = params[ALSO_SEARCH_VIEWS] if params[ALSO_SEARCH_VIEWS]
 
+        # highlighting is used to determine the field that got matched, NCBO-974
+        params["hl"] = "on"
+        params["hl.simple.pre"] = MATCH_HTML_PRE
+        params["hl.simple.post"] = MATCH_HTML_POST
+
         # text.gsub!(/\*+$/, '')
 
         if (params[EXACT_MATCH_PARAM] == "true")
           query = "\"#{RSolr.escape(text)}\""
           params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact notation cui semanticType"
+          params["hl.fl"] = "resource_id prefLabelExact synonymExact notation cui semanticType"
         elsif (params[SUGGEST_PARAM] == "true" || text[-1] == '*')
           text.gsub!(/\*+$/, '')
           query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest_ncbo"
           params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge resource_id notation cui semanticType"
           params["pf"] = "prefLabelSuggest^50"
+          params["hl.fl"] = "prefLabelExact prefLabelSuggestEdge synonymSuggestEdge resource_id notation cui semanticType"
         else
           query = RSolr.escape(text)
-
-          # highlighting is used to determine the field that got matched
-          params["hl"] = "on"
-          params["hl.fl"] = "prefLabel synonym"
-          params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
-          params["hl.simple.pre"] = MATCH_HTML_PRE
-          params["hl.simple.post"] = MATCH_HTML_POST
-
           params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 notation cui semanticType"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
+          params["hl.fl"] = "resource_id prefLabelExact prefLabel synonymExact synonym notation cui semanticType"
+          params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
         subtree_ids = get_subtree_ids(params)
@@ -96,7 +111,7 @@ module Sinatra
 
             if count > largest_count
               largest_count = count
-              match = match_type
+              match = MATCH_TYPE_MAP[match_type]
             end
           end
           all_matches[key] = match
