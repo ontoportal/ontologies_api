@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 3c47ecee43d86653ef32d4e374d9a5f0ab670bd3
+  revision: 383db383cfc434b73034f159a127463a27b6203f
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 70b6d373a91ff7dfc3e09fd7fc6ac1fca76a4b2f
+  revision: 7afe3326ad1b7cbb8cb6585562bffe34d6d008c6
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: a68de167dabd7392535253ae3d32b46dd800edea
+  revision: 50403895c90a2bcc09240b56b5c596ab947cd748
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: eb5490142f0a31d70ac44dbc846ab6e99c0f516c
+  revision: 33ac045494edccc5a83117839a6edd398558f38a
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -150,7 +150,7 @@ GEM
       ffi (>= 1.3.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.4)
+    ffi (1.9.5)
     haml (4.0.5)
       tilt
     i18n (0.6.11)
