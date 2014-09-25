@@ -59,6 +59,7 @@ class MappingsController < ApplicationController
     end
 
     get "/recent" do
+      expires 3600, :public
       size = params[:size] || 5
       if size > 50
         error 422, "Recent mappings only processes calls under 50"
