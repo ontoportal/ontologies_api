@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 9569421672454f9bd44e7ea842f0f542fe8ed806
+  revision: 70b6d373a91ff7dfc3e09fd7fc6ac1fca76a4b2f
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 0c0f4274437ba3678b272bb941b7ec28c35c473e
+  revision: a68de167dabd7392535253ae3d32b46dd800edea
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 41c99fe38324e9c640d516a4d3eb298095572399
+  revision: eb5490142f0a31d70ac44dbc846ab6e99c0f516c
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -120,7 +120,7 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    backports (3.6.0)
+    backports (3.6.1)
     bcrypt (3.1.7)
     builder (3.2.2)
     capistrano (3.1.0)
@@ -150,7 +150,7 @@ GEM
       ffi (>= 1.3.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.3)
+    ffi (1.9.4)
     haml (4.0.5)
       tilt
     i18n (0.6.11)
@@ -228,9 +228,9 @@ GEM
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (4.14.0)
-    simplecov (0.9.0)
+    simplecov (0.9.1)
       docile (~> 1.1.0)
-      multi_json
+      multi_json (~> 1.0)
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
     sinatra (1.4.5)

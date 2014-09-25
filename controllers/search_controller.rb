@@ -19,15 +19,18 @@ class SearchController < ApplicationController
       text = params["q"]
 
       query = get_edismax_query(text, params)
-      #puts "Edismax query: #{query}, params: #{params}"
+      # puts "Edismax query: #{query}, params: #{params}"
       set_page_params(params)
 
       docs = Array.new
       resp = LinkedData::Models::Class.search(query, params)
       total_found = resp["response"]["numFound"]
+      add_matched_fields(resp)
 
       resp["response"]["docs"].each do |doc|
         doc = doc.symbolize_keys
+        # NCBO-974
+        doc[:matchType] = resp["match_types"][doc[:id]]
         resource_id = doc[:resource_id]
         doc.delete :resource_id
         doc[:id] = resource_id
