@@ -10,11 +10,10 @@ class MappingsController < ApplicationController
       reply 404, "Class with id `#{cls_id}` not found in ontology `#{acronym}`"
     end
 
-    page, size = page_params
     mappings = LinkedData::Mappings.mappings_ontology(submission,
-                                                      page,size,
+                                                      0,0,
                                                       cls.id)
-    reply mappings
+    reply mappings.to_a
   end
 
   # Get mappings for an ontology
