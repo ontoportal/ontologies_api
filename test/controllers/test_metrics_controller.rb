@@ -14,7 +14,7 @@ class TestMetricsController < TestCase
               "maxChildCount"=>65,
               "classesWithOneChild"=>14,
               "classesWithMoreThan25Children"=>2,
-              "classesWithNoDefinition"=>3,
+              "classesWithNoDefinition"=>11,
               "individuals"=>80,
               "properties"=>63,
               "maxDepth"=> 7 }
