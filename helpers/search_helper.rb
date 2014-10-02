@@ -25,9 +25,11 @@ module Sinatra
           MATCH_TYPE_PREFLABEL => MATCH_TYPE_PREFLABEL,
           "prefLabelExact" => MATCH_TYPE_PREFLABEL,
           "prefLabelSuggestEdge" => MATCH_TYPE_PREFLABEL,
+          "prefLabelSuggestNgram" => MATCH_TYPE_PREFLABEL,
           MATCH_TYPE_SYNONYM => MATCH_TYPE_SYNONYM,
           "synonymExact" => MATCH_TYPE_SYNONYM,
           "synonymSuggestEdge" => MATCH_TYPE_SYNONYM,
+          "synonymSuggestNgram" => MATCH_TYPE_SYNONYM,
           MATCH_TYPE_PROPERTY => MATCH_TYPE_PROPERTY,
           "notation" => "notation",
           "cui" => "cui",
@@ -59,9 +61,9 @@ module Sinatra
           text.gsub!(/\*+$/, '')
           query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest_ncbo"
-          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge resource_id notation cui semanticType"
+          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge^10 prefLabelSuggestNgram synonymSuggestNgram resource_id notation cui semanticType"
           params["pf"] = "prefLabelSuggest^50"
-          params["hl.fl"] = "prefLabelExact prefLabelSuggestEdge synonymSuggestEdge resource_id notation cui semanticType"
+          params["hl.fl"] = "prefLabelExact prefLabelSuggestEdge synonymSuggestEdge prefLabelSuggestNgram synonymSuggestNgram resource_id notation cui semanticType"
         else
           query = RSolr.escape(text)
           params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 notation cui semanticType"
