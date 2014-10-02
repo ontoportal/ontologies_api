@@ -34,15 +34,15 @@ class UsersController < ApplicationController
     end
 
     ##
-    # Passing an email, username, and password to this endpoint will
-    # reset a users password and provide back a full user object which
+    # Passing an email, username, and token to this endpoint will
+    # authenticate the user and provide back a full user object which
     # can be used to log a user in. This will allow them to change their
     # password and update the user object.
     post "/reset_password" do
-      email    = params["email"] || ""
-      username = params["username"] || ""
-      token    = params["token"] || ""
-      params["include"] = User.attributes.join(",")
+      email             = params["email"] || ""
+      username          = params["username"] || ""
+      token             = params["token"] || ""
+      params["include"] = User.attributes.join(",") # used to serialize everything via the serializer
       user = LinkedData::Models::User.where(email: email, username: username).include(User.goo_attrs_to_load(includes_param)).first
       error 404, "User not found" unless user
       if token.eql?(user.resetToken)

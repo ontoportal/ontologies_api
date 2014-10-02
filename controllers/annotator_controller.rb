@@ -17,8 +17,8 @@ class AnnotatorController < ApplicationController
       error 400, 'A text to be annotated must be supplied using the argument text=<text to be annotated>' if text.nil? || text.strip.empty?
       acronyms = restricted_ontologies_to_acronyms(params)
       semantic_types = semantic_types_param
-      max_level = params['max_level'].to_i                   # default = 0
-
+      max_level = params['max_level'].to_i  # default = 0
+      use_semantic_types_hierarchy = params['use_semantic_types_hierarchy'].eql?('true')  # default = false
       longest_only = params['longest_only'].eql?('true')  # default = false
       expand_with_mappings = params['mappings'].eql?('true')  # default = false
       exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
@@ -43,30 +43,37 @@ class AnnotatorController < ApplicationController
         annotator.stop_words = params['stop_words']
       end
 
-      annotations = annotator.annotate(text, {
-          ontologies: acronyms,
-          semantic_types: semantic_types,
-          filter_integers: exclude_nums,
-          expand_hierarchy_levels: max_level,
-          expand_with_mappings: expand_with_mappings,
-          min_term_size: min_term_size,
-          whole_word_only: whole_word_only,
-          with_synonyms: include_synonyms,  # Note: not changing the annotator client parameter name.
-          longest_only: longest_only
-      })
+      begin
+        annotations = annotator.annotate(text, {
+            ontologies: acronyms,
+            semantic_types: semantic_types,
+            use_semantic_types_hierarchy: use_semantic_types_hierarchy,
+            filter_integers: exclude_nums,
+            expand_hierarchy_levels: max_level,
+            expand_with_mappings: expand_with_mappings,
+            min_term_size: min_term_size,
+            whole_word_only: whole_word_only,
+            with_synonyms: include_synonyms,  # Note: not changing the annotator client parameter name.
+            longest_only: longest_only
+        })
 
-      unless includes_param.empty?
-        # Move include param to special param so it only applies to classes
-        params["include_for_class"] = includes_param
-        params.delete("include")
-        env["rack.request.query_hash"] = params
+        unless includes_param.empty?
+          # Move include param to special param so it only applies to classes
+          params["include_for_class"] = includes_param
+          params.delete("include")
+          env["rack.request.query_hash"] = params
 
-        orig_classes = annotations.map {|a| [a.annotatedClass, a.hierarchy.map {|h| h.annotatedClass}, a.mappings.map {|m| m.annotatedClass}]}.flatten
-        classes_hash = populate_classes_from_search(orig_classes, acronyms)
-        annotations = replace_empty_classes(annotations, classes_hash) do |a|
-          replace_empty_classes(a.hierarchy, classes_hash)
-          replace_empty_classes(a.mappings, classes_hash)
+          orig_classes = annotations.map {|a| [a.annotatedClass, a.hierarchy.map {|h| h.annotatedClass}, a.mappings.map {|m| m.annotatedClass}]}.flatten
+          classes_hash = populate_classes_from_search(orig_classes, acronyms)
+          annotations = replace_empty_classes(annotations, classes_hash) do |a|
+            replace_empty_classes(a.hierarchy, classes_hash)
+            replace_empty_classes(a.mappings, classes_hash)
+          end
         end
+      rescue LinkedData::Models::Ontology::ParsedSubmissionError => e
+        error 404, e.message
+      rescue Annotator::Models::NcboAnnotator::BadSemanticTypeError => e
+        error 404, e.message
       end
 
       reply 200, annotations

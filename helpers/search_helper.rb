@@ -12,6 +12,29 @@ module Sinatra
       INCLUDE_PROPERTIES_PARAM = "include_properties"
       SUBTREE_ID_PARAM = "subtree_root"     # NCBO-603
       OBSOLETE_PARAM = "include_obsolete"   # NCBO-603
+      SUGGEST_PARAM = "suggest" # NCBO-932
+      ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
+      MATCH_HTML_PRE = "<em>"
+      MATCH_HTML_POST = "</em>"
+      MATCH_TYPE_PREFLABEL = "prefLabel"
+      MATCH_TYPE_SYNONYM = "synonym"
+      MATCH_TYPE_PROPERTY = "property"
+
+      MATCH_TYPE_MAP = {
+          "resource_id" => "id",
+          MATCH_TYPE_PREFLABEL => MATCH_TYPE_PREFLABEL,
+          "prefLabelExact" => MATCH_TYPE_PREFLABEL,
+          "prefLabelSuggestEdge" => MATCH_TYPE_PREFLABEL,
+          "prefLabelSuggestNgram" => MATCH_TYPE_PREFLABEL,
+          MATCH_TYPE_SYNONYM => MATCH_TYPE_SYNONYM,
+          "synonymExact" => MATCH_TYPE_SYNONYM,
+          "synonymSuggestEdge" => MATCH_TYPE_SYNONYM,
+          "synonymSuggestNgram" => MATCH_TYPE_SYNONYM,
+          MATCH_TYPE_PROPERTY => MATCH_TYPE_PROPERTY,
+          "notation" => "notation",
+          "cui" => "cui",
+          "semanticType" => "semanticType"
+      }
 
       def get_edismax_query(text, params={})
         validate_params_solr_population()
@@ -21,20 +44,32 @@ module Sinatra
         params["stopwords"] = "true"
         params["lowercaseOperators"] = "true"
         params["fl"] = "*,score"
+        params[INCLUDE_VIEWS_PARAM] = params[ALSO_SEARCH_VIEWS] if params[ALSO_SEARCH_VIEWS]
+
+        # highlighting is used to determine the field that got matched, NCBO-974
+        params["hl"] = "on"
+        params["hl.simple.pre"] = MATCH_HTML_PRE
+        params["hl.simple.post"] = MATCH_HTML_POST
+
+        # text.gsub!(/\*+$/, '')
 
         if (params[EXACT_MATCH_PARAM] == "true")
           query = "\"#{RSolr.escape(text)}\""
           params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact notation cui semanticType"
-        elsif (text[-1] == '*')
-          text = text[0..-2]
+          params["hl.fl"] = "resource_id prefLabelExact synonymExact notation cui semanticType"
+        elsif (params[SUGGEST_PARAM] == "true" || text[-1] == '*')
+          text.gsub!(/\*+$/, '')
           query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest_ncbo"
-          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge resource_id notation cui semanticType"
+          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge^10 prefLabelSuggestNgram synonymSuggestNgram resource_id notation cui semanticType"
           params["pf"] = "prefLabelSuggest^50"
+          params["hl.fl"] = "prefLabelExact prefLabelSuggestEdge synonymSuggestEdge prefLabelSuggestNgram synonymSuggestNgram resource_id notation cui semanticType"
         else
           query = RSolr.escape(text)
           params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 notation cui semanticType"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
+          params["hl.fl"] = "resource_id prefLabelExact prefLabel synonymExact synonym notation cui semanticType"
+          params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
         subtree_ids = get_subtree_ids(params)
@@ -64,6 +99,27 @@ module Sinatra
         params["q"] = query
 
         return query
+      end
+
+      def add_matched_fields(solr_response)
+        match = MATCH_TYPE_PREFLABEL
+        all_matches = {}
+
+        solr_response["highlighting"].each do |key, matches|
+          largest_count = 0
+
+          matches.each do |match_type, val|
+            count = val[0].scan(MATCH_HTML_PRE).count
+
+            if count > largest_count
+              largest_count = count
+              match = MATCH_TYPE_MAP[match_type]
+            end
+          end
+          all_matches[key] = match
+        end
+
+        solr_response["match_types"] = all_matches
       end
 
       def escape_text(text)

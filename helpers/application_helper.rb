@@ -195,8 +195,10 @@ module Sinatra
       def restricted_ontologies(params=nil)
         params ||= @params
 
+        found_onts = false
         if params["ontologies"] && !params["ontologies"].empty?
           onts = ontology_objects_from_params(params)
+          found_onts = onts.length > 0
           Ontology.where.models(onts).include(*Ontology.access_control_load_attrs).all
         else
           if params["include_views"] == "true"
@@ -205,10 +207,16 @@ module Sinatra
             onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load()).to_a
           end
 
+          found_onts = onts.length > 0
+
           filter_for_slice(onts)
           filter_for_user_onts(onts)
         end
         onts = filter_access(onts)
+
+        if found_onts && onts.empty?
+          error 422, "No ontologies were found (either they weren't accessible to the user or there are none)"
+        end
 
         return onts
       end
@@ -378,7 +386,7 @@ module Sinatra
       end
 
       def current_user
-        env["REMOTE_USER"]
+        env["REMOTE_USER"] || LinkedData::Models::User.new
       end
 
       def include_param_contains?(str)
@@ -403,31 +411,6 @@ module Sinatra
         return object[:object]
       end
 
-      ##
-      # At the moment we do not remove mappings when archiving
-      # ontologies and some mappings point to inexistent ontologies
-      # #
-      def filter_mappings_with_no_ontology(mappings)
-        result = []
-        mappings.each do |map|
-          count = 0
-          map.terms.each do |t|
-            next if !t.loaded_attributes.include?(:ontology)
-            next if !t.ontology.loaded_attributes.include?:acronym
-            count += 1
-          end
-          if count == map.terms.length
-            result << map
-          end
-        end
-        if mappings.instance_of? Goo::Base::Page
-          return Goo::Base::Page.new(mappings.page_number,
-                              mappings.page_size,
-                              mappings.aggregate,
-                              result)
-        end
-        return result
-      end
     end
   end
 end

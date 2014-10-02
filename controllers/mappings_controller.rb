@@ -6,29 +6,31 @@ class MappingsController < ApplicationController
     submission = ontology.latest_submission
     cls_id = @params[:cls]
     cls = LinkedData::Models::Class.find(RDF::URI.new(cls_id)).in(submission).first
-    reply 404, "Class with id `#{class_id}` not found in ontology `#{acronym}`" if cls.nil?
+    if cls.nil?
+      reply 404, "Class with id `#{cls_id}` not found in ontology `#{acronym}`"
+    end
 
-
-    mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology, term: cls.id ])
-                                 .include(terms: [ :term, ontology: [ :acronym ] ])
-                                 .include(process: [:name, :owner ])
-                                 .no_graphs
-                                 .all
-    res = filter_mappings_with_no_ontology(mappings)
-    reply res
+    mappings = LinkedData::Mappings.mappings_ontology(submission,
+                                                      0,0,
+                                                      cls.id)
+    reply mappings.to_a
   end
 
   # Get mappings for an ontology
   get '/ontologies/:ontology/mappings' do
     ontology = ontology_from_acronym(@params[:ontology])
+    if ontology.nil?
+        error(404, "Ontology not found")
+    end
     page, size = page_params
-    mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontology ])
-                                 .include(terms: [ :term, ontology: [ :acronym ] ])
-                                 .include(process: [:name, :owner ])
-                                 .no_graphs
-                                 .page(page,size)
-                                 .all
-    reply filter_mappings_with_no_ontology(mappings)
+    submission = ontology.latest_submission
+    if submission.nil?
+        error(404, "Submission not found for ontology " + ontology.acronym)
+    end
+    mappings = LinkedData::Mappings.mappings_ontology(submission,
+                                                      page,size,
+                                                      nil)
+    reply mappings
   end
 
   namespace "/mappings" do
@@ -36,45 +38,52 @@ class MappingsController < ApplicationController
     get do
       ontologies = ontology_objects_from_params
       if ontologies.length != 2
-        error(400, "/mappings/ endpoint only supports filtering on two ontologies using `?ontologies=ONT1,ONT2`")
+        error(400,
+              "/mappings/ endpoint only supports filtering " +
+              "on two ontologies using `?ontologies=ONT1,ONT2`")
       end
 
       page, size = page_params
-
-      mappings = LinkedData::Models::Mapping.where(terms: [ontology: ontologies.first ])
-      if ontologies.length > 1
-        mappings.and(terms: [ontology: ontologies[1] ])
+      ont1 = ontologies.first
+      ont2 = ontologies[1]
+      sub1, sub2 = ont1.latest_submission, ont2.latest_submission
+      if sub1.nil?
+        error(404, "Submission not found for ontology " + ontologies[0].id.to_s)
       end
-      mappings = mappings.include(terms: [ :term, ontology: [ :acronym ] ])
-                  .include(process: [:name, :owner ])
-                  .no_graphs
-                  .page(page,size)
-                  .all
-      reply filter_mappings_with_no_ontology(mappings)
+      if sub2.nil?
+        error(404, "Submission not found for ontology " + ontologies[1].id.to_s)
+      end
+      mappings = LinkedData::Mappings.mappings_ontologies(sub1,sub2,
+                                                          page,size)
+      reply mappings
     end
 
     get "/recent" do
+      check_last_modified_collection(LinkedData::Models::RestBackupMapping)
       size = params[:size] || 5
       if size > 50
         error 422, "Recent mappings only processes calls under 50"
       else
-        mappings = LinkedData::Mappings.recent_user_mappings(size)
-        reply filter_mappings_with_no_ontology(mappings)
+        mappings = LinkedData::Mappings.recent_rest_mappings(size + 15)
+        reply mappings[0..size-1]
       end
     end
 
-    # Display a single mapping
+    # Display a single mapping - only rest
     get '/:mapping' do
-      mapping_id = RDF::URI.new(params[:mapping])
-      mapping = LinkedData::Models::Mapping.find(mapping_id)
-                  .no_graphs
-                  .include(terms: [:ontology, :term ])
-                  .include(process: LinkedData::Models::MappingProcess.attributes)
-                  .first
+      mapping_id = nil
+      if params[:mapping] and params[:mapping].start_with?("http")
+        mapping_id = params[:mapping]
+        mapping_id = mapping_id.gsub("/mappings/","/rest_backup_mappings/")
+        mapping_id = RDF::URI.new(params[:mapping])
+      else
+        mapping_id =
+          "http://data.bioontology.org/rest_backup_mappings/#{mapping_id}"
+        mapping_id = RDF::URI.new(mapping_id)
+      end
+      mapping = LinkedData::Mappings.get_rest_mapping(mapping_id)
       if mapping
-        onts = mapping.terms.map {|t| t.ontology }
-        LinkedData::Models::Ontology.where.models(onts).include(:acronym).all
-        reply filter_mappings_with_no_ontology([mapping]).first
+        reply mapping
       else
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       end
@@ -82,34 +91,46 @@ class MappingsController < ApplicationController
 
     # Create a new mapping
     post do
-      error(400, "Input does not contain terms") if !params[:terms]
-      error(400, "Input does not contain at least 2 terms") if params[:terms].length < 2
+      error(400, "Input does not contain classes") if !params[:classes]
+      if params[:classes].length > 2
+        error(400, "Input does not contain at least 2 terms")
+      end
       error(400, "Input does not contain mapping relation") if !params[:relation]
       error(400, "Input does not contain user creator ID") if !params[:creator]
-      params[:terms].each do |term|
-        if !term[:term] || !term[:ontology]
-          error(400,"Every term must have at least one term ID and a ontology ID or acronym")
-        end
-        if !term[:term].is_a?(Array)
-          error(400,"Term IDs must be contain in Arrays")
-        end
-        o = term[:ontology]
-        o =  o.start_with?("http://") ? o : ontology_uri_from_acronym(o)
+      classes = []
+      params[:classes].each do |class_id,ontology_id|
+        o = ontology_id
+        o =  o.start_with?("http://") ? ontology_id :
+                                        ontology_uri_from_acronym(ontology_id)
         o = LinkedData::Models::Ontology.find(RDF::URI.new(o))
-                                        .include(submissions: [:submissionId, :submissionStatus]).first
-        error(400, "Ontology with ID `#{term[:ontology]}` not found") if o.nil?
-        term[:term].each do |id|
-          error(400, "Term ID #{id} is not valid, it must be an HTTP URI") if !id.start_with?("http://")
-          submission = o.latest_submission
-          error(400, "Ontology with id #{term[:ontology]} does not have parsed valid submission") if !submission
-          c = LinkedData::Models::Class.find(RDF::URI.new(id)).in(o.latest_submission)
-          error(400, "Class ID `#{id}` not found in `#{submission.id.to_s}`") if c.nil?
+                                        .include(submissions:
+                                       [:submissionId, :submissionStatus]).first
+        if o.nil?
+          error(400, "Ontology with ID `#{ontology_id}` not found")
         end
+        submission = o.latest_submission
+        if submission.nil?
+          error(400,
+     "Ontology with id #{ontology_id} does not have parsed valid submission")
+        end
+        submission.bring(ontology: [:acronym])
+        c = LinkedData::Models::Class.find(RDF::URI.new(class_id))
+                                    .in(submission)
+                                    .first
+        if c.nil?
+          error(400, "Class ID `#{id}` not found in `#{submission.id.to_s}`")
+        end
+        classes << c
       end
-      user_id = params[:creator].start_with?("http://") ? params[:creator].split("/")[-1] : params[:creator]
-      user_creator = LinkedData::Models::User.find(user_id).include(:username).first
-      error(400, "User with id `#{params[:creator]}` not found") if user_creator.nil?
-      process = LinkedData::Models::MappingProcess.new(:creator => user_creator, :name => "REST Mapping")
+      user_id = params[:creator].start_with?("http://") ?
+                    params[:creator].split("/")[-1] : params[:creator]
+      user_creator = LinkedData::Models::User.find(user_id)
+                          .include(:username).first
+      if user_creator.nil?
+        error(400, "User with id `#{params[:creator]}` not found")
+      end
+      process = LinkedData::Models::MappingProcess.new(
+                    :creator => user_creator, :name => "REST Mapping")
       process.relation = RDF::URI.new(params[:relation])
       process.date = DateTime.now
       process_fields = [:source,:source_name, :comment]
@@ -117,56 +138,18 @@ class MappingsController < ApplicationController
         process.send("#{att}=",params[att]) if params[att]
       end
       process.save
-      term_mappings = []
-      params[:terms].each do |term|
-        ont_acronym = term[:ontology].start_with?("http://") ? term[:ontology].split("/")[-1] : term[:ontology]
-        term_mappings << LinkedData::Mappings.create_term_mapping(term[:term].map {|x| RDF::URI.new(x) },ont_acronym)
-      end
-      mapping_id = LinkedData::Mappings.create_mapping(term_mappings)
-      LinkedData::Mappings.connect_mapping_process(mapping_id, process)
-      mapping = LinkedData::Models::Mapping.find(mapping_id)
-                  .include(terms: [:ontology, :term ])
-                  .include(process: LinkedData::Models::MappingProcess.attributes)
-                  .first
-      onts = mapping.terms.map { |x| x.ontology }
-      LinkedData::Models::Ontology.where.models(onts).include(:acronym).all
+      mapping = LinkedData::Mappings.create_rest_mapping(classes,process)
       reply(201, mapping)
     end
 
     # Delete a mapping
     delete '/:mapping' do
       mapping_id = RDF::URI.new(replace_url_prefix(params[:mapping]))
-      mapping = LinkedData::Models::Mapping.find(mapping_id)
-                  .include(terms: [:ontology, :term ])
-                  .include(process: LinkedData::Models::MappingProcess.attributes)
-                  .first
-
+      mapping = LinkedData::Mappings.delete_rest_mapping(mapping_id)
       if mapping.nil?
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       else
-        deleted = false
-        disconnected = 0
-        mapping.process.each do |p|
-          if p.date
-            disconnected += 1
-            mapping_updated = LinkedData::Mappings.disconnect_mapping_process(mapping.id,p)
-            if mapping_updated.process.length == 0
-              deleted = true
-              LinkedData::Mappings.delete_mapping(mapping_updated)
-              break
-            end
-          end
-        end
-
-        if deleted
-          halt 204
-        else
-          if disconnected > 0
-            halt 204
-          else
-            reply(400, "This mapping only contains automatic processes. Nothing has been deleted")
-          end
-        end
+        halt 204
       end
     end
   end
@@ -175,23 +158,44 @@ class MappingsController < ApplicationController
 
     get '/ontologies' do
       expires 86400, :public
-      reply LinkedData::Mappings.mapping_counts_per_ontology()
+      persistent_counts = {}
+      f = Goo::Filter.new(:pair_count) == false
+      LinkedData::Models::MappingCount.where.filter(f)
+      .include(:ontologies,:count)
+      .all
+      .each do |m|
+        persistent_counts[m.ontologies.first] = m.count
+      end
+      reply persistent_counts
     end
 
     # Statistics for an ontology
     get '/ontologies/:ontology' do
       expires 86400, :public
       ontology = ontology_from_acronym(@params[:ontology])
-      reply LinkedData::Mappings.mapping_counts_for_ontology(ontology)
+      if ontology.nil?
+        error(404, "Ontology #{@params[:ontology]} not found")
+      end
+      sub = ontology.latest_submission
+      if sub.nil?
+        error(404, "Ontology #{@params[:ontology]} does not have a submission")
+      end
+
+      persistent_counts = {}
+      LinkedData::Models::MappingCount.where(pair_count: true)
+                                      .and(ontologies: ontology.acronym)
+      .include(:ontologies,:count)
+      .all
+      .each do |m|
+        other = m.ontologies.first
+        if other == ontology.acronym
+          other = m.ontologies[1]
+        end
+        persistent_counts[other] = m.count
+      end
+      reply persistent_counts
     end
 
-    # Classes with lots of mappings
-    get '/ontologies/:ontology/popular_classes' do
-    end
-
-    # Users with lots of mappings
-    get '/ontologies/:ontology/users' do
-    end
   end
 
 end

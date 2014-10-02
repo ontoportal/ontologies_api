@@ -16,7 +16,7 @@ module Sinatra
             filter_access(obj)
           end
         else
-          if obj.read_restricted?
+          if obj.respond_to?(:read_restricted?) && obj.read_restricted?
             readable = obj.readable?(env["REMOTE_USER"])
             error 403, "Access denied for this resource" unless readable
           end

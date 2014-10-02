@@ -1,6 +1,20 @@
 class PropertiesController < ApplicationController
 
   namespace "/ontologies/:ontology/properties" do
+
+    get do
+      ont = Ontology.find(params["ontology"]).first
+      error 404, "You must provide a valid `acronym` to retrieve properties of an ontology" if ont.nil?
+
+      begin
+        props = ont.properties()
+      rescue LinkedData::Models::Ontology::ParsedSubmissionError => e
+        error 404, e.message
+      end
+
+      reply props
+    end
+
     get '/:property/label' do
       expires 86400, :public
       ont, submission = get_ontology_and_submission

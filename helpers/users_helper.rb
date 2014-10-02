@@ -7,6 +7,7 @@ module Sinatra
         return obj unless obj.is_a?(Enumerable)
         return obj unless env["REMOTE_USER"]
         return obj if env["REMOTE_USER"].customOntology.empty?
+        return obj if params["ignore_custom_ontologies"]
 
         user = env["REMOTE_USER"]
 

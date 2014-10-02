@@ -7,17 +7,17 @@
         %li
           %a{href: "#nav_usage"} General Usage
         %li
-          %a{href: "#nav_search"} Search Endpoint
+          %a{href: "#nav_search"} Search
         %li
-          %a{href: "#nav_annotator"} Annotator Endpoint
+          %a{href: "#nav_annotator"} Annotator
         %li
-          %a{href: "#nav_recommender"} Recommender Endpoint
+          %a{href: "#nav_recommender"} Recommender
         %li
-          %a{href: "#nav_resource_index"} Resource Index Endpoint
+          %a{href: "#nav_resource_index"} Resource Index
         %li
-          %a{href: "#nav_batch"} Batch Endpoints
+          %a{href: "#nav_batch"} Batch
         %li
-          %a{href: "#nav_resource_endpoints"} Resource Endpoints
+          %a{href: "#nav_resource_endpoints"} Resources
           %ul.nav.nav-list
             %li
               %a{href: "#nav_media_types"} Media Types and Hypermedia Links
@@ -112,6 +112,10 @@
           %td include_links
           %td {true|false} (defaults to true)
           %td Turn off the hypermedia link serialization. This will reduce the response size significantly for some calls, speeding up transmission and parse time.
+        %tr
+          %td download_format
+          %td {csv|rdf} (defaults to user-uploaded file format)
+          %td Allows you to specify alternative formats for ontology file downloads for ontology and ontology submission download endpoints. CSV is only available for the most recent submission.
 
       %h2#nav_non_rest Search, Annotator, Recommender, and Resource Index Endpoints
 
@@ -135,7 +139,8 @@
             %ul
               %li ontologies={ontology_id1,ontology_id2,ontology_id3}
               %li exact_match={true|false}  // default = false
-              %li include_views={true|false}  // default = false
+              %li suggest={true|false}  // default = false. Will perform a search specifically geared towards type-ahead suggestions.
+              %li also_search_views={true|false}  // default = false
               %li require_definition={true|false}  // default = false
               %li include_properties={true|false}  // default = false
               %li include_obsolete={true|false}  // default = false (exclude obsolete terms)
@@ -180,6 +185,7 @@
                 %ul
                   %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
                   %li semantic_types={semType1,semType2..,semTypeN}
+                  %li use_semantic_types_hierarchy={true|false} // default = false. true means to use the semantic types passed in the "semantic_types" parameter as well as all their immediate children. false means to use ONLY the semantic types passed in the "semantic_types" parameter.
                   %li max_level={0..N}
                   %li mappings={true|false} // default = false. true means that the following manual mappings will be used in annotation: UMLS, REST, CUI, OBOXREF.
                   %li stop_words={word1,word2..,wordN} (case insensitive)
@@ -221,96 +227,89 @@
       %h3#nav_resource_index Resource Index
 
       %p
-        The Resource Index contains a collection of annotated resources that can be searched by providing ontology acronyms with a corresponding class id or set of ids
+        The Resource Index contains a collection of annotated resources that can be searched by providing ontology acronyms with a corresponding class id or set of ids.
+        %h4
+          Parameters
+        %ul
+          %li <code>expand_hierarchy={true|false}</code>  Search for all of the descendants of the given class
+          %li <code>boolean_operator={or|and}</code>  When searching for multiple classes, should documents include all classes (AND) or any class (OR)
+        %h4
+          Counts
+        %p
+          Requests to the counts endpoint will retrieve the number of documents in which the given classes are found.
         %ul
           %li
-            Search
+            Single class
             %ul
               %li
-                Single class
-                %ul
-                  %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=class_id1</code>
-                  %li
-                    example:
-                    %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
-                  %li
-                    example (with short IDs):
-                    %a{href: "/resource_index/search?classes[SNOMEDCT]=2092003"} /resource_index/search?classes[SNOMEDCT]=2092003
-              %li
-                Multiple classes, single ontology
-                %ul
-                  %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=class_id1,class_id2</code>
-                  %li
-                    example:
-                    %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006
-                  %li
-                    example (with short IDs):
-                    %a{href: "/resource_index/search?classes[SNOMEDCT]=2092003,162573006"} /resource_index/search?classes[SNOMEDCT]=2092003,162573006
-              %li
-                Multiple classes, multiple ontologies
-                %ul
-                  %li
-                    <span class="label label-info">GET</span> <code>/resource_index/search?classes[ontology_id1]=class_id1&classes[ontology_id2]=class_id1,class_id2</code>
-                  %li
-                    example:
-                    %a{href: "/resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NEMO]=http%3A%2F%2Fpurl.bioontology.org%2FNEMO%2Fontology%2FNEMO.owl%23NEMO_7571000"} /resource_index/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NEMO]=http%3A%2F%2Fpurl.bioontology.org%2FNEMO%2Fontology%2FNEMO.owl%23NEMO_7571000
-                  %li
-                    example (with short IDs):
-                    %a{href: "/resource_index/search?classes[SNOMEDCT]=2092003&classes[NEMO]=NEMO:NEMO_7571000"} /resource_index/search?classes[SNOMEDCT]=2092003&classes[NEMO]=NEMO:NEMO_7571000
-              %li
-                Search Parameters
-                %ul
-                  %li
-                    Filtering & query behavior
-                    %ul
-                      %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
-                      %li semantic_types={semType1,semType2..,semTypeN}
-                      %li max_level={0..N}
-                      %li mapping_types={automatic|manual}
-                      %li resources={resource1,resource2..,resourceN}
-                      %li exclude_numbers={true|false}
-                      %li minimum_match_length={0..N}
-                      %li include_synonyms={true|false}
-                      %li mode={union|intersection}
-                  %li
-                    Stop words
-                    %ul
-                      %li stop_words={word1,word2..,wordN}
-                      %li stop_words_are_case_sensitive={true|false}
-          %li
-            Ontologies
-            %ul
-              %li
-                All ontologies:
-              %li
-                <span class="label label-info">GET</span> <code>/resource_index/ontologies</code>
+                <span class="label label-info">GET</span> <code>/resource_index/counts?classes[ontology_id1]=class_id1</code>
               %li
                 example:
-                %a{href: "/resource_index/ontologies"} /resource_index/ontologies
+                %a{href: "/resource_index/counts?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/counts?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
           %li
-            Resources
+            Multiple classes, single ontology
             %ul
               %li
-                All resources:
-                %ul
-                  %li
-                    <span class="label label-info">GET</span> <code>/resource_index/resources</code>
-                  %li
-                    example:
-                    %a{href: "/resource_index/resources"} /resource_index/resources
+                <span class="label label-info">GET</span> <code>/resource_index/counts?classes[ontology_id1]=class_id1,class_id2</code>
               %li
-                Specific resources:
-                %ul
-                  %li
-                    <span class="label label-info">GET</span> <code>/resource_index/resources/{resource_id1,...,resource_idN}</code>
-                  %li
-                    example:
-                    %a{href: "/resource_index/resources/AE"} /resource_index/resources/AE
-                  %li
-                    example:
-                    %a{href: "/resource_index/resources/AE,CARY"} /resource_index/resources/AE,CARY
+                example:
+                %a{href: "/resource_index/counts?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006"} /resource_index/counts?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006
+          %li
+            Multiple classes, multiple ontologies
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/counts?classes[ontology_id1]=class_id1&classes[ontology_id2]=class_id1,class_id2</code>
+              %li
+                example:
+                %a{href: "/resource_index/counts?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NEMO]=http%3A%2F%2Fpurl.bioontology.org%2FNEMO%2Fontology%2FNEMO.owl%23NEMO_7571000"} /resource_index/counts?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NEMO]=http%3A%2F%2Fpurl.bioontology.org%2FNEMO%2Fontology%2FNEMO.owl%23NEMO_7571000
+        %h4
+          Search
+        %p
+          Requests to the search endpoint will retrieve the documents in which given classes are found. The response is paged.
+        %ul
+          %li
+            Single class
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/resources/{resource_id}/search?classes[ontology_id1]=class_id1</code>
+              %li
+                example:
+                %a{href: "/resource_index/resources/AE/search?classes[SNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003"} /resource_index/resources/AE/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003
+          %li
+            Multiple classes, single ontology
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/resources/{resource_id}/search?classes[ontology_id1]=class_id1,class_id2</code>
+              %li
+                example:
+                %a{href: "/resource_index/resources/AE/search?classes[SNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006"} /resource_index/resources/AE/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003,http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F162573006
+          %li
+            Multiple classes, multiple ontologies
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/resources/{resource_id}/search?classes[ontology_id1]=class_id1&classes[ontology_id2]=class_id1,class_id2</code>
+              %li
+                example:
+                %a{href: "/resource_index/resources/AE/search?classes[SNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[NCIT]=http%3A%2F%2Fncicb.nci.nih.gov%2Fxml%2Fowl%2FEVS%2FThesaurus.owl%23C12470"} /resource_index/resources/AE/search?classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FSNOMEDCT]=http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F2092003&classes[http%3A%2F%2Fdata.bioontology.org%2Fontologies%2FNCIT]=http%3A%2F%2Fncicb.nci.nih.gov%2Fxml%2Fowl%2FEVS%2FThesaurus.owl%23C12470
+        %h4
+          Resources
+        %ul
+          %li
+            All resources:
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/resources</code>
+              %li
+                example:
+                %a{href: "/resource_index/resources"} /resource_index/resources
+          %li
+            Specific resources:
+            %ul
+              %li
+                <span class="label label-info">GET</span> <code>/resource_index/resources/{resource_id1}</code>
+              %li
+                example:
+                %a{href: "/resource_index/resources/AE"} /resource_index/resources/AE
 
 
       %h2#nav_batch Batch Endpoints

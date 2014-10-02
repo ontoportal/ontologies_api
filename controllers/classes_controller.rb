@@ -49,28 +49,12 @@ class ClassesController < ApplicationController
         end
       end
 
-      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
-      #ancestors and descedendents need to run in a separate query
-      #otherwise they can conflict with parents and children
-      with_reasoning = [ld.delete(:ancestors),ld.delete(:descendants)].delete_if { |x| x.nil? }
-      if ld[-1].is_a?(Hash)
-        if ld[-1].include?(:ancestors) || ld[-1].include?(:descendants)
-          with_reasoning << Hash.new
-          if ld[-1].include?(:ancestors)
-            with_reasoning[-1][:ancestors] = ld[-1].delete(:ancestors)
-          end
-          if ld[-1].include?(:descendants)
-            with_reasoning[-1][:descendants] = ld[-1].delete(:descendants)
-          end
-          ld.pop if ld[-1].length == 0
-        end
-      end
+      unmapped = ld.delete(:properties) || 
+        (includes_param && includes_param.include?(:all))
       cls = get_class(submission, ld)
       if unmapped
-        LinkedData::Models::Class.in(submission).models([cls]).include(:unmapped).all
-      end
-      if with_reasoning.length > 0
-        LinkedData::Models::Class.in(submission).models([cls]).include(*with_reasoning).all
+        LinkedData::Models::Class.in(submission)
+          .models([cls]).include(:unmapped).all
       end
       if load_children
         LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)

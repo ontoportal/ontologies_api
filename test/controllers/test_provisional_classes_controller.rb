@@ -53,6 +53,13 @@ class TestProvisionalClassesController < TestCase
     assert_equal pc["@id"], retrieved_pc["@id"]
   end
 
+  def test_user_provisional_classes
+    get "/users/#{@@test_username}/provisional_classes"
+    assert last_response.status == 200
+    pcs = MultiJson.load(last_response.body)
+    assert pcs.length == 3
+  end
+
   def test_provisional_class_lifecycle
     pc = {
         creator: @@test_user.id.to_s,
