@@ -195,8 +195,10 @@ module Sinatra
       def restricted_ontologies(params=nil)
         params ||= @params
 
+        found_onts = false
         if params["ontologies"] && !params["ontologies"].empty?
           onts = ontology_objects_from_params(params)
+          found_onts = onts.length > 0
           Ontology.where.models(onts).include(*Ontology.access_control_load_attrs).all
         else
           if params["include_views"] == "true"
@@ -205,10 +207,16 @@ module Sinatra
             onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load()).to_a
           end
 
+          found_onts = onts.length > 0
+
           filter_for_slice(onts)
           filter_for_user_onts(onts)
         end
         onts = filter_access(onts)
+
+        if found_onts && onts.empty?
+          error 422, "No ontologies were found (either they weren't accessible to the user or there are none)"
+        end
 
         return onts
       end

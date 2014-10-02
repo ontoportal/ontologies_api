@@ -7,13 +7,13 @@ class MappingsController < ApplicationController
     cls_id = @params[:cls]
     cls = LinkedData::Models::Class.find(RDF::URI.new(cls_id)).in(submission).first
     if cls.nil?
-      reply 404, "Class with id `#{class_id}` not found in ontology `#{acronym}`" 
+      reply 404, "Class with id `#{cls_id}` not found in ontology `#{acronym}`"
     end
 
     mappings = LinkedData::Mappings.mappings_ontology(submission,
                                                       0,0,
                                                       cls.id)
-    reply mappings
+    reply mappings.to_a
   end
 
   # Get mappings for an ontology
@@ -38,7 +38,7 @@ class MappingsController < ApplicationController
     get do
       ontologies = ontology_objects_from_params
       if ontologies.length != 2
-        error(400, 
+        error(400,
               "/mappings/ endpoint only supports filtering " +
               "on two ontologies using `?ontologies=ONT1,ONT2`")
       end
@@ -59,6 +59,7 @@ class MappingsController < ApplicationController
     end
 
     get "/recent" do
+      check_last_modified_collection(LinkedData::Models::RestBackupMapping)
       size = params[:size] || 5
       if size > 50
         error 422, "Recent mappings only processes calls under 50"
@@ -76,7 +77,7 @@ class MappingsController < ApplicationController
         mapping_id = mapping_id.gsub("/mappings/","/rest_backup_mappings/")
         mapping_id = RDF::URI.new(params[:mapping])
       else
-        mapping_id = 
+        mapping_id =
           "http://data.bioontology.org/rest_backup_mappings/#{mapping_id}"
         mapping_id = RDF::URI.new(mapping_id)
       end
@@ -102,14 +103,14 @@ class MappingsController < ApplicationController
         o =  o.start_with?("http://") ? ontology_id :
                                         ontology_uri_from_acronym(ontology_id)
         o = LinkedData::Models::Ontology.find(RDF::URI.new(o))
-                                        .include(submissions: 
+                                        .include(submissions:
                                        [:submissionId, :submissionStatus]).first
         if o.nil?
           error(400, "Ontology with ID `#{ontology_id}` not found")
         end
         submission = o.latest_submission
         if submission.nil?
-          error(400, 
+          error(400,
      "Ontology with id #{ontology_id} does not have parsed valid submission")
         end
         submission.bring(ontology: [:acronym])
@@ -121,7 +122,7 @@ class MappingsController < ApplicationController
         end
         classes << c
       end
-      user_id = params[:creator].start_with?("http://") ? 
+      user_id = params[:creator].start_with?("http://") ?
                     params[:creator].split("/")[-1] : params[:creator]
       user_creator = LinkedData::Models::User.find(user_id)
                           .include(:username).first
@@ -179,7 +180,7 @@ class MappingsController < ApplicationController
       if sub.nil?
         error(404, "Ontology #{@params[:ontology]} does not have a submission")
       end
-  
+
       persistent_counts = {}
       LinkedData::Models::MappingCount.where(pair_count: true)
                                       .and(ontologies: ontology.acronym)
