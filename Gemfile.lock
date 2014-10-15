@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 7d4f923f8f6e42b2a444dc342a790768f8202eaf
+  revision: 60b3a67f8045650cded12824148e1496cdbcd768
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6a0162d87f17dd2b0f4905e01211a640b5e45e86
+  revision: 1a0171f0ff7cb2dcf1ca1965d395062ca36b5559
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 64cc8223734572ebb60234088e4e193f7b13c43a
+  revision: a220e65969072c618057a14849190fbbb9076c3d
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -150,7 +150,7 @@ GEM
       ffi (>= 1.3.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.5)
+    ffi (1.9.6)
     haml (4.0.5)
       tilt
     i18n (0.6.11)
@@ -207,7 +207,7 @@ GEM
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.5.0)
-    redcarpet (3.1.2)
+    redcarpet (3.2.0)
     redis (3.1.0)
     redis-activesupport (3.2.5)
       activesupport (~> 3.2.0)
