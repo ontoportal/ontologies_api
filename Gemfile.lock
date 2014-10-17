@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 169fca55f740e388bad87b8ff8453243af31e11a
+  revision: f90df512b2f1ff55d9004d3b9184b8779eeeea1a
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 1e32c7be12a47cab815dd5d9cb4df2c965e0a0e8
+  revision: 0ac6b30d185440d92fb1b242bf72f15c5de39807
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 465efb7d2cb695b6bf4797030766ff404a23fc26
+  revision: ad524940b287f4e6f08b442f8e85cdd45bf809e8
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: a1470cf956da2df1e36bbea65f2cc539dbf95c3b
+  revision: a3faa39c7a94e7eaabb654d8a324a662e6397e2c
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -164,7 +164,7 @@ GEM
     mail (2.6.1)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.4.1)
+    mime-types (2.4.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.0)
     mlanett-redis-lock (0.2.6)
@@ -176,7 +176,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
-    netrc (0.7.7)
+    netrc (0.8.0)
     oj (2.10.3)
     pony (1.11)
       mail (>= 2.0)
