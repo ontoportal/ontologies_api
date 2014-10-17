@@ -273,6 +273,29 @@ eos
     assert annotations.first["annotatedClass"]["definition"] == ["A resource that provides data from clinical care that comprises combined data from multiple individual human subjects."]
   end
 
+  def test_recognizer_endpoint
+    recognizers = []
+    ObjectSpace.each_object(Annotator::Models::NcboAnnotator.singleton_class).each do |c|
+      next if c == Annotator::Models::NcboAnnotator
+      recognizer = c.name.downcase.split("::").last
+      recognizers << recognizer.to_sym
+    end
+    get "/annotator/recognizers"
+    assert last_response.ok?
+    rest_recognizers = MultiJson.load(last_response.body)
+    assert rest_recognizers.length > 0
+
+    default_rec_setting = Annotator.settings.supported_recognizers
+    Annotator.settings.supported_recognizers = recognizers
+
+    get "/annotator/recognizers"
+    assert last_response.ok?
+    rest_recognizers = MultiJson.load(last_response.body)
+    assert rest_recognizers.length > 0
+    assert_equal recognizers.length, rest_recognizers.length
+    assert_equal recognizers.sort, rest_recognizers.map {|r| r.to_sym}.sort
+  end
+
   #TODO: this method is duplicated in NCBO_ANNOTATOR
   def self.all_classes(ontologies)
     classes = []
