@@ -1,6 +1,17 @@
 class AnnotatorController < ApplicationController
   namespace "/annotator" do
 
+    get "/recognizers" do
+      reply [] unless Annotator.settings.enable_recognizer_param
+      recognizers = []
+      ObjectSpace.each_object(Annotator::Models::NcboAnnotator.singleton_class).each do |c|
+        next if c == Annotator::Models::NcboAnnotator
+        recognizer = c.name.downcase.split("::").last
+        recognizers << recognizer if Annotator.settings.supported_recognizers.include?(recognizer.to_sym)
+      end
+      reply recognizers
+    end
+
     post do
       process_annotation
     end
@@ -32,7 +43,7 @@ class AnnotatorController < ApplicationController
 
       # see if a name of the recognizer has been passed in, use default if not or error
       begin
-        recognizer = recognizer.slice(0, 1).capitalize + recognizer.slice(1..-1)
+        recognizer = recognizer.capitalize
         clazz = "Annotator::Models::Recognizers::#{recognizer}".split('::').inject(Object) {|o, c| o.const_get c}
         annotator = clazz.new
       rescue
