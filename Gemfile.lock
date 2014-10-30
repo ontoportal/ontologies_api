@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 04bb0a84aca300b66b04b2443a6080db388fbe22
+  revision: c5ecc87783724228ca938fb1d8b690d9441c589f
   branch: staging
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 0ac6b30d185440d92fb1b242bf72f15c5de39807
+  revision: ec61ef13b3209faf5727ea4237402ee87fc9c5e7
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: ad524940b287f4e6f08b442f8e85cdd45bf809e8
+  revision: ef9c6dc483da8fda6dd668ce53e26a6db812fe83
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 38239e4708326c32eca18025092efca83c13d191
+  revision: 4d10333a431866156ccf6d80b63574dc5b60ba0b
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
