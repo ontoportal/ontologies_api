@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: d433c4f6cc9df9bf9630a68272941a7e62516d41
+  revision: 0f10a0b37aceeac395c6f4b771138db8f75ada42
   branch: staging
   specs:
     goo (0.0.2)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 0f3a4e8ab8895b4200fa8a432da756f223febcf0
+  revision: 539ccbcc1099ad8b721ae99972cca55c7f14bf4b
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -116,7 +116,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.19)
+    activesupport (3.2.20)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
