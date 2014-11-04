@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: ec61ef13b3209faf5727ea4237402ee87fc9c5e7
+  revision: e4ae71b2a3185d20d3e155ab10c283b51d513f06
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 539ccbcc1099ad8b721ae99972cca55c7f14bf4b
+  revision: 0742faf5a3e2dcf9f25b9b311ddb8c7041a9fbe2
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -161,7 +161,7 @@ GEM
     libxml-ruby (2.7.0)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mail (2.6.1)
+    mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
     mime-types (2.4.3)
@@ -177,7 +177,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.8.0)
-    oj (2.10.4)
+    oj (2.11.0)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -227,7 +227,7 @@ GEM
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.15.0)
+    sequel (4.16.0)
     simplecov (0.9.1)
       docile (~> 1.1.0)
       multi_json (~> 1.0)
