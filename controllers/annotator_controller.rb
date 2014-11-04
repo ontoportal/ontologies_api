@@ -24,21 +24,32 @@ class AnnotatorController < ApplicationController
     def process_annotation(params=nil)
       validate_params_solr_population()
       params ||= @params
-      text = params['text']
+      params_copy = params.dup
+
+      text = params_copy.delete("text")
       error 400, 'A text to be annotated must be supplied using the argument text=<text to be annotated>' if text.nil? || text.strip.empty?
-      acronyms = restricted_ontologies_to_acronyms(params)
-      semantic_types = semantic_types_param
-      max_level = params['max_level'].to_i  # default = 0
-      use_semantic_types_hierarchy = params['use_semantic_types_hierarchy'].eql?('true')  # default = false
-      longest_only = params['longest_only'].eql?('true')  # default = false
-      expand_with_mappings = params['mappings'].eql?('true')  # default = false
-      exclude_nums = params['exclude_numbers'].eql?('true')  # default = false
-      whole_word_only = params['whole_word_only'].eql?('false') ? false : true  # default = true
-      min_term_size = params['minimum_match_length'].to_i    # default = 0
+
+      acronyms = restricted_ontologies_to_acronyms(params_copy)
+      params_copy.delete("ontologies")
+      semantic_types = semantic_types_param(params_copy)
+      params_copy.delete("semantic_types")
+      max_level = params_copy.delete("max_level").to_i  # default = 0
+      use_semantic_types_hierarchy = params_copy.delete("use_semantic_types_hierarchy").eql?('true')  # default = false
+      longest_only = params_copy.delete("longest_only").eql?('true')  # default = false
+      expand_with_mappings = params_copy.delete("mappings").eql?('true')  # default = false
+      exclude_nums = params_copy.delete("exclude_numbers").eql?('true')  # default = false
+      whole_word_only = params_copy.delete("whole_word_only").eql?('false') ? false : true  # default = true
+      min_term_size = params_copy.delete("minimum_match_length").to_i    # default = 0
+
       # NCBO-603: switch to 'include_synonyms', but allow 'with_synonyms'.
-      include_synonyms = params['include_synonyms'] || params['with_synonyms'] || nil
+      include_synonyms = params_copy["include_synonyms"] || params_copy["with_synonyms"] || nil
+      params_copy.delete("include_synonyms")
+      params_copy.delete("with_synonyms")
       include_synonyms = include_synonyms.eql?('false') ? false : true  # default = true
-      recognizer = (Annotator.settings.enable_recognizer_param && params['recognizer']) || 'Mgrep'
+
+      recognizer = (Annotator.settings.enable_recognizer_param && params_copy["recognizer"]) || 'mgrep'
+      params_copy.delete("recognizer")
+
       annotator = nil
 
       # see if a name of the recognizer has been passed in, use default if not or error
@@ -50,23 +61,27 @@ class AnnotatorController < ApplicationController
         annotator = Annotator::Models::Recognizers::Mgrep.new
       end
 
-      if params['stop_words']
-        annotator.stop_words = params['stop_words']
+      if params_copy["stop_words"]
+        annotator.stop_words = params_copy.delete("stop_words")
       end
 
+      params_copy.delete("include")
+      options = {
+        ontologies: acronyms,
+        semantic_types: semantic_types,
+        use_semantic_types_hierarchy: use_semantic_types_hierarchy,
+        filter_integers: exclude_nums,
+        expand_hierarchy_levels: max_level,
+        expand_with_mappings: expand_with_mappings,
+        min_term_size: min_term_size,
+        whole_word_only: whole_word_only,
+        with_synonyms: include_synonyms,  # Note: not changing the annotator client parameter name.
+        longest_only: longest_only
+      }
+      options.merge!(params_copy.symbolize_keys())
+
       begin
-        annotations = annotator.annotate(text, {
-            ontologies: acronyms,
-            semantic_types: semantic_types,
-            use_semantic_types_hierarchy: use_semantic_types_hierarchy,
-            filter_integers: exclude_nums,
-            expand_hierarchy_levels: max_level,
-            expand_with_mappings: expand_with_mappings,
-            min_term_size: min_term_size,
-            whole_word_only: whole_word_only,
-            with_synonyms: include_synonyms,  # Note: not changing the annotator client parameter name.
-            longest_only: longest_only
-        })
+        annotations = annotator.annotate(text, options)
 
         unless includes_param.empty?
           # Move include param to special param so it only applies to classes
