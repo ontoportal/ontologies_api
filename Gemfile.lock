@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 04bb0a84aca300b66b04b2443a6080db388fbe22
+  revision: 0f10a0b37aceeac395c6f4b771138db8f75ada42
   branch: staging
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: e4ae71b2a3185d20d3e155ab10c283b51d513f06
+  revision: ec61ef13b3209faf5727ea4237402ee87fc9c5e7
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 0742faf5a3e2dcf9f25b9b311ddb8c7041a9fbe2
+  revision: 539ccbcc1099ad8b721ae99972cca55c7f14bf4b
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 334c8fe428f4da24426a5490337251cd35b062fe
+  revision: 36128148661efcc47b072c6060712623157077f3
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -116,7 +116,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.19)
+    activesupport (3.2.20)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
@@ -155,7 +155,7 @@ GEM
       tilt
     i18n (0.6.11)
     json (1.8.1)
-    json-schema (2.4.0)
+    json-schema (2.4.1)
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
