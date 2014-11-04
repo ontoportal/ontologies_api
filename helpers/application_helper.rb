@@ -233,8 +233,9 @@ module Sinatra
 
       ##
       # Get semantic types parameter in the form [semantic_types=T099,T085,T345]
-      def semantic_types_param(params = nil)
+      def semantic_types_param(params=nil)
         params ||= @params
+
         if params["semantic_types"]
           semanticTypes = params["semantic_types"].split(",").map {|o| o.strip}
           return semanticTypes
