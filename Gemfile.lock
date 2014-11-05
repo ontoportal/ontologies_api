@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 72262f2944990fc87f09ab244e0b0a7d44709bea
+  revision: 6d76c08b34a3e5e11c0c0c59394f98bb92dec092
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 7afe3326ad1b7cbb8cb6585562bffe34d6d008c6
+  revision: 9ef5c32395c8b08381ffd9558ef6223935043b29
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 60b3a67f8045650cded12824148e1496cdbcd768
+  revision: e6321d3b96b6216bba010b7663c0f456c83908a7
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 1a0171f0ff7cb2dcf1ca1965d395062ca36b5559
+  revision: be30214ce68d8abb8568bbfe26478ddd72e75e11
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: a220e65969072c618057a14849190fbbb9076c3d
+  revision: 36128148661efcc47b072c6060712623157077f3
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 0b2e1af46149c486916f9c0d0b059e08843eaedb
+  revision: 1bfd9bf0e5ff4dbf121d96517e41fa22e1df35e8
   branch: master
   specs:
     sparql-client (1.0.4.1)
@@ -116,12 +116,12 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.19)
+    activesupport (3.2.20)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
     backports (3.6.3)
-    bcrypt (3.1.7)
+    bcrypt (3.1.9)
     builder (3.2.2)
     capistrano (3.1.0)
       i18n
@@ -138,12 +138,12 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    elasticsearch (1.0.5)
-      elasticsearch-api (= 1.0.5)
-      elasticsearch-transport (= 1.0.5)
-    elasticsearch-api (1.0.5)
+    elasticsearch (1.0.6)
+      elasticsearch-api (= 1.0.6)
+      elasticsearch-transport (= 1.0.6)
+    elasticsearch-api (1.0.6)
       multi_json
-    elasticsearch-transport (1.0.5)
+    elasticsearch-transport (1.0.6)
       faraday
       multi_json
     ethon (0.7.1)
@@ -155,16 +155,16 @@ GEM
       tilt
     i18n (0.6.11)
     json (1.8.1)
-    json-schema (2.2.5)
+    json-schema (2.4.1)
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mail (2.6.1)
+    mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.4.1)
+    mime-types (2.4.3)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.0)
     mlanett-redis-lock (0.2.6)
@@ -176,8 +176,8 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
-    netrc (0.7.7)
-    oj (2.10.3)
+    netrc (0.8.0)
+    oj (2.11.0)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -186,7 +186,7 @@ GEM
       slop (~> 3.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.1.1)
+    rack-attack (4.2.0)
       rack
     rack-cache (1.2)
       rack (>= 0.4)
@@ -197,7 +197,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rack-timeout (0.0.4)
+    rack-timeout (0.1.0)
     rainbows (4.6.2)
       kgio (~> 2.5)
       rack (~> 1.1)
@@ -227,7 +227,7 @@ GEM
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.15.0)
+    sequel (4.16.0)
     simplecov (0.9.1)
       docile (~> 1.1.0)
       multi_json (~> 1.0)
