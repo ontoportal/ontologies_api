@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 1f8e2266a54bcd03520057d3fb1ba0ac21a3c8b9
+  revision: 0f10a0b37aceeac395c6f4b771138db8f75ada42
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 55da7fb6b148046222ee23c8cf290ac7cc742b60
+  revision: d30a3cd3a9f0f30411788ccd1134923a00024393
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
