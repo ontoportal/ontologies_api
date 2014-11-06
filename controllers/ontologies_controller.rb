@@ -1,16 +1,5 @@
 class OntologiesController < ApplicationController
 
-  # Ontology acronym and name validation rules
-  ACRONYM_RULES = <<-DOC
-  Acronyms should conform to these rules:
-  # it may contain a-z, A-Z, 0-9, dash, and underscore (no spaces)
-  # it must start with a letter (upper or lower case)
-  # it's length <= 16 characters
-  # it must be unique (no ontology already owns it)
-  DOC
-  # regex to satisfy these criteria (tested at http://rubular.com/)
-  ACRONYM_REGEX = /\A[A-Z]{1}[-_0-9A-Z]{0,15}\Z/
-
   namespace "/ontologies" do
 
     ##
@@ -131,19 +120,16 @@ class OntologiesController < ApplicationController
       params ||= @params
 
       # acronym must be well formed
-      acronym = params['acronym'].upcase # coerce new ontologies to upper case
-      if ACRONYM_REGEX.match(acronym).nil?
-        error 400, "Ontology acronym is not well formed.\n" + ACRONYM_RULES
-      end
+      params['acronym'] = params['acronym'].upcase # coerce new ontologies to upper case
 
       # ontology acronym must be unique
-      ont = Ontology.find(acronym).first
+      ont = Ontology.find(params['acronym']).first
       if ont.nil?
         ont = instance_from_params(Ontology, params)
       else
         error_msg = <<-ERR
         Ontology already exists, see #{ont.id}
-        To add a new submission, POST to: /ontologies/#{acronym}/submission.
+        To add a new submission, POST to: /ontologies/#{params['acronym']}/submission.
         To modify the resource, use PATCH.
         ERR
         error 409, error_msg
