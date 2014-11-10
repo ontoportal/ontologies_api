@@ -5,13 +5,17 @@ Fork the project, create a branch, and then customize as necessary. There are se
 
 ## Prerequisites
 - Command line interface (iterm, xterm, etc)
-- [Ruby 1.9.3](http://www.ruby-lang.org/en/downloads/) (most recent patch level -- see rbenv below for information on managing multiple versions)
+- [Ruby 2.x](http://www.ruby-lang.org/en/downloads/) (most recent patch level -- see rbenv below for information on managing multiple versions)
 - [Git](http://git-scm.com/)
 - [Bundler](http://gembundler.com/)
     - Install with `gem install bundler` if you don't have it
 - [4store](http://4store.org/)
     - NCBO code relies on 4store as the main datastore. There are several installation options, but the easiest is getting the [binaries](http://4store.org/trac/wiki/Download).
     - For starting, stopping, and restarting 4store easily, you can try setting up [4s-service](https://gist.github.com/4211360)
+- [Redis](http://redis.io)
+    - Redis is used for caching (HTTP, query caching, Annotator cache)
+- [Solr](http://lucene.apache.org/solr/)
+    - NCBO indexes class content using Solr (a Lucene-based server)
 - [rbenv](https://github.com/sstephenson/rbenv) and [ruby-build](https://github.com/sstephenson/ruby-build)
     - If you anticipate needing to switch Ruby versions for other projects, you may want to install something like [rbenv](https://github.com/sstephenson/rbenv) to manage multiple Ruby installations
 
@@ -25,6 +29,32 @@ Here are the steps to run at the command line to get the code, get the dependenc
     bundle exec shotgun
 
 All dependencies for the project(s) are managed using Bundler, which ensures that all developers are using the same version of the software. Most of the dependencies are Ruby-only, but occasionally something will rely on a compiled C-language binary, which can make working on Windows challenging.
+
+### Solr
+To configure Solr for ontologies_api usage, we'll be modifying the example project included with Solr. Do the following:
+
+    cd $SOLR_HOME
+    cp example ncbo
+    cd $SOLR_HOME/ncbo/solr
+    mv collection1 core1
+    cd $SOLR_HOME/ncbo/solr/core1/conf
+    # Copy NCBO-specific configuration files
+    cp `bundle show ontologies_linked_data`/config/solr/solrconfig.xml ./
+    cp `bundle show ontologies_linked_data`/config/solr/schema.xml ./
+    cd $SOLR_HOME/ncbo/solr
+    cp -R core1 core2
+    cp `bundle show ontologies_linked_data`/config/solr/solr.xml ./
+    # Edit $SOLR_HOME/ncbo/solr/solr.xml
+    # Find the following lines:
+    # <core name="NCBO1" config="solrconfig.xml" instanceDir="core1" schema="schema.xml" dataDir="data"/>
+    # <core name="NCBO2" config="solrconfig.xml" instanceDir="core2" schema="schema.xml" dataDir="data"/>
+    # Replace the value of `dataDir` in each line with: 
+    # /<your own path to data dir>/core1
+    # /<your own path to data dir>/core2
+    # Start solr
+    java -Dsolr.solr.home=solr -jar start.jar
+    # Edit the ontologieS_api/config/environments/{env}.rb file to point to your running instance:
+    # http://localhost:8983/solr/NCBO1
 
 ## Updating
 Code from github can be pulled easily:
@@ -54,28 +84,11 @@ Code from github can be pulled easily:
     bundle update
     
 ## Adding code
-Working with git can be confusing and frustrating if you are coming from other source code management systems. It's best to not try to map concepts from svn or cvs onto git and really try to approach it as something new.
 
-There are a few things to keep in mind:
-
-- Generally, new features and bug fixes should be developed in their own branch and then merged into the main development branch (sometimes called `development`, other times directly in the `master` branch)
-    - This is the easiest way to create a new branch:
-    `git checkout -b this_is_my_branch_name`    
-- ABC: always be committing
-    - git works best when you have lots of smaller commits to work with. 
-    - Committing code does not send it back to the github repository, so there's no reason to avoid commits until you have a big chunk of work done.
-- Once you have finished working in a feature or bug fix branch, you can merge it with the main development branch:
-    - `git checkout this_is_my_branch_name`
-    - `git merge master`
-    - `git checkout master`
-    - `git merge this_is_my_branch_name`
-    - These steps will make sure you have recent changes from `master` in `this_is_my_branch_name`, then move changes from `this_is_my_branch_name` into `master`.
-- After you have put code into `master`, you can push the changes to the github repository:
-    - `git push origin master`
-    - This makes your changes available so that everyone else can `git pull` them.
-- It's also a good idea to merge changes from the main development branch often as you are working, especially if your work is going to take longer than a day. You can do this from your branch AFTER you have pulled the most recent changes:
-    - `git merge master`
-
+- Fork the repository
+- New features and bug fixes should be developed in their own branch
+- Please add tests for any changes
+- Pull requests are accepted and encouraged
     
 ## Workflow
 There are a few ways to work with the code and run the application. The three things you will likely do the most often is 1) run the application with code reloading enabled 2) run the console and 3) run tests
@@ -91,8 +104,6 @@ Once it has started, the application will be available on localhost:9393 (by def
 If you want to insert a breakpoint, simply go to the code and add `binding.pry` on a line by itself. When you make a request, the application will stop at that point in the code and you can inspect objects and local variables easily. Type `ls` to see a list of local variables and methods that are available to run.
 
 ### Testing
-Tests are a very handy way to do development. They don't require that you make individual requests using a browser, meaning that it's easier to check multiple endpoints at once.
-
 Tests can be created under the top-level `test` folder in the corresponding section (model, controller, etc). Tests are written using the Ruby default [Test::Unit library](http://en.wikibooks.org/wiki/Ruby_Programming/Unit_testing). Many projects will have a base test class that initializes the environment as needed (e.g. [`test_case.rb`](https://github.com/ncbo/ontologies_api/blob/master/test/test_case.rb) from ontologies_api).
 
 To run tests, just use ruby to call the class:
@@ -105,7 +116,7 @@ You can put breakpoints using `binding.pry` and interact with the code directly 
 You can also invoke full test suites or run all tests with rake (Ruby Make). To see the available rake tasks, run `rake -T` from the project folder. Generally, running `rake test` will execute all tests.
 
 ### Console
-You can also load a pry session that has been bootstrapped with the project environment:
+You can load a pry session that has been bootstrapped with the project environment:
 
 `bundle exec rackup -E console`
 
