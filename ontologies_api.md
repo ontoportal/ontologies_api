@@ -226,7 +226,7 @@ This will execute the rake task called test using the bundle environment that ha
 
 - `bundle exec shotgun`
 - `bundle exec ruby test/controllers/test_application_controller.rb`
-- `bundle exec backup -E console`
+- `bundle exec rackup -E console`
 
 There are a few methods for possibly getting around this, which essentially bootstrap the bundler environment for the project under the hood when you run something. We can explore these solutions more. You can also alias the `bundle exec` command in your `.bashrc` or `.zshrc` file:
 
