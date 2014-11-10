@@ -37,9 +37,6 @@ class HomeController < ApplicationController
       if resource.eql?("Class")
         return "Example class: <a href='/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F154501005'>/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F372244006</a>"
       end
-      if resource.eql?("Mapping")
-        return "Example Mapping: <a href='/mappings/http%3A%2F%2Fdata.bioontology.org%2Fmetadata%2Fmapping%2F97562ce9b1a5275c8c45064bbdcf73ea2375bbb5'>/mappings/http%3A%2F%2Fdata.bioontology.org%2Fmetadata%2Fmapping%2F97562ce9b1a5275c8c45064bbdcf73ea2375bbb5</a><br/><br/>Example Ontology Mapping List: <a href='/ontologies/SNOMEDCT/mappings'>/ontologies/SNOMEDCT/mappings</a>"
-      end
       do_not_display = /\/mappings|\/notes/
       return "Sample Link: coming soon" if !routes_list.include?(resource_path) || resource_path.match(do_not_display)
       return "Resource collection: <a href='#{resource_path}'>#{resource_path}</a>"
@@ -65,32 +62,47 @@ class HomeController < ApplicationController
 
     def metadata_all
       return @metadata_all_info if @metadata_all_info
-      ld_classes = ObjectSpace.each_object(Class).select { |klass| klass < LinkedData::Models::Base }
+      ld_classes = ObjectSpace.each_object(Class).select { |klass| klass < LinkedData::Hypermedia::Resource }
       info = {}
       ld_classes.each do |cls|
         next if routes_by_class[cls].nil? || routes_by_class[cls].empty?
-        attributes = (cls.attributes(:all) + cls.hypermedia_settings[:serialize_methods]).uniq
+        if cls.respond_to?(:attributes)
+          attributes = (cls.attributes(:all) + cls.hypermedia_settings[:serialize_methods]).uniq
+        else
+          attributes = cls.instance_methods(false)
+        end
         attributes_info = {}
         attributes.each do |attribute|
           next if cls.hypermedia_settings[:serialize_never].include?(attribute)
 
-          model_cls = cls.range(attribute)
-          if model_cls
-            type = model_cls.type_uri if model_cls.respond_to?("type_uri")
+          if cls.is_a?(LinkedData::Models::Base)
+            model_cls = cls.range(attribute)
+            if model_cls
+              type = model_cls.type_uri if model_cls.respond_to?("type_uri")
+            end
+
+            shows_default = cls.hypermedia_settings[:serialize_default].empty? ? true : cls.hypermedia_settings[:serialize_default].include?(attribute)
+
+            schema = cls.attribute_settings(attribute) rescue nil
+            schema ||= {}
+            attributes_info[attribute] = {
+              type: type || "",
+              shows_default: shows_default || "&nbsp;",
+              unique: cls.unique?(attribute) || "&nbsp;",
+              required: cls.required?(attribute) || "&nbsp;",
+              list: cls.list?(attribute) || "&nbsp;",
+              cardinality: cls.cardinality(attribute) || "&nbsp;"
+            }
+          else
+            attributes_info[attribute] = {
+              type: "",
+              shows_default: "&nbsp;",
+              unique: "&nbsp;",
+              required: "&nbsp;",
+              list: "&nbsp;",
+              cardinality: "&nbsp;"
+            }
           end
-
-          shows_default = cls.hypermedia_settings[:serialize_default].empty? ? true : cls.hypermedia_settings[:serialize_default].include?(attribute)
-
-          schema = cls.attribute_settings(attribute) rescue nil
-          schema ||= {}
-          attributes_info[attribute] = {
-            type: type || "",
-            shows_default: shows_default || "&nbsp;",
-            unique: cls.unique?(attribute) || "&nbsp;",
-            required: cls.required?(attribute) || "&nbsp;",
-            list: cls.list?(attribute) || "&nbsp;",
-            cardinality: cls.cardinality(attribute) || "&nbsp;"
-          }
         end
 
         cls_info = {
