@@ -56,34 +56,7 @@ To configure Solr for ontologies_api usage, we'll be modifying the example proje
     # Edit the ontologieS_api/config/environments/{env}.rb file to point to your running instance:
     # http://localhost:8983/solr/NCBO1
 
-## Updating
-Code from github can be pulled easily:
-
-    # git fetch allows you to see changes from github
-    git fetch
-    # You'll want to switch to the master branch
-    # (unless you need code from a specific branch)
-    git checkout master
-    # After running git status, you can see how many 
-    # commits exist on the remote github repo that 
-    # you haven't pulled
-    git status
-    # Running git pull will get those changes and 
-    # attempt a merge with your code
-    git pull
-    # You may get conflicts if you have touched code that
-    # the server also has changes for. These can be 
-    # resolved easily by opening the file where a 
-    # conflict occurs, make the file look like it should, 
-    # then save. Then run:
-    git add file/that/conflicts.rb
-    git commit
-    # Just to be safe, let's update our bundle
-    # bundle update will get changes from git repos
-    bundle install
-    bundle update
-    
-## Adding code
+## Contributing
 
 - Fork the repository
 - New features and bug fixes should be developed in their own branch
