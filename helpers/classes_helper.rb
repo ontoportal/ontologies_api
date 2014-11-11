@@ -8,16 +8,17 @@ module Sinatra
         params ||= @params
 
         if params[:cls] && !params[:cls].start_with?("http")
-          f = Goo::Filter.new(:notation) == params[:cls]
-          notation_lookup = LinkedData::Models::Class.where.filter(f).in(submission).first
+          notation_lookup = LinkedData::Models::Class.where(
+            notation: RDF::Literal.new(params[:cls], :datatype => RDF::XSD.string))
+            .in(submission).first
 
           if notation_lookup
             cls_uri = notation_lookup.id
             return cls_uri
           end
-          f = Goo::Filter.new(:prefixIRI) == params[:cls]
-          prefix_lookup = LinkedData::Models::Class.where.filter(f).in(submission).first
-
+          prefix_lookup = LinkedData::Models::Class.where(
+            prefixIRI: RDF::Literal.new(params[:cls], :datatype => RDF::XSD.string))
+              .in(submission).first
           if prefix_lookup
             cls_uri = prefix_lookup.id
             return cls_uri
