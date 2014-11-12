@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 72262f2944990fc87f09ab244e0b0a7d44709bea
-  branch: master
+  revision: 1f8e2266a54bcd03520057d3fb1ba0ac21a3c8b9
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f054bf1bf277b423560433f48de6476f6ca8821b
-  branch: master
+  revision: d30a3cd3a9f0f30411788ccd1134923a00024393
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d306ca6b2e2f4938c7932e5b9f6c62d651a239d3
-  branch: master
+  revision: 922a8e4186c616840306ee94b2b2bfd1f822a4ae
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: da1094170c2ce7f6a823bff78b597af7a9ec138c
-  branch: master
+  revision: d407d1aeec1eec86e312c6de16a5b6301c96edfd
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 36128148661efcc47b072c6060712623157077f3
+  revision: 85c3150a01584542ea09582fbc32953030096f77
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -82,8 +82,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 1bfd9bf0e5ff4dbf121d96517e41fa22e1df35e8
-  branch: master
+  revision: a5251d5902f84ab108e37fa17f7374ac12887e3a
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -177,7 +177,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.8.0)
-    oj (2.11.0)
+    oj (2.11.1)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
