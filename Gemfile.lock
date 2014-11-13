@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: d30a3cd3a9f0f30411788ccd1134923a00024393
+  revision: 092608b36d0b421773c26db7bbba3a1e90284f7d
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: d407d1aeec1eec86e312c6de16a5b6301c96edfd
+  revision: 06013c31bfe00ca55e5ee7ad7a720addbe03937f
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -120,7 +120,7 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    backports (3.6.3)
+    backports (3.6.4)
     bcrypt (3.1.9)
     builder (3.2.2)
     capistrano (3.1.0)
@@ -171,7 +171,7 @@ GEM
       redis
     multi_json (1.10.1)
     multipart-post (2.0.0)
-    mysql2 (0.3.16)
+    mysql2 (0.3.17)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
