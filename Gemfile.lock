@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d306ca6b2e2f4938c7932e5b9f6c62d651a239d3
+  revision: 915993615331cab6391ef3360d3f44f497f09252
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -116,11 +116,11 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.20)
+    activesupport (3.2.21)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    backports (3.6.3)
+    backports (3.6.4)
     bcrypt (3.1.9)
     builder (3.2.2)
     capistrano (3.1.0)
@@ -197,7 +197,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rack-timeout (0.1.0)
+    rack-timeout (0.1.1)
     rainbows (4.6.2)
       kgio (~> 2.5)
       rack (~> 1.1)
