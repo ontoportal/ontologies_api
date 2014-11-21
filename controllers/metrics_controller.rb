@@ -4,7 +4,7 @@ class MetricsController < ApplicationController
     # Display all metrics
     get do
       check_last_modified_collection(LinkedData::Models::Metric)
-      submissions = retrieve_latest_submissions
+      submissions = retrieve_latest_submissions(params)
       submissions = submissions.values
 
       metrics_include = LinkedData::Models::Metric.goo_attrs_to_load(includes_param)
