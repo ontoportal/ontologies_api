@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: b5d438f461d4b0a09850dda091719e0457e115c3
+  revision: 2b91ab565bf2e500ef55b925b8fdae32d902ec35
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -151,7 +151,7 @@ GEM
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.6)
-    haml (4.0.5)
+    haml (4.0.6)
       tilt
     i18n (0.6.11)
     json (1.8.1)
@@ -227,7 +227,7 @@ GEM
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.16.0)
+    sequel (4.17.0)
     simplecov (0.9.1)
       docile (~> 1.1.0)
       multi_json (~> 1.0)

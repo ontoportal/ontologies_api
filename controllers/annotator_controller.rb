@@ -65,7 +65,7 @@ class AnnotatorController < ApplicationController
         annotator.stop_words = params_copy.delete("stop_words")
       end
 
-      params_copy.delete("include")
+      params_copy.delete("display")
       options = {
         ontologies: acronyms,
         semantic_types: semantic_types,
@@ -86,7 +86,7 @@ class AnnotatorController < ApplicationController
         unless includes_param.empty?
           # Move include param to special param so it only applies to classes
           params["include_for_class"] = includes_param
-          params.delete("include")
+          params.delete("display")
           env["rack.request.query_hash"] = params
 
           orig_classes = annotations.map {|a| [a.annotatedClass, a.hierarchy.map {|h| h.annotatedClass}, a.mappings.map {|m| m.annotatedClass}]}.flatten

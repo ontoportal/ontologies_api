@@ -4,7 +4,7 @@ class UsersController < ApplicationController
       user_id       = params["user"]
       user_password = params["password"]
       # Modify params to show all user attributes
-      params["include"] = User.attributes.join(",")
+      params["display"] = User.attributes.join(",")
       user = User.find(user_id).include(User.goo_attrs_to_load(includes_param) + [:passwordHash]).first
       authenticated = user.authenticate(user_password) unless user.nil?
       error 401, "Username/password combination invalid" unless authenticated
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
       email             = params["email"] || ""
       username          = params["username"] || ""
       token             = params["token"] || ""
-      params["include"] = User.attributes.join(",") # used to serialize everything via the serializer
+      params["display"] = User.attributes.join(",") # used to serialize everything via the serializer
       user = LinkedData::Models::User.where(email: email, username: username).include(User.goo_attrs_to_load(includes_param)).first
       error 404, "User not found" unless user
       if token.eql?(user.resetToken)

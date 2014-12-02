@@ -19,7 +19,7 @@ class TestBatchController < TestCase
     call_params = {
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
-        "include" => "prefLabel,synonym"
+        "display" => "prefLabel,synonym"
       }
     }
     post "/batch/", call_params
@@ -45,7 +45,7 @@ class TestBatchController < TestCase
     call_params = {
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
-        "include" => "prefLabel,synonym"
+        "display" => "prefLabel,synonym"
       }
     }
     post "/batch/", call_params
@@ -69,7 +69,7 @@ class TestBatchController < TestCase
     call_params = {
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
-        "include" => "prefLabel"
+        "display" => "prefLabel"
       }
     }
     post "/batch/", call_params
@@ -97,7 +97,7 @@ class TestBatchController < TestCase
     call_params = {
       "http://www.w3.org/2002/07/owl#Class" => {
         "collection" => collection,
-        "include" => "prefLabel"
+        "display" => "prefLabel"
       }
     }
     post "/batch/", call_params

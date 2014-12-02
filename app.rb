@@ -22,6 +22,7 @@ require 'rack-timeout'
 require 'rack/cors'
 require_relative 'lib/rack/slow_requests'
 require_relative 'lib/rack/cube_reporter'
+require_relative 'lib/rack/param_translator'
 require_relative 'lib/rack/slice_detection'
 
 # Logging setup
@@ -102,6 +103,8 @@ end
 use Rack::SliceDetection
 use Rack::Accept
 use Rack::PostBodyToParams
+use Rack::ParamTranslator
+
 use LinkedData::Security::Authorization
 use LinkedData::Security::AccessDenied
 

@@ -7,7 +7,7 @@ module Sinatra
       ONTOLOGIES_PARAM = "ontologies"
       ONTOLOGY_PARAM = "ontology"
       EXACT_MATCH_PARAM = "exact_match"
-      INCLUDE_VIEWS_PARAM = "include_views"
+      INCLUDE_VIEWS_PARAM = "also_include_views"
       REQUIRE_DEFINITIONS_PARAM = "require_definition"
       INCLUDE_PROPERTIES_PARAM = "include_properties"
       SUBTREE_ID_PARAM = "subtree_root"     # NCBO-603
