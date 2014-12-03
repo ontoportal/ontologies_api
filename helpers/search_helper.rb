@@ -5,13 +5,13 @@ module Sinatra
   module Helpers
     module SearchHelper
       ONTOLOGIES_PARAM = "ontologies"
-      ONTOLOGY_PARAM = "ontology"
-      EXACT_MATCH_PARAM = "exact_match"
+      ONTOLOGY_PARAM = "subtree_ontology"
+      EXACT_MATCH_PARAM = "require_exact_match"
       INCLUDE_VIEWS_PARAM = "also_include_views"
-      REQUIRE_DEFINITIONS_PARAM = "require_definition"
-      INCLUDE_PROPERTIES_PARAM = "include_properties"
-      SUBTREE_ID_PARAM = "subtree_root"     # NCBO-603
-      OBSOLETE_PARAM = "include_obsolete"   # NCBO-603
+      REQUIRE_DEFINITIONS_PARAM = "require_definitions"
+      INCLUDE_PROPERTIES_PARAM = "also_search_properties"
+      SUBTREE_ID_PARAM = "subtree_root_id"
+      OBSOLETE_PARAM = "also_search_obsolete"
       SUGGEST_PARAM = "suggest" # NCBO-932
       ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
       MATCH_HTML_PRE = "<em>"
@@ -80,8 +80,7 @@ module Sinatra
 
         filter_query << " AND definition:[* TO *]" if params[REQUIRE_DEFINITIONS_PARAM] == "true"
 
-        # NCBO-603: switch to 'include_obsolete', but allow 'obsolete'.
-        include_obsolete = params[OBSOLETE_PARAM] || params['obsolete'] || "false"
+        include_obsolete = params[OBSOLETE_PARAM] || "false"
         # NCBO-688 - by default search only non-obsolete classes
         filter_query << " AND obsolete:false" if include_obsolete != "true"
 
@@ -128,9 +127,8 @@ module Sinatra
 
       def get_subtree_ids(params)
         subtree_ids = nil
+        subtree_root_id = params[SUBTREE_ID_PARAM]
 
-        # NCBO-603: switch to 'subtree_root', but allow 'subtree_id'.
-        subtree_root_id = params[SUBTREE_ID_PARAM] || params['subtree_id'] || nil
         if subtree_root_id
           ontology = params[ONTOLOGY_PARAM].split(",")
 

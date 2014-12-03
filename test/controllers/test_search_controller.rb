@@ -38,42 +38,42 @@ class TestSearchController < TestCase
 
   def test_search_other_filters
     acronym = "MCCLTEST-0"
-    get "/search?q=receptor%20antagonists&ontologies=#{acronym}&exact_match=true"
+    get "/search?q=receptor%20antagonists&ontologies=#{acronym}&require_exact_match=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     assert_equal 1, results["collection"].length
 
-    get "search?q=data&require_definition=true"
+    get "search?q=data&require_definitions=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     assert_equal 26, results["collection"].length
 
-    get "search?q=data&require_definition=false"
+    get "search?q=data&require_definitions=false"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     assert results["collection"].length > 26
 
-    # testing "include_obsolete" flag
+    # testing "also_search_obsolete" flag
     acronym = "BROTEST-0"
 
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}"
     results = MultiJson.load(last_response.body)
     assert_equal 22, results["collection"].length
 
-    get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&include_obsolete=false"
+    get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&also_search_obsolete=false"
     results = MultiJson.load(last_response.body)
     assert_equal 22, results["collection"].length
 
-    get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&include_obsolete=true"
+    get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&also_search_obsolete=true"
     results = MultiJson.load(last_response.body)
     assert_equal 29, results["collection"].length
 
-    # testing "subtree_root" parameter
+    # testing "subtree_root_id" parameter
     get "search?q=training&ontologies=#{acronym}"
     results = MultiJson.load(last_response.body)
     assert_equal 3, results["collection"].length
 
-    get "search?q=training&ontology=#{acronym}&subtree_root=http%3A%2F%2Fbioontology.org%2Fontologies%2FActivity.owl%23Activity"
+    get "search?q=training&ontology=#{acronym}&subtree_root_id=http%3A%2F%2Fbioontology.org%2Fontologies%2FActivity.owl%23Activity"
     results = MultiJson.load(last_response.body)
     assert_equal 1, results["collection"].length
 
