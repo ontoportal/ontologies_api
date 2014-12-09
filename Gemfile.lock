@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 9637aa6be48904b224dafc651c2038006beeee06
+  revision: 8eb75104131e7ee092340b0dfd5fbac92eba5541
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: ebfe4766beedee830150e0150ec5d4d000a38c65
+  revision: 85c49722f9e9f6a114ae71cdc99e5a245fa7e192
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 05dc252d3e16513fd622aae3a154fb2dcd4bcc84
+  revision: 5607a1a76cc02c4ffc668044f26577467588d984
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -155,7 +155,8 @@ GEM
       tilt
     i18n (0.6.11)
     json (1.8.1)
-    json-schema (2.4.1)
+    json-schema (2.5.0)
+      addressable (~> 2.3)
     json_pure (1.8.1)
     kgio (2.9.2)
     libxml-ruby (2.7.0)
@@ -176,7 +177,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
-    netrc (0.8.0)
+    netrc (0.9.0)
     oj (2.11.1)
     pony (1.11)
       mail (>= 2.0)
@@ -203,7 +204,7 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.8)
     raindrops (0.13.0)
-    rake (10.4.0)
+    rake (10.4.2)
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.5.0)

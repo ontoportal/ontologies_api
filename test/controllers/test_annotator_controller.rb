@@ -54,7 +54,7 @@ eos
     assert_equal(1, annotations.length)
 
     # test for "with_synonyms"
-    params = {text: text, with_synonyms: false}
+    params = {text: text, with_synonyms: "false"}
     get "/annotator", params
     annotations = MultiJson.load(last_response.body)
     assert_equal(1, annotations.length)

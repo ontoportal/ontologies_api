@@ -74,7 +74,7 @@ class AnnotatorController < ApplicationController
         with_synonyms: !exclude_synonyms,
         longest_only: longest_only
       }
-      options.merge!(params_copy.symbolize_keys())
+      options = params_copy.symbolize_keys().merge(options)
 
       begin
         annotations = annotator.annotate(text, options)

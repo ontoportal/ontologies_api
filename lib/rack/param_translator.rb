@@ -22,6 +22,7 @@ module Rack
         "max_level"                    => "class_hierarchy_max_level",
         "mappings"                     => "expand_mappings",
         "include_synonyms"             => "exclude_synonyms",
+        "with_synonyms"                => "exclude_synonyms",
         "include_classes"              => "display_classes",
         "expand_hierarchy"             => "expand_class_hierarchy"
     }
@@ -37,8 +38,10 @@ module Rack
         r.update_param(val, r.params[key]) if (r.params.has_key?(key) && !r.params.has_key?(val))
       end
 
-      unless r.params["include_synonyms"].nil?
+      if (!r.params["include_synonyms"].nil?)
         r.params["include_synonyms"] == "false" ? r.update_param("exclude_synonyms", "true") : r.update_param("exclude_synonyms", "false")
+      elsif (!r.params["with_synonyms"].nil?)
+        r.params["with_synonyms"] == "false" ? r.update_param("exclude_synonyms", "true") : r.update_param("exclude_synonyms", "false")
       end
 
       @app.call(env)
