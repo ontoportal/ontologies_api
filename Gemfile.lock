@@ -224,7 +224,7 @@ GEM
       netrc (~> 0.7)
     rsolr (1.0.10)
       builder (>= 2.1.2)
-    ruby-xxHash (0.1.1)
+    ruby-xxHash (0.3.0)
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
