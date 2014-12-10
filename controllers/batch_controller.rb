@@ -1,6 +1,7 @@
 class BatchController < ApplicationController
   namespace "/batch" do
     post do
+      fix_include_to_display()
       fix_batch_params_for_request()
       resource_type = "http://www.w3.org/2002/07/owl#Class"
       unless params.key?(resource_type)
@@ -29,6 +30,20 @@ class BatchController < ApplicationController
     end
 
     private
+
+    ##
+    # Recursive method to change include to display
+    # Can be removed when we finally stop supporting the `include` param
+    def fix_include_to_display(params = nil)
+      params ||= @params
+      params.keys.each do |k|
+        v = params[k]
+        params["display"] = v if k.eql?("include")
+        if v.is_a?(Hash)
+          fix_include_to_display(v)
+        end
+      end
+    end
 
     def fix_batch_params_for_request
       batch_include = []
