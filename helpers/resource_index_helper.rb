@@ -46,7 +46,14 @@ module Sinatra
         params[:from] = offset unless offset.nil?
         params[:size] = limit unless limit.nil?
 
-        params[:bool] = BOOL_MAP[params.delete("boolean_operator").to_s.downcase]
+        if params["match_any_class"]
+          if params["match_any_class"].to_s.downcase.eql?("true")
+            params[:bool] = :should
+          end
+        elsif params["boolean_operator"]
+          params[:bool] = BOOL_MAP[params.delete("boolean_operator").to_s.downcase]
+        end
+
         params[:expand] = params["expand_class_hierarchy"].to_s.downcase.eql?("true")
 
         if params["elements"].is_a? String
