@@ -83,6 +83,7 @@ class AnnotatorController < ApplicationController
           # Move include param to special param so it only applies to classes
           params["include_for_class"] = includes_param
           params.delete("display")
+          params.delete("include")
           env["rack.request.query_hash"] = params
 
           orig_classes = annotations.map {|a| [a.annotatedClass, a.hierarchy.map {|h| h.annotatedClass}, a.mappings.map {|m| m.annotatedClass}]}.flatten
