@@ -105,11 +105,11 @@
           %td {boolean representing whether or not to include ontology views (default is false)}
           %td For calls that involve ontologies, include_views='true' will include ontology views.
         %tr
-          %td include_context
+          %td display_context
           %td {true|false} (defaults to true)
           %td Turn off the JSON-LD context serialization. This will reduce the response size significantly for some calls, speeding up transmission and parse time.
         %tr
-          %td include_links
+          %td display_links
           %td {true|false} (defaults to true)
           %td Turn off the hypermedia link serialization. This will reduce the response size significantly for some calls, speeding up transmission and parse time.
         %tr
@@ -138,12 +138,12 @@
             Parameters
             %ul
               %li ontologies={ontology_id1,ontology_id2,ontology_id3}
-              %li exact_match={true|false}  // default = false
+              %li require_exact_match={true|false}  // default = false
               %li suggest={true|false}  // default = false. Will perform a search specifically geared towards type-ahead suggestions.
               %li also_search_views={true|false}  // default = false
-              %li require_definition={true|false}  // default = false
-              %li include_properties={true|false}  // default = false
-              %li include_obsolete={true|false}  // default = false (exclude obsolete terms)
+              %li require_definitions={true|false}  // default = false
+              %li also_search_properties={true|false}  // default = false
+              %li also_search_obsolete={true|false}  // default = false (exclude obsolete terms)
               %li cui={C0018787,C0225807,C0018787}  // Allows restricting query by CUIs. default = null (no restriction)
               %li semantic_types={T023,T185,T061}  // Allows restricting query by Semantic Types (TUI). default = null (no restriction)
               %li include={prefLabel, synonym, definition, notation, cui, semanticType} // default = (see Common Parameters section)
@@ -151,19 +151,19 @@
         %h4#nav_search_subtree Subtree Search
 
         %p
-          The same endpoint also allows limiting a search to a given subtree/branch. The root of the subtree is defined using a combination of parameters "ontology" and "subtree_root". Both are required when performing a subtree search.
+          The same endpoint also allows limiting a search to a given subtree/branch. The root of the subtree is defined using a combination of parameters "ontology" and "subtree_root_id". Both are required when performing a subtree search.
           %ul
             %li
               Perform a subtree search
             %ul
               %li
                 example:
-                %a{href: "/search?q=melanoma&ontology=NCIT&subtree_root=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224"} /search?q=melanoma&ontology=NCIT&subtree_root=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224
+                %a{href: "/search?q=melanoma&ontology=NCIT&subtree_root_id=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224"} /search?q=melanoma&ontology=NCIT&subtree_root_id=http%3a%2f%2fncicb.nci.nih.gov%2fxml%2fowl%2fEVS%2fThesaurus.owl%23C3224
             %li
               Parameters
               %ul
                 %li ontology={ontology_id}
-                %li subtree_root={a URI encoded class id of the root node of the subtree}
+                %li subtree_root_id={a URI encoded class id of the root node of the subtree}
 
       %h3#nav_annotator Annotator
 
@@ -185,14 +185,15 @@
                 %ul
                   %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
                   %li semantic_types={semType1,semType2..,semTypeN}
-                  %li use_semantic_types_hierarchy={true|false} // default = false. true means to use the semantic types passed in the "semantic_types" parameter as well as all their immediate children. false means to use ONLY the semantic types passed in the "semantic_types" parameter.
-                  %li max_level={0..N}
-                  %li mappings={true|false} // default = false. true means that the following manual mappings will be used in annotation: UMLS, REST, CUI, OBOXREF.
+                  %li expand_semantic_types_hierarchy={true|false} // default = false. true means to use the semantic types passed in the "semantic_types" parameter as well as all their immediate children. false means to use ONLY the semantic types passed in the "semantic_types" parameter.
+                  %li expand_class_hierarchy={true|false} // default = false. used only in conjunction with "class_hierarchy_max_level" parameter; determines whether or not to include ancestors of the given class when performing an annotation.
+                  %li class_hierarchy_max_level={0..N} // default = 0. the depth of the hierarchy to use when performing an annotation.
+                  %li expand_mappings={true|false} // default = false. true means that the following manual mappings will be used in annotation: UMLS, REST, CUI, OBOXREF.
                   %li stop_words={word1,word2..,wordN} (case insensitive)
                   %li minimum_match_length={0..N}
                   %li exclude_numbers={true|false}  // default = false
                   %li whole_word_only={true|false}  // default = true
-                  %li include_synonyms={true|false}  // default = true
+                  %li exclude_synonyms={true|false}  // default = false
                   %li longest_only={true|false}  // default = false. true means that only the longest match for a given phrase will be returned.
           %li
             Default stop words
@@ -206,7 +207,7 @@
       %h3#nav_recommender Recommender
 
       %p
-        The Recommender endpoint will call an Annotator API on a given text, and, based on the resulting annotations, group the ontologies from which the annotations came from according to their relevancy to the supplied text. The top results will contain ontologies with the highest relevancy scores. The Annotator is called with the max_level = 5 to include hierarchy matches in the relevancy calculation.
+        The Recommender endpoint will call an Annotator API on a given text, and, based on the resulting annotations, group the ontologies from which the annotations came from according to their relevancy to the supplied text. The top results will contain ontologies with the highest relevancy scores. The Annotator is called with the class_hierarchy_max_level = 5 to include hierarchy matches in the relevancy calculation.
         %ul
           %li Recommend
           %ul
@@ -222,7 +223,7 @@
                 Filtering & query behavior
                 %ul
                   %li ontologies={ontology_id1,ontology_id2..,ontology_idN}
-                  %li include_classes={true|false}  // default = false. Optionally to include the annotated classes in the output.
+                  %li display_classes={true|false}  // default = false. Optionally to display the annotated classes in the output.
 
       %h3#nav_resource_index Resource Index
 
@@ -231,7 +232,7 @@
         %h4
           Parameters
         %ul
-          %li <code>expand_hierarchy={true|false}</code>  Search for all of the descendants of the given class
+          %li <code>expand_class_hierarchy={true|false}</code>  Search for all of the descendants of the given class
           %li <code>boolean_operator={or|and}</code>  When searching for multiple classes, should documents include all classes (AND) or any class (OR)
         %h4
           Counts
@@ -342,7 +343,7 @@
                           "ontology": "http://example.org/ontologyN"
                       }
                   ],
-                  "include": "prefLabel,synonym,semanticTypes"
+                  "display": "prefLabel,synonym,semanticTypes"
               }
           }
           </pre>
@@ -366,7 +367,7 @@
                           "ontology": "http://data.bioontology.org/ontologies/BRO"
                       }
                   ],
-                  "include": "prefLabel,synonym,semanticTypes"
+                  "display": "prefLabel,synonym,semanticTypes"
               }
           }
           </pre>

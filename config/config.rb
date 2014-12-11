@@ -28,6 +28,7 @@ module LinkedData::OntologiesAPI
     @settings.enable_throttling           ||= false
     @settings.enable_unicorn_workerkiller ||= false
     @settings.req_per_second_per_ip       ||= 15
+    @settings.ontology_report_path        ||= "../report.json"
     @settings.resource_index_rest_url     ||= "http://rest.bioontology.org/resource_index/"
 
     if @settings.enable_monitoring

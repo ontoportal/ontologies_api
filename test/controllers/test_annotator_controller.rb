@@ -41,20 +41,20 @@ eos
     annotations = MultiJson.load(last_response.body)
     assert_equal(9, annotations.length)
 
-    #testing "include_synonyms" parameter
+    #testing "exclude_synonyms" parameter
     text = "This project requires a massive data repository, capable of storing hundreds of terabytes of information."
     params[:text] = text
     get "/annotator", params
     annotations = MultiJson.load(last_response.body)
     assert_equal(2, annotations.length)
 
-    params[:include_synonyms] = "false"
+    params[:exclude_synonyms] = "true"
     get "/annotator", params
     annotations = MultiJson.load(last_response.body)
     assert_equal(1, annotations.length)
 
     # test for "with_synonyms"
-    params = {text: text, with_synonyms: false}
+    params = {text: text, with_synonyms: "false"}
     get "/annotator", params
     annotations = MultiJson.load(last_response.body)
     assert_equal(1, annotations.length)
@@ -63,7 +63,7 @@ eos
   def test_annotate_hierarchy
     text = "Aggregate Human Data chromosomal mutation Aggregate Human Data chromosomal deletion Aggregate Human Data Resource Federal Funding Resource receptor antagonists chromosomal mutation"
 
-    params = {text: text, max_level: 5}
+    params = {text: text, expand_class_hierarchy: "true", class_hierarchy_max_level: 5}
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
@@ -118,7 +118,7 @@ eos
   def test_annotate_with_mappings
     text = "Aggregate Human Data chromosomal mutation Aggregate Human Data chromosomal deletion Aggregate Human Data Resource Federal Funding Resource receptor antagonists chromosomal mutation"
 
-    params = {text: text, mappings: "true"}
+    params = {text: text, expand_mappings: "true"}
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
@@ -159,7 +159,7 @@ eos
 
     ontologies = "http://data.bioontology.org/ontologies/ONTOMATEST-0," +
                  "http://data.bioontology.org/ontologies/BROTEST-0"
-    params = {text: text, mappings: "true", ontologies: ontologies}
+    params = {text: text, expand_mappings: "true", ontologies: ontologies}
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)

@@ -33,20 +33,15 @@ class AnnotatorController < ApplicationController
       params_copy.delete("ontologies")
       semantic_types = semantic_types_param(params_copy)
       params_copy.delete("semantic_types")
-      max_level = params_copy.delete("max_level").to_i  # default = 0
-      use_semantic_types_hierarchy = params_copy.delete("use_semantic_types_hierarchy").eql?('true')  # default = false
+      expand_class_hierarchy = params_copy.delete("expand_class_hierarchy").eql?('true')  # default = false
+      class_hierarchy_max_level = params_copy.delete("class_hierarchy_max_level").to_i  # default = 0
+      use_semantic_types_hierarchy = params_copy.delete("expand_semantic_types_hierarchy").eql?('true')  # default = false
       longest_only = params_copy.delete("longest_only").eql?('true')  # default = false
-      expand_with_mappings = params_copy.delete("mappings").eql?('true')  # default = false
+      expand_with_mappings = params_copy.delete("expand_mappings").eql?('true')  # default = false
       exclude_nums = params_copy.delete("exclude_numbers").eql?('true')  # default = false
       whole_word_only = params_copy.delete("whole_word_only").eql?('false') ? false : true  # default = true
       min_term_size = params_copy.delete("minimum_match_length").to_i    # default = 0
-
-      # NCBO-603: switch to 'include_synonyms', but allow 'with_synonyms'.
-      include_synonyms = params_copy["include_synonyms"] || params_copy["with_synonyms"] || nil
-      params_copy.delete("include_synonyms")
-      params_copy.delete("with_synonyms")
-      include_synonyms = include_synonyms.eql?('false') ? false : true  # default = true
-
+      exclude_synonyms = params_copy.delete("exclude_synonyms").eql?('true')  # default = false
       recognizer = (Annotator.settings.enable_recognizer_param && params_copy["recognizer"]) || 'mgrep'
       params_copy.delete("recognizer")
 
@@ -65,20 +60,21 @@ class AnnotatorController < ApplicationController
         annotator.stop_words = params_copy.delete("stop_words")
       end
 
-      params_copy.delete("include")
+      params_copy.delete("display")
       options = {
         ontologies: acronyms,
         semantic_types: semantic_types,
         use_semantic_types_hierarchy: use_semantic_types_hierarchy,
         filter_integers: exclude_nums,
-        expand_hierarchy_levels: max_level,
+        expand_class_hierarchy: expand_class_hierarchy,
+        expand_hierarchy_levels: class_hierarchy_max_level,
         expand_with_mappings: expand_with_mappings,
         min_term_size: min_term_size,
         whole_word_only: whole_word_only,
-        with_synonyms: include_synonyms,  # Note: not changing the annotator client parameter name.
+        with_synonyms: !exclude_synonyms,
         longest_only: longest_only
       }
-      options.merge!(params_copy.symbolize_keys())
+      options = params_copy.symbolize_keys().merge(options)
 
       begin
         annotations = annotator.annotate(text, options)
@@ -86,6 +82,7 @@ class AnnotatorController < ApplicationController
         unless includes_param.empty?
           # Move include param to special param so it only applies to classes
           params["include_for_class"] = includes_param
+          params.delete("display")
           params.delete("include")
           env["rack.request.query_hash"] = params
 

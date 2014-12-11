@@ -167,8 +167,8 @@ module Sinatra
       ##
       # Look for the includes parameter and provide a formatted list of attributes
       def includes_param
-        if @params["include"]
-          return @params["include"].split(",").map {|e| e.to_sym}
+        if @params["display"]
+          return @params["display"].split(",").map {|e| e.to_sym}
         end
         Array.new
       end
@@ -201,7 +201,7 @@ module Sinatra
           found_onts = onts.length > 0
           Ontology.where.models(onts).include(*Ontology.access_control_load_attrs).all
         else
-          if params["include_views"] == "true"
+          if params["also_include_views"] == "true"
             onts = Ontology.where.include(Ontology.goo_attrs_to_load()).to_a
           else
             onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load()).to_a
@@ -330,7 +330,7 @@ module Sinatra
         include_ready = status.eql?("READY") ? true : false
         status = "RDF" if status.eql?("READY")
         any = true if status.eql?("ANY")
-        include_views = options[:include_views] || false
+        include_views = options[:also_include_views] || false
         includes = OntologySubmission.goo_attrs_to_load(includes_param)
         includes << :submissionStatus unless includes.include?(:submissionStatus)
         if any
@@ -393,7 +393,7 @@ module Sinatra
       def include_param_contains?(str)
         str = str.to_s unless str.is_a?(String)
         class_params_include = params["include_for_class"] && params["include_for_class"].include?(str.to_sym)
-        params_include = params["include"] && params["include"].split(",").include?(str)
+        params_include = params["display"] && params["display"].split(",").include?(str)
         return class_params_include || params_include
       end
 
