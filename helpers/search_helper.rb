@@ -36,9 +36,30 @@ module Sinatra
           "semanticType" => "semanticType"
       }
 
+      # list of fields that allow empty query text
+      QUERYLESS_FIELDS_PARAMS = {
+          "notation" => "notation",
+          "cui" => "cui",
+          "semantic_types" => "semanticType"
+      }
+
+      QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.join(" ")
+
       def get_edismax_query(text, params={})
         validate_params_solr_population()
-        raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]" if text.nil? || text.strip.empty?
+
+        # raise error if text is empty AND (none of the QUERYLESS_FIELDS_PARAMS has been passed
+        # OR either an exact match OR suggest search is being executed)
+        if (text.nil? || text.strip.empty?)
+          if (!QUERYLESS_FIELDS_PARAMS.keys.any? {|k| params.key?(k)} ||
+              params[EXACT_MATCH_PARAM] == "true" ||
+              params[SUGGEST_PARAM] == "true")
+            raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]"
+          else
+            text = ''
+          end
+        end
+
         query = ""
         params["defType"] = "edismax"
         params["stopwords"] = "true"
@@ -55,20 +76,25 @@ module Sinatra
 
         if (params[EXACT_MATCH_PARAM] == "true")
           query = "\"#{RSolr.escape(text)}\""
-          params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact notation cui semanticType"
-          params["hl.fl"] = "resource_id prefLabelExact synonymExact notation cui semanticType"
+          params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR}"
+          params["hl.fl"] = "resource_id prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
         elsif (params[SUGGEST_PARAM] == "true" || text[-1] == '*')
           text.gsub!(/\*+$/, '')
           query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest_ncbo"
-          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge^10 prefLabelSuggestNgram synonymSuggestNgram resource_id notation cui semanticType"
+          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge^10 prefLabelSuggestNgram synonymSuggestNgram resource_id #{QUERYLESS_FIELDS_STR}"
           params["pf"] = "prefLabelSuggest^50"
-          params["hl.fl"] = "prefLabelExact prefLabelSuggestEdge synonymSuggestEdge prefLabelSuggestNgram synonymSuggestNgram resource_id notation cui semanticType"
+          params["hl.fl"] = "prefLabelExact prefLabelSuggestEdge synonymSuggestEdge prefLabelSuggestNgram synonymSuggestNgram resource_id #{QUERYLESS_FIELDS_STR}"
         else
-          query = RSolr.escape(text)
-          params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 notation cui semanticType"
+          if (text.strip.empty?)
+            query = '*'
+          else
+            query = RSolr.escape(text)
+          end
+
+          params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR}"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
-          params["hl.fl"] = "resource_id prefLabelExact prefLabel synonymExact synonym notation cui semanticType"
+          params["hl.fl"] = "resource_id prefLabelExact prefLabel synonymExact synonym #{QUERYLESS_FIELDS_STR}"
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
