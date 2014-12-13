@@ -6,7 +6,7 @@ class OntologiesController < ApplicationController
     # Display all ontologies
     get do
       check_last_modified_collection(Ontology)
-      allow_views = params['include_views'] ||= false
+      allow_views = params['also_include_views'] ||= false
       if allow_views
         onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
       else
