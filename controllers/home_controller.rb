@@ -75,7 +75,7 @@ class HomeController < ApplicationController
         attributes.each do |attribute|
           next if cls.hypermedia_settings[:serialize_never].include?(attribute)
 
-          if cls.is_a?(LinkedData::Models::Base)
+          if cls.ancestors.include?(LinkedData::Models::Base)
             model_cls = cls.range(attribute)
             if model_cls
               type = model_cls.type_uri if model_cls.respond_to?("type_uri")
