@@ -49,7 +49,7 @@ class ClassesController < ApplicationController
         end
       end
 
-      unmapped = ld.delete(:properties) || 
+      unmapped = ld.delete(:properties) ||
         (includes_param && includes_param.include?(:all))
       cls = get_class(submission, ld)
       if unmapped
@@ -78,7 +78,11 @@ class ClassesController < ApplicationController
       # We override include values other than the following, user-provided include ignored
       params["display"] = "prefLabel,childrenCount,children,obsolete"
       params["serialize_nested"] = true # Override safety check and cause children to serialize
-      env["rack.request.query_hash"] = params
+
+      # Make sure Rack gets updated
+      req = Rack::Request.new(env)
+      req.update_param("display", "prefLabel,childrenCount,children,obsolete")
+      req.update_param("serialize_nested", true)
 
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
