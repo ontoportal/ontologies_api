@@ -61,6 +61,7 @@ class MappingsController < ApplicationController
     get "/recent" do
       check_last_modified_collection(LinkedData::Models::RestBackupMapping)
       size = params[:size] || 5
+      size = Integer(size)
       if size > 50
         error 422, "Recent mappings only processes calls under 50"
       else
