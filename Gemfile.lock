@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f9cc301ff3c9e1502830239ff79c88ec7ffdb3c5
+  revision: aa5c8ac066d359aff17890c409fd8a525a8af906
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 79715b41fa414ea9795afd412e282fd829f1a693
+  revision: 1113fe088c28923db3b73a5927d347f71972eef7
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 42f8901e56f1f6b7c625b123ead635ea55b54e17
+  revision: 5607a1a76cc02c4ffc668044f26577467588d984
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -256,7 +256,7 @@ GEM
     systemu (2.6.4)
     thread_safe (0.3.4)
     tilt (1.4.1)
-    typhoeus (0.6.9)
+    typhoeus (0.7.0)
       ethon (>= 0.7.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
