@@ -130,7 +130,7 @@ class TestMappingsController < TestCase
       #pages
       assert mappings["page"] == page
       assert mappings["pageCount"] == 5
-      assert_equal 4, mappings["collection"].length
+      assert_equal (page == 5 ? 2 : 4), mappings["collection"].length
       assert mappings["pageCount"] == 5
       assert mappings["prevPage"] == (page > 1 ? page - 1 : nil)
       assert mappings["nextPage"] == (page < 5 ? page + 1 : nil)
@@ -139,7 +139,7 @@ class TestMappingsController < TestCase
       total += mappings.length
       page = next_page
     end while (next_page)
-    assert total == 20
+    assert total == 18
   end
 
   def test_mappings_with_display
@@ -147,7 +147,6 @@ class TestMappingsController < TestCase
     pagesize = 4
     page = 1
     next_page = nil
-    total = 0
     get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{page}&display=prefLabel"
     assert last_response.ok?
     mappings = MultiJson.load(last_response.body)
