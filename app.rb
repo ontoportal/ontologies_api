@@ -126,6 +126,7 @@ end
 
 # Initialize unicorn Worker killer to mitigate unicorn worker memory bloat
 if LinkedData::OntologiesAPI.settings.enable_unicorn_workerkiller
+  require 'unicorn'
   require_relative 'config/unicorn_workerkiller'
 end
 
