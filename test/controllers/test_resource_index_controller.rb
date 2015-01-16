@@ -87,6 +87,13 @@ class TestResourceIndexController < TestCase
     end
   end
 
+  def test_annotation_counts
+    get "/resource_index/annotation_counts"
+    assert last_response.ok?
+    counts = MultiJson.load(last_response.body)
+    assert_equal(["raw", "total", "time"].sort, counts.keys.sort)
+  end
+
   private
 
   def resources_from_hash(resources)
