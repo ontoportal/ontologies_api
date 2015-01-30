@@ -226,7 +226,7 @@ module Sinatra
         return onts.map {|o| o.acronym }
       end
 
-      def ontologies_param_to_acronyms(params = nil)
+      def ontologies_param_to_acronyms(params=nil)
         ontResourceIds = ontologies_param(params)
         return ontResourceIds.map { |ontResourceId| ontResourceId.to_s.split('/')[-1]}
       end
@@ -245,13 +245,35 @@ module Sinatra
 
       ##
       # Get cui parameter in the form [cui=C0302369,C0522224,C0176617]
-      def cui_param(params = nil)
+      def cui_param(params=nil)
         params ||= @params
         if params["cui"]
           cui = params["cui"].split(",").map {|o| o.strip}
           return cui
         end
         Array.new
+      end
+
+      # validates month for 1-12 or 01-09
+      def month_param(params=nil)
+        params ||= @params
+        if params["month"]
+          month = params["month"].strip
+          if %r{(?<month>^(0[1-9]|[1-9]|1[0-2])$)}x === month
+            month.to_i
+          end
+        end
+      end
+
+      # validates year for starting with 1 or 2 and containing 4 digits
+      def year_param(params=nil)
+        params ||= @params
+        if params["year"]
+          year = params["year"].strip
+          if %r{(?<year>^([1-2]\d{3})$)}x === year
+            year.to_i
+          end
+        end
       end
 
       ##

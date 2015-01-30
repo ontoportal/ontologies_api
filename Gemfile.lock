@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: ec9b53f3892f5e0e5b81033bd9be199af2f717aa
+  revision: d65295bc386819cb84e7de3d553e2696680896ed
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -126,7 +126,7 @@ GEM
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
     backports (3.6.4)
-    bcrypt (3.1.9)
+    bcrypt (3.1.10)
     builder (3.2.2)
     capistrano (3.1.0)
       i18n
@@ -282,7 +282,7 @@ GEM
     systemu (2.6.4)
     thread_safe (0.3.4)
     tilt (1.4.1)
-    typhoeus (0.7.0)
+    typhoeus (0.7.1)
       ethon (>= 0.7.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
