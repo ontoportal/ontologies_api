@@ -21,6 +21,8 @@ class OntologyAnalyticsController < ApplicationController
           ont_analytics.delete_if { |key, _| key != year }
           ont_analytics.each { |_, val| val.delete_if { |key, __| key != month } }
         end
+        # sort results by the highest traffic values
+        analytics = Hash[analytics.sort_by {|k, v| v[year][month]}.reverse]
       end
 
       reply analytics
