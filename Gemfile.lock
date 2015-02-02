@@ -249,7 +249,7 @@ GEM
     rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.18.0)
+    sequel (4.19.0)
     signet (0.6.0)
       addressable (~> 2.3)
       extlib (~> 0.9)
