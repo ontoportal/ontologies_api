@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: e66ecb699b7f3718635d622e8b48359775102469
+  revision: 3472ecc7e816088769206c2bf0458637f01a3ef0
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: bb133e733381e769e062fe0963787cb14a726e31
+  revision: 9e0a7d1d5503bddc69708f66a0d2f8a322310241
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -246,7 +246,7 @@ GEM
     rsolr (1.0.10)
       builder (>= 2.1.2)
     ruby-xxHash (0.3.0)
-    rubyzip (1.1.6)
+    rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (4.19.0)
