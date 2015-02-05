@@ -15,6 +15,11 @@ class ResourceIndexController < ApplicationController
       reply ({links: links})
     end
 
+    get '/annotation_counts' do
+      expires 3600, :public
+      reply ResourceIndex.counts
+    end
+
     get '/counts' do
       format_params(params)
       classes = get_classes(params)

@@ -142,6 +142,28 @@ class TestMappingsController < TestCase
     assert total == 18
   end
 
+  def test_mappings_with_display
+    ontology = "BRO-TEST-MAP-0"
+    pagesize = 4
+    page = 1
+    next_page = nil
+    get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{page}&display=prefLabel"
+    assert last_response.ok?
+    mappings = MultiJson.load(last_response.body)
+    assert mappings["collection"].all? {|m| m["classes"].all? {|c| c["prefLabel"].is_a?(String) && c["prefLabel"].length > 0} }
+
+    def_count = 0
+    next_page = 1
+    begin
+      get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{next_page}&display=prefLabel,definition"
+      assert last_response.ok?
+      mappings = MultiJson.load(last_response.body)
+      def_count += mappings["collection"].map {|m| m["classes"].map {|c| (c["definition"] || []).length }}.flatten.sum
+      next_page = mappings["nextPage"]
+    end while (next_page)
+    assert 10, def_count
+  end
+
   def test_mappings
     #not supported
     get '/mappings'
@@ -185,8 +207,8 @@ class TestMappingsController < TestCase
                   creator: "http://data.bioontology.org/users/tim"
       }
 
-      post "/mappings/", 
-            MultiJson.dump(mapping), 
+      post "/mappings/",
+            MultiJson.dump(mapping),
             "CONTENT_TYPE" => "application/json"
 
       assert last_response.status == 201
@@ -205,7 +227,7 @@ class TestMappingsController < TestCase
         end
       end
       # to ensure different in times in dates. Later test on recent mappings
-      sleep(1.2) 
+      sleep(1.2)
     end
 
     #there three mappings in BRO with processes
@@ -280,8 +302,8 @@ class TestMappingsController < TestCase
                   creator: "http://data.bioontology.org/users/tim"
       }
 
-      post "/mappings/", 
-            MultiJson.dump(mapping), 
+      post "/mappings/",
+            MultiJson.dump(mapping),
             "CONTENT_TYPE" => "application/json"
 
       assert last_response.status == 201
@@ -315,7 +337,7 @@ class TestMappingsController < TestCase
       assert last_response.status == 404
     end
     assert LinkedData::Models::RestBackupMapping.all.count == 0
-    
+
     epr = Goo.sparql_query_client(:main)
     epr.query("SELECT (count(?s) as ?c) WHERE { ?s <#{rest_predicate}> ?o . }")
           .each do |sol|

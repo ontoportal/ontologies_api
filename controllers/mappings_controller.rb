@@ -13,7 +13,8 @@ class MappingsController < ApplicationController
     mappings = LinkedData::Mappings.mappings_ontology(submission,
                                                       0,0,
                                                       cls.id)
-    reply mappings.to_a
+    populate_mapping_classes(mappings.to_a)
+    reply mappings
   end
 
   # Get mappings for an ontology
@@ -30,6 +31,7 @@ class MappingsController < ApplicationController
     mappings = LinkedData::Mappings.mappings_ontology(submission,
                                                       page,size,
                                                       nil)
+    populate_mapping_classes(mappings)
     reply mappings
   end
 
@@ -55,6 +57,7 @@ class MappingsController < ApplicationController
       end
       mappings = LinkedData::Mappings.mappings_ontologies(sub1,sub2,
                                                           page,size)
+      populate_mapping_classes(mappings)
       reply mappings
     end
 
@@ -66,6 +69,7 @@ class MappingsController < ApplicationController
         error 422, "Recent mappings only processes calls under 50"
       else
         mappings = LinkedData::Mappings.recent_rest_mappings(size + 15)
+        populate_mapping_classes(mappings)
         reply mappings[0..size-1]
       end
     end
@@ -84,7 +88,7 @@ class MappingsController < ApplicationController
       end
       mapping = LinkedData::Mappings.get_rest_mapping(mapping_id)
       if mapping
-        reply mapping
+        reply populate_mapping_classes([mapping].first)
       else
         error(404, "Mapping with id `#{mapping_id.to_s}` not found")
       end
@@ -196,7 +200,5 @@ class MappingsController < ApplicationController
       end
       reply persistent_counts
     end
-
   end
-
 end
