@@ -1,12 +1,5 @@
 require_relative '../test_case'
 
-
-
-require_relative '../../controllers/ontology_analytics_controller'
-
-
-
-
 class TestOntologyAnalyticsController < TestCase
   ANALYTICS_DATA = {
     "NCIT" => {
