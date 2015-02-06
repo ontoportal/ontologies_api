@@ -1,3 +1,5 @@
+require 'csv'
+
 class OntologyAnalyticsController < ApplicationController
 
   ONTOLOGY_ANALYTICS_REDIS_FIELD = "ontology_analytics"
@@ -43,7 +45,27 @@ class OntologyAnalyticsController < ApplicationController
       analytics = Marshal.load(raw_analytics)
       analytics.delete_if { |key, _| key != params["acronym"] }
 
-      reply analytics
+      if params["format"].to_s.downcase.eql?("csv")
+        tf = Tempfile.new("analytics-#{params['acronym']}")
+        csv = CSV.new(tf, headers: true, return_headers: true, write_headers: true)
+        csv << [:month, :visits]
+        years = analytics[params["acronym"]].keys.sort
+        now = Time.now
+        years.each do |year|
+          months = analytics[params["acronym"]][year].keys.sort
+          months.each do |month|
+            next if now.year == year && now.month <= month || (year == 2013 && month < 10) # we don't have good data going back past Oct 2013
+            visits = analytics[params["acronym"]][year][month]
+            month = DateTime.parse("#{year}/#{month}").strftime("%b %Y")
+            csv << [month, visits]
+          end
+        end
+        csv.close
+        content_type "text/csv"
+        send_file tf.path, filename: "analytics-#{params['acronym']}.csv"
+      else
+        reply analytics
+      end
     end
 
   end

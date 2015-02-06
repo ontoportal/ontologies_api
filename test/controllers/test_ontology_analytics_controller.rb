@@ -166,6 +166,13 @@ class TestOntologyAnalyticsController < TestCase
     assert_equal 1, analytics.length
     assert_equal 3, analytics[analytics.keys[0]].length
     assert_equal 2000, analytics["TST"]["2015"]["1"]
+
+    get '/ontologies/TST/analytics?format=csv'
+    assert last_response.ok?
+    headers = last_response.headers
+    assert_equal "229", headers["Content-Length"]
+    assert_equal "text/csv;charset=utf-8", headers["Content-Type"]
+    assert_equal 'attachment; filename="analytics-TST.csv"', headers["Content-Disposition"]
   end
 
 end
