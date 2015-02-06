@@ -1,5 +1,12 @@
 require_relative '../test_case'
 
+
+
+require_relative '../../controllers/ontology_analytics_controller'
+
+
+
+
 class TestOntologyAnalyticsController < TestCase
   ANALYTICS_DATA = {
     "NCIT" => {
@@ -107,24 +114,24 @@ class TestOntologyAnalyticsController < TestCase
 
   def self._create_user
     username = "tim"
-    test_user = User.new(username: username, email: "#{username}@example.org", password: "password")
+    test_user = LinkedData::Models::User.new(username: username, email: "#{username}@example.org", password: "password")
     test_user.save if test_user.valid?
-    @@user = test_user.valid? ? test_user : User.find(username).first
+    @@user = test_user.valid? ? test_user : LinkedData::Models::User.find(username).first
   end
 
   def self._create_onts
-    ont = Ontology.new(acronym: @@acronym, name: @@name, administeredBy: [@@user])
+    ont = LinkedData::Models::Ontology.new(acronym: @@acronym, name: @@name, administeredBy: [@@user])
     ont.save
   end
 
   def self._delete_onts
-    ont = Ontology.find(@@acronym).first
+    ont = LinkedData::Models::Ontology.find(@@acronym).first
     ont.delete unless ont.nil?
   end
 
   def self._delete
     _delete_onts
-    test_user = User.find("tim").first
+    test_user = LinkedData::Models::User.find("tim").first
     test_user.delete unless test_user.nil?
   end
 
