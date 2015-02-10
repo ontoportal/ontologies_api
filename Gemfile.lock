@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 3472ecc7e816088769206c2bf0458637f01a3ef0
+  revision: 311d495642a955a0acbecc15f444e1ac61d7902c
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -83,7 +83,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: a5251d5902f84ab108e37fa17f7374ac12887e3a
+  revision: ead7d226ff679969cbbb789c33d5660b45d5a521
   branch: staging
   specs:
     sparql-client (1.0.4.1)
@@ -113,6 +113,15 @@ GIT
   specs:
     shotgun (0.9)
       rack (>= 1.0)
+
+PATH
+  remote: /Users/marcosmr/Development/git_repos/ncbo_recommender2
+  specs:
+    ncbo_recommender2 (0.0.1)
+      goo
+      ncbo_annotator
+      ontologies_linked_data
+      redis
 
 GEM
   remote: https://rubygems.org/
@@ -313,6 +322,7 @@ DEPENDENCIES
   multi_json (~> 1.0)
   ncbo_annotator!
   ncbo_cron!
+  ncbo_recommender2!
   ncbo_resolver!
   ncbo_resource_index!
   oj (~> 2.0)
