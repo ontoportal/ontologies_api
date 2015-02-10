@@ -7,7 +7,7 @@ class MappingsController < ApplicationController
     cls_id = @params[:cls]
     cls = LinkedData::Models::Class.find(RDF::URI.new(cls_id)).in(submission).first
     if cls.nil?
-      reply 404, "Class with id `#{cls_id}` not found in ontology `#{acronym}`"
+      error(404, "Class with id `#{cls_id}` not found in ontology")
     end
 
     mappings = LinkedData::Mappings.mappings_ontology(submission,

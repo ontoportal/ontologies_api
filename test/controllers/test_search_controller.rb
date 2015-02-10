@@ -94,6 +94,7 @@ class TestSearchController < TestCase
     results = MultiJson.load(last_response.body)
     assert_equal 5, results["collection"].length
     assert_equal "T028", results["collection"][0]["semanticType"][0]
+
   end
 
   def test_wildcard_search

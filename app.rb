@@ -75,6 +75,13 @@ if [:development].include?(settings.environment) && !LinkedData.settings.enable_
   end
 end
 
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', :headers => :any, :methods => [:get, :post, :put, :patch, :delete, :options]
+  end
+end
+
 # Use middleware (ORDER IS IMPORTANT)
 use Rack::Cors do
   allow do
