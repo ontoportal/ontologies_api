@@ -17,6 +17,8 @@
         %li
           %a{href: "#nav_batch"} Batch
         %li
+          %a{href: "#nav_ontology_analytics"} Ontology Analytics
+        %li
           %a{href: "#nav_resource_endpoints"} Resources
           %ul.nav.nav-list
             %li
@@ -372,6 +374,50 @@
           }
           </pre>
 
+      %h2#nav_ontology_analytics Ontology Analytics
+
+      %p
+        An endpoint for retrieving ontology visitor stats provided by Google Analytics.
+
+        %h4#nav_all_ontology_analytics Ontology Analytics by Month/Year
+
+        %p
+          Allows to retrieve analytics for all ontologies for a specific month/year combination
+        %ul
+          %li Get ALL analytics data
+          %ul
+            %li
+              <span class="label label-info">GET</span> <code>/analytics</code>
+            %li
+              example:
+              %a{href: "/anayltics"} /anayltics
+
+
+          %li Get analytics data for a given month/year
+          %ul
+            %li
+              <span class="label label-info">GET</span> <code>/analytics?month={month number}&year={year}</code>
+            %li
+              example:
+              %a{href: "/anayltics?month=4&year=2014"} /anayltics?month=4&year=2014
+          %li
+            Parameters
+            %ul
+              %li month={1-12}
+              %li year={2013-...}
+
+        %h4#nav_single_ontology_analytics Single Ontology Analytics
+
+        %p
+          Allows to retrieve ALL analytics data for a single ontology
+        %ul
+          %li Get analytics data for a given ontology
+          %ul
+            %li
+              <span class="label label-info">GET</span> <code>/ontologies/{acronym}/analytics</code>
+            %li
+              example:
+              %a{href: "/ontologies/NCIT/analytics"} /ontologies/NCIT/analytics
 
       %h2#nav_resource_endpoints Resource Endpoints
 
