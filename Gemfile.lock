@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f662c222a9ba811480632da4ba8da1ffcb7ac15e
-  branch: master
+  revision: f82726f3809040e432cbc828d1d2ea487ee9d8f7
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 7778461b6ce502eb74889d87e28936ae14048eba
-  branch: master
+  revision: 88a35c39a9d2d65089004835f1376c73f0d4c841
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -50,8 +50,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6b552405d1ad01f9c0fa47a9982b2dfa95795b49
-  branch: master
+  revision: 7e9960e0a615f09d0d0ceddf57b93c0a8e5a30aa
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -136,12 +136,12 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    elasticsearch (1.0.6)
-      elasticsearch-api (= 1.0.6)
-      elasticsearch-transport (= 1.0.6)
-    elasticsearch-api (1.0.6)
+    elasticsearch (1.0.8)
+      elasticsearch-api (= 1.0.7)
+      elasticsearch-transport (= 1.0.7)
+    elasticsearch-api (1.0.7)
       multi_json
-    elasticsearch-transport (1.0.6)
+    elasticsearch-transport (1.0.7)
       faraday
       multi_json
     ethon (0.7.3)
@@ -243,7 +243,7 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.19.0)
+    sequel (4.20.0)
     signet (0.6.0)
       addressable (~> 2.3)
       extlib (~> 0.9)

@@ -355,8 +355,8 @@ class TestMappingsController < TestCase
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
     data = {"BRO-TEST-MAP-0"=>18,
-            "CNO-TEST-MAP-0"=>20,
-            "FAKE-TEST-MAP-0"=>18}
+            "CNO-TEST-MAP-0"=>19,
+            "FAKE-TEST-MAP-0"=>17}
     assert_equal data, stats
   end
 
@@ -377,7 +377,7 @@ class TestMappingsController < TestCase
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
     assert_equal 8, stats["BRO-TEST-MAP-0"]
-    assert_equal 10, stats["CNO-TEST-MAP-0"]
+    assert_equal 9, stats["CNO-TEST-MAP-0"]
   end
 
 end
