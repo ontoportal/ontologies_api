@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 8634318b5348916450b9191b420b5d04c9943e2c
-  branch: master
+  revision: f8f559eca8c6b9831a1d97779889083c1142be06
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 67b503e7ad35ebd1339d5755dc56a1f5d33e4e0a
-  branch: master
+  revision: c75d34b85fdedda43b5078c803fc1353fb1bb82c
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: b3e82569d2e338b90e345dfdef5460559845b7f1
-  branch: master
+  revision: 484144e6a48234d2e4f957f648050f2caf9b2a73
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -70,7 +70,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: a3735ff490c10a1092d346cc6382c9542112d1cb
+  revision: b39a3ab6673c73c7f725799fc258386995c4cbdc
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -83,8 +83,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 1bfd9bf0e5ff4dbf121d96517e41fa22e1df35e8
-  branch: master
+  revision: ead7d226ff679969cbbb789c33d5660b45d5a521
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -98,13 +98,6 @@ GIT
   specs:
     rack-post-body-to-params (0.1.8)
       activesupport (>= 2.3)
-
-GIT
-  remote: git://github.com/palexander/rack.git
-  revision: 65f75b40d94cda2e90441554ea7d6878a26dde2b
-  branch: patch-1
-  specs:
-    rack (1.6.0.alpha)
 
 GIT
   remote: https://github.com/palexander/shotgun.git
@@ -151,7 +144,7 @@ GEM
     elasticsearch-transport (1.0.6)
       faraday
       multi_json
-    ethon (0.7.2)
+    ethon (0.7.3)
       ffi (>= 1.3.0)
     extlib (0.9.16)
     faraday (0.9.1)
@@ -175,7 +168,7 @@ GEM
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.2)
-    jwt (1.2.1)
+    jwt (1.3.0)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -192,19 +185,20 @@ GEM
       redis
     multi_json (1.10.1)
     multipart-post (2.0.0)
-    mysql2 (0.3.17)
+    mysql2 (0.3.18)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
-    netrc (0.10.2)
-    oj (2.11.4)
+    netrc (0.10.3)
+    oj (2.11.5)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rack (1.6.0)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (4.2.0)
@@ -212,7 +206,7 @@ GEM
     rack-cache (1.2)
       rack (>= 0.4)
     rack-cors (0.3.1)
-    rack-mini-profiler (0.9.2)
+    rack-mini-profiler (0.9.3)
       rack (>= 1.1.3)
     rack-protection (1.5.3)
       rack
@@ -229,7 +223,7 @@ GEM
       addressable (>= 2.2)
     recursive-open-struct (0.5.0)
     redcarpet (3.2.2)
-    redis (3.2.0)
+    redis (3.2.1)
     redis-activesupport (3.2.5)
       activesupport (~> 3.2.0)
       redis-store (~> 1.1.0)
@@ -239,11 +233,11 @@ GEM
     redis-store (1.1.4)
       redis (>= 2.2)
     ref (1.0.5)
-    rest-client (1.7.2)
+    rest-client (1.7.3)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     retriable (1.4.1)
-    rsolr (1.0.10)
+    rsolr (1.0.11)
       builder (>= 2.1.2)
     ruby-xxHash (0.3.0)
     rubyzip (1.1.7)
@@ -256,11 +250,11 @@ GEM
       faraday (~> 0.9)
       jwt (~> 1.0)
       multi_json (~> 1.10)
-    simplecov (0.9.1)
+    simplecov (0.9.2)
       docile (~> 1.1.0)
       multi_json (~> 1.0)
-      simplecov-html (~> 0.8.0)
-    simplecov-html (0.8.0)
+      simplecov-html (~> 0.9.0)
+    simplecov-html (0.9.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -275,7 +269,7 @@ GEM
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
     slop (3.6.0)
-    sshkit (1.6.1)
+    sshkit (1.7.0)
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
@@ -319,7 +313,7 @@ DEPENDENCIES
   oj (~> 2.0)
   ontologies_linked_data!
   pry
-  rack!
+  rack
   rack-accept (~> 0.4)
   rack-attack
   rack-cache (~> 1.0)

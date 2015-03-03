@@ -25,10 +25,10 @@ class ValidateOntologyFileController < ApplicationController
           ontfile.close
         end
         error.unshift("Could not download imports: #{missing_imports.join(",")}") if missing_imports && !missing_imports.empty?
-        redis.setex process_id, 360, MultiJson.dump(error)
+        redis.setex process_id, 360, MultiJson.dump(error || [])
       }
 
-      fork = true
+      fork = true # set to false for testing
       if fork
         pid = Process.fork do
           proc.call
@@ -56,27 +56,57 @@ class ValidateOntologyFileController < ApplicationController
       Redis.new(host: Annotator.settings.annotator_redis_host, port: Annotator.settings.annotator_redis_port)
     end
 
-    ERROR_FORMAT_MAP = {"obo" => "OBOFormatOWLAPIParser", "owl" => "OWLXMLParser", "rdf" => "RDFXMLParser"}
+    ERROR_FORMAT_MAP = {
+      "obo" => ["org.semanticweb.owlapi.oboformat.OBOFormatOWLAPIParser"],
+      "owl" => [
+        "org.semanticweb.owlapi.rdf.rdfxml.parser.RDFXMLParser",
+        "org.semanticweb.owlapi.owlxml.parser.OWLXMLParser",
+        "org.semanticweb.owlapi.functional.parser.OWLFunctionalSyntaxOWLParser",
+        "org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxOntologyParser"
+      ]
+    }
     def extract_error_message(error_lines, format)
-      error = []
-      found_error = false
-      error_lines.each do |line|
-        next if line.empty?
-        if found_error
-          break if line.start_with?("--------") || line.start_with?("org.semanticweb.owlapi.io.UnparsableOntologyException")
-          error << line
-        end
-        if line.start_with?("Parser:")
-          error_type = line.split(" ")[1]
-          if error_type == ERROR_FORMAT_MAP[format]
-            found_error = true
-          end
+      found_error = error_lines.any? {|l| l.downcase.include?("severe: problem parsing file")}
+      if found_error
+        errors = parse_errors(error_lines)
+        if format
+          errors = Hash[ERROR_FORMAT_MAP[format].map {|err| [err, errors[err]]}]
         end
       end
-      error
+      errors
     end
 
+    ALLOWED_PARSERS = Set.new([
+      "org.semanticweb.owlapi.rdf.rdfxml.parser.RDFXMLParser",
+      "org.semanticweb.owlapi.owlxml.parser.OWLXMLParser",
+      "org.semanticweb.owlapi.functional.parser.OWLFunctionalSyntaxOWLParser",
+      "org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxOntologyParser",
+      "org.semanticweb.owlapi.oboformat.OBOFormatOWLAPIParser"
+    ])
+
+    def parse_errors(error_lines)
+      errors = {}
+      error_lines.length.times do |i|
+        line = error_lines[i]
+        next if line.nil? || line.empty?
+        break if line.include?("org.stanford.ncbo.oapiwrapper.OntologyParser internalParse")
+        parser = line.match(/Parser: (.*)@/)
+        next unless parser && ALLOWED_PARSERS.include?(parser[1])
+        error = []
+        error_lines[i+1..-1].each do |error_message|
+          next if error_message.nil? || error_message.empty?
+          break if error_message.strip.start_with?("-------------------------") ||
+            error_message.include?("org.stanford.ncbo.oapiwrapper.OntologyParser internalParse")
+          error << error_message.strip
+        end
+        errors[parser[1]] = error
+      end
+      errors
+    end
+
+
     def format(filename)
+      return nil if !filename.include?(".")
       filename.split(".").last.downcase
     end
   end

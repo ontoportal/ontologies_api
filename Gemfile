@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rack', github: 'palexander/rack', branch: 'patch-1' # can remove github dependency when rack 1.6 is released
+gem 'rack'
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-contrib', '~> 1.0'
 gem 'sinatra-advanced-routes'
