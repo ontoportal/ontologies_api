@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 7e9960e0a615f09d0d0ceddf57b93c0a8e5a30aa
+  revision: c740c0635afc0c7071f9b75aeb9a03e76d5d3b05
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -183,7 +183,7 @@ GEM
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.6)
       redis
-    multi_json (1.10.1)
+    multi_json (1.11.0)
     multipart-post (2.0.0)
     mysql2 (0.3.18)
     net-http-persistent (2.9.4)
