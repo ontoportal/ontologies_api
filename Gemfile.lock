@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: fe19254bcbf7cc194032a04024267541a8b333be
+  revision: f82726f3809040e432cbc828d1d2ea487ee9d8f7
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -39,6 +39,17 @@ GIT
       ontologies_linked_data
       redis
       rufus-scheduler (~> 2.0.24)
+
+GIT
+  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: c30672e96dc799f9d048e2a8c2aa0283ee5ef1a0
+  branch: staging
+  specs:
+    ncbo_ontology_recommender (0.0.1)
+      goo
+      ncbo_annotator
+      ontologies_linked_data
+      redis
 
 GIT
   remote: git://github.com/ncbo/ncbo_resolver.git
@@ -100,28 +111,12 @@ GIT
       activesupport (>= 2.3)
 
 GIT
-  remote: git://github.com/palexander/rack.git
-  revision: 65f75b40d94cda2e90441554ea7d6878a26dde2b
-  branch: patch-1
-  specs:
-    rack (1.6.0.alpha)
-
-GIT
   remote: https://github.com/palexander/shotgun.git
   revision: db198224aaab2e4cb9b049adccb30e387d88bc3b
   branch: ncbo
   specs:
     shotgun (0.9)
       rack (>= 1.0)
-
-PATH
-  remote: /Users/marcosmr/Development/git_repos/ncbo_recommender2
-  specs:
-    ncbo_recommender2 (0.0.1)
-      goo
-      ncbo_annotator
-      ontologies_linked_data
-      redis
 
 GEM
   remote: https://rubygems.org/
@@ -214,6 +209,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rack (1.6.0)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (4.2.0)
@@ -322,13 +318,13 @@ DEPENDENCIES
   multi_json (~> 1.0)
   ncbo_annotator!
   ncbo_cron!
-  ncbo_recommender2!
+  ncbo_ontology_recommender!
   ncbo_resolver!
   ncbo_resource_index!
   oj (~> 2.0)
   ontologies_linked_data!
   pry
-  rack!
+  rack
   rack-accept (~> 0.4)
   rack-attack
   rack-cache (~> 1.0)
