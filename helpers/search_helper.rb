@@ -75,12 +75,12 @@ module Sinatra
         # text.gsub!(/\*+$/, '')
 
         if (params[EXACT_MATCH_PARAM] == "true")
-          query = "\"#{RSolr.solr_escape(text)}\""
+          query = "\"#{RSolr.escape(text)}\""
           params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR}"
           params["hl.fl"] = "resource_id prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
         elsif (params[SUGGEST_PARAM] == "true" || text[-1] == '*')
           text.gsub!(/\*+$/, '')
-          query = "\"#{RSolr.solr_escape(text)}\""
+          query = "\"#{RSolr.escape(text)}\""
           params["qt"] = "/suggest_ncbo"
           params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge^10 prefLabelSuggestNgram synonymSuggestNgram resource_id #{QUERYLESS_FIELDS_STR}"
           params["pf"] = "prefLabelSuggest^50"
@@ -89,7 +89,7 @@ module Sinatra
           if (text.strip.empty?)
             query = '*'
           else
-            query = RSolr.solr_escape(text)
+            query = RSolr.escape(text)
           end
 
           params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR}"
