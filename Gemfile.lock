@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f82726f3809040e432cbc828d1d2ea487ee9d8f7
+  revision: c75d34b85fdedda43b5078c803fc1353fb1bb82c
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 88a35c39a9d2d65089004835f1376c73f0d4c841
+  revision: 484144e6a48234d2e4f957f648050f2caf9b2a73
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: c740c0635afc0c7071f9b75aeb9a03e76d5d3b05
+  revision: 9e0a7d1d5503bddc69708f66a0d2f8a322310241
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -202,7 +202,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.11.5)
+    oj (2.12.0)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -248,7 +248,7 @@ GEM
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     retriable (1.4.1)
-    rsolr (1.0.11)
+    rsolr (1.0.12)
       builder (>= 2.1.2)
     ruby-xxHash (0.3.0)
     rubyzip (1.1.7)
