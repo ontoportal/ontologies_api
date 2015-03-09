@@ -130,7 +130,6 @@ class TestMappingsController < TestCase
       #pages
       assert_equal page, mappings["page"]
       assert_equal 5, mappings["pageCount"]
-      assert_equal 5, mappings["pageCount"]
       assert mappings["prevPage"] == (page > 1 ? page - 1 : nil)
       assert mappings["nextPage"] == (page < 5 ? page + 1 : nil)
       next_page = mappings["nextPage"]
