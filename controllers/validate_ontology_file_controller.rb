@@ -63,14 +63,15 @@ class ValidateOntologyFileController < ApplicationController
         "org.semanticweb.owlapi.owlxml.parser.OWLXMLParser",
         "org.semanticweb.owlapi.functional.parser.OWLFunctionalSyntaxOWLParser",
         "org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxOntologyParser"
-      ]
+      ],
+      "unknown" => ["org.bioontology.UnknownParseError"]
     }
     def extract_error_message(error_lines, format)
       found_error = error_lines.any? {|l| l.downcase.include?("severe: problem parsing file")}
       if found_error
         errors = parse_errors(error_lines)
-        if format
-          errors = Hash[ERROR_FORMAT_MAP[format].map {|err| [err, errors[err]]}]
+        if format && ERROR_FORMAT_MAP.key?(format)
+          errors = Hash[(ERROR_FORMAT_MAP[format] || []).map {|err| [err, errors[err]]}]
         end
       end
       errors
@@ -86,9 +87,11 @@ class ValidateOntologyFileController < ApplicationController
 
     def parse_errors(error_lines)
       errors = {}
+      errored = false
       error_lines.length.times do |i|
         line = error_lines[i]
         next if line.nil? || line.empty?
+        errored = true if line.include?("Could not parse ontology")
         break if line.include?("org.stanford.ncbo.oapiwrapper.OntologyParser internalParse")
         parser = line.match(/Parser: (.*)@/)
         next unless parser && ALLOWED_PARSERS.include?(parser[1])
@@ -101,6 +104,11 @@ class ValidateOntologyFileController < ApplicationController
         end
         errors[parser[1]] = error
       end
+
+      if errored && errors.length == 0
+        errors["org.bioontology.UnknownParseError"] = "There is an unknown problem that caused the ontology to fail to parse"
+      end
+
       errors
     end
 
