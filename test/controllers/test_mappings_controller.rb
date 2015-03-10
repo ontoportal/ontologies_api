@@ -137,7 +137,7 @@ class TestMappingsController < TestCase
       total += mappings.length
       page = next_page
     end while (next_page)
-    assert_equal 20, total
+    assert_equal 18, total
   end
 
   def test_mappings_with_display
