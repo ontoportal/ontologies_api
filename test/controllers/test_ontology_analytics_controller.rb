@@ -77,7 +77,7 @@ class TestOntologyAnalyticsController < TestCase
       puts "   This test cannot be run. You are probably pointing to the wrong redis backend. "
       return
     end
-    @@redis.set(OntologyAnalyticsController::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(ANALYTICS_DATA))
+    @@redis.set(LinkedData::Models::Ontology::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(ANALYTICS_DATA))
     _set_vars
     _delete
     _create_user
