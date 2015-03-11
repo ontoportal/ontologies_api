@@ -56,7 +56,7 @@ class ClassesController < ApplicationController
         LinkedData::Models::Class.in(submission)
           .models([cls]).include(:unmapped).all
       end
-      if load_children
+      if !load_children.nil? and load_children.length >0
         LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
       end
       reply cls

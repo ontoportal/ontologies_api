@@ -34,7 +34,10 @@ module Sinatra
         if !load_children
           load_children = load_attrs.select { |x| x.instance_of?(Hash) && x.include?(:children) }
 
-          if load_children
+          if load_children.length == 0
+            load_children = nil
+          end
+          if !load_children.nil?
             load_attrs = load_attrs.select { |x| !(x.instance_of?(Hash) && x.include?(:children)) }
           end
         end
@@ -59,7 +62,7 @@ module Sinatra
                 "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
         end
 
-        if load_children
+        if !load_children.nil?
           LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
         end
         return cls
