@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 3f0dda2589a25f5d5b98d47ca4072f9a6fa02162
+  revision: 599fe41c9c19d893b6aaf4a2394a9b7a6b366720
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: c740c0635afc0c7071f9b75aeb9a03e76d5d3b05
+  revision: 603a518c9b7d15dec562d9864a77032e168682b2
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -179,7 +179,7 @@ GEM
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.2)
-    jwt (1.3.0)
+    jwt (1.4.1)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -202,7 +202,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.11.5)
+    oj (2.12.0)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -223,7 +223,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
-    rack-timeout (0.2.0)
+    rack-timeout (0.2.1)
     rainbows (4.6.2)
       kgio (~> 2.5)
       rack (~> 1.1)
@@ -248,7 +248,7 @@ GEM
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     retriable (1.4.1)
-    rsolr (1.0.11)
+    rsolr (1.0.12)
       builder (>= 2.1.2)
     ruby-xxHash (0.3.0)
     rubyzip (1.1.7)
@@ -285,7 +285,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.4)
-    thread_safe (0.3.4)
+    thread_safe (0.3.5)
     tilt (1.4.1)
     typhoeus (0.7.1)
       ethon (>= 0.7.1)
