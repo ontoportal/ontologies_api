@@ -16,6 +16,10 @@ LinkedData.config do |config|
   config.http_redis_port = 6379
   config.goo_redis_host = "localhost"
   config.goo_redis_port = 6379
+
+  #Ontology Analytics Redis
+  config.ontology_analytics_redis_host = "localhost"
+  config.ontology_analytics_redis_port = 6379
 end
 
 Annotator.config do |config|

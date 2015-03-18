@@ -75,12 +75,12 @@ module Sinatra
         # text.gsub!(/\*+$/, '')
 
         if (params[EXACT_MATCH_PARAM] == "true")
-          query = "\"#{RSolr.escape(text)}\""
+          query = "\"#{solr_escape(text)}\""
           params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR}"
           params["hl.fl"] = "resource_id prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
         elsif (params[SUGGEST_PARAM] == "true" || text[-1] == '*')
           text.gsub!(/\*+$/, '')
-          query = "\"#{RSolr.escape(text)}\""
+          query = "\"#{solr_escape(text)}\""
           params["qt"] = "/suggest_ncbo"
           params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge^10 prefLabelSuggestNgram synonymSuggestNgram resource_id #{QUERYLESS_FIELDS_STR}"
           params["pf"] = "prefLabelSuggest^50"
@@ -89,7 +89,7 @@ module Sinatra
           if (text.strip.empty?)
             query = '*'
           else
-            query = RSolr.escape(text)
+            query = solr_escape(text)
           end
 
           params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR}"
@@ -147,8 +147,11 @@ module Sinatra
         solr_response["match_types"] = all_matches
       end
 
-      def escape_text(text)
-        text.gsub(/([:\[\]\{\}])/, '\\\\\1')
+      # see https://github.com/rsolr/rsolr/issues/101
+      # and https://github.com/projecthydra/active_fedora/commit/75b4afb248ee61d9edb56911b2ef51f30f1ce17f
+      #
+      def solr_escape(text)
+        RSolr.solr_escape(text).gsub(/\s+/,"\\ ")
       end
 
       def get_subtree_ids(params)
