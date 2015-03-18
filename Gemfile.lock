@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 603a518c9b7d15dec562d9864a77032e168682b2
+  revision: bd352082940fd1dabb4b433ac88a4c39fe581dfc
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -160,7 +160,7 @@ GEM
     extlib (0.9.16)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.6)
+    ffi (1.9.8)
     get_process_mem (0.2.0)
     google-api-client (0.8.2)
       activesupport (>= 3.2)
@@ -202,7 +202,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.12.0)
+    oj (2.12.1)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
