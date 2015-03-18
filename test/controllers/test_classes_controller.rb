@@ -200,13 +200,14 @@ class TestClassesController < TestCase
   def test_roots_for_cls
     ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
-    get "/ontologies/#{ont.acronym}/classes/roots"
+    get "/ontologies/#{ont.acronym}/classes/roots?include=prefLabel,hasChildren"
     assert last_response.ok?
     roots = MultiJson.load(last_response.body)
     assert_equal 9, roots.length
     roots.each do |r|
       assert_instance_of String, r["prefLabel"]
       assert_instance_of String, r["@id"]
+      assert r.include?"hasChildren"
       #By definition roots have no parents
       escaped_root_id= CGI.escape(r["@id"])
       get "/ontologies/#{ont.acronym}/classes/#{escaped_root_id}/parents"
@@ -239,7 +240,8 @@ class TestClassesController < TestCase
       get call
       tree = MultiJson.load(last_response.body)
       tree.each do |r|
-        r.include?("childrenCount")
+        assert r.include?("hasChildren")
+        assert !r.include?("childrenCount")
       end
       assert last_response.ok?
     end
