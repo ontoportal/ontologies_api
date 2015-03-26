@@ -27,8 +27,7 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
-      include_childrenCount = load_attrs.include?(:childrenCount)
-      roots = submission.roots(load_attrs, include_childrenCount)
+      roots = submission.roots(load_attrs)
       if unmapped && roots.length > 0
         LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
       end
@@ -56,8 +55,16 @@ class ClassesController < ApplicationController
         LinkedData::Models::Class.in(submission)
           .models([cls]).include(:unmapped).all
       end
+      if includes_param.include?(:hasChildren)
+        cls.load_has_children
+      end
       if !load_children.nil? and load_children.length >0
         LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
+        if includes_param.include?(:hasChildren)
+          cls.children.each do |c|
+            c.load_has_children
+          end
+        end
       end
       reply cls
     end
@@ -76,12 +83,12 @@ class ClassesController < ApplicationController
     get '/:cls/tree' do
       includes_param_check
       # We override include values other than the following, user-provided include ignored
-      params["display"] = "prefLabel,childrenCount,children,obsolete"
+      params["display"] = "prefLabel,hasChildren,children,obsolete"
       params["serialize_nested"] = true # Override safety check and cause children to serialize
 
       # Make sure Rack gets updated
       req = Rack::Request.new(env)
-      req.update_param("display", "prefLabel,childrenCount,children,obsolete")
+      req.update_param("display", "prefLabel,hasChildren,children,obsolete")
       req.update_param("serialize_nested", true)
 
       ont, submission = get_ontology_and_submission
@@ -90,7 +97,7 @@ class ClassesController < ApplicationController
       root_tree = cls.tree
 
       #add the other roots to the response
-      roots = submission.roots(extra_include=nil, aggregate_children=true)
+      roots = submission.roots(extra_include=[:hasChildren])
       roots.each_index do |i|
         r = roots[i]
         if r.id == root_tree.id
@@ -149,6 +156,11 @@ class ClassesController < ApplicationController
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
       page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
+      if ld.include?(:hasChildren)
+        page_data.each do |c|
+          c.load_has_children
+        end
+      end
       reply page_data
     end
 
