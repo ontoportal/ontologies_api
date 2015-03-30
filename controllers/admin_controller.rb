@@ -44,7 +44,9 @@ class AdminController < ApplicationController
         reply({ error: "file #{report_path} not found"})
       end
       json_string = IO.read(report_path)
-      JSON.parse(json_string)
+      report = JSON.parse(json_string)
+      report.each {|acronym, rpt| rpt["uri"] = ontology_uri_from_acronym(acronym)}
+      report
     end
 
   end
