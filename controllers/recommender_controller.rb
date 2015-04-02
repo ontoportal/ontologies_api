@@ -33,6 +33,10 @@ class RecommenderController < ApplicationController
       ws = params['ws']
       wa = params['wa']
       wd = params['wd']
+
+      # Set defaults
+      OntologyRecommender.config
+
       # Parameters validation
       # input
       if input.nil? || input.strip.empty? then raise error 400, 'A text or keywords to be analyzed by the recommender must be supplied using the argument input=<input>' end
