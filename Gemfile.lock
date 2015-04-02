@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: a6e36f36031c89c470a7811aad65923a50c4f924
+  revision: 0353815257c8d7c998bf423b5bb34ce185f9a8e2
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2351d4d61fb2b818ec303e1cd1697d5fbd4276da
+  revision: fc6f38d53eb961e16a2c6ab2d4dc4dfd929b63c5
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -164,8 +164,8 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.9.8)
     get_process_mem (0.2.0)
-    google-api-client (0.8.4)
-      activesupport (~> 3.2)
+    google-api-client (0.8.5)
+      activesupport (>= 3.2)
       addressable (~> 2.3)
       autoparse (~> 0.3)
       extlib (~> 0.9)
@@ -240,7 +240,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
-    rack-timeout (0.2.1)
+    rack-timeout (0.2.4)
     rainbows (4.6.2)
       kgio (~> 2.5)
       rack (~> 1.1)
@@ -249,7 +249,7 @@ GEM
     rake (10.4.2)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (0.5.0)
+    recursive-open-struct (0.6.1)
     redcarpet (3.2.2)
     redis (3.2.1)
     redis-activesupport (3.2.5)
@@ -272,7 +272,7 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.20.0)
+    sequel (4.21.0)
     signet (0.6.0)
       addressable (~> 2.3)
       extlib (~> 0.9)

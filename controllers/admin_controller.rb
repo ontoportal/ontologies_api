@@ -24,10 +24,10 @@ class AdminController < ApplicationController
     get "/problem_ontologies" do
       report = ontologies_report
       report.each do |acronym, rpt|
-        if (rpt["problem"] <= 0)
+        if (rpt["problem"] === false)
           report.delete acronym
         else
-          rpt.delete_if {|k, v| v === "ok" || (v.kind_of?(Array) && v.empty?) || k === "problem"}
+          rpt.delete_if {|k, v| k === "problem"}
         end
       end
 
