@@ -24,10 +24,10 @@ class AdminController < ApplicationController
     get "/problem_ontologies" do
       report = ontologies_report
       report.each do |acronym, rpt|
-        if (rpt["problem"] <= 0)
+        if (rpt["problem"] === false)
           report.delete acronym
         else
-          rpt.delete_if {|k, v| v === "ok" || (v.kind_of?(Array) && v.empty?) || k === "problem"}
+          rpt.delete_if {|k, v| k === "problem"}
         end
       end
 
@@ -44,7 +44,9 @@ class AdminController < ApplicationController
         reply({ error: "file #{report_path} not found"})
       end
       json_string = IO.read(report_path)
-      JSON.parse(json_string)
+      report = JSON.parse(json_string)
+      report.each {|acronym, rpt| rpt["uri"] = ontology_uri_from_acronym(acronym)}
+      report
     end
 
   end

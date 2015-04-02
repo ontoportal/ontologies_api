@@ -9,7 +9,6 @@ gem 'oj', '~> 2.0'
 gem 'json-schema', '~> 2.0'
 gem 'rake', '~> 10.0'
 gem 'activesupport', '~> 3.0'
-gem 'addressable', '= 2.3.5'
 
 # Rack middleware
 gem 'rack-accept', '~> 0.4'
@@ -56,11 +55,12 @@ gem 'capistrano-bundler', '~> 1.1.1'
 gem 'capistrano-rbenv', '~> 2.0.2'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', github: 'ncbo/goo', branch: 'master'
-gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'master'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
-gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'master'
+gem 'goo', github: 'ncbo/goo', branch: 'staging'
+gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'staging'
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'staging'
+gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'staging'
+gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'staging'
+gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'staging'
 
 # Not versioned
 gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'

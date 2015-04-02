@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 2ef65beab58a3dac68fc19d5ea32412b92e014b3
-  branch: master
+  revision: accd0f2b186aa1cf286ee10c497fec78fb2d17ce
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f662c222a9ba811480632da4ba8da1ffcb7ac15e
-  branch: master
+  revision: f82726f3809040e432cbc828d1d2ea487ee9d8f7
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: a6e36f36031c89c470a7811aad65923a50c4f924
-  branch: master
+  revision: 0353815257c8d7c998bf423b5bb34ce185f9a8e2
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -41,6 +41,17 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
+  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: 4b9a489a5051a70bda42541243cbfff73a21847b
+  branch: staging
+  specs:
+    ncbo_ontology_recommender (0.0.1)
+      goo
+      ncbo_annotator
+      ontologies_linked_data
+      redis
+
+GIT
   remote: git://github.com/ncbo/ncbo_resolver.git
   revision: 67989c445e53e019b3b3fa4905e0aa9d519df0ed
   specs:
@@ -50,8 +61,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 36df0da8b35924ad8bc2cb82b65e52e7c793be3a
-  branch: master
+  revision: fc6f38d53eb961e16a2c6ab2d4dc4dfd929b63c5
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -83,8 +94,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 962e5af6615045a437d79fe27a7301df69d31012
-  branch: master
+  revision: ead7d226ff679969cbbb789c33d5660b45d5a521
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -153,8 +164,8 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.9.8)
     get_process_mem (0.2.0)
-    google-api-client (0.8.4)
-      activesupport (~> 3.2)
+    google-api-client (0.8.5)
+      activesupport (>= 3.2)
       addressable (~> 2.3)
       autoparse (~> 0.3)
       extlib (~> 0.9)
@@ -229,7 +240,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
-    rack-timeout (0.2.3)
+    rack-timeout (0.2.4)
     rainbows (4.6.2)
       kgio (~> 2.5)
       rack (~> 1.1)
@@ -261,7 +272,7 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.20.0)
+    sequel (4.21.0)
     signet (0.6.0)
       addressable (~> 2.3)
       extlib (~> 0.9)
@@ -316,7 +327,6 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
-  addressable (= 2.3.5)
   capistrano (~> 3.1.0)
   capistrano-bundler (~> 1.1.1)
   capistrano-rbenv (~> 2.0.2)
@@ -329,6 +339,7 @@ DEPENDENCIES
   multi_json (~> 1.0)
   ncbo_annotator!
   ncbo_cron!
+  ncbo_ontology_recommender!
   ncbo_resolver!
   ncbo_resource_index!
   oj (~> 2.0)

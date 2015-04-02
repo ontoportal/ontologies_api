@@ -30,11 +30,15 @@ module Sinatra
       def get_class(submission, load_attrs=nil)
         load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
         load_children = load_attrs.delete :children
+        load_has_children = load_attrs.delete :hasChildren
 
         if !load_children
           load_children = load_attrs.select { |x| x.instance_of?(Hash) && x.include?(:children) }
 
-          if load_children
+          if load_children.length == 0
+            load_children = nil
+          end
+          if !load_children.nil?
             load_attrs = load_attrs.select { |x| !(x.instance_of?(Hash) && x.include?(:children)) }
           end
         end
@@ -58,9 +62,18 @@ module Sinatra
           error 404,
                 "Resource '#{params[:cls]}' not found in ontology #{submission.ontology.acronym} submission #{submission.submissionId}"
         end
+        unless load_has_children.nil?
+          cls.load_has_children
+        end
 
-        if load_children
-          LinkedData::Models::Class.partially_load_children([cls],500,cls.submission)
+        if !load_children.nil?
+          LinkedData::Models::Class.partially_load_children(
+            [cls],500,cls.submission)
+          unless load_has_children.nil?
+            cls.children.each do |c|
+              c.load_has_children
+            end
+          end
         end
         return cls
       end
