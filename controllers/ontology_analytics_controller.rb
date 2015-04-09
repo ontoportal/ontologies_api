@@ -11,7 +11,8 @@ class OntologyAnalyticsController < ApplicationController
       error 400, "The year you supplied is invalid. Valid years start with 2 and contain 4 digits." if params["year"] && !year
       month = month_param(params)
       error 400, "The month you supplied is invalid. Valid months are 1-12." if params["month"] && !month
-      analytics = Ontology.analytics(year, month)
+      acronyms = restricted_ontologies_to_acronyms(params)
+      analytics = Ontology.analytics(year, month, acronyms)
 
       reply analytics
     end

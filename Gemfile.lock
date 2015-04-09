@@ -249,7 +249,7 @@ GEM
     rake (10.4.2)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (0.6.1)
+    recursive-open-struct (0.6.2)
     redcarpet (3.2.3)
     redis (3.2.1)
     redis-activesupport (3.2.5)

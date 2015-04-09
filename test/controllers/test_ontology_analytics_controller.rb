@@ -78,7 +78,14 @@ class TestOntologyAnalyticsController < TestCase
       return
     end
     @@redis.set(LinkedData::Models::Ontology::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(ANALYTICS_DATA))
-    _set_vars
+    @@onts = {
+        "NCIT" => "NCIT Ontology",
+        "ONTOMA" => "ONTOMA Ontology",
+        "CMPO" => "CMPO Ontology",
+        "AEO" => "AEO Ontology",
+        "SNOMEDCT" => "SNOMEDCT Ontology",
+        "TST" => "TST Ontology"
+    }
     _delete
     _create_user
     _create_onts
@@ -89,22 +96,6 @@ class TestOntologyAnalyticsController < TestCase
     self.class._create_onts
   end
 
-  def self._set_vars
-    @@acronym = "TST"
-    @@name = "Test Ontology"
-    @@test_file = File.expand_path("../../data/ontology_files/BRO_v3.1.owl", __FILE__)
-    @@file_params = {
-        name: @@name,
-        hasOntologyLanguage: "OWL",
-        administeredBy: "tim",
-        "file" => Rack::Test::UploadedFile.new(@@test_file, ""),
-        released: DateTime.now.to_s,
-        contact: [{name: "test_name", email: "test@example.org"}]
-    }
-    @@status_uploaded = "UPLOADED"
-    @@status_rdf = "RDF"
-  end
-
   def self._create_user
     username = "tim"
     test_user = LinkedData::Models::User.new(username: username, email: "#{username}@example.org", password: "password")
@@ -113,13 +104,17 @@ class TestOntologyAnalyticsController < TestCase
   end
 
   def self._create_onts
-    ont = LinkedData::Models::Ontology.new(acronym: @@acronym, name: @@name, administeredBy: [@@user])
-    ont.save
+    @@onts.each do |acronym, name|
+      ont = LinkedData::Models::Ontology.new(acronym: acronym, name: name, administeredBy: [@@user])
+      ont.save
+    end
   end
 
   def self._delete_onts
-    ont = LinkedData::Models::Ontology.find(@@acronym).first
-    ont.delete unless ont.nil?
+    @@onts.each do |acronym, _|
+      ont = LinkedData::Models::Ontology.find(acronym).first
+      ont.delete unless ont.nil?
+    end
   end
 
   def self._delete
@@ -135,9 +130,20 @@ class TestOntologyAnalyticsController < TestCase
     get "/analytics?year=20142&month=3"
     assert_equal(400, last_response.status, msg=get_errors(last_response))
 
+    get "/analytics?ontologies=NCIT,ONTOMA"
+    assert last_response.ok?
+    analytics = MultiJson.load(last_response.body)
+    assert_equal 2, analytics.length
+
+    get "/analytics?ontologies=NCIT,ONTOMA&month=2"
+    assert last_response.ok?
+    analytics = MultiJson.load(last_response.body)
+    analytics.each { |k, _| assert_equal 3, analytics[k].length }
+
     get "/analytics?year=2014&month=04"
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
+
     assert_equal 6, analytics.length
     assert_equal 20376, analytics["SNOMEDCT"]["2014"]["4"]
     assert_equal 1, analytics["SNOMEDCT"].length
