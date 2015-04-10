@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 859d7b75c6af9dc2917eea14f4f54b0dbd84ddd7
-  branch: master
+  revision: 03e3ee4f1564326acd62d9187752d354d8486547
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,8 +42,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: adc21c4d20053a3ca6356d9f3e5a98dba570204c
-  branch: master
+  revision: 40c8b5c835b127eb891a4aa7b91341c63343c4f2
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -61,8 +61,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 5dc160947ecb7bb1541c2e2ffbd841d6385a40f2
-  branch: master
+  revision: f969ea3128c41c9568caf5cea9bf979d065d8e8a
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
