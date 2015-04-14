@@ -18,7 +18,13 @@ class AdminController < ApplicationController
     end
 
     get "/report" do
-      reply ontologies_report
+      report = ontologies_report
+
+      # report.each do |acronym, rpt|
+      #   rpt.delete_if {|k, v| k === "problem"}
+      # end
+
+      reply report
     end
 
     get "/problem_ontologies" do
@@ -26,8 +32,6 @@ class AdminController < ApplicationController
       report.each do |acronym, rpt|
         if (rpt["problem"] === false)
           report.delete acronym
-        else
-          rpt.delete_if {|k, v| k === "problem"}
         end
       end
 
