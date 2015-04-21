@@ -76,6 +76,15 @@ class OntologiesController < ApplicationController
       ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       ont.delete
+
+      # update ontologies report file, if exists
+      report = raw_ontologies_report(true)
+      unless report.empty?
+        report.delete params["acronym"]
+        report_path = NcboCron.settings.ontology_report_path
+        File.open(report_path, 'w') { |file| file.write(JSON.pretty_generate(report)) }
+      end
+
       halt 204
     end
 

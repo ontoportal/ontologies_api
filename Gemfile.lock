@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 40c8b5c835b127eb891a4aa7b91341c63343c4f2
+  revision: a23f9e321c5d2e828e22831eb02858c20980de23
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: f969ea3128c41c9568caf5cea9bf979d065d8e8a
+  revision: 67ccca6a2920ec9f5a41bd798076189ca1f47048
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
