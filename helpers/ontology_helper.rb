@@ -101,6 +101,15 @@ module Sinatra
         report
       end
 
+      def delete_ontology_from_report(acronym)
+        report = raw_ontologies_report(true)
+        unless report.empty?
+          report["ontologies"].delete acronym
+          report_path = NcboCron.settings.ontology_report_path
+          File.open(report_path, 'w') { |file| file.write(::JSON.pretty_generate(report)) }
+        end
+      end
+
     end
   end
 end

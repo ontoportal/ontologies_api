@@ -73,21 +73,12 @@ class OntologiesController < ApplicationController
     ##
     # Delete an ontology and all its versions
     delete '/:acronym' do
-
-
-
-
-      # ont = Ontology.find(params["acronym"]).first
-      # error 422, "You must provide an existing `acronym` to delete" if ont.nil?
-      # ont.delete
+      ont = Ontology.find(params["acronym"]).first
+      error 422, "You must provide an existing `acronym` to delete" if ont.nil?
+      ont.delete
 
       # update ontologies report file, if exists
-      report = raw_ontologies_report(true)
-      unless report.empty?
-        report.delete params["acronym"]
-        report_path = NcboCron.settings.ontology_report_path
-        File.open(report_path, 'w') { |file| file.write(JSON.pretty_generate(report)) }
-      end
+      delete_ontology_from_report(params["acronym"])
 
       halt 204
     end
