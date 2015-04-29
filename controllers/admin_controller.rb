@@ -18,9 +18,7 @@ class AdminController < ApplicationController
     end
 
     get "/report" do
-      report = raw_ontologies_report
-      report["ontologies"].each {|acronym, rpt| rpt["uri"] = ontology_uri_from_acronym(acronym)}
-      reply report
+      reply raw_ontologies_report
     end
 
   end
