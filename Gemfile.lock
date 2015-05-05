@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: a8b57e9627b6cb46d4126da1909cd8befeaaa1df
+  revision: 03acf5fb96964cdd20e52651ef07a98657220ca1
   branch: staging
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: ab902ea1eb91366b9f0b42d36b28f06a9190cbbb
+  revision: 07fd4225cf7a3ee90f7fb6d75bd58bba456e5139
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 67ccca6a2920ec9f5a41bd798076189ca1f47048
+  revision: 502b8d10f557896b9760103b5ba276c617318db4
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -272,7 +272,7 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.21.0)
+    sequel (4.22.0)
     signet (0.6.0)
       addressable (~> 2.3)
       extlib (~> 0.9)
