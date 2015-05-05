@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: a7217cd8b6992dc5c14639b751be7fe935321e51
-  branch: master
+  revision: 03acf5fb96964cdd20e52651ef07a98657220ca1
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 859d7b75c6af9dc2917eea14f4f54b0dbd84ddd7
-  branch: master
+  revision: 07fd4225cf7a3ee90f7fb6d75bd58bba456e5139
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,8 +42,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 1f6f40287fc0eee2b65c6e27de57508c9e9bc19f
-  branch: master
+  revision: a23f9e321c5d2e828e22831eb02858c20980de23
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -61,8 +61,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6ac797dc54b1e38350db230fd78c20632af6d17b
-  branch: master
+  revision: 502b8d10f557896b9760103b5ba276c617318db4
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -143,11 +143,11 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.0)
-    colorize (0.7.5)
+    colorize (0.7.7)
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.23)
+    domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (1.0.8)
       elasticsearch-api (= 1.0.7)
@@ -164,7 +164,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.9.8)
     get_process_mem (0.2.0)
-    google-api-client (0.8.5)
+    google-api-client (0.8.6)
       activesupport (>= 3.2)
       addressable (~> 2.3)
       autoparse (~> 0.3)
@@ -175,11 +175,11 @@ GEM
       multi_json (~> 1.10)
       retriable (~> 1.4)
       signet (~> 0.6)
-    googleauth (0.4.0)
+    googleauth (0.4.1)
       faraday (~> 0.9)
       jwt (~> 1.4)
-      logging (~> 1.8)
-      memoist (~> 0.11)
+      logging (~> 2.0)
+      memoist (~> 0.12)
       multi_json (= 1.11)
       signet (~> 0.6)
     haml (4.0.6)
@@ -197,16 +197,16 @@ GEM
       addressable (~> 2.3)
     libxml-ruby (2.8.0)
     little-plugger (1.1.3)
-    logging (1.8.2)
-      little-plugger (>= 1.1.3)
-      multi_json (>= 1.8.4)
+    logging (2.0.0)
+      little-plugger (~> 1.1)
+      multi_json (~> 1.10)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     memoist (0.12.0)
     method_source (0.8.2)
-    mime-types (2.4.3)
+    mime-types (2.5)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.6)
@@ -219,7 +219,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.12.2)
+    oj (2.12.5)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -233,7 +233,7 @@ GEM
       rack
     rack-cache (1.2)
       rack (>= 0.4)
-    rack-cors (0.3.1)
+    rack-cors (0.4.0)
     rack-mini-profiler (0.9.3)
       rack (>= 1.1.3)
     rack-protection (1.5.3)
@@ -272,18 +272,18 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.21.0)
+    sequel (4.22.0)
     signet (0.6.0)
       addressable (~> 2.3)
       extlib (~> 0.9)
       faraday (~> 0.9)
       jwt (~> 1.0)
       multi_json (~> 1.10)
-    simplecov (0.9.2)
+    simplecov (0.10.0)
       docile (~> 1.1.0)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.9.0)
-    simplecov-html (0.9.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -311,8 +311,8 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.6)
-    unicorn (4.8.3)
+    unf_ext (0.0.7.1)
+    unicorn (4.9.0)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)

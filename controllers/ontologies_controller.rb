@@ -76,6 +76,10 @@ class OntologiesController < ApplicationController
       ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to delete" if ont.nil?
       ont.delete
+
+      # update ontologies report file, if exists
+      delete_ontology_from_report(params["acronym"])
+
       halt 204
     end
 
