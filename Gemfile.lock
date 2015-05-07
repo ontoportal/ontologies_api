@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 8a15e9f8ee1c2b3da6b9083b1c360b7072a9c576
+  revision: a8d06ed360dccfa6de8394e519006f5669f61a78
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -226,7 +226,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rack (1.6.0)
+    rack (1.6.1)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (4.2.0)
