@@ -19,6 +19,6 @@ end
 
 Rack::Attack.throttled_response = lambda do |env|
   data = env['rack.attack.match_data']
-  body = "You have made #{data[:count]} requests in the last #{data[:period]} seconds. We limit API Keys to #{data[:limit]} requests every #{data[:period]} seconds"
+  body = "You have made #{data[:count]} requests in the last #{data[:period]} seconds. For user #{env["REMOTE_USER"]}, we limit API Keys to #{data[:limit]} requests every #{data[:period]} seconds"
   [429, {}, [body]]
 end
