@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 502b8d10f557896b9760103b5ba276c617318db4
+  revision: 9da7b2bc23b9bdc8e83d5ba23f34cc65bf0674cf
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -219,7 +219,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.12.6)
+    oj (2.12.7)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
