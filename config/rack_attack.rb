@@ -13,12 +13,14 @@ Rack::Attack.whitelist('always allow') do |req|
   req.env["REMOTE_USER"] && (RACK_ATTACK_EXCEPTIONS.include?(req.env["REMOTE_USER"].username) || req.env["REMOTE_USER"].admin?)
 end
 
-Rack::Attack.throttle('req/ip', :limit => LinkedData::OntologiesAPI.settings.req_per_second_per_ip, :period => 1.second) do |req|
+Rack::Attack.throttle('req/ip', :limit => 1, :period => 1.second) do |req|
   req.ip
 end
 
 Rack::Attack.throttled_response = lambda do |env|
   data = env['rack.attack.match_data']
   body = "You have made #{data[:count]} requests in the last #{data[:period]} seconds. For user #{env["REMOTE_USER"]}, we limit API Keys to #{data[:limit]} requests every #{data[:period]} seconds"
+  require 'json'
+  body += "\n\nDebug:\n#{JSON.pretty_generate(Hash[env.keys.select {|k| k.match(/\A[A-Z_-]+\Z/)}.map {|k| [k, env[k]] }])}"
   [429, {}, [body]]
 end
