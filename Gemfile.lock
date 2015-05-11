@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 07fd4225cf7a3ee90f7fb6d75bd58bba456e5139
+  revision: ab7ce9f548689415f35637edbf777299e549b5db
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 9da7b2bc23b9bdc8e83d5ba23f34cc65bf0674cf
+  revision: 57b332218d88cddeee24f749eda9b03b049c49c4
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -191,7 +191,7 @@ GEM
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.2)
-    jwt (1.4.1)
+    jwt (1.5.0)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
