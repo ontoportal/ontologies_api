@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: a7217cd8b6992dc5c14639b751be7fe935321e51
+  revision: 03ffedcd708b8b7f086e3e4ab5925a40567f83ab
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ae4db9ca4c7da83b848f49497ea8bf8ec033ba99
+  revision: 81ade38bf1fec36858530165113ee49ad2ecee96
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 12b970a4a29cbc54c78b0723b37568afd8db9122
+  revision: b29bd2d35a372890e033ba5a76d0a74d2f2e1aa1
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 1f6f40287fc0eee2b65c6e27de57508c9e9bc19f
+  revision: e6b244e855594555ffca08028b2a7e92eaef970c
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 4d77b373c8ad515e85c31eb26e089acae5fb0e4c
+  revision: 4ddda3aef152ca6e7e2c203b3d123845983dd702
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -191,7 +191,7 @@ GEM
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.2)
-    jwt (1.4.1)
+    jwt (1.5.0)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -219,14 +219,14 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.12.5)
+    oj (2.12.7)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rack (1.6.0)
+    rack (1.6.1)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (4.2.0)
