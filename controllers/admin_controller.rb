@@ -17,8 +17,18 @@ class AdminController < ApplicationController
       MultiJson.dump obj_usage
     end
 
-    get "/report" do
+    get "/ontologies_report" do
+      refresh_ontologies_report if params["refresh"] === "true"
       reply raw_ontologies_report
+    end
+
+    get "/ontologies/:acronym/log" do
+      ont = Ontology.find(params["acronym"]).first
+      error 404, "Ontology #{params["acronym"]} does not exist" if ont.nil?
+      ont.bring(:acronym, :submissions)
+      latest = ont.latest_submission(status: :any)
+      error 404, "No submissions found for ontology #{params["acronym"]}" if latest.nil?
+      reply get_parse_log_file(latest)
     end
 
   end

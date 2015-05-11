@@ -101,6 +101,16 @@ module Sinatra
         report
       end
 
+      def refresh_ontologies_report
+        log_file = File.new(NcboCron.settings.log_path, "a")
+        log_path = File.dirname(File.absolute_path(log_file))
+        log_filename_noExt = File.basename(log_file, ".*")
+        ontologies_report_log_path = File.join(log_path, "#{log_filename_noExt}-ontologies-report.log")
+        ontologies_report_logger = Logger.new(ontologies_report_log_path)
+        report_path = NcboCron.settings.ontology_report_path
+        NcboCron::Models::OntologiesReport.new(ontologies_report_logger, report_path).run
+      end
+
       def delete_ontology_from_report(acronym)
         report = raw_ontologies_report(true)
         unless report.empty?
