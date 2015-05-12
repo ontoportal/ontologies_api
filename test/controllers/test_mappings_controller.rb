@@ -40,7 +40,20 @@ class TestMappingsController < TestCase
     NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
   end
 
-  def test_mappings_for_ontology
+  def test_mappings_controllers_in_order
+    mappings_between_ontologies
+    mappings_for_ontology
+    mappings_for_ontology_pages
+    mappings_with_display
+    mappings_root
+    get_single_mapping
+    create_mapping
+    delete_mapping
+    mappings_statistics
+    mappings_statistics_for_ontology
+  end
+
+  def mappings_for_ontology
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
@@ -77,7 +90,7 @@ class TestMappingsController < TestCase
     end
   end
 
-  def test_mappings_between_ontologies
+  def mappings_between_ontologies
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
@@ -114,7 +127,7 @@ class TestMappingsController < TestCase
     end
   end
 
-  def test_mappings_for_ontology_pages
+  def mappings_for_ontology_pages
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
@@ -140,7 +153,7 @@ class TestMappingsController < TestCase
     assert_equal 18, total
   end
 
-  def test_mappings_with_display
+  def mappings_with_display
     ontology = "BRO-TEST-MAP-0"
     pagesize = 4
     page = 1
@@ -162,19 +175,19 @@ class TestMappingsController < TestCase
     assert 10, def_count
   end
 
-  def test_mappings
+  def mappings_root
     #not supported
     get '/mappings'
     assert !last_response.ok?
   end
 
-  def test_get_single_mapping
+  def get_single_mapping
     #not supported
     get "/mappings/some_fake_id"
     assert !last_response.ok?
   end
 
-  def test_create_mapping
+  def create_mapping
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
@@ -262,7 +275,7 @@ class TestMappingsController < TestCase
     end
   end
 
-  def test_delete_mapping
+  def delete_mapping
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
@@ -343,7 +356,7 @@ class TestMappingsController < TestCase
     end
   end
 
-  def test_mappings_statistics
+  def mappings_statistics
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
@@ -358,7 +371,7 @@ class TestMappingsController < TestCase
     assert_equal data, stats
   end
 
-  def test_mappings_statistics_for_ontology
+  def mappings_statistics_for_ontology
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
