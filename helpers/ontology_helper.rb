@@ -79,19 +79,19 @@ module Sinatra
         parse_log_folder = File.join(LinkedData.settings.repository_folder, "parse-logs")
         Dir.mkdir(parse_log_folder) unless File.exist? parse_log_folder
         file_log_path = File.join(parse_log_folder, "#{ontology.acronym}-#{submission.submissionId}-#{DateTime.now.strftime("%Y%m%d_%H%M%S")}.log")
-        return File.open(file_log_path,"w")
+        return File.open(file_log_path, "w")
       end
 
-      def raw_ontologies_report(supress_error=false)
+      def raw_ontologies_report(suppress_error=false)
         report_path = NcboCron.settings.ontology_report_path
         report = {}
 
-        if !supress_error && (report_path.nil? || report_path.empty?)
+        if !suppress_error && (report_path.nil? || report_path.empty?)
           error 500, "Ontologies report path not set in config"
         end
 
-        if !supress_error && !File.exist?(report_path)
-          error 500, "Ontologies report file #{report_path} not found"
+        if !suppress_error && !File.exist?(report_path)
+          error 404, "Ontologies report file #{report_path} not found"
         end
 
         unless report_path.nil? || report_path.empty? || !File.exist?(report_path)

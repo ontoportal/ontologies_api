@@ -18,8 +18,9 @@ class AdminController < ApplicationController
     end
 
     get "/ontologies_report" do
-      refresh_ontologies_report if params["refresh"] === "true"
-      reply raw_ontologies_report
+      refresh_ontologies_report if params["refresh"].eql?('true') # default = false
+      suppress_error = params["suppress_error"].eql?('true') # default = false
+      reply raw_ontologies_report(suppress_error)
     end
 
     get "/ontologies/:acronym/log" do
