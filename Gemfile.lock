@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 969dd9c3212ebf693eaf2af3eb4e76cc665b19e4
+  revision: 99c628e197879ed5993b61a8508f016cadaab1be
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -149,12 +149,12 @@ GEM
     docile (1.1.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.8)
-      elasticsearch-api (= 1.0.7)
-      elasticsearch-transport (= 1.0.7)
-    elasticsearch-api (1.0.7)
+    elasticsearch (1.0.9)
+      elasticsearch-api (= 1.0.9)
+      elasticsearch-transport (= 1.0.9)
+    elasticsearch-api (1.0.9)
       multi_json
-    elasticsearch-transport (1.0.7)
+    elasticsearch-transport (1.0.9)
       faraday
       multi_json
     ethon (0.7.3)
@@ -219,7 +219,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.12.7)
+    oj (2.12.8)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
