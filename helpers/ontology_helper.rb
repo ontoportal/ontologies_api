@@ -72,16 +72,6 @@ module Sinatra
         return filename, tmpfile
       end
 
-      def get_parse_log_file(submission)
-        submission.bring(ontology:[:acronym])
-        ontology = submission.ontology
-
-        parse_log_folder = File.join(LinkedData.settings.repository_folder, "parse-logs")
-        Dir.mkdir(parse_log_folder) unless File.exist? parse_log_folder
-        file_log_path = File.join(parse_log_folder, "#{ontology.acronym}-#{submission.submissionId}-#{DateTime.now.strftime("%Y%m%d_%H%M%S")}.log")
-        return File.open(file_log_path, "w")
-      end
-
       def raw_ontologies_report(suppress_error=false)
         report_path = NcboCron.settings.ontology_report_path
         report = {}

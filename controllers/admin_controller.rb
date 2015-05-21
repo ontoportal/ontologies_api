@@ -18,12 +18,15 @@ class AdminController < ApplicationController
     end
 
     get "/ontologies/:acronym/log" do
-      ont = Ontology.find(params["acronym"]).first
-      error 404, "Ontology #{params["acronym"]} does not exist" if ont.nil?
-      ont.bring(:acronym, :submissions)
-      latest = ont.latest_submission(status: :any)
-      error 404, "No submissions found for ontology #{params["acronym"]}" if latest.nil?
-      reply get_parse_log_file(latest)
+      ont_report = raw_ontologies_report(false)
+      log_path = ont_report["ontologies"].has_key?(params["acronym"]) ? ont_report["ontologies"][params["acronym"]]["logFilePath"] : ''
+      log_contents = ''
+      if !log_path.empty? && File.file?(log_path)
+        file = File.open(log_path)
+        log_contents = file.read
+        file.close
+      end
+      reply log_contents
     end
 
     get "/ontologies_report" do
