@@ -22,7 +22,7 @@ class AdminController < ApplicationController
       log_path = ont_report["ontologies"].has_key?(params["acronym"]) ? ont_report["ontologies"][params["acronym"]]["logFilePath"] : ''
       log_contents = ''
       if !log_path.empty? && File.file?(log_path)
-        file = File.open(log_path)
+        file = File.open(log_path, "rb")
         log_contents = file.read
         file.close
       end
