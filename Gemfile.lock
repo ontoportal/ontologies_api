@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 03acf5fb96964cdd20e52651ef07a98657220ca1
+  revision: 322fd6374f57d8bb99d1921063bb4ad75ff8e9c5
   branch: staging
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: ca8ac0af86c855d1456803c15263f504189b22ed
+  revision: e3f658fac03f7ee8540e3bf1691b444f895bbfad
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: abfe38750db4bff62a3ada076bfa7cb73f63ef2e
+  revision: 28d07f2fc3ac432c2f49805b342715949264739f
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: b39a3ab6673c73c7f725799fc258386995c4cbdc
+  revision: a680c51507d68eb6f174e5c20b53c7637ab13d95
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -149,12 +149,12 @@ GEM
     docile (1.1.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.9)
-      elasticsearch-api (= 1.0.9)
-      elasticsearch-transport (= 1.0.9)
-    elasticsearch-api (1.0.9)
+    elasticsearch (1.0.10)
+      elasticsearch-api (= 1.0.10)
+      elasticsearch-transport (= 1.0.10)
+    elasticsearch-api (1.0.10)
       multi_json
-    elasticsearch-transport (1.0.9)
+    elasticsearch-transport (1.0.10)
       faraday
       multi_json
     ethon (0.7.3)
@@ -206,7 +206,7 @@ GEM
       mime-types (>= 1.16, < 3)
     memoist (0.12.0)
     method_source (0.8.2)
-    mime-types (2.5)
+    mime-types (2.6.1)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.6)
@@ -229,7 +229,7 @@ GEM
     rack (1.6.1)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.2.0)
+    rack-attack (4.3.0)
       rack
     rack-cache (1.2)
       rack (>= 0.4)

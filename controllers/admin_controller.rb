@@ -29,15 +29,52 @@ class AdminController < ApplicationController
       reply log_contents
     end
 
+    put "/ontologies/:acronym" do
+      all_actions = NcboCron::Models::OntologySubmissionParser::ACTIONS
+      all_actions[:all] = true
+      error_message = "You must provide valid action(s) for ontology processing. Valid actions: ?actions=#{all_actions.keys.join(",")}"
+      actions_param = params["actions"]
+      error 404, error_message unless actions_param
+      action_arr = actions_param.split(",")
+      actions = action_arr.reduce({}){|a, v| a[v.to_sym] = true if all_actions.has_key?(v.to_sym); a}
+      error 404, error_message if actions.empty?
+
+      ont = Ontology.find(params["acronym"]).first
+      error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
+      ont.bring(:acronym, :submissions)
+      latest = ont.latest_submission(status: :any)
+      error 404, "Ontology #{params["acronym"]} contains no submissions" if latest.nil?
+      check_last_modified(latest)
+      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+      NcboCron::Models::OntologySubmissionParser.new.queue_submission(latest, actions)
+      halt 204
+    end
+
+    get "/:acronym/latest_submission" do
+      ont = Ontology.find(params["acronym"]).first
+      error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
+      include_status = params["include_status"]
+      ont.bring(:acronym, :submissions)
+      if include_status
+        latest = ont.latest_submission(status: include_status.to_sym)
+      else
+        latest = ont.latest_submission(status: :any)
+      end
+      check_last_modified(latest) if latest
+      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
+      reply(latest || {})
+    end
+
     get "/ontologies_report" do
       suppress_error = params["suppress_error"].eql?('true') # default = false
       reply raw_ontologies_report(suppress_error)
     end
 
     post "/ontologies_report" do
+      ontologies = ontologies_param_to_acronyms(params)
       args = {name: "ontologies_report", message: "refreshing ontologies report"}
       process_id = process_long_operation(900, args) do |args|
-        refresh_ontologies_report
+        refresh_ontologies_report(ontologies)
       end
       reply(process_id: process_id)
     end
@@ -58,6 +95,15 @@ class AdminController < ApplicationController
     end
 
     private
+
+    def refresh_ontologies_report(ontologies)
+      log_file = File.new(NcboCron.settings.log_path, "a")
+      log_path = File.dirname(File.absolute_path(log_file))
+      log_filename_noExt = File.basename(log_file, ".*")
+      ontologies_report_log_path = File.join(log_path, "#{log_filename_noExt}-ontologies-report.log")
+      ontologies_report_logger = Logger.new(ontologies_report_log_path)
+      NcboCron::Models::OntologiesReport.new(ontologies_report_logger).refresh_report(ontologies)
+    end
 
     def process_long_operation(timeout, args)
       process_id = "#{Time.now.to_i}_#{args[:name]}"
