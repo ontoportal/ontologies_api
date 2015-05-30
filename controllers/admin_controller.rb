@@ -18,8 +18,8 @@ class AdminController < ApplicationController
     end
 
     get "/ontologies/:acronym/log" do
-      ont_report = raw_ontologies_report(false)
-      log_path = ont_report["ontologies"].has_key?(params["acronym"]) ? ont_report["ontologies"][params["acronym"]]["logFilePath"] : ''
+      ont_report = NcboCron::Models::OntologiesReport.new.ontologies_report(false)
+      log_path = ont_report[:ontologies].has_key?(params["acronym"].to_sym) ? ont_report[:ontologies][params["acronym"].to_sym][:logFilePath] : ''
       log_contents = ''
       if !log_path.empty? && File.file?(log_path)
         file = File.open(log_path, "rb")
@@ -67,14 +67,14 @@ class AdminController < ApplicationController
 
     get "/ontologies_report" do
       suppress_error = params["suppress_error"].eql?('true') # default = false
-      reply raw_ontologies_report(suppress_error)
+      reply NcboCron::Models::OntologiesReport.new.ontologies_report(suppress_error)
     end
 
     post "/ontologies_report" do
       ontologies = ontologies_param_to_acronyms(params)
       args = {name: "ontologies_report", message: "refreshing ontologies report"}
       process_id = process_long_operation(900, args) do |args|
-        refresh_ontologies_report(ontologies)
+        NcboCron::Models::OntologiesReport.new.refresh_report(ontologies)
       end
       reply(process_id: process_id)
     end
@@ -86,7 +86,7 @@ class AdminController < ApplicationController
         error 404, "Process id #{params["process_id"]} does not exit"
       else
         if process_id === "done"
-          reply raw_ontologies_report(false)
+          reply NcboCron::Models::OntologiesReport.new.ontologies_report(false)
         else
           # either "processing" OR errors {errors: ["errorA", "errorB"]}
           reply process_id
@@ -96,15 +96,6 @@ class AdminController < ApplicationController
 
     private
 
-    def refresh_ontologies_report(ontologies)
-      log_file = File.new(NcboCron.settings.log_path, "a")
-      log_path = File.dirname(File.absolute_path(log_file))
-      log_filename_noExt = File.basename(log_file, ".*")
-      ontologies_report_log_path = File.join(log_path, "#{log_filename_noExt}-ontologies-report.log")
-      ontologies_report_logger = Logger.new(ontologies_report_log_path)
-      NcboCron::Models::OntologiesReport.new(ontologies_report_logger).refresh_report(ontologies)
-    end
-
     def process_long_operation(timeout, args)
       process_id = "#{Time.now.to_i}_#{args[:name]}"
       redis.setex process_id, timeout, MultiJson.dump("processing")
@@ -113,7 +104,7 @@ class AdminController < ApplicationController
         begin
           yield(args)
         rescue Exception => e
-          msg = "Error #{args[:message]}: #{e.message}"
+          msg = "Error #{args[:message]} - #{e.class}: #{e.message}\n#{e.backtrace.join("\n\t")}"
           puts msg
           error[:errors] = [msg]
         end

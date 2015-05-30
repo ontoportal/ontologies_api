@@ -71,45 +71,6 @@ module Sinatra
         end
         return filename, tmpfile
       end
-
-      def raw_ontologies_report(suppress_error=false)
-        report_path = NcboCron.settings.ontology_report_path
-        report = {}
-
-        if !suppress_error && (report_path.nil? || report_path.empty?)
-          error 500, "Ontologies report path not set in config"
-        end
-
-        if !suppress_error && !File.exist?(report_path)
-          error 404, "Ontologies report file #{report_path} not found"
-        end
-
-        unless report_path.nil? || report_path.empty? || !File.exist?(report_path)
-          json_string = ::IO.read(report_path)
-          report = ::JSON.parse(json_string)
-        end
-        report
-      end
-
-      def refresh_ontologies_report
-        log_file = File.new(NcboCron.settings.log_path, "a")
-        log_path = File.dirname(File.absolute_path(log_file))
-        log_filename_noExt = File.basename(log_file, ".*")
-        ontologies_report_log_path = File.join(log_path, "#{log_filename_noExt}-ontologies-report.log")
-        ontologies_report_logger = Logger.new(ontologies_report_log_path)
-        report_path = NcboCron.settings.ontology_report_path
-        NcboCron::Models::OntologiesReport.new(ontologies_report_logger, report_path).run
-      end
-
-      def delete_ontology_from_report(acronym)
-        report = raw_ontologies_report(true)
-        unless report.empty?
-          report["ontologies"].delete acronym
-          report_path = NcboCron.settings.ontology_report_path
-          File.open(report_path, 'w') { |file| file.write(::JSON.pretty_generate(report)) }
-        end
-      end
-
     end
   end
 end
