@@ -19,8 +19,9 @@ class AdminController < ApplicationController
 
     get "/ontologies/:acronym/log" do
       ont_report = NcboCron::Models::OntologiesReport.new.ontologies_report(false)
-      log_path = ont_report[:ontologies].has_key?(params["acronym"].to_sym) ? ont_report[:ontologies][params["acronym"].to_sym][:logFilePath] : ''
+      log_path = ont_report[:ontologies].has_key?(params["acronym"].to_sym) ? "#{LinkedData.settings.repository_folder}/#{ont_report[:ontologies][params["acronym"].to_sym][:logFilePath]}" : ''
       log_contents = ''
+
       if !log_path.empty? && File.file?(log_path)
         file = File.open(log_path, "rb")
         log_contents = file.read
