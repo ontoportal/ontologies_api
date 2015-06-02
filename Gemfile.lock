@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 2ae9de5704b6191afedad78ab0b32b52a2174d19
+  revision: 8d8bf0888a05acf93313566ecc4f2f5d982ebabe
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 9239969d6a6ad5856672b3b06b0558fd9b0a205f
+  revision: e379c80c620f3c42a3556d8823637888357bf864
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -149,12 +149,12 @@ GEM
     docile (1.1.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.11)
-      elasticsearch-api (= 1.0.11)
-      elasticsearch-transport (= 1.0.11)
-    elasticsearch-api (1.0.11)
+    elasticsearch (1.0.12)
+      elasticsearch-api (= 1.0.12)
+      elasticsearch-transport (= 1.0.12)
+    elasticsearch-api (1.0.12)
       multi_json
-    elasticsearch-transport (1.0.11)
+    elasticsearch-transport (1.0.12)
       faraday
       multi_json
     ethon (0.7.3)
@@ -187,7 +187,7 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
-    json (1.8.2)
+    json (1.8.3)
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.2)
@@ -272,7 +272,7 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.22.0)
+    sequel (4.23.0)
     signet (0.6.0)
       addressable (~> 2.3)
       extlib (~> 0.9)
