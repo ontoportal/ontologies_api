@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 03ffedcd708b8b7f086e3e4ab5925a40567f83ab
-  branch: master
+  revision: 322fd6374f57d8bb99d1921063bb4ad75ff8e9c5
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 81ade38bf1fec36858530165113ee49ad2ecee96
-  branch: master
+  revision: dafda3742f46951af32c70b05d4334cf731db212
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: b29bd2d35a372890e033ba5a76d0a74d2f2e1aa1
-  branch: master
+  revision: e379c80c620f3c42a3556d8823637888357bf864
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -61,8 +61,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: de046366b355454af6a8806712680724754aa5f7
-  branch: master
+  revision: 265fc6b06a867e08ed7b58907420fc0572358c80
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: b39a3ab6673c73c7f725799fc258386995c4cbdc
+  revision: a680c51507d68eb6f174e5c20b53c7637ab13d95
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -149,12 +149,12 @@ GEM
     docile (1.1.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.8)
-      elasticsearch-api (= 1.0.7)
-      elasticsearch-transport (= 1.0.7)
-    elasticsearch-api (1.0.7)
+    elasticsearch (1.0.12)
+      elasticsearch-api (= 1.0.12)
+      elasticsearch-transport (= 1.0.12)
+    elasticsearch-api (1.0.12)
       multi_json
-    elasticsearch-transport (1.0.7)
+    elasticsearch-transport (1.0.12)
       faraday
       multi_json
     ethon (0.7.3)
@@ -187,7 +187,7 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
-    json (1.8.2)
+    json (1.8.3)
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.2)
@@ -206,7 +206,7 @@ GEM
       mime-types (>= 1.16, < 3)
     memoist (0.12.0)
     method_source (0.8.2)
-    mime-types (2.5)
+    mime-types (2.6.1)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.6)
@@ -219,7 +219,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.12.7)
+    oj (2.12.9)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -229,7 +229,7 @@ GEM
     rack (1.6.1)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.2.0)
+    rack-attack (4.3.0)
       rack
     rack-cache (1.2)
       rack (>= 0.4)
@@ -249,7 +249,7 @@ GEM
     rake (10.4.2)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (0.6.3)
+    recursive-open-struct (0.6.4)
     redcarpet (3.2.3)
     redis (3.2.1)
     redis-activesupport (3.2.5)
@@ -272,7 +272,7 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.22.0)
+    sequel (4.23.0)
     signet (0.6.0)
       addressable (~> 2.3)
       extlib (~> 0.9)
