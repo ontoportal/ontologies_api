@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 8bf9662b0ebf088723205a4f3cb4629ff1c2c1c4
-  branch: master
+  revision: 4ee570d0bd67844c5e86fed83fdbe825f88057d9
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -42,8 +42,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: af9bba34932f67b0bed97df4628b10e57a920154
-  branch: master
+  revision: fd2d1603e6e2681eebd8808561645cecd19f7719
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -319,7 +319,7 @@ GEM
     unicorn-worker-killer (0.4.3)
       get_process_mem (~> 0)
       unicorn (~> 4)
-    uuid (2.3.7)
+    uuid (2.3.8)
       macaddr (~> 1.0)
 
 PLATFORMS

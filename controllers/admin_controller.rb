@@ -31,15 +31,14 @@ class AdminController < ApplicationController
     end
 
     put "/ontologies/:acronym" do
-      all_actions = NcboCron::Models::OntologySubmissionParser::ACTIONS
-      all_actions[:all] = true
-      error_message = "You must provide valid action(s) for ontology processing. Valid actions: ?actions=#{all_actions.keys.join(",")}"
+      actions = NcboCron::Models::OntologySubmissionParser::ACTIONS
+      actions[:all] = false
+      error_message = "You must provide valid action(s) for ontology processing. Valid actions: ?actions=#{actions.keys.join(",")}"
       actions_param = params["actions"]
       error 404, error_message unless actions_param
       action_arr = actions_param.split(",")
-      actions = action_arr.reduce({}){|a, v| a[v.to_sym] = true if all_actions.has_key?(v.to_sym); a}
-      error 404, error_message if actions.empty?
-
+      actions.each { |k, _| actions[k] = action_arr.include?(k.to_s) ? true : false }
+      error 404, error_message if actions.values.select { |v| v === true }.empty?
       ont = Ontology.find(params["acronym"]).first
       error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
       ont.bring(:acronym, :submissions)
