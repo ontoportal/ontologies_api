@@ -31,7 +31,7 @@ class AdminController < ApplicationController
     end
 
     put "/ontologies/:acronym" do
-      actions = NcboCron::Models::OntologySubmissionParser::ACTIONS
+      actions = NcboCron::Models::OntologySubmissionParser::ACTIONS.dup
       actions[:all] = false
       error_message = "You must provide valid action(s) for ontology processing. Valid actions: ?actions=#{actions.keys.join(",")}"
       actions_param = params["actions"]
