@@ -104,8 +104,8 @@ class AdminController < ApplicationController
         begin
           yield(args)
         rescue Exception => e
-          msg = "Error #{args[:message]} - #{e.class}: #{e.message}\n#{e.backtrace.join("\n\t")}"
-          puts msg
+          msg = "Error #{args[:message]} - #{e.class}: #{e.message}"
+          puts "#{msg}\n#{e.backtrace.join("\n\t")}"
           error[:errors] = [msg]
         end
         redis.setex process_id, timeout, MultiJson.dump(error.empty? ? "done" : error)
