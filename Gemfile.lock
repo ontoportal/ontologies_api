@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 4ee570d0bd67844c5e86fed83fdbe825f88057d9
+  revision: 322fd6374f57d8bb99d1921063bb4ad75ff8e9c5
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,13 +16,14 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: a8e425d78eb70340cf8a43e18bd23188ece35e56
+  revision: dd65a8014162fe075c3295bc4231bc902d094e0f
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
       ontologies_linked_data
       redis
+      ruby-xxHash
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
@@ -61,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 265fc6b06a867e08ed7b58907420fc0572358c80
+  revision: da7a4ddc98eb084a37670b6c4f7b7378a4dece94
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -250,7 +251,7 @@ GEM
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.6.4)
-    redcarpet (3.2.3)
+    redcarpet (3.3.0)
     redis (3.2.1)
     redis-activesupport (3.2.5)
       activesupport (~> 3.2.0)
