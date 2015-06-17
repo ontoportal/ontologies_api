@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 12ada7a1b4876417176cddd6f0f6d4b410f6f93c
+  revision: 4da03495d3a597688ffc4c868f62031261c60297
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 04706ac40268b90e7bfef6fa202be076c6c90fa5
+  revision: 4e3836616c8b8606ff065939bffa14824b5ce09f
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -122,7 +122,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.21)
+    activesupport (3.2.22)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
@@ -227,7 +227,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rack (1.6.1)
+    rack (1.6.2)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (4.3.0)
