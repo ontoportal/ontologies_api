@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 3f6759bb114add6c6262077b1752ae10d11ed094
+  revision: 4da03495d3a597688ffc4c868f62031261c60297
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -158,7 +158,7 @@ GEM
     elasticsearch-transport (1.0.12)
       faraday
       multi_json
-    ethon (0.7.3)
+    ethon (0.7.4)
       ffi (>= 1.3.0)
     extlib (0.9.16)
     faraday (0.9.1)
@@ -192,7 +192,7 @@ GEM
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.2)
-    jwt (1.5.0)
+    jwt (1.5.1)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -227,7 +227,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rack (1.6.2)
+    rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (4.3.0)
@@ -251,7 +251,7 @@ GEM
     rdf (1.0.8)
       addressable (>= 2.2)
     recursive-open-struct (0.6.4)
-    redcarpet (3.3.1)
+    redcarpet (3.3.2)
     redis (3.2.1)
     redis-activesupport (3.2.5)
       activesupport (~> 3.2.0)
@@ -306,8 +306,8 @@ GEM
     systemu (2.6.5)
     thread_safe (0.3.5)
     tilt (2.0.1)
-    typhoeus (0.7.1)
-      ethon (>= 0.7.1)
+    typhoeus (0.7.2)
+      ethon (>= 0.7.4)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unf (0.1.4)
