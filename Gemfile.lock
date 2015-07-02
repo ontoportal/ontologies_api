@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 5ffce826af3f11981676a80de86452ac88190b4e
+  revision: 03ffedcd708b8b7f086e3e4ab5925a40567f83ab
   branch: master
   specs:
     goo (0.0.2)
@@ -23,6 +23,7 @@ GIT
       goo
       ontologies_linked_data
       redis
+      ruby-xxHash
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
@@ -61,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: b6538b914320801c079d9b0f4cd2a428e048ee1e
+  revision: 52f31bfb861a5ebbd9717ebedfd4f340c1bf819f
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -121,7 +122,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.21)
+    activesupport (3.2.22)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
@@ -157,12 +158,12 @@ GEM
     elasticsearch-transport (1.0.12)
       faraday
       multi_json
-    ethon (0.7.3)
+    ethon (0.7.4)
       ffi (>= 1.3.0)
     extlib (0.9.16)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.8)
+    ffi (1.9.10)
     get_process_mem (0.2.0)
     google-api-client (0.8.6)
       activesupport (>= 3.2)
@@ -191,7 +192,7 @@ GEM
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.2)
-    jwt (1.5.0)
+    jwt (1.5.1)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -226,7 +227,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rack (1.6.1)
+    rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (4.3.0)
@@ -245,12 +246,12 @@ GEM
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 4.8)
-    raindrops (0.13.0)
+    raindrops (0.14.0)
     rake (10.4.2)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (0.6.4)
-    redcarpet (3.2.3)
+    recursive-open-struct (0.6.5)
+    redcarpet (3.3.2)
     redis (3.2.1)
     redis-activesupport (3.2.5)
       activesupport (~> 3.2.0)
@@ -258,7 +259,7 @@ GEM
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
-    redis-store (1.1.4)
+    redis-store (1.1.5)
       redis (>= 2.2)
     ref (1.0.5)
     rest-client (1.8.0)
@@ -272,12 +273,12 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.23.0)
-    signet (0.6.0)
+    sequel (4.24.0)
+    signet (0.6.1)
       addressable (~> 2.3)
       extlib (~> 0.9)
       faraday (~> 0.9)
-      jwt (~> 1.0)
+      jwt (~> 1.5)
       multi_json (~> 1.10)
     simplecov (0.10.0)
       docile (~> 1.1.0)
@@ -290,13 +291,13 @@ GEM
       tilt (>= 1.3, < 3)
     sinatra-advanced-routes (0.5.3)
       sinatra (~> 1.0)
-    sinatra-contrib (1.4.2)
+    sinatra-contrib (1.4.6)
       backports (>= 2.0)
       multi_json
       rack-protection
       rack-test
       sinatra (~> 1.4.0)
-      tilt (~> 1.3)
+      tilt (>= 1.3, < 3)
     slop (3.6.0)
     sshkit (1.7.1)
       colorize (>= 0.7.0)
@@ -304,9 +305,9 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     thread_safe (0.3.5)
-    tilt (1.4.1)
-    typhoeus (0.7.1)
-      ethon (>= 0.7.1)
+    tilt (2.0.1)
+    typhoeus (0.7.2)
+      ethon (>= 0.7.4)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unf (0.1.4)
