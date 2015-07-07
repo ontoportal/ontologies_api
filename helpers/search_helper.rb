@@ -11,7 +11,8 @@ module Sinatra
       REQUIRE_DEFINITIONS_PARAM = "require_definitions"
       INCLUDE_PROPERTIES_PARAM = "also_search_properties"
       SUBTREE_ID_PARAM = "subtree_root_id"
-      OBSOLETE_PARAM = "also_search_obsolete"
+      ALSO_SEARCH_OBSOLETE_PARAM = "also_search_obsolete"
+      ALSO_SEARCH_PROVISIONAL_PARAM = "also_search_provisional"
       SUGGEST_PARAM = "suggest" # NCBO-932
       ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
       MATCH_HTML_PRE = "<em>"
@@ -106,9 +107,13 @@ module Sinatra
 
         filter_query << " AND definition:[* TO *]" if params[REQUIRE_DEFINITIONS_PARAM] == "true"
 
-        include_obsolete = params[OBSOLETE_PARAM] || "false"
         # NCBO-688 - by default search only non-obsolete classes
-        filter_query << " AND obsolete:false" if include_obsolete != "true"
+        also_search_obsolete = params[ALSO_SEARCH_OBSOLETE_PARAM] || "false"
+        filter_query << " AND obsolete:false" if also_search_obsolete != "true"
+
+        # NCBO-1418 - enable optional include of provisional classes
+        also_search_provisional = params[ALSO_SEARCH_PROVISIONAL_PARAM] || "false"
+        filter_query << " AND provisional:false" if also_search_provisional != "true"
 
         # NCBO-695 - ability to search on CUI and TUI
         cui = cui_param(params)
