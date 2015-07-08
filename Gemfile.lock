@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 5ffce826af3f11981676a80de86452ac88190b4e
+  revision: 22fd8973768c3f21a2bb1e62e8197778656c31cf
   branch: master
   specs:
     goo (0.0.2)
@@ -16,17 +16,18 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: d9ac30c4fee7022bf48c5cd235cf7816af8c9592
+  revision: fc15412de203f4578dd554145e49beb471ecf400
   branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
       ontologies_linked_data
       redis
+      ruby-xxHash
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 7cc55136f49a3d462878eefd2ec9d81bb79eef86
+  revision: 7ed3211e6ec531b345f554c8ed03e5472e898885
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -42,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 7664efab4fc2e1cba2183a2eeab2e950231da905
+  revision: b9d9b284aba621c4e46ab805004627ad0c1959cd
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -61,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 52f31bfb861a5ebbd9717ebedfd4f340c1bf819f
+  revision: a92156f50b4890bb8b89a92e08b7d15071e8f731
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -81,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: a680c51507d68eb6f174e5c20b53c7637ab13d95
+  revision: d43bd6a6c8b014ebd69eabeda843740b66560ebb
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
