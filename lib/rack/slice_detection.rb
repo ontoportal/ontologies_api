@@ -13,8 +13,14 @@ module Rack
         # store the first part of the domain, IE `slice.data.bioontology.org` becomes `slice`
         env['ncbo.slice'] = domain.split(".").first
 
-        # override with header if used
-        env['ncbo.slice'] = env["HTTP_NCBO_SLICE"] if env["HTTP_NCBO_SLICE"]
+        r = Rack::Request.new(env)
+
+        # override with param or header if used
+        if r.params["ncbo_slice"] && !r.params["ncbo_slice"].empty?
+          env['ncbo.slice'] = r.params["ncbo_slice"]
+        elsif env["HTTP_NCBO_SLICE"] && !env["HTTP_NCBO_SLICE"].empty?
+          env['ncbo.slice'] = env["HTTP_NCBO_SLICE"]
+        end
 
         # turn "brendan.app.com" to ".app.com"
         # and turn "app.com" to ".app.com"
