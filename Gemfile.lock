@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 03ffedcd708b8b7f086e3e4ab5925a40567f83ab
+  revision: 5ffce826af3f11981676a80de86452ac88190b4e
   branch: master
   specs:
     goo (0.0.2)
@@ -16,19 +16,18 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 1d5de30d8850c59caa4e22f13fd2ecd64a99caa7
-  branch: staging
+  revision: d9ac30c4fee7022bf48c5cd235cf7816af8c9592
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
       ontologies_linked_data
       redis
-      ruby-xxHash
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 3f6759bb114add6c6262077b1752ae10d11ed094
-  branch: staging
+  revision: 7cc55136f49a3d462878eefd2ec9d81bb79eef86
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -62,8 +61,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 8646eb3570dc396a42ad66e8edd03f780859c76a
-  branch: staging
+  revision: 52f31bfb861a5ebbd9717ebedfd4f340c1bf819f
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -235,7 +234,7 @@ GEM
     rack-cache (1.2)
       rack (>= 0.4)
     rack-cors (0.4.0)
-    rack-mini-profiler (0.9.3)
+    rack-mini-profiler (0.9.6)
       rack (>= 1.1.3)
     rack-protection (1.5.3)
       rack
