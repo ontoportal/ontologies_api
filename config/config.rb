@@ -19,8 +19,6 @@ module LinkedData::OntologiesAPI
     @settings.http_redis_host             ||= "localhost"
     @settings.http_redis_port             ||= 6379
     @settings.ontology_rank               ||= {}
-    @settings.resolver_redis_host         ||= "localhost"
-    @settings.resolver_redis_port         ||= 6379
     @settings.restrict_download           ||= []
     @settings.enable_miniprofiler         ||= false
     @settings.enable_req_timeout          ||= false
