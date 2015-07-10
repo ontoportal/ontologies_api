@@ -113,7 +113,7 @@ module Sinatra
 
         # NCBO-1418 - enable optional include of provisional classes
         also_search_provisional = params[ALSO_SEARCH_PROVISIONAL_PARAM] || "false"
-        filter_query << " AND provisional:false" if also_search_provisional != "true"
+        filter_query << " AND -provisional:true" if also_search_provisional != "true"
 
         # NCBO-695 - ability to search on CUI and TUI
         cui = cui_param(params)
