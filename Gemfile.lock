@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 22fd8973768c3f21a2bb1e62e8197778656c31cf
+  revision: 03ffedcd708b8b7f086e3e4ab5925a40567f83ab
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: fc15412de203f4578dd554145e49beb471ecf400
+  revision: d9ac30c4fee7022bf48c5cd235cf7816af8c9592
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2515d788cc21de97fcd6419bee8d3c00ca3188f4
+  revision: 52f31bfb861a5ebbd9717ebedfd4f340c1bf819f
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -370,6 +370,3 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
-
-BUNDLED WITH
-   1.10.5
