@@ -61,26 +61,6 @@ GIT
       redis
 
 GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2515d788cc21de97fcd6419bee8d3c00ca3188f4
-  branch: master
-  specs:
-    ontologies_linked_data (0.0.1)
-      activesupport
-      bcrypt
-      goo
-      json
-      libxml-ruby
-      multi_json
-      ncbo_resource_index
-      oj
-      pony
-      rack
-      rack-test
-      rsolr
-      rubyzip
-
-GIT
   remote: git://github.com/ncbo/resource_index.git
   revision: d43bd6a6c8b014ebd69eabeda843740b66560ebb
   specs:
@@ -112,6 +92,26 @@ GIT
       activesupport (>= 2.3)
 
 GIT
+  remote: git://github.com/sifrproject/ontologies_linked_data.git
+  revision: 2515d788cc21de97fcd6419bee8d3c00ca3188f4
+  branch: add_external_mappings
+  specs:
+    ontologies_linked_data (0.0.1)
+      activesupport
+      bcrypt
+      goo
+      json
+      libxml-ruby
+      multi_json
+      ncbo_resource_index
+      oj
+      pony
+      rack
+      rack-test
+      rsolr
+      rubyzip
+
+GIT
   remote: https://github.com/palexander/shotgun.git
   revision: db198224aaab2e4cb9b049adccb30e387d88bc3b
   branch: ncbo
@@ -130,7 +130,7 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    backports (3.6.4)
+    backports (3.6.5)
     bcrypt (3.1.10)
     builder (3.2.2)
     capistrano (3.1.0)
@@ -220,7 +220,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    oj (2.12.9)
+    oj (2.12.10)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -259,9 +259,9 @@ GEM
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
-    redis-store (1.1.5)
+    redis-store (1.1.6)
       redis (>= 2.2)
-    ref (1.0.5)
+    ref (2.0.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -269,7 +269,7 @@ GEM
     retriable (1.4.1)
     rsolr (1.0.12)
       builder (>= 2.1.2)
-    ruby-xxHash (0.3.0)
+    ruby-xxHash (0.4.0.1)
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
@@ -368,6 +368,3 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
-
-BUNDLED WITH
-   1.10.5
