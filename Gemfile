@@ -30,6 +30,7 @@ gem 'minitest-stub_any_instance'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
+gem 'newrelic_rpm'
 
 # HTTP server
 gem 'unicorn'
