@@ -152,7 +152,7 @@ class MappingsController < ApplicationController
         error(400, "User with id `#{params[:creator]}` not found")
       end
       process = LinkedData::Models::MappingProcess.new(
-                    :creator => user_creator, :name => "REST Mapping")
+                    :creator => user_creator, :name => mapping_process_name)
       process.relation = RDF::URI.new(params[:relation])
       process.date = DateTime.now
       process_fields = [:source,:source_name, :comment]
