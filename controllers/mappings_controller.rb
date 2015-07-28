@@ -38,36 +38,49 @@ class MappingsController < ApplicationController
   namespace "/mappings" do
     # Display all mappings
     get do
-      ontologies = ontology_objects_from_params
+      #ontologies = ontology_objects_from_params
+      ontologies = params[:ontologies].split(",")
       if ontologies.length != 2
         error(400,
               "/mappings/ endpoint only supports filtering " +
               "on two ontologies using `?ontologies=ONT1,ONT2`")
       end
 
-      page, size = page_params
-      ont1 = ontologies.first
-      ont2 = ontologies[1]
+      acr1 = ontologies[0]
+      acr2 = ontologies[1]
 
-      sub1, sub2 = ont1.latest_submission, ont2.latest_submission
-      if sub1.nil?
+      page, size = page_params
+      ont1 = LinkedData::Models::Ontology.find(acr1).first
+      ont2 = LinkedData::Models::Ontology.find(acr2).first
+
+      if ont1.nil?
         # If the ontology given in param is external (mappings:external) or interportal (interportal:acronym)
-        if ont1 == LinkedData::Models::ExternalClass.url_param_str
-          sub1 == LinkedData::Models::ExternalClass.graph_uri.to_s
-        elsif ont1.start_with?(LinkedData::Models::InterportalClass.base_url_param_str)
-          sub1 == LinkedData::Models::InterportalClass.graph_uri(ont1.split(":")[-1]).to_s
+        if acr1 == LinkedData::Models::ExternalClass.url_param_str
+          sub1 = LinkedData::Models::ExternalClass.graph_uri.to_s
+        elsif acr1.start_with?(LinkedData::Models::InterportalClass.base_url_param_str)
+          sub1 = LinkedData::Models::InterportalClass.graph_uri(acr1.split(":")[-1]).to_s
         else
-          error(404, "Submission not found for ontology " + ontologies[0].id.to_s)
+          error(404, "Submission not found for ontology " + acr1)
+        end
+      else
+        sub1 = ont1.latest_submission
+        if sub1.nil?
+          error(404, "Ontology #{acr1} not found")
         end
       end
-      if sub2.nil?
+      if ont2.nil?
         # If the ontology given in param is external (mappings:external) or interportal (interportal:acronym)
-        if ont2 == LinkedData::Models::ExternalClass.url_param_str
-          sub2 == LinkedData::Models::ExternalClass.graph_uri
-        elsif ont2.start_with?(LinkedData::Models::InterportalClass.base_url_param_str)
-          sub2 == LinkedData::Models::InterportalClass.graph_uri(ont2.split(":")[-1])
+        if acr2 == LinkedData::Models::ExternalClass.url_param_str
+          sub2 = LinkedData::Models::ExternalClass.graph_uri
+        elsif acr2.start_with?(LinkedData::Models::InterportalClass.base_url_param_str)
+          sub2 = LinkedData::Models::InterportalClass.graph_uri(acr2.split(":")[-1])
         else
-          error(404, "Submission not found for ontology " + ontologies[1].id.to_s)
+          error(404, "Ontology #{acr2} not found")
+        end
+      else
+        sub2 = ont2.latest_submission
+        if sub2.nil?
+          error(404, "Submission not found for ontology " + ont2.id.to_s)
         end
       end
       mappings = LinkedData::Mappings.mappings_ontologies(sub1,sub2,
