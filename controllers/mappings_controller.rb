@@ -48,12 +48,27 @@ class MappingsController < ApplicationController
       page, size = page_params
       ont1 = ontologies.first
       ont2 = ontologies[1]
+
       sub1, sub2 = ont1.latest_submission, ont2.latest_submission
       if sub1.nil?
-        error(404, "Submission not found for ontology " + ontologies[0].id.to_s)
+        # If the ontology given in param is external (mappings:external) or interportal (interportal:acronym)
+        if ont1 == LinkedData::Models::ExternalClass.url_param_str
+          sub1 == LinkedData::Models::ExternalClass.graph_uri.to_s
+        elsif ont1.start_with?(LinkedData::Models::InterportalClass.base_url_param_str)
+          sub1 == LinkedData::Models::InterportalClass.graph_uri(ont1.split(":")[-1]).to_s
+        else
+          error(404, "Submission not found for ontology " + ontologies[0].id.to_s)
+        end
       end
       if sub2.nil?
-        error(404, "Submission not found for ontology " + ontologies[1].id.to_s)
+        # If the ontology given in param is external (mappings:external) or interportal (interportal:acronym)
+        if ont2 == LinkedData::Models::ExternalClass.url_param_str
+          sub2 == LinkedData::Models::ExternalClass.graph_uri
+        elsif ont2.start_with?(LinkedData::Models::InterportalClass.base_url_param_str)
+          sub2 == LinkedData::Models::InterportalClass.graph_uri(ont2.split(":")[-1])
+        else
+          error(404, "Submission not found for ontology " + ontologies[1].id.to_s)
+        end
       end
       mappings = LinkedData::Mappings.mappings_ontologies(sub1,sub2,
                                                           page,size)
