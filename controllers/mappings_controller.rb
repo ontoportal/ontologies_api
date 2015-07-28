@@ -215,5 +215,46 @@ class MappingsController < ApplicationController
       end
       reply persistent_counts
     end
+
+    # Statistics for interportal mappings
+    get '/interportal/:ontology' do
+      expires 86400, :public
+      if !LinkedData.settings.interportal_hash.has_key?(@params[:ontology])
+        error(404, "Interportal appliance #{@params[:ontology]} is not configured")
+      end
+      ontology_id = LinkedData::Models::InterportalClass.graph_uri(@params[:ontology]).to_s
+      persistent_counts = {}
+      LinkedData::Models::MappingCount.where(pair_count: true)
+          .and(ontologies: ontology_id)
+          .include(:ontologies,:count)
+          .all
+          .each do |m|
+        other = m.ontologies.first
+        if other == ontology_id
+          other = m.ontologies[1]
+        end
+        persistent_counts[other] = m.count
+      end
+      reply persistent_counts
+    end
+
+    # Statistics for external mappings
+    get '/external' do
+      expires 86400, :public
+      ontology_id = LinkedData::Models::ExternalClass.graph_uri.to_s
+      persistent_counts = {}
+      LinkedData::Models::MappingCount.where(pair_count: true)
+          .and(ontologies: ontology_id)
+          .include(:ontologies,:count)
+          .all
+          .each do |m|
+        other = m.ontologies.first
+        if other == ontology_id
+          other = m.ontologies[1]
+        end
+        persistent_counts[other] = m.count
+      end
+      reply persistent_counts
+    end
   end
 end
