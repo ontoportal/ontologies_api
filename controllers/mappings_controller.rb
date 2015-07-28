@@ -60,7 +60,7 @@ class MappingsController < ApplicationController
         elsif acr1.start_with?(LinkedData::Models::InterportalClass.base_url_param_str)
           sub1 = LinkedData::Models::InterportalClass.graph_uri(acr1.split(":")[-1]).to_s
         else
-          error(404, "Submission not found for ontology " + acr1)
+          error(404, "Submission not found for ontology " + ont1.id.to_s)
         end
       else
         sub1 = ont1.latest_submission
