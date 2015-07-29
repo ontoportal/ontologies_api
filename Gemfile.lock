@@ -93,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 2515d788cc21de97fcd6419bee8d3c00ca3188f4
+  revision: fcf2ecdca0f50e1d8a08125b116328f3f97322d9
   branch: add_external_mappings
   specs:
     ontologies_linked_data (0.0.1)
@@ -246,7 +246,7 @@ GEM
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 4.8)
-    raindrops (0.14.0)
+    raindrops (0.15.0)
     rake (10.4.2)
     rdf (1.0.8)
       addressable (>= 2.2)
