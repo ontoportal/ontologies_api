@@ -18,7 +18,7 @@ begin
     config.cube_host          = "localhost"
 
     # Used to define other BioPortal to which this appliance can be mapped to
-    # Example to map to the NCBO BioPortal : {"ncbo" => {"api" => "http://data.bioontology.org", "ui" => "http://bioportal.bioontology.org"}}
+    # Example to map to the NCBO BioPortal : {"ncbo" => {"api" => "http://data.bioontology.org", "ui" => "http://bioportal.bioontology.org", "apikey" => ""}}
     # Then create the mapping using the following class in JSON : "http://purl.bioontology.org/ontology/MESH/C585345": "ncbo:MESH"
     # Where "ncbo" is the key in the interportal_hash. Use only lowercase letters for this key.
     # And do not use "ext" as a key, it is reserved for clases outside of any BioPortal
