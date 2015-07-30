@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: d17af2f3b18f542a2c093aa641644f03bc186ada
+  revision: 1f8543acc56065beac5ac2f06986b00bb123174f
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -370,3 +370,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.10.3
