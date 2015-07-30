@@ -11,6 +11,10 @@ module Sinatra
           map.classes.each_with_index do |cls, i|
             if cls.respond_to?(:submission)
               found = populated_hash[cls.submission.ontology.id.to_s + cls.id.to_s]
+            elsif cls.respond_to?(:getPrefLabel)
+              # if it is an interportal or external mapping, generate the prefLabel
+              cls.getPrefLabel
+              found = cls
             end
             map.classes[i] = found if found
           end
