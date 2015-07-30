@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 3f6759bb114add6c6262077b1752ae10d11ed094
+  revision: c77101052df654ed04c4f0da688e5da43caebd17
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 1f8543acc56065beac5ac2f06986b00bb123174f
+  revision: 73e39b49aea471060bb80c3ab74cf5c6a9a4df63
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -214,7 +214,7 @@ GEM
       redis
     multi_json (1.11.0)
     multipart-post (2.0.0)
-    mysql2 (0.3.18)
+    mysql2 (0.3.19)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -247,7 +247,7 @@ GEM
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 4.8)
-    raindrops (0.14.0)
+    raindrops (0.15.0)
     rake (10.4.2)
     rdf (1.0.8)
       addressable (>= 2.2)
@@ -370,6 +370,3 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
-
-BUNDLED WITH
-   1.10.3
