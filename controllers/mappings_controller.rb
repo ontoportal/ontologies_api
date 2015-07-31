@@ -127,6 +127,8 @@ class MappingsController < ApplicationController
         error(400, "Input does not contain at least 2 terms")
       end
       error(400, "Input does not contain mapping relation") if !params[:relation]
+      error(400, "Mapping relation should be an array of URI") if !params[:relation].kind_of?(Array)
+      error(400, "Input contains too many mapping relations (max 5)") if params[:relation].length > 5
       error(400, "Input does not contain user creator ID") if !params[:creator]
       classes = []
       mapping_process_name = "REST Mapping"
@@ -179,7 +181,11 @@ class MappingsController < ApplicationController
       end
       process = LinkedData::Models::MappingProcess.new(
                     :creator => user_creator, :name => mapping_process_name)
-      process.relation = RDF::URI.new(params[:relation])
+      relations_array = []
+      params[:relation].each do |relation|
+        relations_array.push(RDF::URI.new(relation))
+      end
+      process.relation = relations_array
       process.date = DateTime.now
       process_fields = [:source,:source_name, :comment]
       process_fields.each do |att|
