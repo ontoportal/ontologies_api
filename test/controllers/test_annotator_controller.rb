@@ -5,8 +5,8 @@ class TestAnnotatorController < TestCase
   def self.before_suite
     @@redis = Redis.new(:host => Annotator.settings.annotator_redis_host, :port => Annotator.settings.annotator_redis_port)
     db_size = @@redis.dbsize
-    if db_size > 5000
-      puts "   This test cannot be run. You are probably pointing to the wrong redis backend. "
+    if db_size > MAX_TEST_REDIS_SIZE
+      puts "   This test cannot be run because there #{db_size} redis entries (max #{MAX_TEST_REDIS_SIZE}). You are probably pointing to the wrong redis backend. "
       return
     end
 
