@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 7ed3211e6ec531b345f554c8ed03e5472e898885
-  branch: master
+  revision: c77101052df654ed04c4f0da688e5da43caebd17
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 52f31bfb861a5ebbd9717ebedfd4f340c1bf819f
-  branch: master
+  revision: 36888d38d2a80f05e3849f6e082e6ac6e3d71fa6
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: a680c51507d68eb6f174e5c20b53c7637ab13d95
+  revision: d43bd6a6c8b014ebd69eabeda843740b66560ebb
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -130,7 +130,7 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    backports (3.6.5)
+    backports (3.6.6)
     bcrypt (3.1.10)
     builder (3.2.2)
     capistrano (3.1.0)
@@ -214,14 +214,14 @@ GEM
       redis
     multi_json (1.11.0)
     multipart-post (2.0.0)
-    mysql2 (0.3.18)
+    mysql2 (0.3.19)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
     newrelic_rpm (3.12.1.298)
-    oj (2.12.10)
+    oj (2.12.11)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -236,7 +236,7 @@ GEM
     rack-cache (1.2)
       rack (>= 0.4)
     rack-cors (0.4.0)
-    rack-mini-profiler (0.9.6)
+    rack-mini-profiler (0.9.7)
       rack (>= 1.1.3)
     rack-protection (1.5.3)
       rack
@@ -247,7 +247,7 @@ GEM
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 4.8)
-    raindrops (0.14.0)
+    raindrops (0.15.0)
     rake (10.4.2)
     rdf (1.0.8)
       addressable (>= 2.2)
@@ -274,7 +274,7 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.24.0)
+    sequel (4.25.0)
     signet (0.6.1)
       addressable (~> 2.3)
       extlib (~> 0.9)
