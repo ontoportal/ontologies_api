@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 1d5de30d8850c59caa4e22f13fd2ecd64a99caa7
+  revision: 158feb274fdf3322740ef146be1c54324b5cd573
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: c77101052df654ed04c4f0da688e5da43caebd17
+  revision: 514312367cf830d762dec52b363eeaef8eb93da8
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 36888d38d2a80f05e3849f6e082e6ac6e3d71fa6
+  revision: 1d076b3a4755501146721edf28606e0b3efcebf4
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -176,14 +176,14 @@ GEM
       multi_json (~> 1.10)
       retriable (~> 1.4)
       signet (~> 0.6)
-    googleauth (0.4.1)
+    googleauth (0.4.2)
       faraday (~> 0.9)
       jwt (~> 1.4)
       logging (~> 2.0)
       memoist (~> 0.12)
-      multi_json (= 1.11)
+      multi_json (~> 1.11)
       signet (~> 0.6)
-    haml (4.0.6)
+    haml (4.0.7)
       tilt
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -212,7 +212,7 @@ GEM
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.6)
       redis
-    multi_json (1.11.0)
+    multi_json (1.11.2)
     multipart-post (2.0.0)
     mysql2 (0.3.19)
     net-http-persistent (2.9.4)
@@ -220,8 +220,8 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    newrelic_rpm (3.12.1.298)
-    oj (2.12.11)
+    newrelic_rpm (3.13.0.299)
+    oj (2.12.12)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -307,7 +307,7 @@ GEM
     systemu (2.6.5)
     thread_safe (0.3.5)
     tilt (2.0.1)
-    typhoeus (0.7.2)
+    typhoeus (0.7.3)
       ethon (>= 0.7.4)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
