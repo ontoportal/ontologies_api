@@ -167,6 +167,23 @@
                 %li ontology={ontology_id}
                 %li subtree_root_id={a URI encoded class id of the root node of the subtree}
 
+        %h4#nav_search_roots_only Roots Only Search
+
+        %p
+          The same endpoint allows limiting a search to root classes only. The endpoint requires a combination of parameters "ontology" and "roots_only=true". Both are required when performing a roots-only search.
+          %ul
+            %li
+              Perform a roots-only search
+            %ul
+              %li
+                example:
+                %a{href: "/search?q=melanoma&ontology=NCIT&roots_only=true"} /search?q=melanoma&ontology=NCIT&roots_only=true
+            %li
+              Parameters
+              %ul
+                %li ontology={ontology_id}
+                %li roots_only=true
+
       %h3#nav_annotator Annotator
 
       %p
