@@ -83,12 +83,13 @@ class ClassesController < ApplicationController
     get '/:cls/tree' do
       includes_param_check
       # We override include values other than the following, user-provided include ignored
-      params["display"] = "prefLabel,hasChildren,children,obsolete"
+      display_attrs = "prefLabel,hasChildren,children,obsolete,subClassOf"
+      params["display"] = display_attrs
       params["serialize_nested"] = true # Override safety check and cause children to serialize
 
       # Make sure Rack gets updated
       req = Rack::Request.new(env)
-      req.update_param("display", "prefLabel,hasChildren,children,obsolete")
+      req.update_param("display", display_attrs)
       req.update_param("serialize_nested", true)
 
       ont, submission = get_ontology_and_submission

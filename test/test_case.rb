@@ -20,6 +20,8 @@ require 'multi_json'
 require 'oj'
 require 'json-schema'
 
+MAX_TEST_REDIS_SIZE = 10_000
+
 # Check to make sure you want to run if not pointed at localhost
 safe_hosts = Regexp.new(/localhost|ncbo-dev*|ncbo-stg-app-22*|ncbo-unittest*/)
 def safe_redis_hosts?(sh)
