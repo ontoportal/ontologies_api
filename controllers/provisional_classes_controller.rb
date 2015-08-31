@@ -27,7 +27,8 @@ class ProvisionalClassesController < ApplicationController
     # Display a single provisional_class
     get '/:provisional_class_id' do
       check_last_modified_collection(LinkedData::Models::ProvisionalClass)
-      pc = provisional_class
+      id = uri_as_needed(params["provisional_class_id"])
+      pc = ProvisionalClass.find(id).include(ProvisionalClass.goo_attrs_to_load(includes_param)).first
       error 404, "Provisional class #{id} not found" if pc.nil?
       reply 200, pc
     end
@@ -46,7 +47,8 @@ class ProvisionalClassesController < ApplicationController
 
     # Update an existing submission of an provisional_class
     patch '/:provisional_class_id' do
-      pc = provisional_class
+      id = uri_as_needed(params["provisional_class_id"])
+      pc = ProvisionalClass.find(id).include(ProvisionalClass.attributes).first
 
       if pc.nil?
         error 400, "Provisional class does not exist, please create using HTTP POST before modifying"
@@ -64,7 +66,8 @@ class ProvisionalClassesController < ApplicationController
 
     # Delete a provisional_class
     delete '/:provisional_class_id' do
-      pc = provisional_class
+      id = uri_as_needed(params["provisional_class_id"])
+      pc = ProvisionalClass.find(id).first
 
       if pc.nil?
         error 400, "Provisional class does not exist."
@@ -72,12 +75,6 @@ class ProvisionalClassesController < ApplicationController
       pc.bring_remaining
       pc.delete
       halt 204
-    end
-
-    def provisional_class
-      id = params["provisional_class_id"]
-      id = RDF::URI.new(id) if id =~ /\A#{URI::regexp(['http', 'https'])}\z/
-      ProvisionalClass.find(id).first
     end
   end
 end
