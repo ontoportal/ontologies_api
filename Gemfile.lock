@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 514312367cf830d762dec52b363eeaef8eb93da8
+  revision: b44b5d166f896c651deacc75668232ee04c0a29a
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -274,7 +274,7 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.25.0)
+    sequel (4.26.0)
     signet (0.6.1)
       addressable (~> 2.3)
       extlib (~> 0.9)
