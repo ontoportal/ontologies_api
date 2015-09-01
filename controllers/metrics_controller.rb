@@ -89,6 +89,21 @@ class MetricsController < ApplicationController
     error 404, "Ontology #{params['ontology']} not found" unless ont
     sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
     reply sub.metrics || {}
+    # ont_str = ""
+    # LinkedData::Models::Ontology.all.each  do |ont|
+    #   begin
+    #     sub = ont.latest_submission(status: :rdf)
+    #     sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
+    #     if !sub.metrics
+    #       ont_str << "#{ont.acronym},"
+    #       puts ont_str
+    #     end
+    #   rescue Exception => e
+    #     puts "#{ont.acronym}: #{e.message}"
+    #   end
+    # end
+    # puts ont_str
+    # reply {}
   end
 
   get "/ontologies/:ontology/submissions/:submissionId/metrics" do
