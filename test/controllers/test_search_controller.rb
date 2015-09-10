@@ -95,6 +95,13 @@ class TestSearchController < TestCase
     assert_equal 5, results["collection"].length
     assert_equal "T028", results["collection"][0]["semanticType"][0]
 
+    # testing roots_only flag
+    get "search?q=Research&ontology=#{acronym}&roots_only=false"
+    results = MultiJson.load(last_response.body)
+    assert_equal 7, results["collection"].length
+    get "search?q=Research&ontology=#{acronym}&roots_only=true"
+    results = MultiJson.load(last_response.body)
+    assert_equal 1, results["collection"].length
   end
 
   def test_wildcard_search

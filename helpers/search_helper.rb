@@ -14,6 +14,7 @@ module Sinatra
       ALSO_SEARCH_OBSOLETE_PARAM = "also_search_obsolete"
       ALSO_SEARCH_PROVISIONAL_PARAM = "also_search_provisional"
       SUGGEST_PARAM = "suggest" # NCBO-932
+      ROOTS_ONLY_PARAM = "roots_only" # NCBO-1452
       ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
       MATCH_HTML_PRE = "<em>"
       MATCH_HTML_POST = "</em>"
@@ -99,11 +100,17 @@ module Sinatra
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
-        subtree_ids = get_subtree_ids(params)
         acronyms = params["ontology_acronyms"] || restricted_ontologies_to_acronyms(params)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
-        ids_clause = (subtree_ids.nil? || subtree_ids.empty?) ? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
-        filter_query = "#{filter_query} AND #{ids_clause}" unless (ids_clause.empty?)
+
+        subtree_ids = get_subtree_ids(params)
+        subtree_ids_clause = (subtree_ids.nil? || subtree_ids.empty?) ? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
+        filter_query = "#{filter_query} AND #{subtree_ids_clause}" unless (subtree_ids_clause.empty?)
+
+        # NCBO-1452 - restrict search results to only the top level classes in an ontology
+        root_ids = get_root_ids(params)
+        root_ids_clause = (root_ids.nil? || root_ids.empty?) ? "" : get_quoted_field_query_param(root_ids, "OR", "resource_id")
+        filter_query = "#{filter_query} AND #{root_ids_clause}" unless (root_ids_clause.empty?)
 
         filter_query << " AND definition:[* TO *]" if params[REQUIRE_DEFINITIONS_PARAM] == "true"
 
@@ -164,7 +171,7 @@ module Sinatra
         subtree_root_id = params[SUBTREE_ID_PARAM]
 
         if subtree_root_id
-          ontology = params[ONTOLOGY_PARAM].split(",")
+          ontology = params[ONTOLOGY_PARAM].nil? ? nil : params[ONTOLOGY_PARAM].split(",")
 
           if (ontology.nil? || ontology.empty? || ontology.length > 1)
             raise error 400, "A subtree search requires a single ontology: /search?q=<query>&ontology=CNO&subtree_id=http%3a%2f%2fwww.w3.org%2f2004%2f02%2fskos%2fcore%23Concept"
@@ -178,8 +185,24 @@ module Sinatra
           subtree_ids = cls.descendants.map {|d| d.id.to_s}
           subtree_ids.push(subtree_root_id)
         end
+        subtree_ids
+      end
 
-        return subtree_ids
+      def get_root_ids(params)
+        root_ids = nil
+        if params[ROOTS_ONLY_PARAM] === "true"
+          ontology = params[ONTOLOGY_PARAM].nil? ? nil : params[ONTOLOGY_PARAM].split(",")
+
+          if (ontology.nil? || ontology.empty? || ontology.length > 1)
+            raise error 400, "A roots-only search requires a single ontology: /search?q=<query>&ontology=CNO&roots_only=true"
+          end
+
+          ont, submission = get_ontology_and_submission
+          params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
+          roots = submission.roots
+          root_ids = roots.map {|d| d.id.to_s}
+        end
+        root_ids
       end
 
       def get_tokenized_standard_query(text, params)
