@@ -127,7 +127,9 @@ class MappingsController < ApplicationController
         error(400, "Input does not contain at least 2 terms")
       end
       error(400, "Input does not contain mapping relation") if !params[:relation]
-      error(400, "Input contains too many mapping relations (max 5)") if params[:relation].length > 5
+      if params[:relation].kind_of?(Array)
+        error(400, "Input contains too many mapping relations (max 5)") if params[:relation].length > 5
+      end
       error(400, "Input does not contain user creator ID") if !params[:creator]
       classes = []
       mapping_process_name = "REST Mapping"
