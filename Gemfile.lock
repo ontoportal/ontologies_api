@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 4ee570d0bd67844c5e86fed83fdbe825f88057d9
+  revision: d180856010dc43141d27a19c73bcfe3d0b01a11b
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 158feb274fdf3322740ef146be1c54324b5cd573
+  revision: fa536246eed008e33951071ea6862e59642cac0a
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: b44b5d166f896c651deacc75668232ee04c0a29a
+  revision: 780e33f8d15ff3505f17c28c2fdd3ee7f7a480ff
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: fd2d1603e6e2681eebd8808561645cecd19f7719
+  revision: 1c14857ca9acbc40eeee749541a93a3785c396cd
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 1d076b3a4755501146721edf28606e0b3efcebf4
+  revision: 5ac6cc75ca206829b6126e6bc45fc3c64214e751
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -193,7 +193,7 @@ GEM
       addressable (~> 2.3)
     json_pure (1.8.2)
     jwt (1.5.1)
-    kgio (2.9.3)
+    kgio (2.10.0)
     launchy (2.4.3)
       addressable (~> 2.3)
     libxml-ruby (2.8.0)
@@ -214,14 +214,14 @@ GEM
       redis
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.3.20)
+    mysql2 (0.4.0)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
     newrelic_rpm (3.13.0.299)
-    oj (2.12.12)
+    oj (2.12.13)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.1)
@@ -242,7 +242,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
-    rack-timeout (0.2.4)
+    rack-timeout (0.3.2)
     rainbows (4.6.2)
       kgio (~> 2.5)
       rack (~> 1.1)
@@ -254,8 +254,8 @@ GEM
     recursive-open-struct (0.6.5)
     redcarpet (3.3.2)
     redis (3.2.1)
-    redis-activesupport (3.2.5)
-      activesupport (~> 3.2.0)
+    redis-activesupport (4.1.2)
+      activesupport (~> 3)
       redis-store (~> 1.1.0)
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
