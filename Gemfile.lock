@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 27b1ad1a532cd3d3beff44a93a407c7e50804df9
+  revision: 80e0d3e10e71a54cec2b5c672087a0aab974d114
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -110,6 +110,15 @@ GIT
   specs:
     rack-post-body-to-params (0.1.8)
       activesupport (>= 2.3)
+
+GIT
+  remote: git://github.com/redis-store/redis-activesupport.git
+  revision: c107458a2a6b5e7019c7f9410a8eb5307f921e61
+  ref: c107458a2a6b5e7019c7f9410a8eb5307f921e61
+  specs:
+    redis-activesupport (4.1.2)
+      activesupport (~> 3)
+      redis-store (~> 1.1.0)
 
 GIT
   remote: https://github.com/palexander/shotgun.git
@@ -214,7 +223,7 @@ GEM
       redis
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.4.0)
+    mysql2 (0.4.1)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -254,9 +263,6 @@ GEM
     recursive-open-struct (0.6.5)
     redcarpet (3.3.2)
     redis (3.2.1)
-    redis-activesupport (4.1.2)
-      activesupport (~> 3)
-      redis-store (~> 1.1.0)
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
@@ -360,7 +366,7 @@ DEPENDENCIES
   rake (~> 10.0)
   redcarpet
   redis (~> 3.0)
-  redis-activesupport
+  redis-activesupport!
   redis-rack-cache (~> 1.0)
   shotgun!
   simplecov
@@ -370,3 +376,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.10.6
