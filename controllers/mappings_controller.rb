@@ -41,6 +41,9 @@ class MappingsController < ApplicationController
     # Display all mappings
     get do
       #ontologies = ontology_objects_from_params
+      if params[:ontologies].nil?
+        reply nil
+      end
       ontologies = params[:ontologies].split(",")
       if ontologies.length != 2
         error(400,
