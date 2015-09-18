@@ -1,5 +1,7 @@
 class MappingsController < ApplicationController
 
+  LinkedData.settings.interportal_hash ||= {}
+
   # Get mappings for a class
   get '/ontologies/:ontology/classes/:cls/mappings' do
     ontology = ontology_from_acronym(@params[:ontology])
@@ -142,14 +144,12 @@ class MappingsController < ApplicationController
           mapping_process_name = "External Mapping"
           c = {:source => "ext", :ontology => CGI.escape(ontology_id.sub("ext:", "")), :id => class_id}
           classes << c
-        elsif !LinkedData.settings.interportal_hash.nil?
-          if LinkedData.settings.interportal_hash.has_key?(interportal_prefix)
+        elsif LinkedData.settings.interportal_hash.has_key?(interportal_prefix)
             #Check if the prefix is contained in the interportal hash to create a mapping to this bioportal
             error(400, "Impossible to map 2 classes outside of BioPortal") if mapping_process_name != "REST Mapping"
             mapping_process_name = "Interportal Mapping"
             c = {:source => interportal_prefix, :ontology => ontology_id.sub("#{interportal_prefix}:", ""), :id => class_id}
             classes << c
-          end
         else
           o = ontology_id
           o =  o.start_with?("http://") ? ontology_id :
