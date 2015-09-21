@@ -145,12 +145,29 @@ class MappingsController < ApplicationController
           # Just keep the source and the class URI if the mapping is external or interportal and change the mapping process name
           error(400, "Impossible to map 2 classes outside of BioPortal") if mapping_process_name != "REST Mapping"
           mapping_process_name = "External Mapping"
-          c = {:source => "ext", :ontology => CGI.escape(ontology_id.sub("ext:", "")), :id => class_id}
+          ontology_uri = ontology_id.sub("ext:", "")
+          begin
+            URI(ontology_uri)
+          rescue URI::InvalidURIError => e
+            error(400, "Ontology URI is not valid")
+          end
+          begin
+            URI(class_id)
+          rescue URI::InvalidURIError => e
+            error(400, "Class URI is not valid")
+          end
+          ontology_uri = CGI.escape(ontology_uri)
+          c = {:source => "ext", :ontology => ontology_uri, :id => class_id}
           classes << c
         elsif LinkedData.settings.interportal_hash.has_key?(interportal_prefix)
             #Check if the prefix is contained in the interportal hash to create a mapping to this bioportal
             error(400, "Impossible to map 2 classes outside of BioPortal") if mapping_process_name != "REST Mapping"
             mapping_process_name = "Interportal Mapping"
+            begin
+              URI(class_id)
+            rescue URI::InvalidURIError => e
+              error(400, "Class URI is not valid")
+            end
             ontology_acronym = ontology_id.sub("#{interportal_prefix}:", "")
             error(400, "Interportal Acronym is not valid") if (ontology_acronym =~ /^[A-Za-z0-9-_]+$/).nil?
             c = {:source => interportal_prefix, :ontology => ontology_acronym, :id => class_id}
