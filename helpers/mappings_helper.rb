@@ -1,4 +1,6 @@
 require 'sinatra/base'
+require 'net/http'
+require 'json'
 
 module Sinatra
   module Helpers
@@ -40,6 +42,21 @@ module Sinatra
         replace_empty_classes(mappings, classes_hash)
 
         mappings
+      end
+
+      def check_interportal_mapping(class_id, ontology_acronym, interportal_prefix)
+        # A method to check if the interportal mapping submitted is valid
+        query = "#{LinkedData.settings.interportal_hash[interportal_prefix]["api"]}/ontologies/#{ontology_acronym}/classes/#{CGI.escape(class_id.to_s)}?apikey=#{LinkedData.settings.interportal_hash[interportal_prefix]["apikey"]}"
+        begin
+          json = JSON.parse(Net::HTTP.get(URI.parse(query)))
+          if json["@id"] == class_id
+            return true
+          else
+            return false
+          end
+        rescue => e
+          error(400, "Interportal combination of class and ontology don't point to a valid class : #{e}")
+        end
       end
     end
   end
