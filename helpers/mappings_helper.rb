@@ -44,11 +44,11 @@ module Sinatra
         mappings
       end
 
-      def check_interportal_mapping(class_id, ontology_acronym, interportal_prefix)
+      def validate_interportal_mapping(class_id, ontology_acronym, interportal_prefix)
         # A method to check if the interportal mapping submitted is valid
         query = "#{LinkedData.settings.interportal_hash[interportal_prefix]["api"]}/ontologies/#{ontology_acronym}/classes/#{CGI.escape(class_id.to_s)}?apikey=#{LinkedData.settings.interportal_hash[interportal_prefix]["apikey"]}"
         begin
-          json = JSON.parse(Net::HTTP.get(URI.parse(query)))
+          json = ::JSON.parse(Net::HTTP.get(URI.parse(query)))
           if json["@id"] == class_id
             return true
           else

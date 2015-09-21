@@ -164,7 +164,7 @@ class MappingsController < ApplicationController
             error(400, "Impossible to map 2 classes outside of BioPortal") if mapping_process_name != "REST Mapping"
             mapping_process_name = "Interportal Mapping"
             ontology_acronym = ontology_id.sub("#{interportal_prefix}:", "")
-            if check_interportal_mapping(class_id, ontology_acronym, interportal_prefix)
+            if validate_interportal_mapping(class_id, ontology_acronym, interportal_prefix)
               c = {:source => interportal_prefix, :ontology => ontology_acronym, :id => class_id}
               classes << c
             else
