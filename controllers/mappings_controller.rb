@@ -192,7 +192,7 @@ class MappingsController < ApplicationController
                   .in(submission)
                   .first
           if c.nil?
-            error(400, "Class ID `#{id}` not found in `#{submission.id.to_s}`")
+            error(400, "Class ID `#{class_id}` not found in `#{submission.id.to_s}`")
           end
           classes << c
         end
