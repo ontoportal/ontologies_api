@@ -151,7 +151,9 @@ class MappingsController < ApplicationController
             #Check if the prefix is contained in the interportal hash to create a mapping to this bioportal
             error(400, "Impossible to map 2 classes outside of BioPortal") if mapping_process_name != "REST Mapping"
             mapping_process_name = "Interportal Mapping"
-            c = {:source => interportal_prefix, :ontology => ontology_id.sub("#{interportal_prefix}:", ""), :id => class_id}
+            ontology_acronym = ontology_id.sub("#{interportal_prefix}:", "")
+            error(400, "Interportal Acronym is not valid") if !(ontology_acronym =~ /^[A-Za-z0-9-_]+$/).nil?
+            c = {:source => interportal_prefix, :ontology => ontology_acronym, :id => class_id}
             classes << c
         else
           o = ontology_id
