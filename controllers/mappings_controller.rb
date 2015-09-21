@@ -169,7 +169,7 @@ class MappingsController < ApplicationController
               error(400, "Class URI is not valid")
             end
             ontology_acronym = ontology_id.sub("#{interportal_prefix}:", "")
-            error(400, "Interportal Acronym is not valid") if (ontology_acronym =~ /^[A-Za-z0-9-_]+$/).nil?
+            error(400, "Interportal Acronym is not valid") if (ontology_acronym =~ /^[A-Za-z0-9_-]+$/).nil?
             c = {:source => interportal_prefix, :ontology => ontology_acronym, :id => class_id}
             classes << c
         else
