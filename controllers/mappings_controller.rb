@@ -134,6 +134,13 @@ class MappingsController < ApplicationController
       error(400, "Input does not contain mapping relation") if !params[:relation]
       if params[:relation].kind_of?(Array)
         error(400, "Input contains too many mapping relations (max 5)") if params[:relation].length > 5
+        params[:relation].each do |relation|
+          begin
+            URI(relation)
+          rescue URI::InvalidURIError => e
+            error(400, "#{relation} is not a valid URI for relations.")
+          end
+        end
       end
       error(400, "Input does not contain user creator ID") if !params[:creator]
       classes = []
