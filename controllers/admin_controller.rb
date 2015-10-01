@@ -94,6 +94,12 @@ class AdminController < ApplicationController
       end
     end
 
+    post "/clear_backend_cache" do
+      redis_goo.flushdb
+      redis_http.flushdb
+      halt 204
+    end
+
     private
 
     def process_long_operation(timeout, args)
@@ -124,7 +130,16 @@ class AdminController < ApplicationController
     end
 
     def redis
-      Redis.new(host: Annotator.settings.annotator_redis_host, port: Annotator.settings.annotator_redis_port)
+      Redis.new(host: Annotator.settings.annotator_redis_host, port: Annotator.settings.annotator_redis_port, timeout: 30)
     end
+
+    def redis_goo
+      Redis.new(host: LinkedData.settings.goo_redis_host, port: LinkedData.settings.goo_redis_port, timeout: 30)
+    end
+
+    def redis_http
+      Redis.new(host: LinkedData.settings.http_redis_host, port: LinkedData.settings.http_redis_port, timeout: 30)
+    end
+
   end
 end
