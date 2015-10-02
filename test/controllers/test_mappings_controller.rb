@@ -41,6 +41,7 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_controllers_in_order
+    LinkedData::Mappings.create_mapping_counts(Logger.new(TestLogFile.new))
     mappings_between_ontologies
     mappings_for_ontology
     mappings_for_ontology_pages

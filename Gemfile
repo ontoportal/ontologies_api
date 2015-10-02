@@ -21,7 +21,10 @@ gem 'rack-attack', :require => 'rack/attack'
 
 # Data access (caching)
 gem 'redis', '~> 3.0'
-gem 'redis-activesupport'
+
+# Pegging this to a particular commit because 4.2.1 is broken.
+# After redis-activesupport gets a version bump you can remove the 'git' and 'ref' param
+gem 'redis-activesupport', github: 'redis-store/redis-activesupport', ref: 'c107458a2a6b5e7019c7f9410a8eb5307f921e61'
 
 # Testing
 gem 'simplecov', :require => false, :group => :test
