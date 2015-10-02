@@ -6,5 +6,39 @@ class SlicesController < ApplicationController
       includes = LinkedData::Models::Slice.goo_attrs_to_load(includes_param)
       reply LinkedData::Models::Slice.where.include(includes).all
     end
+
+    ##
+    # Create a new slice
+    post do
+      create_slice
+    end
+
+
+    private
+
+    def create_slice
+      params ||= @params
+      ontologies = []
+
+      params["ontologies"].each do |ont|
+        ontologies.push(LinkedData::Models::Ontology.find(ont).first)
+      end
+
+      slice = LinkedData::Models::Slice.new({
+        acronym: params["acronym"],
+        name: params["name"],
+        description: params["description"],
+        ontologies: ontologies
+       })
+
+      if slice.valid?
+        slice.save
+      else
+        error 400, slice.errors
+      end
+      reply 201, slice
+    end
+
   end
+
 end
