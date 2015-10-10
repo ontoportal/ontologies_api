@@ -23,7 +23,7 @@ class OntologySubmissionsController < ApplicationController
       error 422, "Ontology #{params["acronym"]} does not exist" unless ont
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
-      reply ont.submissions.sort {|a,b| b.submissionId <=> a.submissionId }  # descending order of submissionId
+      reply ont.submissions.sort {|a,b| b.submissionId.to_i <=> a.submissionId.to_i }  # descending order of submissionId
     end
 
     ##
