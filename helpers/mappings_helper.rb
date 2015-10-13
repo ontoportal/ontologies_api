@@ -58,6 +58,15 @@ module Sinatra
           error(400, "Interportal combination of class and ontology don't point to a valid class : #{e}")
         end
       end
+
+      def uri?(string)
+        uri = URI.parse(string)
+        %w( http https ).include?(uri.scheme)
+      rescue URI::BadURIError
+        false
+      rescue URI::InvalidURIError
+        false
+      end
     end
   end
 end
