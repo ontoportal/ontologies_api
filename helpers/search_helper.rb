@@ -14,13 +14,27 @@ module Sinatra
       ALSO_SEARCH_OBSOLETE_PARAM = "also_search_obsolete"
       ALSO_SEARCH_PROVISIONAL_PARAM = "also_search_provisional"
       SUGGEST_PARAM = "suggest" # NCBO-932
-      ROOTS_ONLY_PARAM = "roots_only" # NCBO-1452
+
+
+
+      VALUESET_ROOTS_ONLY_PARAM = "valueset_roots_only" # NCBO-1452
+      VALUESET_EXCLUDE_ROOTS_PARAM = "valueset_exclude_roots"
+
+
+
+
+
+
+      ONTOLOGY_TYPES_PARAM = "ontology_types"
+
       ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
       MATCH_HTML_PRE = "<em>"
       MATCH_HTML_POST = "</em>"
       MATCH_TYPE_PREFLABEL = "prefLabel"
       MATCH_TYPE_SYNONYM = "synonym"
       MATCH_TYPE_PROPERTY = "property"
+
+
 
       MATCH_TYPE_MAP = {
           "resource_id" => "id",
@@ -107,10 +121,48 @@ module Sinatra
         subtree_ids_clause = (subtree_ids.nil? || subtree_ids.empty?) ? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
         filter_query = "#{filter_query} AND #{subtree_ids_clause}" unless (subtree_ids_clause.empty?)
 
-        # NCBO-1452 - restrict search results to only the top level classes in an ontology
-        root_ids = get_root_ids(params)
-        root_ids_clause = (root_ids.nil? || root_ids.empty?) ? "" : get_quoted_field_query_param(root_ids, "OR", "resource_id")
-        filter_query = "#{filter_query} AND #{root_ids_clause}" unless (root_ids_clause.empty?)
+
+
+
+
+        # ontology types are required for CEDAR project to differentiate between ontologies and value set collections
+        ontology_types = params[ONTOLOGY_TYPES_PARAM].nil? || params[ONTOLOGY_TYPES_PARAM].empty? ? [] : params[ONTOLOGY_TYPES_PARAM].split(",").map(&:strip)
+        ontology_types_clause = ontology_types.empty? ? "" : get_quoted_field_query_param(ontology_types, "OR", "ontologyType")
+        filter_query = "#{filter_query} AND #{ontology_types_clause}" unless (ontology_types_clause.empty?)
+
+
+
+
+
+
+
+
+
+
+        # NCBO-1452 - restrict search results to only the top level classes or exclude top level classes in valueset collections
+
+        if params[VALUESET_ROOTS_ONLY_PARAM] || params[VALUESET_EXCLUDE_ROOTS_PARAM]
+          valueset_root_ids = get_valueset_root_ids(acronyms, params)
+
+          unless valueset_root_ids.empty?
+            valueset_root_ids_clause = get_quoted_field_query_param(valueset_root_ids, "OR", "resource_id")
+            valueset_root_ids_clause = params[VALUESET_EXCLUDE_ROOTS_PARAM] ? "AND -#{valueset_root_ids_clause}" : "AND #{valueset_root_ids_clause}"
+            filter_query = "#{filter_query} #{valueset_root_ids_clause}"
+          end
+        end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         filter_query << " AND definition:[* TO *]" if params[REQUIRE_DEFINITIONS_PARAM] == "true"
 
@@ -188,22 +240,47 @@ module Sinatra
         subtree_ids
       end
 
-      def get_root_ids(params)
-        root_ids = nil
-        if params[ROOTS_ONLY_PARAM] === "true"
-          ontology = params[ONTOLOGY_PARAM].nil? ? nil : params[ONTOLOGY_PARAM].split(",")
 
-          if (ontology.nil? || ontology.empty? || ontology.length > 1)
-            raise error 400, "A roots-only search requires a single ontology: /search?q=<query>&ontology=CNO&roots_only=true"
-          end
 
+
+
+
+
+
+
+
+
+      def get_valueset_root_ids(acronyms, params)
+        root_ids = []
+
+        acronyms.each do |acronym|
+          params["ontology"] = acronym
           ont, submission = get_ontology_and_submission
-          params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
-          roots = submission.roots
-          root_ids = roots.map {|d| d.id.to_s}
+          ont.bring(:ontologyType) if ont.bring?(:ontologyType)
+
+          if ont.ontologyType.is_value_set_collection
+            roots = submission.roots
+            root_ids_ont = roots.map {|d| d.id.to_s}
+            root_ids << root_ids_ont
+          end
         end
-        root_ids
+        params.delete("ontology")
+        root_ids.flatten
       end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       def get_tokenized_standard_query(text, params)
         words = text.split
