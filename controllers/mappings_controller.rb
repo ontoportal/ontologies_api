@@ -153,15 +153,11 @@ class MappingsController < ApplicationController
           error(400, "Impossible to map 2 classes outside of BioPortal") if mapping_process_name != "REST Mapping"
           mapping_process_name = "External Mapping"
           ontology_uri = ontology_id.sub("ext:", "")
-          begin
-            URI(ontology_uri)
-          rescue URI::InvalidURIError => e
-            error(400, "Ontology URI is not valid")
+          if !uri?(ontology_uri)
+            error(400, "Ontology URI '#{ontology_uri.to_s}' is not valid")
           end
-          begin
-            URI(class_id)
-          rescue URI::InvalidURIError => e
-            error(400, "Class URI is not valid")
+          if !uri?(class_id)
+            error(400, "Class URI '#{class_id.to_s}' is not valid")
           end
           ontology_uri = CGI.escape(ontology_uri)
           c = {:source => "ext", :ontology => ontology_uri, :id => class_id}
