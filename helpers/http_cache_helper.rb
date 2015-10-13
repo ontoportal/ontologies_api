@@ -9,7 +9,7 @@ module Sinatra
       @@redis_available = nil
 
       ##
-      # Wrap the exires Sinatra method so we set additional headers appropriately
+      # Wrap the expires Sinatra method so we set additional headers appropriately
       def expires(amount, *values)
         return unless cache_enabled?
         cache_headers(amount)
