@@ -215,7 +215,7 @@ class MappingsController < ApplicationController
           relations_array.push(RDF::URI.new(relation))
         end
       end
-      error(400, "Mapping already exists") if LinkedData::Mappings.check_mapping_exist(params, classes)
+      error(400, "Mapping already exists") if LinkedData::Mappings.check_mapping_exist(classes, relations_array)
       process.relation = relations_array
       process.date = DateTime.now
       process_fields = [:source,:source_name, :comment]
