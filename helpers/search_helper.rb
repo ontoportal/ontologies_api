@@ -120,7 +120,6 @@ module Sinatra
         valueset_roots_only = params[VALUESET_ROOTS_ONLY_PARAM] || "false"
         valueset_exclude_roots = params[VALUESET_EXCLUDE_ROOTS_PARAM] || "false"
 
-
         if valueset_roots_only == "true" || valueset_exclude_roots == "true"
           valueset_root_ids = get_valueset_root_ids(acronyms, params)
 
@@ -207,16 +206,6 @@ module Sinatra
         subtree_ids
       end
 
-
-
-
-
-
-
-
-
-
-
       def get_valueset_root_ids(acronyms, params)
         root_ids = []
 
@@ -234,20 +223,6 @@ module Sinatra
         params.delete("ontology")
         root_ids.flatten
       end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       def get_tokenized_standard_query(text, params)
         words = text.split
