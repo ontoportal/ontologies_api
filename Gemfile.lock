@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 1b74bcc580c078c8324badee8e28f1ff09936ff2
-  branch: master
+  revision: 68ffd0b8be94a838679b258feb32d5c8f783d806
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -219,7 +219,7 @@ GEM
     mime-types (2.6.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
-    mlanett-redis-lock (0.2.6)
+    mlanett-redis-lock (0.2.7)
       redis
     multi_json (1.11.2)
     multipart-post (2.0.0)
