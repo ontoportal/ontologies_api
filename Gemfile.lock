@@ -266,7 +266,7 @@ GEM
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
-    redis-store (1.1.6)
+    redis-store (1.1.7)
       redis (>= 2.2)
     ref (2.0.0)
     rest-client (1.8.0)
