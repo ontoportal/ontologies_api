@@ -104,7 +104,9 @@ module Sinatra
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
-        acronyms = params["ontology_acronyms"] || restricted_ontologies_to_acronyms(params)
+        params["ontologies"] = params["ontology_acronyms"].join(",") if params["ontology_acronyms"] && !params["ontology_acronyms"].empty?
+        onts = restricted_ontologies(params)
+        acronyms = restricted_ontologies_to_acronyms(params, onts)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
         subtree_ids = get_subtree_ids(params)
@@ -121,7 +123,7 @@ module Sinatra
         valueset_exclude_roots = params[VALUESET_EXCLUDE_ROOTS_PARAM] || "false"
 
         if valueset_roots_only == "true" || valueset_exclude_roots == "true"
-          valueset_root_ids = get_valueset_root_ids(acronyms, params)
+          valueset_root_ids = get_valueset_root_ids(onts, params)
 
           unless valueset_root_ids.empty?
             valueset_root_ids_clause = get_quoted_field_query_param(valueset_root_ids, "OR", "resource_id")
@@ -206,21 +208,17 @@ module Sinatra
         subtree_ids
       end
 
-      def get_valueset_root_ids(acronyms, params)
+      def get_valueset_root_ids(onts, params)
         root_ids = []
 
-        acronyms.each do |acronym|
-          params["ontology"] = acronym
-          ont, submission = get_ontology_and_submission
-          ont.bring(:ontologyType) if ont.bring?(:ontologyType)
-
-          if ont.ontologyType.value_set_collection?
-            roots = submission.roots
-            root_ids_ont = roots.map {|d| d.id.to_s}
-            root_ids << root_ids_ont
-          end
+        onts.each do |ont|
+          next if ont.nil? || ont.ontologyType.nil? || !ont.ontologyType.value_set_collection?
+          submission = ont.latest_submission(status: [:RDF])
+          next if submission.nil?
+          roots = submission.roots
+          root_ids_ont = roots.map {|d| d.id.to_s}
+          root_ids << root_ids_ont
         end
-        params.delete("ontology")
         root_ids.flatten
       end
 
