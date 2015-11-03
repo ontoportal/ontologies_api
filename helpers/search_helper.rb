@@ -46,7 +46,8 @@ module Sinatra
       QUERYLESS_FIELDS_PARAMS = {
           "notation" => "notation",
           "cui" => "cui",
-          "semantic_types" => "semanticType"
+          "semantic_types" => "semanticType",
+          "ontology_types" => "ontologyType"
       }
 
       QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.join(" ")
