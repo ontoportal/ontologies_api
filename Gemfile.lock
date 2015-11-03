@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ac952532841965e0e824424d9041366f210f4a4b
+  revision: 3ece04ae83a7790afcbfb044ad11d19189da6136
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 47416bfec0815f568fc137130ac894afb9387b60
+  revision: 17e040cc3ef47584fcbf0606f9a7965dfb0f0afc
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 5c63335772818a2706ff8077fba755348bb05813
+  revision: 45fd49e82051143d337b4abc22059f2a560a6570
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
