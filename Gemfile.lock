@@ -112,15 +112,6 @@ GIT
       activesupport (>= 2.3)
 
 GIT
-  remote: git://github.com/redis-store/redis-activesupport.git
-  revision: c107458a2a6b5e7019c7f9410a8eb5307f921e61
-  ref: c107458a2a6b5e7019c7f9410a8eb5307f921e61
-  specs:
-    redis-activesupport (4.1.2)
-      activesupport (~> 3)
-      redis-store (~> 1.1.0)
-
-GIT
   remote: https://github.com/palexander/shotgun.git
   revision: db198224aaab2e4cb9b049adccb30e387d88bc3b
   branch: ncbo
@@ -142,7 +133,7 @@ GEM
     backports (3.6.7)
     bcrypt (3.1.10)
     builder (3.2.2)
-    capistrano (3.1.0)
+    capistrano (3.4.0)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
@@ -263,6 +254,9 @@ GEM
     recursive-open-struct (0.6.5)
     redcarpet (3.3.3)
     redis (3.2.1)
+    redis-activesupport (4.1.4)
+      activesupport (>= 3, < 5)
+      redis-store (~> 1.1.0)
     redis-rack-cache (1.2.2)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
@@ -335,7 +329,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
-  capistrano (~> 3.1.0)
+  capistrano (~> 3.4.0)
   capistrano-bundler (~> 1.1.1)
   capistrano-rbenv (~> 2.0.2)
   cube-ruby
@@ -366,7 +360,7 @@ DEPENDENCIES
   rake (~> 10.0)
   redcarpet
   redis (~> 3.0)
-  redis-activesupport!
+  redis-activesupport
   redis-rack-cache (~> 1.0)
   shotgun!
   simplecov
@@ -376,3 +370,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.10.6
