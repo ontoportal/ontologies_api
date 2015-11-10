@@ -24,7 +24,8 @@ gem 'redis', '~> 3.0'
 
 # Pegging this to a particular commit because 4.2.1 is broken.
 # After redis-activesupport gets a version bump you can remove the 'git' and 'ref' param
-gem 'redis-activesupport', github: 'redis-store/redis-activesupport', ref: 'c107458a2a6b5e7019c7f9410a8eb5307f921e61'
+#gem 'redis-activesupport', github: 'redis-store/redis-activesupport', ref: 'c107458a2a6b5e7019c7f9410a8eb5307f921e61'
+gem 'redis-activesupport'
 
 # Testing
 gem 'simplecov', :require => false, :group => :test
@@ -53,10 +54,11 @@ gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/s
 gem 'haml'
 gem 'redcarpet'
 
+
 # Deployments
-gem 'capistrano', '~> 3.1.0'
-gem 'capistrano-bundler', '~> 1.1.1'
-gem 'capistrano-rbenv', '~> 2.0.2'
+gem 'capistrano', '~> 3.4.0', :require => false, :group => :development
+gem 'capistrano-bundler', '~> 1.1.1', :require => false, :group => :development
+gem 'capistrano-rbenv', '~> 2.0.2', :require => false, :group => :development
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gem 'goo', github: 'ncbo/goo', branch: 'master'
