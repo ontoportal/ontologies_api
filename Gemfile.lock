@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 778bcae5f96bfce2385bcfec084bf652041ba212
+  revision: e66bed43e9bf7ab2a15af64e0765a751ecd76655
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 0a46b611d57340f98a3b61734e7467ca359bd278
+  revision: 0f61853196ff85dbf90dcb5110d34da28e1f7c2f
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 8faf2b26f5a8e53a8e87c2e2c8e05d3d944300d9
+  revision: 6354923c4bc355208969de0475ff7dd269c46f5f
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 5aaf83ba0fdc95582343ea733cde65b5793f7dc1
+  revision: 6c2edb9c96dd171d4cf0c9a75b6ce51138c7755b
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
