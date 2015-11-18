@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 507d382bd443e9ace6df08f75270afc1c29582fd
+  revision: 95b2966ece69ba8a10fb963652570ba9138037d6
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 32ff3c47b2c9db87d81fa4bfb6c4148dd66c6db4
+  revision: 3af1b108b272640ae65990a2a1e31bb21f179d95
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -221,7 +221,7 @@ GEM
     net-ssh (3.0.1)
     netrc (0.11.0)
     newrelic_rpm (3.14.0.305)
-    oj (2.13.0)
+    oj (2.13.1)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.3)
@@ -253,7 +253,7 @@ GEM
       addressable (>= 2.2)
     recursive-open-struct (0.6.5)
     redcarpet (3.3.3)
-    redis (3.2.1)
+    redis (3.2.2)
     redis-activesupport (4.1.5)
       activesupport (>= 3, < 5)
       redis-store (~> 1.1.0)
@@ -318,9 +318,9 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    unicorn-worker-killer (0.4.3)
+    unicorn-worker-killer (0.4.4)
       get_process_mem (~> 0)
-      unicorn (~> 4)
+      unicorn (>= 4, < 6)
     uuid (2.3.8)
       macaddr (~> 1.0)
 
