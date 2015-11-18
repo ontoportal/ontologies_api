@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 283f6ee495db522e6039b9bdcaed5964eca3dd0b
-  branch: master
+  revision: 28d6ed131fa53ae7d495b1b2a0c0200121089927
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 2e10e1331832f3ab5f317ac2131a6dccd8bed10c
-  branch: master
+  revision: f8054f4ac234044349fb09b1040e69b007465200
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 08a5c7941d8ad2cea9329c8f0033d2c93e83ad48
-  branch: master
+  revision: 997b0d3910251b68c67c53ee71a1ab02b73ba880
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: b5bbecec1da5ed067c441ba647894cd3e8d29449
-  branch: master
+  revision: f5516e491cd7f672bb197b3e5b90714c1133e4d3
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -221,7 +221,7 @@ GEM
     net-ssh (3.0.1)
     netrc (0.11.0)
     newrelic_rpm (3.14.0.305)
-    oj (2.13.0)
+    oj (2.13.1)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.3)
@@ -253,7 +253,7 @@ GEM
       addressable (>= 2.2)
     recursive-open-struct (0.6.5)
     redcarpet (3.3.3)
-    redis (3.2.1)
+    redis (3.2.2)
     redis-activesupport (4.1.5)
       activesupport (>= 3, < 5)
       redis-store (~> 1.1.0)
@@ -318,9 +318,9 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    unicorn-worker-killer (0.4.3)
+    unicorn-worker-killer (0.4.4)
       get_process_mem (~> 0)
-      unicorn (~> 4)
+      unicorn (>= 4, < 6)
     uuid (2.3.8)
       macaddr (~> 1.0)
 
