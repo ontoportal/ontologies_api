@@ -10,6 +10,12 @@ class CCVController < ApplicationController
   # get all ontology analytics for a given year/month combination
   namespace "/ccv" do
 
+    ONTOLOGY_URL = lambda { |acronym| "http://bioportal.bioontology.org/ontologies/#{acronym}" }
+    CONCEPT_URL = lambda { |acronym, uri| "#{ONTOLOGY_URL.call(acronym)}?p=classes&conceptid=#{CGI.escape(uri)}" }
+    WIKIPEDIA_REST_BASE_URL = "https://en.wikipedia.org/w/api.php?action=query"
+    WIKIPEDIA_IMAGE_LIMIT = 10
+    CONCEPT_CHARACTER_LIMIT = 30
+
     get do
       reply 200, process_concept_search
     end
@@ -17,9 +23,6 @@ class CCVController < ApplicationController
     private
 
     def process_concept_search(params=nil)
-      ont_url = lambda { |acronym| "http://bioportal.bioontology.org/ontologies/#{acronym}" }
-      concept_url = lambda { |acronym, uri| "#{ont_url.call(acronym)}?p=classes&conceptid=#{CGI.escape(uri)}" }
-
       params ||= @params
       params["exact_match"] = true
       text = params["q"]
@@ -51,22 +54,22 @@ class CCVController < ApplicationController
         doc[:synonym] ||= []
         doc[:definition] ||= []
 
-        agg_doc["ids"] << {"id" => resource_id, "ui" => concept_url.call(acronym, resource_id)}
+        agg_doc["ids"] << {"id" => resource_id, "ui" => CONCEPT_URL.call(acronym, resource_id)}
 
         if (!loaded_ontologies.include?(acronym))
-          ont_doc = {"id" => ontology_uri, "acronym" => acronym, "rank" => ontology_rank, "ui" => ont_url.call(acronym)}
+          ont_doc = {"id" => ontology_uri, "acronym" => acronym, "rank" => ontology_rank, "ui" => ONTOLOGY_URL.call(acronym)}
           agg_doc["ontologies"] << ont_doc
           loaded_ontologies << acronym
         end
 
-        aggregate_vals(all_synonyms, doc[:synonym], "synonym")
-        aggregate_vals(all_definitions, doc[:definition], "definition")
+        aggregate_vals(text, all_synonyms, doc[:synonym], "synonym", char_limit: CONCEPT_CHARACTER_LIMIT)
+        aggregate_vals(text, all_definitions, doc[:definition], "definition", case_sensitive: true)
 
         if include_family
           sub = submission(acronym, loaded_submissions)
           cls_family = class_family(resource_id, sub)
-          aggregate_vals(all_parents, cls_family[:parents], "term")
-          aggregate_vals(all_children, cls_family[:children], "term")
+          aggregate_vals(text, all_parents, cls_family[:parents], "term", char_limit: CONCEPT_CHARACTER_LIMIT)
+          aggregate_vals(text, all_children, cls_family[:children], "term", char_limit: CONCEPT_CHARACTER_LIMIT)
         end
       end
 
@@ -84,8 +87,13 @@ class CCVController < ApplicationController
       agg_doc
     end
 
-    def aggregate_vals(master_hash, data, label)
+    def aggregate_vals(query, master_hash, data, label, args={})
       data.each do |k|
+        k.downcase! unless args[:case_sensitive]
+        next if k.casecmp(query) == 0
+        next if /([\[\]\(\)]|,\snos|,\sNOS)/.match(k)
+        next if args[:char_limit] && k.length > args[:char_limit]
+
         if master_hash.has_key?(k)
           master_hash[k]["count"] += 1
         else
@@ -202,8 +210,8 @@ class CCVController < ApplicationController
 
     def wikipedia_images(query)
       ignore_images = ["File:Closed Access logo alternative.svg", "File:Commons-logo.svg", "File:Wiktionary-logo-en.svg", "File:Mergefrom.svg"]
-      images_url = "https://en.wikipedia.org/w/api.php?action=query&titles=#{CGI.escape(query)}&prop=images&format=json&imlimit=10"
-      single_image_url = lambda { |i| "https://en.wikipedia.org/w/api.php?action=query&titles=#{i}&prop=imageinfo&iiprop=url&format=json" }
+      images_url = "#{WIKIPEDIA_REST_BASE_URL}&titles=#{CGI.escape(query)}&prop=images&format=json&imlimit=#{WIKIPEDIA_IMAGE_LIMIT}"
+      single_image_url = lambda { |i| "#{WIKIPEDIA_REST_BASE_URL}&titles=#{i}&prop=imageinfo&iiprop=url&format=json" }
       resp_raw = Net::HTTP.get_response(URI.parse(images_url))
       resp = MultiJson.load(resp_raw.body)
       images = []
