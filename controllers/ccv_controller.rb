@@ -1,13 +1,9 @@
-require 'csv'
-require 'cgi'
-require 'google/api_client'
-require 'google/api_client/auth/installed_app'
-
-
 class CCVController < ApplicationController
 
   ##
-  # get all ontology analytics for a given year/month combination
+  # Concept Centric View Controller (BD2K Hackathon, November 19-20, 2015)
+  # Michael Dorf, 11/20/15
+  #
   namespace "/ccv" do
 
     ONTOLOGY_URL = lambda { |acronym| "http://bioportal.bioontology.org/ontologies/#{acronym}" }
@@ -40,6 +36,11 @@ class CCVController < ApplicationController
       total_found = resp["response"]["numFound"]
       agg_doc = {"term" => text, "ids" => [], "ontologies" => []}
 
+
+
+      all_concepts = Hash.new
+
+
       all_synonyms = Hash.new
       all_definitions = Hash.new
       all_parents = Hash.new
@@ -54,25 +55,32 @@ class CCVController < ApplicationController
         doc[:synonym] ||= []
         doc[:definition] ||= []
 
-        agg_doc["ids"] << {"id" => resource_id, "ui" => CONCEPT_URL.call(acronym, resource_id)}
+        # aggregate concept ids
+        aggregate_vals(text, all_concepts, resource_id, "id", case_sensitive: true, additional_data: {"ui" => CONCEPT_URL.call(acronym, resource_id)})
 
+        # aggregate ontologies
         if (!loaded_ontologies.include?(acronym))
           ont_doc = {"id" => ontology_uri, "acronym" => acronym, "rank" => ontology_rank, "ui" => ONTOLOGY_URL.call(acronym)}
           agg_doc["ontologies"] << ont_doc
           loaded_ontologies << acronym
         end
 
+        # aggregate synonyms
         aggregate_vals(text, all_synonyms, doc[:synonym], "synonym", char_limit: CONCEPT_CHARACTER_LIMIT)
+        # aggregate definitions
         aggregate_vals(text, all_definitions, doc[:definition], "definition", case_sensitive: true)
 
         if include_family
           sub = submission(acronym, loaded_submissions)
           cls_family = class_family(resource_id, sub)
+          # aggregate parents
           aggregate_vals(text, all_parents, cls_family[:parents], "term", char_limit: CONCEPT_CHARACTER_LIMIT)
+          # aggregate children
           aggregate_vals(text, all_children, cls_family[:children], "term", char_limit: CONCEPT_CHARACTER_LIMIT)
         end
       end
 
+      agg_doc["ids"] = all_concepts.values
       agg_doc["synonyms"] = all_synonyms.values
       agg_doc["definitions"] = all_definitions.values
 
@@ -84,10 +92,22 @@ class CCVController < ApplicationController
       agg_doc["analytics"] = analytics(text) if include_analytics
       agg_doc["images"] = wikipedia_images(text) if include_images
 
+
+
+
+
+      # google_images(text)
+
+
+
+
+
       agg_doc
     end
 
     def aggregate_vals(query, master_hash, data, label, args={})
+      data = [data] unless data.kind_of?(Array)
+
       data.each do |k|
         k.downcase! unless args[:case_sensitive]
         next if k.casecmp(query) == 0
@@ -100,6 +120,17 @@ class CCVController < ApplicationController
           master_hash[k] = Hash.new
           master_hash[k][label] = k
           master_hash[k]["count"] = 1
+
+          if args[:additional_data]
+            args[:additional_data].each do |k1, v|
+              master_hash[k][k1] = v
+            end
+
+
+          end
+
+
+
         end
       end
     end
@@ -235,6 +266,12 @@ class CCVController < ApplicationController
       end
       images
     end
+
+
+    def google_images(query)
+      suckr = ImageSuckr::GoogleSuckr.new
+    end
+
 
   end
 

@@ -54,6 +54,8 @@ gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/s
 gem 'haml'
 gem 'redcarpet'
 
+# Google Images
+gem 'image_suckr'
 
 # Deployments
 gem 'capistrano', '~> 3.4.0', :require => false, :group => :development

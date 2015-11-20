@@ -188,6 +188,7 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
+    image_suckr (0.2.0)
     json (1.8.3)
     json-schema (2.5.0)
       addressable (~> 2.3)
@@ -335,6 +336,7 @@ DEPENDENCIES
   cube-ruby
   goo!
   haml
+  image_suckr
   json-schema (~> 2.0)
   minitest (~> 4.0)
   minitest-stub_any_instance
