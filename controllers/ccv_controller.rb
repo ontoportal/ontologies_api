@@ -10,13 +10,15 @@ class CCVController < ApplicationController
     CONCEPT_URL = lambda { |acronym, uri| "#{ONTOLOGY_URL.call(acronym)}?p=classes&conceptid=#{CGI.escape(uri)}" }
     WIKIPEDIA_REST_BASE_URL = "https://en.wikipedia.org/w/api.php?action=query"
     WIKIPEDIA_IMAGE_LIMIT = 10
+    GOOGLE_IMAGES_REST_BASE_URL = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="
+    GOOGLE_IMAGES_IMAGE_LIMIT = 8
     CONCEPT_CHARACTER_LIMIT = 30
 
     get do
       reply 200, process_concept_search
     end
 
-    private
+    # private
 
     def process_concept_search(params=nil)
       params ||= @params
@@ -35,12 +37,7 @@ class CCVController < ApplicationController
       resp = LinkedData::Models::Class.search(query, params)
       total_found = resp["response"]["numFound"]
       agg_doc = {"term" => text, "ids" => [], "ontologies" => []}
-
-
-
       all_concepts = Hash.new
-
-
       all_synonyms = Hash.new
       all_definitions = Hash.new
       all_parents = Hash.new
@@ -90,18 +87,7 @@ class CCVController < ApplicationController
       end
 
       agg_doc["analytics"] = analytics(text) if include_analytics
-      agg_doc["images"] = wikipedia_images(text) if include_images
-
-
-
-
-
-      # google_images(text)
-
-
-
-
-
+      agg_doc["images"] = wikipedia_images(text) + google_images(text) if include_images
       agg_doc
     end
 
@@ -121,16 +107,11 @@ class CCVController < ApplicationController
           master_hash[k][label] = k
           master_hash[k]["count"] = 1
 
-          if args[:additional_data]
+          if args.has_key?(:additional_data)
             args[:additional_data].each do |k1, v|
               master_hash[k][k1] = v
             end
-
-
           end
-
-
-
         end
       end
     end
@@ -258,7 +239,7 @@ class CCVController < ApplicationController
 
             if resp_img["query"]["pages"]
               img_info_hash = resp_img["query"]["pages"][resp_img["query"]["pages"].keys[0]]
-              images << img_info_hash["imageinfo"][0]["url"]
+              images << {url: img_info_hash["imageinfo"][0]["url"], source: "wikipedia"}
             end
           end
         end
@@ -266,11 +247,21 @@ class CCVController < ApplicationController
       images
     end
 
-
     def google_images(query)
-      suckr = ImageSuckr::GoogleSuckr.new
-    end
+      images_url = "#{GOOGLE_IMAGES_REST_BASE_URL}#{CGI.escape(query)}&rsz=#{GOOGLE_IMAGES_IMAGE_LIMIT}"
+      resp_raw = Net::HTTP.get_response(URI.parse(images_url))
+      resp = MultiJson.load(resp_raw.body)
+      images = []
 
+      if resp["responseData"]["results"] && !resp["responseData"]["results"].empty?
+        img_hash = resp["responseData"]["results"]
+
+        img_hash.each do |i|
+          images << {url: i["unescapedUrl"], source: "google"}
+        end
+      end
+      images
+    end
 
   end
 

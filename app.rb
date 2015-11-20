@@ -11,7 +11,6 @@ require 'sinatra/multi_route'
 require 'oj'
 require 'multi_json'
 require 'cgi'
-require 'image_suckr'
 require 'google/api_client'
 require 'google/api_client/auth/installed_app'
 
