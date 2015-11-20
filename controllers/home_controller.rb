@@ -19,6 +19,9 @@ EOS
       expires 3600, :public
       last_modified @@root_last_modified ||= Time.now.httpdate
       routes = routes_list
+      if LinkedData.settings.enable_resource_index == false
+        routes.delete("/resource_index")
+      end
       routes_hash = {}
       context = {}
       routes.each do |route|
