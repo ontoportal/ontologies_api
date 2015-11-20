@@ -193,7 +193,6 @@ class CCVController < ApplicationController
           'max-results' => max_results
       })
 
-      start_index += max_results
       num_results = results.data.rows.length
 
       results.data.rows.each do |row|
