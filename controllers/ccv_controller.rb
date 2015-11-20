@@ -68,7 +68,6 @@ class CCVController < ApplicationController
           aggregate_vals(all_parents, cls_family[:parents], "term")
           aggregate_vals(all_children, cls_family[:children], "term")
         end
-
       end
 
       agg_doc["synonyms"] = all_synonyms.values
@@ -202,7 +201,7 @@ class CCVController < ApplicationController
     end
 
     def wikipedia_images(query)
-      ignore_images = ["File:Closed Access logo alternative.svg", "File:Commons-logo.svg"]
+      ignore_images = ["File:Closed Access logo alternative.svg", "File:Commons-logo.svg", "File:Wiktionary-logo-en.svg", "File:Mergefrom.svg"]
       images_url = "https://en.wikipedia.org/w/api.php?action=query&titles=#{CGI.escape(query)}&prop=images&format=json&imlimit=10"
       single_image_url = lambda { |i| "https://en.wikipedia.org/w/api.php?action=query&titles=#{i}&prop=imageinfo&iiprop=url&format=json" }
       resp_raw = Net::HTTP.get_response(URI.parse(images_url))
