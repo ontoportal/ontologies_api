@@ -13,6 +13,7 @@ class CCVController < ApplicationController
     GOOGLE_IMAGES_REST_BASE_URL = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="
     GOOGLE_IMAGES_IMAGE_LIMIT = 8
     CONCEPT_CHARACTER_LIMIT = 30
+    SYNONYMS_FOR_ANALYTICS_LIMIT = 4
 
     get do
       reply 200, process_concept_search
@@ -87,7 +88,9 @@ class CCVController < ApplicationController
         agg_doc["children"] = all_children.values
       end
 
-      agg_doc["analytics"] = analytics(text, syn_vals.map {|s| s["synonym"]}) if include_analytics
+      # give analytics first most relevant synonyms (with most counts), based on SYNONYMS_FOR_ANALYTICS_LIMIT value
+      syn_for_analytics = syn_vals.sort_by {|val| val["count"]}.reverse.first(SYNONYMS_FOR_ANALYTICS_LIMIT).map{|val| val["synonym"]}
+      agg_doc["analytics"] = analytics(text, syn_for_analytics) if include_analytics
       agg_doc["images"] = wikipedia_images(text) + google_images(text) if include_images
       agg_doc
     end
@@ -156,8 +159,6 @@ class CCVController < ApplicationController
 
     # analytics are calculated based on the term itself as well as its synonyms
     def analytics(query, synonyms)
-      max_results = 10000
-      start_index = 1
       aggregated_results = Hash.new
       start_date = "2014-01-01"
       start_year = 2014
@@ -170,40 +171,49 @@ class CCVController < ApplicationController
       synonyms.unshift(query)
 
       synonyms.each do |syn|
-        results = google_client.execute(:api_method => api_method, :parameters => {
-            'ids'         => NcboCron.settings.analytics_profile_id,
-            'start-date'  => start_date,
-            'end-date'    => Date.today.to_s,
-            'dimensions'  => 'ga:pagePath,ga:year,ga:month',
-            'metrics'     => 'ga:pageviews',
-            'filters'     => "ga:pagePath=~^\\/search\\/?\\?q=#{query}.*$",
-            'start-index' => start_index,
-            'max-results' => max_results
-        })
-        num_results = results.data.rows.length
+        max_results = 10000
+        num_results = 10000
+        start_index = 1
 
-        results.data.rows.each do |row|
-          if (aggregated_results.has_key?(row[1].to_i))
-            # month
-            if (aggregated_results[row[1].to_i].has_key?(row[2].to_i))
-              aggregated_results[row[1].to_i][row[2].to_i] += row[3].to_i
+        loop do
+          results = google_client.execute(:api_method => api_method, :parameters => {
+              'ids'         => NcboCron.settings.analytics_profile_id,
+              'start-date'  => start_date,
+              'end-date'    => Date.today.to_s,
+              'dimensions'  => 'ga:pagePath,ga:year,ga:month',
+              'metrics'     => 'ga:pageviews',
+              'filters'     => "ga:pagePath=~^\\/search\\/?\\?q=#{syn}.*$",
+              'start-index' => start_index,
+              'max-results' => max_results
+          })
+
+          num_results = results.data.rows.length
+          break if num_results == 0
+          start_index += max_results
+
+          results.data.rows.each do |row|
+            if (aggregated_results.has_key?(row[1].to_i))
+              # month
+              if (aggregated_results[row[1].to_i].has_key?(row[2].to_i))
+                aggregated_results[row[1].to_i][row[2].to_i] += row[3].to_i
+              else
+                aggregated_results[row[1].to_i][row[2].to_i] = row[3].to_i
+              end
             else
+              aggregated_results[row[1].to_i] = Hash.new
               aggregated_results[row[1].to_i][row[2].to_i] = row[3].to_i
             end
-          else
-            aggregated_results[row[1].to_i] = Hash.new
-            aggregated_results[row[1].to_i][row[2].to_i] = row[3].to_i
           end
-        end
 
-        if (num_results < max_results)
-          # fill up non existent years
-          (start_year..Date.today.year).each do |y|
-            aggregated_results[y] = Hash.new unless aggregated_results.has_key?(y)
+          if (num_results < max_results)
+            # fill up non existent years
+            (start_year..Date.today.year).each do |y|
+              aggregated_results[y] = Hash.new unless aggregated_results.has_key?(y)
+            end
+            # fill up non existent months with zeros
+            (1..12).each { |n| aggregated_results.values.each { |v| v[n] = 0 unless v.has_key?(n) } }
+            break
           end
-          # fill up non existent months with zeros
-          (1..12).each { |n| aggregated_results.values.each { |v| v[n] = 0 unless v.has_key?(n) } }
-          break
         end
       end
       aggregated_results
