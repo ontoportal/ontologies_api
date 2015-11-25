@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 7f0fc3b7b528df0cec62b22d42ad7b81d9e6d982
-  branch: staging
+  revision: 9c3aeeb4d77547c56d5509db4a1eeec80f472ebd
+  branch: master
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ad52556c3c9df9b56ded6de564ad7baf01d30cf8
-  branch: staging
+  revision: 7a99e2ceedd9daa2f40945745c11f365058aae92
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: e23b20211d28151604eb2ac55c820a79046b477a
-  branch: staging
+  revision: 831be46dbfee91e4de4e50365b974df504e6ed92
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: aeb155598c186a32b02e42ef617baecb90d8935b
-  branch: staging
+  revision: eb5f999cbcbf54e01b02ce92f8f2bb5e78667810
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 6539bcff377301242d811b131c632f6c1472ebc1
-  branch: staging
+  revision: a74e26165a23aeef3a916d719bc4c9f2cca35b65
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -243,10 +243,10 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rack-timeout (0.3.2)
-    rainbows (4.7.0)
+    rainbows (5.0.0)
       kgio (~> 2.5)
       rack (~> 1.1)
-      unicorn (~> 4.8)
+      unicorn (~> 5.0)
     raindrops (0.15.0)
     rake (10.4.2)
     rdf (1.0.8)
@@ -314,7 +314,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
-    unicorn (4.9.0)
+    unicorn (5.0.1)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
