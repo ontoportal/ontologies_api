@@ -243,10 +243,10 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rack-timeout (0.3.2)
-    rainbows (4.7.0)
+    rainbows (5.0.0)
       kgio (~> 2.5)
       rack (~> 1.1)
-      unicorn (~> 4.8)
+      unicorn (~> 5.0)
     raindrops (0.15.0)
     rake (10.4.2)
     rdf (1.0.8)
@@ -314,7 +314,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
-    unicorn (4.9.0)
+    unicorn (5.0.1)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
