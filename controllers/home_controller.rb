@@ -19,6 +19,8 @@ EOS
       expires 3600, :public
       last_modified @@root_last_modified ||= Time.now.httpdate
       routes = routes_list
+      #TODO: delete when ccv will be on production
+      routes.delete("/ccv")
       if LinkedData.settings.enable_resource_index == false
         routes.delete("/resource_index")
       end
