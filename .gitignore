@@ -17,6 +17,7 @@ logs/**
 cache/**
 vendor/bundle/*
 
+
 # YARD artifacts
 .yardoc
 _yardoc
@@ -36,6 +37,7 @@ config/environments/*
 
 #ignore capistrano deployment
 config/deploy/*
+config/*.p12
 
 # Ignore generated test data
 test/data/uploaded_ontologies/**/*

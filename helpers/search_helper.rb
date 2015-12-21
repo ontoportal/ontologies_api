@@ -14,7 +14,11 @@ module Sinatra
       ALSO_SEARCH_OBSOLETE_PARAM = "also_search_obsolete"
       ALSO_SEARCH_PROVISIONAL_PARAM = "also_search_provisional"
       SUGGEST_PARAM = "suggest" # NCBO-932
-      ROOTS_ONLY_PARAM = "roots_only" # NCBO-1452
+      # the three below are for NCBO-1512, NCBO-1513, NCBO-1515
+      VALUESET_ROOTS_ONLY_PARAM = "valueset_roots_only"
+      VALUESET_EXCLUDE_ROOTS_PARAM = "valueset_exclude_roots"
+      ONTOLOGY_TYPES_PARAM = "ontology_types"
+
       ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
       MATCH_HTML_PRE = "<em>"
       MATCH_HTML_POST = "</em>"
@@ -42,7 +46,8 @@ module Sinatra
       QUERYLESS_FIELDS_PARAMS = {
           "notation" => "notation",
           "cui" => "cui",
-          "semantic_types" => "semanticType"
+          "semantic_types" => "semanticType",
+          "ontology_types" => "ontologyType"
       }
 
       QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.join(" ")
@@ -100,17 +105,33 @@ module Sinatra
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
-        acronyms = params["ontology_acronyms"] || restricted_ontologies_to_acronyms(params)
+        params["ontologies"] = params["ontology_acronyms"].join(",") if params["ontology_acronyms"] && !params["ontology_acronyms"].empty?
+        onts = restricted_ontologies(params)
+        acronyms = restricted_ontologies_to_acronyms(params, onts)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
         subtree_ids = get_subtree_ids(params)
         subtree_ids_clause = (subtree_ids.nil? || subtree_ids.empty?) ? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
         filter_query = "#{filter_query} AND #{subtree_ids_clause}" unless (subtree_ids_clause.empty?)
 
-        # NCBO-1452 - restrict search results to only the top level classes in an ontology
-        root_ids = get_root_ids(params)
-        root_ids_clause = (root_ids.nil? || root_ids.empty?) ? "" : get_quoted_field_query_param(root_ids, "OR", "resource_id")
-        filter_query = "#{filter_query} AND #{root_ids_clause}" unless (root_ids_clause.empty?)
+        # ontology types are required for CEDAR project to differentiate between ontologies and value set collections
+        ontology_types = params[ONTOLOGY_TYPES_PARAM].nil? || params[ONTOLOGY_TYPES_PARAM].empty? ? [] : params[ONTOLOGY_TYPES_PARAM].split(",").map(&:strip)
+        ontology_types_clause = ontology_types.empty? ? "" : get_quoted_field_query_param(ontology_types, "OR", "ontologyType")
+        filter_query = "#{filter_query} AND #{ontology_types_clause}" unless (ontology_types_clause.empty?)
+
+        # NCBO-1512, NCBO-1513, NCBO-1515 - CEDAR valueset requirements
+        valueset_roots_only = params[VALUESET_ROOTS_ONLY_PARAM] || "false"
+        valueset_exclude_roots = params[VALUESET_EXCLUDE_ROOTS_PARAM] || "false"
+
+        if valueset_roots_only == "true" || valueset_exclude_roots == "true"
+          valueset_root_ids = get_valueset_root_ids(onts, params)
+
+          unless valueset_root_ids.empty?
+            valueset_root_ids_clause = get_quoted_field_query_param(valueset_root_ids, "OR", "resource_id")
+            valueset_root_ids_clause = valueset_exclude_roots == "true" ? "AND -#{valueset_root_ids_clause}" : "AND #{valueset_root_ids_clause}"
+            filter_query = "#{filter_query} #{valueset_root_ids_clause}"
+          end
+        end
 
         filter_query << " AND definition:[* TO *]" if params[REQUIRE_DEFINITIONS_PARAM] == "true"
 
@@ -188,21 +209,18 @@ module Sinatra
         subtree_ids
       end
 
-      def get_root_ids(params)
-        root_ids = nil
-        if params[ROOTS_ONLY_PARAM] === "true"
-          ontology = params[ONTOLOGY_PARAM].nil? ? nil : params[ONTOLOGY_PARAM].split(",")
+      def get_valueset_root_ids(onts, params)
+        root_ids = []
 
-          if (ontology.nil? || ontology.empty? || ontology.length > 1)
-            raise error 400, "A roots-only search requires a single ontology: /search?q=<query>&ontology=CNO&roots_only=true"
-          end
-
-          ont, submission = get_ontology_and_submission
-          params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
+        onts.each do |ont|
+          next if ont.nil? || ont.ontologyType.nil? || !ont.ontologyType.value_set_collection?
+          submission = ont.latest_submission(status: [:RDF])
+          next if submission.nil?
           roots = submission.roots
-          root_ids = roots.map {|d| d.id.to_s}
+          root_ids_ont = roots.map {|d| d.id.to_s}
+          root_ids << root_ids_ont
         end
-        root_ids
+        root_ids.flatten
       end
 
       def get_tokenized_standard_query(text, params)

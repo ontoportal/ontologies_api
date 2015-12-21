@@ -221,8 +221,8 @@ module Sinatra
         return onts
       end
 
-      def restricted_ontologies_to_acronyms(params=nil)
-        onts = restricted_ontologies(params)
+      def restricted_ontologies_to_acronyms(params=nil, onts=nil)
+        onts ||= restricted_ontologies(params)
         return onts.map {|o| o.acronym }
       end
 
@@ -369,7 +369,7 @@ module Sinatra
         submissions.each do |sub|
           next if include_ready && !sub.ready?
           latest_submissions[sub.ontology.acronym] ||= sub
-          latest_submissions[sub.ontology.acronym] = sub if sub.submissionId > latest_submissions[sub.ontology.acronym].submissionId
+          latest_submissions[sub.ontology.acronym] = sub if sub.submissionId.to_i > latest_submissions[sub.ontology.acronym].submissionId.to_i
         end
         return latest_submissions
       end
