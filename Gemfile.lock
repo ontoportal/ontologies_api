@@ -78,7 +78,7 @@ GIT
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
   revision: fd4f175b6be39a6296a3aff3cfc9d8bb24949728
-  branch: lirmm_cron
+  branch: agroportal_cron
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -94,7 +94,7 @@ GIT
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
   revision: 64bde5b77b53bfbf4aca98919a4d209a9e092363
-  branch: lirmm_linked_data
+  branch: agroportal_linked_data
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
