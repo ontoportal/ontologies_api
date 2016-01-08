@@ -102,31 +102,7 @@ class MappingsController < ApplicationController
       end
       error(400, "Input does not contain mapping relation") if !params[:relation]
       error(400, "Input does not contain user creator ID") if !params[:creator]
-      classes = []
-      params[:classes].each do |class_id,ontology_id|
-        o = ontology_id
-        o =  o.start_with?("http://") ? ontology_id :
-                                        ontology_uri_from_acronym(ontology_id)
-        o = LinkedData::Models::Ontology.find(RDF::URI.new(o))
-                                        .include(submissions:
-                                       [:submissionId, :submissionStatus]).first
-        if o.nil?
-          error(400, "Ontology with ID `#{ontology_id}` not found")
-        end
-        submission = o.latest_submission
-        if submission.nil?
-          error(400,
-     "Ontology with id #{ontology_id} does not have parsed valid submission")
-        end
-        submission.bring(ontology: [:acronym])
-        c = LinkedData::Models::Class.find(RDF::URI.new(class_id))
-                                    .in(submission)
-                                    .first
-        if c.nil?
-          error(400, "Class ID `#{id}` not found in `#{submission.id.to_s}`")
-        end
-        classes << c
-      end
+      classes = get_classes_from_param(params[:classes])
       user_id = params[:creator].start_with?("http://") ?
                     params[:creator].split("/")[-1] : params[:creator]
       user_creator = LinkedData::Models::User.find(user_id)

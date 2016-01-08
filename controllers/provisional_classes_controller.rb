@@ -33,17 +33,42 @@ class ProvisionalClassesController < ApplicationController
       reply 200, pc
     end
 
+
+
+
+
+
+
+
+
+
     # Create a new provisional_class
     post do
       pc = instance_from_params(ProvisionalClass, params)
 
       if pc.valid?
         pc.save
+
+
+
+        binding.pry
+
+
+
       else
         error 400, pc.errors
       end
       reply 201, pc
     end
+
+
+
+
+
+
+
+
+
 
     # Update an existing submission of an provisional_class
     patch '/:provisional_class_id' do
@@ -64,7 +89,7 @@ class ProvisionalClassesController < ApplicationController
       halt 204
     end
 
-    # Delete a provisional_class
+    # Delete a provisional_class and all provisional relations
     delete '/:provisional_class_id' do
       id = uri_as_needed(params["provisional_class_id"])
       pc = ProvisionalClass.find(id).first
@@ -73,6 +98,9 @@ class ProvisionalClassesController < ApplicationController
         error 400, "Provisional class does not exist."
       end
       pc.bring_remaining
+      pc.bring(:relations)
+      pc.relations.each {|rel| rel.delete}
+
       pc.delete
       halt 204
     end
