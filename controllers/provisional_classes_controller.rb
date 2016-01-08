@@ -33,42 +33,27 @@ class ProvisionalClassesController < ApplicationController
       reply 200, pc
     end
 
-
-
-
-
-
-
-
-
-
     # Create a new provisional_class
     post do
+      relations = params.delete("relations")
       pc = instance_from_params(ProvisionalClass, params)
 
       if pc.valid?
         pc.save
 
-
-
-        binding.pry
-
-
-
+        if relations && relations.kind_of?(Array)
+          relations.each do |rel|
+            relation_type = RDF::IRI.new rel["relationType"]
+            c = get_class_from_param(rel["target"])
+            rel_obj = LinkedData::Models::ProvisionalRelation.new({source: pc, relationType: relation_type, target: c})
+            rel_obj.save if rel_obj.valid?
+          end
+        end
       else
         error 400, pc.errors
       end
       reply 201, pc
     end
-
-
-
-
-
-
-
-
-
 
     # Update an existing submission of an provisional_class
     patch '/:provisional_class_id' do
