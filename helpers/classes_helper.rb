@@ -27,47 +27,6 @@ module Sinatra
         return nil
       end
 
-      # classes_param = [
-      #   {"http://purl.obolibrary.org/obo/UO_0000045": "http://data.bioontology.org/ontologies/MS"},
-      #   {"http://purl.bioontology.org/ontology/LNC/MTHU007907": "LOINC"}
-      # ]
-      def get_classes_from_param(classes_param)
-        classes = []
-        classes_param.each do |class_param|
-          classes << get_class_from_param(class_param)
-        end
-        classes
-      end
-
-      # class_param = {"http://purl.obolibrary.org/obo/UO_0000045": "http://data.bioontology.org/ontologies/MS"}
-      # OR
-      # class_param = {"http://purl.bioontology.org/ontology/LNC/MTHU007907": "LOINC"}
-      def get_class_from_param(class_param)
-        class_id, ontology_id = class_param.first
-        o = ontology_id
-        o =  o.start_with?("http://") ? ontology_id :
-            ontology_uri_from_acronym(ontology_id)
-        o = LinkedData::Models::Ontology.find(RDF::URI.new(o))
-                .include(submissions:
-                             [:submissionId, :submissionStatus]).first
-        if o.nil?
-          error(400, "Ontology with ID `#{ontology_id}` not found")
-        end
-        submission = o.latest_submission
-        if submission.nil?
-          error(400,
-                "Ontology with id #{ontology_id} does not have parsed valid submission")
-        end
-        submission.bring(ontology: [:acronym])
-        c = LinkedData::Models::Class.find(RDF::URI.new(class_id))
-                .in(submission)
-                .first
-        if c.nil?
-          error(400, "Class ID `#{class_id}` not found in `#{submission.id.to_s}`")
-        end
-        c
-      end
-
       def get_class(submission, load_attrs=nil)
         load_attrs = load_attrs || LinkedData::Models::Class.goo_attrs_to_load(includes_param)
         load_children = load_attrs.delete :children
@@ -119,7 +78,7 @@ module Sinatra
         return cls
       end
 
-      ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION = [:prefLabel, :synonym, :definition, :notation, :cui, :semanticType, :properties, :submissionAcronym, :childCount].freeze
+      ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION = [:prefLabel, :synonym, :definition, :notation, :cui, :semanticType, :properties].freeze
       def validate_params_solr_population
         leftover = includes_param - ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION
         invalid = leftover.length > 0
