@@ -46,13 +46,14 @@ module Sinatra
           if attr_cls == LinkedData::Models::Class
             # Try to find dependent Goo objects, but only if the naming is not done via Proc
             # If naming is done via Proc, then try to lookup the Goo object using a hash of attributes
-            value = value.is_a?(Array) ? value : [value]
+            is_arr = value.is_a?(Array)
+            value = is_arr ? value : [value]
             new_value = []
             value.each do |cls|
               sub = LinkedData::Models::Ontology.find(uri_as_needed(cls["ontology"])).first.latest_submission
               new_value << LinkedData::Models::Class.find(cls["class"]).in(sub).first
             end
-            value = new_value
+            value = is_arr ? new_value : new_value[0]
           elsif attr_cls && not_hash_or_array || (attr_cls && not_array_of_hashes)
             # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)

@@ -40,15 +40,7 @@ class ProvisionalClassesController < ApplicationController
 
       if pc.valid?
         pc.save
-
-        if relations && relations.kind_of?(Array)
-          relations.each do |rel|
-            relation_type = RDF::IRI.new rel["relationType"]
-            c = get_class_from_param(rel["target"])
-            rel_obj = LinkedData::Models::ProvisionalRelation.new({source: pc, relationType: relation_type, target: c})
-            rel_obj.save if rel_obj.valid?
-          end
-        end
+        save_provisional_class_relations(pc, relations)
       else
         error 400, pc.errors
       end
@@ -56,6 +48,7 @@ class ProvisionalClassesController < ApplicationController
     end
 
     # Update an existing submission of an provisional_class
+    # Delete all existing relations and save new ones from the request
     patch '/:provisional_class_id' do
       id = uri_as_needed(params["provisional_class_id"])
       pc = ProvisionalClass.find(id).include(ProvisionalClass.attributes).first
@@ -64,9 +57,14 @@ class ProvisionalClassesController < ApplicationController
         error 400, "Provisional class does not exist, please create using HTTP POST before modifying"
       else
         pc.bring_remaining
+        relations = params.delete("relations")
         populate_from_params(pc, params)
+
         if pc.valid?
           pc.save
+          pc.bring(:relations)
+          pc.relations.each {|rel| rel.delete}
+          save_provisional_class_relations(pc, relations)
         else
           error 400, pc.errors
         end
@@ -80,7 +78,7 @@ class ProvisionalClassesController < ApplicationController
       pc = ProvisionalClass.find(id).first
 
       if pc.nil?
-        error 400, "Provisional class does not exist."
+        error 400, "Provisional class #{id} does not exist."
       end
       pc.bring_remaining
       pc.bring(:relations)
@@ -89,5 +87,25 @@ class ProvisionalClassesController < ApplicationController
       pc.delete
       halt 204
     end
+
+    def save_provisional_class_relations(pc, relations_param)
+      if relations_param && relations_param.kind_of?(Array)
+        relations_param.each do |rel|
+          rel_obj = instance_from_params(ProvisionalRelation, rel)
+          rel_obj.source = pc
+
+          if rel_obj.valid?
+            # validate target class and ontology
+
+
+
+            rel_obj.save
+          else
+            error 400, rel_obj.errors
+          end
+        end
+      end
+    end
+
   end
 end
