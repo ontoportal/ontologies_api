@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 9c3aeeb4d77547c56d5509db4a1eeec80f472ebd
-  branch: master
+  revision: c2f839ebf05e141cf39923772ff811ca04c4e195
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 7a99e2ceedd9daa2f40945745c11f365058aae92
-  branch: master
+  revision: 0169e9e156aef364d87b6f53430dc20deb80c943
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 831be46dbfee91e4de4e50365b974df504e6ed92
-  branch: master
+  revision: 28484632fc702cee40664737f795d98cc89c88bc
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: eb5f999cbcbf54e01b02ce92f8f2bb5e78667810
-  branch: master
+  revision: 9dfa99b337850f76941732fcc3bdb075ba704fa5
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: a74e26165a23aeef3a916d719bc4c9f2cca35b65
-  branch: master
+  revision: c1991d8dc37516869ab51464b5102b786398fbd6
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -140,25 +140,24 @@ GEM
     capistrano-bundler (1.1.4)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
-    capistrano-rbenv (2.0.3)
+    capistrano-rbenv (2.0.4)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.0)
-    colorize (0.7.7)
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.14)
-      elasticsearch-api (= 1.0.14)
-      elasticsearch-transport (= 1.0.14)
-    elasticsearch-api (1.0.14)
+    elasticsearch (1.0.15)
+      elasticsearch-api (= 1.0.15)
+      elasticsearch-transport (= 1.0.15)
+    elasticsearch-api (1.0.15)
       multi_json
-    elasticsearch-transport (1.0.14)
+    elasticsearch-transport (1.0.15)
       faraday
       multi_json
-    ethon (0.8.0)
+    ethon (0.8.1)
       ffi (>= 1.3.0)
     extlib (0.9.16)
     faraday (0.9.2)
@@ -176,13 +175,14 @@ GEM
       multi_json (~> 1.10)
       retriable (~> 1.4)
       signet (~> 0.6)
-    googleauth (0.4.2)
+    googleauth (0.5.1)
       faraday (~> 0.9)
       jwt (~> 1.4)
       logging (~> 2.0)
       memoist (~> 0.12)
       multi_json (~> 1.11)
-      signet (~> 0.6)
+      os (~> 0.9)
+      signet (~> 0.7)
     haml (4.0.7)
       tilt
     http-cookie (1.0.2)
@@ -205,7 +205,7 @@ GEM
       systemu (~> 2.6.2)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    memoist (0.12.0)
+    memoist (0.14.0)
     method_source (0.8.2)
     mime-types (2.99)
     minitest (4.7.5)
@@ -214,14 +214,15 @@ GEM
       redis
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.4.1)
+    mysql2 (0.4.2)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (3.0.1)
+    net-ssh (3.0.2)
     netrc (0.11.0)
-    newrelic_rpm (3.14.0.305)
-    oj (2.13.1)
+    newrelic_rpm (3.14.1.311)
+    oj (2.14.3)
+    os (0.9.6)
     pony (1.11)
       mail (>= 2.0)
     pry (0.10.3)
@@ -231,12 +232,12 @@ GEM
     rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.3.0)
+    rack-attack (4.3.1)
       rack
     rack-cache (1.5.1)
       rack (>= 0.4)
     rack-cors (0.4.0)
-    rack-mini-profiler (0.9.7)
+    rack-mini-profiler (0.9.8)
       rack (>= 1.1.3)
     rack-protection (1.5.3)
       rack
@@ -248,11 +249,11 @@ GEM
       rack (~> 1.1)
       unicorn (~> 5.0)
     raindrops (0.15.0)
-    rake (10.4.2)
+    rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (0.6.5)
-    redcarpet (3.3.3)
+    recursive-open-struct (1.0.0)
+    redcarpet (3.3.4)
     redis (3.2.2)
     redis-activesupport (4.1.5)
       activesupport (>= 3, < 5)
@@ -274,14 +275,13 @@ GEM
     rubyzip (1.1.7)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.28.0)
-    signet (0.6.1)
+    sequel (4.30.0)
+    signet (0.7.2)
       addressable (~> 2.3)
-      extlib (~> 0.9)
       faraday (~> 0.9)
       jwt (~> 1.5)
       multi_json (~> 1.10)
-    simplecov (0.10.0)
+    simplecov (0.11.1)
       docile (~> 1.1.0)
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
@@ -300,14 +300,13 @@ GEM
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
     slop (3.6.0)
-    sshkit (1.7.1)
-      colorize (>= 0.7.0)
+    sshkit (1.8.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     thread_safe (0.3.5)
-    tilt (2.0.1)
-    typhoeus (0.8.0)
+    tilt (2.0.2)
+    typhoeus (1.0.1)
       ethon (>= 0.8.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
