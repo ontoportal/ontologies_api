@@ -19,14 +19,30 @@ class ProvisionalRelationsController < ApplicationController
 
     # Create a new provisional_relation
     post do
-      rel_obj = instance_from_params(ProvisionalRelation, params)
 
-      if rel_obj.valid?
-        rel_obj.save
-      else
-        error 400, rel_obj.errors
-      end
-      reply 201, rel_obj
+
+      rel_objects = save_provisional_class_relations(params)
+
+      # rel_obj = instance_from_params(ProvisionalRelation, params)
+      #
+      # if rel_obj.valid?
+      #   rel_obj.save
+      # else
+      #   error 400, rel_obj.errors
+      # end
+
+
+
+
+
+
+
+
+
+
+
+
+      reply 201, rel_objects[0]
     end
 
 

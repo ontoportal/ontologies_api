@@ -40,7 +40,15 @@ class ProvisionalClassesController < ApplicationController
 
       if pc.valid?
         pc.save
-        save_provisional_class_relations(pc, relations)
+
+
+
+
+        rels = save_provisional_class_relations(relations, pc)
+
+
+
+
       else
         error 400, pc.errors
       end
@@ -64,7 +72,7 @@ class ProvisionalClassesController < ApplicationController
           pc.save
           pc.bring(:relations)
           pc.relations.each {|rel| rel.delete}
-          save_provisional_class_relations(pc, relations)
+          save_provisional_class_relations(relations, pc)
         else
           error 400, pc.errors
         end
@@ -87,25 +95,5 @@ class ProvisionalClassesController < ApplicationController
       pc.delete
       halt 204
     end
-
-    def save_provisional_class_relations(pc, relations_param)
-      if relations_param && relations_param.kind_of?(Array)
-        relations_param.each do |rel|
-          rel_obj = instance_from_params(ProvisionalRelation, rel)
-          rel_obj.source = pc
-
-          if rel_obj.valid?
-            # validate target class and ontology
-
-
-
-            rel_obj.save
-          else
-            error 400, rel_obj.errors
-          end
-        end
-      end
-    end
-
   end
 end
