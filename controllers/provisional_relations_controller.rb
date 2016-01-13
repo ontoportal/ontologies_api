@@ -19,14 +19,9 @@ class ProvisionalRelationsController < ApplicationController
 
     # Create a new provisional_relation
     post do
-      rel_obj = instance_from_params(ProvisionalRelation, params)
-
-      if rel_obj.valid?
-        rel_obj.save
-      else
-        error 400, rel_obj.errors
-      end
-      reply 201, rel_obj
+      rels = save_provisional_class_relations(params)
+      error 400, rels["errors"] unless rels["errors"].empty?
+      reply 201, rels["objects"][0]
     end
 
 
