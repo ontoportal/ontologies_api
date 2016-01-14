@@ -40,8 +40,10 @@ class ProvisionalClassesController < ApplicationController
 
       if pc.valid?
         pc.save
-        rels = save_provisional_class_relations(relations, pc)
-        error 400, rels["errors"] unless rels["errors"].empty?
+        if not relations.nil?
+          rels = save_provisional_class_relations(relations, pc)
+          error 400, rels["errors"] unless rels["errors"].empty?
+        end
       else
         error 400, pc.errors
       end
@@ -65,8 +67,10 @@ class ProvisionalClassesController < ApplicationController
           pc.save
           pc.bring(:relations)
           pc.relations.each {|rel| rel.delete}
-          rels = save_provisional_class_relations(relations, pc)
-          error 400, rels["errors"] unless rels["errors"].empty?
+          if not relations.nil?
+            rels = save_provisional_class_relations(relations, pc)
+            error 400, rels["errors"] unless rels["errors"].empty?
+          end
         else
           error 400, pc.errors
         end
