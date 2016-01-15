@@ -3,7 +3,7 @@ require_relative '../test_case'
 class TestProvisionalClassesController < TestCase
   def self.before_suite
     self.new("before_suite").delete_ontologies_and_submissions
-    @@ontology, cls = self.new("before_suite")._ontology_and_class
+    @@ontology, @@cls = self.new("before_suite")._ontology_and_class
 
     @@test_username = "test_provisional_user"
     @@test_user = LinkedData::Models::User.new(
@@ -25,7 +25,15 @@ class TestProvisionalClassesController < TestCase
           definition: ["Test definition for Prov Class #{i}"]
       })
       pc.save
+      @@pcs << pc
     end
+  end
+
+  def self.after_suite
+    3.times do |i|
+      @@pcs[i].delete
+    end
+    @@test_user.delete
   end
 
   def _ontology_and_class
@@ -75,6 +83,25 @@ class TestProvisionalClassesController < TestCase
     assert last_response.ok?
 
     pc_changes = {label: "A Form of Cancer No Longer New", permanentId: "http://purl.obolibrary.org/obo/MI_0914"}
+    patch new_pc["@id"], MultiJson.dump(pc_changes), "CONTENT_TYPE" => "application/json"
+
+    assert last_response.status == 204
+    get new_pc["@id"]
+    patched_pc = MultiJson.load(last_response.body)
+    assert_equal patched_pc["label"], pc_changes[:label]
+
+    #test patch with relations
+    pc_changes = {
+        label: "A Form of Cancer change with Relations",
+        permanentId: "http://purl.obolibrary.org/obo/MI_0925",
+        relations: [
+          {
+              relationType: "http://www.w3.org/2004/02/skos/core#exactMatch",
+              targetClassId: @@cls.id.to_s,
+              targetClassOntology: @@ontology.id.to_s
+          }
+        ]
+    }
     patch new_pc["@id"], MultiJson.dump(pc_changes), "CONTENT_TYPE" => "application/json"
 
     assert last_response.status == 204
