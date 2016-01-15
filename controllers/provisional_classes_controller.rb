@@ -55,7 +55,7 @@ class ProvisionalClassesController < ApplicationController
       reply 201, pc
     end
 
-    # Update an existing submission of an provisional_class
+    # Update an existing submission of a provisional_class
     # Delete all existing relations and save new ones from the request
     patch '/:provisional_class_id' do
       id = uri_as_needed(params["provisional_class_id"])
