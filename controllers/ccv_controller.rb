@@ -93,7 +93,10 @@ class CCVController < ApplicationController
       # give analytics first most relevant synonyms (with most counts), based on SYNONYMS_FOR_ANALYTICS_LIMIT value
       syn_for_analytics = syn_vals.sort_by {|val| val["count"]}.reverse.first(SYNONYMS_FOR_ANALYTICS_LIMIT).map{|val| val["synonym"]}
       agg_doc["analytics"] = analytics(text, syn_for_analytics) if include_analytics
-      agg_doc["images"] = wikipedia_images(text) + google_images(text) if include_images
+      # removing calls to google images for now, as their API is deprecated
+      # if we decided to continue using google images, we must use their latest API intergration
+      # agg_doc["images"] = wikipedia_images(text) + google_images(text) if include_images
+      agg_doc["images"] = wikipedia_images(text) if include_images
       agg_doc
     end
 

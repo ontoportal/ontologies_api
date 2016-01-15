@@ -35,10 +35,15 @@ class ProvisionalClassesController < ApplicationController
 
     # Create a new provisional_class
     post do
+      relations = params.delete("relations")
       pc = instance_from_params(ProvisionalClass, params)
 
       if pc.valid?
         pc.save
+        if not relations.nil?
+          rels = save_provisional_class_relations(relations, pc)
+          error 400, rels["errors"] unless rels["errors"].empty?
+        end
       else
         error 400, pc.errors
       end
@@ -46,6 +51,7 @@ class ProvisionalClassesController < ApplicationController
     end
 
     # Update an existing submission of an provisional_class
+    # Delete all existing relations and save new ones from the request
     patch '/:provisional_class_id' do
       id = uri_as_needed(params["provisional_class_id"])
       pc = ProvisionalClass.find(id).include(ProvisionalClass.attributes).first
@@ -54,9 +60,17 @@ class ProvisionalClassesController < ApplicationController
         error 400, "Provisional class does not exist, please create using HTTP POST before modifying"
       else
         pc.bring_remaining
+        relations = params.delete("relations")
         populate_from_params(pc, params)
+
         if pc.valid?
           pc.save
+          pc.bring(:relations)
+          pc.relations.each {|rel| rel.delete}
+          if not relations.nil?
+            rels = save_provisional_class_relations(relations, pc)
+            error 400, rels["errors"] unless rels["errors"].empty?
+          end
         else
           error 400, pc.errors
         end
@@ -64,15 +78,18 @@ class ProvisionalClassesController < ApplicationController
       halt 204
     end
 
-    # Delete a provisional_class
+    # Delete a provisional_class and all provisional relations
     delete '/:provisional_class_id' do
       id = uri_as_needed(params["provisional_class_id"])
       pc = ProvisionalClass.find(id).first
 
       if pc.nil?
-        error 400, "Provisional class does not exist."
+        error 400, "Provisional class #{id} does not exist."
       end
       pc.bring_remaining
+      pc.bring(:relations)
+      pc.relations.each {|rel| rel.delete}
+
       pc.delete
       halt 204
     end
