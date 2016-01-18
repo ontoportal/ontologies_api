@@ -93,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 64bde5b77b53bfbf4aca98919a4d209a9e092363
+  revision: 80b38be6dc24a0229e7a6880078dd92e30226f3d
   branch: agroportal_linked_data
   specs:
     ontologies_linked_data (0.0.1)
