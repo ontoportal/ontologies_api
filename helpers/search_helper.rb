@@ -48,10 +48,10 @@ module Sinatra
           "cui" => "cui",
           "semantic_types" => "semanticType",
           ONTOLOGY_TYPES_PARAM => "ontologyType",
-          ALSO_SEARCH_PROVISIONAL_PARAM => "provisional"
+          ALSO_SEARCH_PROVISIONAL_PARAM => nil
       }
 
-      QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.join(" ")
+      QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.compact.join(" ")
 
       def get_edismax_query(text, params={})
         validate_params_solr_population()
