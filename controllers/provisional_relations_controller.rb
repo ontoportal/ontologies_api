@@ -4,7 +4,9 @@ class ProvisionalRelationsController < ApplicationController
     # Display all provisional_relations
     get do
       check_last_modified_collection(LinkedData::Models::ProvisionalRelation)
-      prov_rel = ProvisionalRelation.where.include(ProvisionalRelation.goo_attrs_to_load(includes_param)).to_a
+      incl_param = includes_param
+      incl_param << :created if (!incl_param.empty? && !incl_param.include?(:created))
+      prov_rel = ProvisionalRelation.where.include(ProvisionalRelation.goo_attrs_to_load(incl_param)).to_a
       reply prov_rel.sort {|a,b| b.created <=> a.created }  # most recent first
     end
 
@@ -23,18 +25,6 @@ class ProvisionalRelationsController < ApplicationController
       error 400, rels["errors"] unless rels["errors"].empty?
       reply 201, rels["objects"][0]
     end
-
-
-
-
-
-
-
-# need delete that takes source, target and relationType instead of just ID
-
-
-
-
 
     # Delete a provisional_relation
     delete '/:provisional_relation_id' do
