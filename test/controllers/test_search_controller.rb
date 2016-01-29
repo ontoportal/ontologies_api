@@ -15,7 +15,7 @@ class TestSearchController < TestCase
     sub.process_submission(Logger.new(TestLogFile.new),
        process_rdf: false,
        index_search: true, index_commit: true,
-       run_metrics: false, reasoning: false)
+       run_metrics: false, reasoning: false, diff: false)
     @@ontologies[0] = ont
     @@test_user = LinkedData::Models::User.new(
         username: "test_search_user",
@@ -34,6 +34,7 @@ class TestSearchController < TestCase
     })
     @@test_pc_root.save
 
+    @@cls_uri = RDF::URI.new("http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research")
     # Create a test CHILD provisional class
     @@test_pc_child = LinkedData::Models::ProvisionalClass.new({
       creator: @@test_user,
@@ -41,7 +42,7 @@ class TestSearchController < TestCase
       synonym: ["Test synonym for Prov Class CHILD", "Test syn CHILD provisional class"],
       definition: ["Test definition for Prov Class CHILD"],
       ontology: ont,
-      subclassOf: RDF::URI.new("http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research")
+      subclassOf: @@cls_uri
     })
     @@test_pc_child.save
   end
@@ -150,6 +151,26 @@ class TestSearchController < TestCase
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     coll = results["collection"]
+  end
+
+  def test_search_provisional_class
+    acronym = "BROTEST-0"
+    ontology_type = "VALUE_SET_COLLECTION"
+    # roots only with provisional class test
+    get "search?also_search_provisional=true&valueset_roots_only=true&ontology_types=#{ontology_type}&ontologies=#{acronym}"
+    results = MultiJson.load(last_response.body)
+    assert_equal 10, results["collection"].length
+    provisional = results["collection"].select {|res| assert_equal ontology_type, res["ontologyType"]; res["provisional"]}
+    assert_equal 1, provisional.length
+    assert_equal @@test_pc_root.label, provisional[0]["prefLabel"]
+
+    # subtree root with provisional class test
+    get "search?ontology=#{acronym}&subtree_root_id=#{CGI::escape(@@cls_uri.to_s)}&also_search_provisional=true"
+    results = MultiJson.load(last_response.body)
+    assert_equal 21, results["collection"].length
+    provisional = results["collection"].select {|res| res["provisional"]}
+    assert_equal 1, provisional.length
+    assert_equal @@test_pc_child.label, provisional[0]["prefLabel"]
   end
 
 end
