@@ -4,6 +4,55 @@ class TestSearchController < TestCase
 
   def self.before_suite
     @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
+    ontology_type = LinkedData::Models::OntologyType.find("VALUE_SET_COLLECTION").first
+    # BROTEST-0
+    @@ontologies[0].bring_remaining
+    @@ontologies[0].ontologyType = ontology_type
+    @@ontologies[0].save
+
+    ont = LinkedData::Models::Ontology.find(@@ontologies[0].id).first
+    sub = ont.latest_submission
+    sub.process_submission(Logger.new(TestLogFile.new),
+       process_rdf: false,
+       index_search: true, index_commit: true,
+       run_metrics: false, reasoning: false)
+    @@ontologies[0] = ont
+    @@test_user = LinkedData::Models::User.new(
+        username: "test_search_user",
+        email: "ncbo_search_user@example.org",
+        password: "test_user_password"
+    )
+    @@test_user.save
+
+    # Create a test ROOT provisional class
+    @@test_pc_root = LinkedData::Models::ProvisionalClass.new({
+      creator: @@test_user,
+      label: "Provisional Class - ROOT",
+      synonym: ["Test synonym for Prov Class ROOT", "Test syn ROOT provisional class"],
+      definition: ["Test definition for Prov Class ROOT"],
+      ontology: ont
+    })
+    @@test_pc_root.save
+
+    # Create a test CHILD provisional class
+    @@test_pc_child = LinkedData::Models::ProvisionalClass.new({
+      creator: @@test_user,
+      label: "Provisional Class - CHILD",
+      synonym: ["Test synonym for Prov Class CHILD", "Test syn CHILD provisional class"],
+      definition: ["Test definition for Prov Class CHILD"],
+      ontology: ont,
+      subclassOf: RDF::URI.new("http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research")
+    })
+    @@test_pc_child.save
+  end
+
+  def self.after_suite
+    @@test_pc_root.delete
+    @@test_pc_child.delete
+    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
+    @@test_user.delete
+    LinkedData::Models::Ontology.indexClear
+    LinkedData::Models::Ontology.indexCommit
   end
 
   def test_search
