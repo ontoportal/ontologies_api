@@ -3,20 +3,27 @@ require_relative '../test_case'
 class TestSearchController < TestCase
 
   def self.before_suite
-    @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
-    ontology_type = LinkedData::Models::OntologyType.find("VALUE_SET_COLLECTION").first
-    # BROTEST-0
-    @@ontologies[0].bring_remaining
-    @@ontologies[0].ontologyType = ontology_type
-    @@ontologies[0].save
+     count, acronyms, bro = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+      process_submission: true,
+      acronym: "BROTEST",
+      name: "ontTEST Bla",
+      file_path: "./test/data/ontology_files/BRO_v3.2.owl",
+      ont_count: 1,
+      submission_count: 1,
+      ontology_type: "VALUE_SET_COLLECTION"
+    })
 
-    ont = LinkedData::Models::Ontology.find(@@ontologies[0].id).first
-    sub = ont.latest_submission
-    sub.process_submission(Logger.new(TestLogFile.new),
-       process_rdf: false,
-       index_search: true, index_commit: true,
-       run_metrics: false, reasoning: false, diff: false)
-    @@ontologies[0] = ont
+    count, acronyms, mccl = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+      process_submission: true,
+      acronym: "MCCLTEST",
+      name: "MCCLS TEST",
+      file_path: "./test/data/ontology_files/CellLine_OWL_BioPortal_v1.0.owl",
+      ont_count: 1,
+      submission_count: 1
+    })
+
+    @@ontologies = bro.concat(mccl)
+
     @@test_user = LinkedData::Models::User.new(
         username: "test_search_user",
         email: "ncbo_search_user@example.org",
@@ -30,7 +37,7 @@ class TestSearchController < TestCase
       label: "Provisional Class - ROOT",
       synonym: ["Test synonym for Prov Class ROOT", "Test syn ROOT provisional class"],
       definition: ["Test definition for Prov Class ROOT"],
-      ontology: ont
+      ontology: @@ontologies[0]
     })
     @@test_pc_root.save
 
@@ -41,7 +48,7 @@ class TestSearchController < TestCase
       label: "Provisional Class - CHILD",
       synonym: ["Test synonym for Prov Class CHILD", "Test syn CHILD provisional class"],
       definition: ["Test definition for Prov Class CHILD"],
-      ontology: ont,
+      ontology: @@ontologies[0],
       subclassOf: @@cls_uri
     })
     @@test_pc_child.save
