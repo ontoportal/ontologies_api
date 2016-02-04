@@ -5,8 +5,8 @@ class TestSearchController < TestCase
   def self.before_suite
      count, acronyms, bro = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
       process_submission: true,
-      acronym: "BROTEST",
-      name: "ontTEST Bla",
+      acronym: "BROSEARCHTEST",
+      name: "BRO Search Test",
       file_path: "./test/data/ontology_files/BRO_v3.2.owl",
       ont_count: 1,
       submission_count: 1,
@@ -15,8 +15,8 @@ class TestSearchController < TestCase
 
     count, acronyms, mccl = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
       process_submission: true,
-      acronym: "MCCLTEST",
-      name: "MCCLS TEST",
+      acronym: "MCCLSEARCHTEST",
+      name: "MCCL Search Test",
       file_path: "./test/data/ontology_files/CellLine_OWL_BioPortal_v1.0.owl",
       ont_count: 1,
       submission_count: 1
@@ -80,7 +80,7 @@ class TestSearchController < TestCase
   end
 
   def test_search_ontology_filter
-    acronym = "MCCLTEST-0"
+    acronym = "MCCLSEARCHTEST-0"
     get "/search?q=cell%20li*&ontologies=#{acronym}"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
@@ -94,7 +94,7 @@ class TestSearchController < TestCase
   end
 
   def test_search_other_filters
-    acronym = "MCCLTEST-0"
+    acronym = "MCCLSEARCHTEST-0"
     get "/search?q=receptor%20antagonists&ontologies=#{acronym}&require_exact_match=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
@@ -111,7 +111,7 @@ class TestSearchController < TestCase
     assert results["collection"].length > 26
 
     # testing "also_search_obsolete" flag
-    acronym = "BROTEST-0"
+    acronym = "BROSEARCHTEST-0"
 
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}"
     results = MultiJson.load(last_response.body)
@@ -161,7 +161,7 @@ class TestSearchController < TestCase
   end
 
   def test_search_provisional_class
-    acronym = "BROTEST-0"
+    acronym = "BROSEARCHTEST-0"
     ontology_type = "VALUE_SET_COLLECTION"
     # roots only with provisional class test
     get "search?also_search_provisional=true&valueset_roots_only=true&ontology_types=#{ontology_type}&ontologies=#{acronym}"
