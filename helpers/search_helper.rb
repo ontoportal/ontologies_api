@@ -47,10 +47,11 @@ module Sinatra
           "notation" => "notation",
           "cui" => "cui",
           "semantic_types" => "semanticType",
-          "ontology_types" => "ontologyType"
+          ONTOLOGY_TYPES_PARAM => "ontologyType",
+          ALSO_SEARCH_PROVISIONAL_PARAM => nil
       }
 
-      QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.join(" ")
+      QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.compact.join(" ")
 
       def get_edismax_query(text, params={})
         validate_params_solr_population()
@@ -205,6 +206,14 @@ module Sinatra
           cls = get_class(submission)
           subtree_ids = cls.descendants.map {|d| d.id.to_s}
           subtree_ids.push(subtree_root_id)
+
+          also_search_provisional = params[ALSO_SEARCH_PROVISIONAL_PARAM] || "false"
+
+          if also_search_provisional
+            prov_children = LinkedData::Models::ProvisionalClass.children(subtree_root_id)
+            prov_children_ids = prov_children.map {|c| c.id.to_s}
+            subtree_ids.concat prov_children_ids
+          end
         end
         subtree_ids
       end

@@ -17,7 +17,12 @@ module Sinatra
 
       def save_provisional_class_relations(relations_param, pc=nil)
         ret_val = {"objects" => [], "errors" => []}
-        relations_param = [relations_param] unless relations_param.kind_of?(Array)
+
+        if relations_param.nil?
+          relations_param = []
+        elsif !relations_param.kind_of?(Array)
+          relations_param = [relations_param]
+        end
 
         # when saving individual relations (apart from saving an entire provisional class with relation)
         # validate that the provisional class specified in the "source" parameter is valid
@@ -27,7 +32,8 @@ module Sinatra
 
           if pc.nil?
             ret_val["errors"] << "A provisional class with id #{id} was not found"
-            return
+            # set relations_param to an empty array to go directly to return
+            relations_param = []
           end
         end
 
@@ -44,12 +50,18 @@ module Sinatra
           rel_obj.source = pc
 
           if rel_obj.valid?
-            rel_obj.save
             ret_val["objects"] << rel_obj
           else
             ret_val["errors"].concat rel_obj.errors
           end
         end
+
+        if ret_val["errors"].empty?
+          ret_val["objects"].each { |obj| obj.save }
+        else
+          ret_val["objects"] = []
+        end
+
         ret_val
       end
 

@@ -20,8 +20,10 @@ class ProvisionalClassesController < ApplicationController
     # Display all provisional_classes
     get do
       check_last_modified_collection(LinkedData::Models::ProvisionalClass)
-      prov_class = ProvisionalClass.where.include(ProvisionalClass.goo_attrs_to_load(includes_param)).to_a
-      reply prov_class.sort {|a,b| b.created <=> a.created }  # most recent first
+      incl_param = includes_param
+      incl_param << :created if (!incl_param.empty? && !incl_param.include?(:created))
+      prov_classes = ProvisionalClass.where.include(ProvisionalClass.goo_attrs_to_load(incl_param)).to_a
+      reply prov_classes.sort {|a,b| b.created <=> a.created }  # most recent first
     end
 
     # Display a single provisional_class
@@ -40,9 +42,12 @@ class ProvisionalClassesController < ApplicationController
 
       if pc.valid?
         pc.save
-        if not relations.nil?
-          rels = save_provisional_class_relations(relations, pc)
-          error 400, rels["errors"] unless rels["errors"].empty?
+        rels = save_provisional_class_relations(relations, pc)
+
+        # if there were any errors creating relations, fail the entire transaction
+        unless rels["errors"].empty?
+          pc.delete
+          error 400, rels["errors"]
         end
       else
         error 400, pc.errors
@@ -50,26 +55,31 @@ class ProvisionalClassesController < ApplicationController
       reply 201, pc
     end
 
-    # Update an existing submission of an provisional_class
+    # Update an existing submission of a provisional_class
     # Delete all existing relations and save new ones from the request
     patch '/:provisional_class_id' do
       id = uri_as_needed(params["provisional_class_id"])
       pc = ProvisionalClass.find(id).include(ProvisionalClass.attributes).first
 
       if pc.nil?
-        error 400, "Provisional class does not exist, please create using HTTP POST before modifying"
+        error 400, "Provisional class with id #{id} does not exist"
       else
+        relations_param = params.delete("relations")
         pc.bring_remaining
-        relations = params.delete("relations")
         populate_from_params(pc, params)
 
         if pc.valid?
-          pc.save
           pc.bring(:relations)
-          pc.relations.each {|rel| rel.delete}
-          if not relations.nil?
-            rels = save_provisional_class_relations(relations, pc)
-            error 400, rels["errors"] unless rels["errors"].empty?
+          old_rel = pc.relations.dup
+
+          # if there were any errors creating new relations, fail the entire transaction
+          new_rel = save_provisional_class_relations(relations_param, pc)
+
+          if new_rel["errors"].empty?
+            pc.save
+            old_rel.each { |rel| rel.delete }
+          else
+            error 400, new_rel["errors"]
           end
         else
           error 400, pc.errors
