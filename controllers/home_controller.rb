@@ -52,15 +52,33 @@ EOS
     def resource_collection_link(cls)
       resource = @metadata[:cls].name.split("::").last
       return "" if resource.nil?
-      resource_path = "/" + resource.downcase.pluralize
-      if resource.eql?("Class")
-        return "Example class: <a href='/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F410607006'>/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F410607006</a>"
-      elsif resource.eql?("Instance")
-        return "Sample Link: <a href='/ontologies/CTX/classes/http%3A%2F%2Fwww.owl-ontologies.com%2FOntologyXCT.owl%23Eyelid/instances'>/ontologies/CTX/classes/http%3A%2F%2Fwww.owl-ontologies.com%2FOntologyXCT.owl%23Eyelid/instances</a>"
+
+      resource_path = "/" + resource.underscore.pluralize
+
+      case
+      when resource == "Class"
+        return "Example: "\
+               "<a href='/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F410607006'>"\
+               "/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F410607006</a>"
+      when resource == "Instance"
+        return "Example: "\
+               "<a href='/ontologies/CTX/classes/http%3A%2F%2Fwww.owl-ontologies.com%2FOntologyXCT.owl%23Eyelid/instances'>"\
+               "/ontologies/CTX/classes/http%3A%2F%2Fwww.owl-ontologies.com%2FOntologyXCT.owl%23Eyelid/instances</a>"
+      when resource == "Mapping"
+        return "Example: "\
+               "<a href='/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F410607006/mappings'>"\
+               "/ontologies/SNOMEDCT/classes/http%3A%2F%2Fpurl.bioontology.org%2Fontology%2FSNOMEDCT%2F410607006/mappings</a>"
+      when resource == "Note"
+        return "Example: <a href='/ontologies/NCIT/notes'>/ontologies/NCIT/notes</a>"
+      when resource == "OntologySubmission"
+        return "Example: "\
+               "<a href='/ontologies/NCIT/submissions?display=submissionId,version'>"\
+               "/ontologies/NCIT/submissions?display=submissionId,version</a>"
+      when (routes_list().include? resource_path) == false
+        return "Example: coming soon"
+      else
+        return "Resource collection: <a href='#{resource_path}'>#{resource_path}</a>"
       end
-      do_not_display = /\/mappings|\/notes/
-      return "Sample Link: coming soon" if !routes_list.include?(resource_path) || resource_path.match(do_not_display)
-      return "Resource collection: <a href='#{resource_path}'>#{resource_path}</a>"
     end
 
     def metadata(cls)
