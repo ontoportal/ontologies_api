@@ -76,17 +76,8 @@ GIT
       activesupport (>= 2.3)
 
 GIT
-  remote: git://github.com/redis-store/redis-activesupport.git
-  revision: c107458a2a6b5e7019c7f9410a8eb5307f921e61
-  ref: c107458a2a6b5e7019c7f9410a8eb5307f921e61
-  specs:
-    redis-activesupport (4.1.2)
-      activesupport (~> 3)
-      redis-store (~> 1.1.0)
-
-GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: 76cd0cd90d5c835c66749df9a1e77611a3d0af29
+  revision: b3c41ccf5bdf9070da8258595cc3c5b8517e7497
   branch: sifr_multilingual
   specs:
     ncbo_cron (0.0.1)
@@ -102,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 6963ac0ed78c274d61fa88b62b2a446473532c45
+  revision: d60ff8bc0eca20148645453ceb027e14ba640ce9
   branch: sifr_multilingual
   specs:
     ontologies_linked_data (0.0.1)
