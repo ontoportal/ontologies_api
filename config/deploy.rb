@@ -1,10 +1,10 @@
-# config valid only for Capistrano 3.1
-lock '3.1.0'
+# config valid only for Capistrano 3.4
+lock '3.4.0'
 
 APP_PATH='/srv/ncbo'
 
 set :application, 'ontologies_api'
-set :repo_url, "git@github.com:ncbo/#{fetch(:application)}.git"
+set :repo_url, "git://github.com/ncbo/#{fetch(:application)}.git"
 
 set :deploy_via, :remote_cache
 
