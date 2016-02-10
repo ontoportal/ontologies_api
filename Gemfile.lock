@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: e02c09aa8624cfc771993bbd3fe76a282cd93554
+  revision: 1d62d460191f2b1adef53f7284571281c6048d29
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: aabc4031d0eb7aef0bbe3321b9648a58841ebd59
+  revision: 9583b0898f160aa83575cef02539a91a76e2b381
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: eb177b05fb26d29692281590a19be657ccefa57e
+  revision: 21eb8b92c05957e3df743e6766ea92c25288b6d5
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
