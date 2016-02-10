@@ -34,6 +34,9 @@ require_relative 'lib/rack/slice_detection'
 # Logging setup
 require_relative "config/logging"
 
+# Inflector setup
+require_relative "config/inflections"
+
 # Protection settings
 set :protection, :except => :path_traversal
 
