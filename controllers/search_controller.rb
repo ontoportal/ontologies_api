@@ -43,7 +43,7 @@ class SearchController < ApplicationController
         doc[:submission] = submission
         doc[:ontology_rank] = LinkedData::OntologiesAPI.settings.ontology_rank[doc[:submissionAcronym]] || 0
         doc[:properties] = MultiJson.load(doc.delete(:propertyRaw)) if include_param_contains?(:properties)
-        instance = LinkedData::Models::Class.read_only(doc)
+        instance = doc[:provisional] ? LinkedData::Models::ProvisionalClass.read_only(doc) : LinkedData::Models::Class.read_only(doc)
         docs.push(instance)
       end
 

@@ -10,6 +10,7 @@
     <!ENTITY core "http://www.w3.org/2004/02/skos/core#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY oboInOwl "http://www.geneontology.org/formats/oboInOwl#" >
     <!ENTITY activity "http://bioontology.org/ontologies/Activity.owl#" >
     <!ENTITY protege "http://protege.stanford.edu/plugins/owl/protege#" >
     <!ENTITY xsp "http://www.owl-ontologies.com/2005/08/07/xsp.owl#" >
@@ -31,6 +32,7 @@
      xmlns:swrl="http://www.w3.org/2003/11/swrl#"
      xmlns:BRO="http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#"
      xmlns:area="http://bioontology.org/ontologies/ResearchArea.owl#"
+     xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
      xmlns:dct="http://purl.org/dc/terms/"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -53,8 +55,8 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    <owl:AnnotationProperty rdf:about="&oboInOwl;hasDbXref"/>
     
-
 
     <!-- http://bioontology.org/ontologies/biositemap.owl#definition -->
 
@@ -2778,6 +2780,7 @@ we think this should be deleted</desc:definition>
         <desc:definition rdf:datatype="&xsd;string">A resource that provides data, knowledge or narrative.</desc:definition>
         <rdfs:comment rdf:datatype="&xsd;string">As per alignment with NIF resource type hierarchy.</rdfs:comment>
         <core:prefLabel rdf:datatype="&xsd;string">Information Resource</core:prefLabel>
+        <oboInOwl:hasDbXref>hasDbXref0000001</oboInOwl:hasDbXref>
     </owl:Class>
     
 
@@ -5769,6 +5772,7 @@ radionuclide (tracer), which is introduced into the body on a biologically activ
 
     <owl:Class rdf:about="&desc;Biositemaps_Information_Model">
         <core:prefLabel rdf:datatype="&xsd;string">Biositemaps Information Model</core:prefLabel>
+        <oboInOwl:hasDbXref>hasDbXref0000000</oboInOwl:hasDbXref>
     </owl:Class>
     
 
