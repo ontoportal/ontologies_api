@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 34046a1d13ae55ef5f105a87cb65637ff792783a
+  revision: 353be4d974f408b677ad88f2880e426b71060630
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: e1899d52b6e88ee4bdfbdbbdc58e5fb5d8b1be74
+  revision: 39bf41d29f24cc5eeffa456bdb4b970d00129350
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: fa35271e63c3c47a70f0d815d00380ed7d702c19
+  revision: 04eabe8fc4ba3b8e7681466bf8ddd24a950a372b
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 1c7c5a4f6c7d520e96ed0d400fa81cfab46a6f99
+  revision: 7b76f8812f6219b0af0a03c344ba37871b8c5c1d
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 777c9ae205db961f383fd9ea2c8374718d24c2a7
+  revision: 64988ec8c6ba8eb0db100e93fc40c89dd18e441c
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -220,7 +220,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (3.0.2)
     netrc (0.11.0)
-    newrelic_rpm (3.14.3.313)
+    newrelic_rpm (3.15.0.314)
     oj (2.14.4)
     os (0.9.6)
     pony (1.11)
@@ -232,9 +232,9 @@ GEM
     rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.4.0)
+    rack-attack (4.4.1)
       rack
-    rack-cache (1.6.0)
+    rack-cache (1.6.1)
       rack (>= 0.4)
     rack-cors (0.4.0)
     rack-mini-profiler (0.9.8)
@@ -258,7 +258,7 @@ GEM
     redis-activesupport (4.1.5)
       activesupport (>= 3, < 5)
       redis-store (~> 1.1.0)
-    redis-rack-cache (1.2.3)
+    redis-rack-cache (1.2.4)
       rack-cache (~> 1.2)
       redis-store (~> 1.1.0)
     redis-store (1.1.7)
