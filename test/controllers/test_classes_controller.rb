@@ -80,6 +80,7 @@ class TestClassesController < TestCase
     assert response["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Ontology_Development_and_Management"
   end
 
+
   def test_all_class_pages
     ont = Ontology.find("TEST-ONT-0").include(:acronym).first
 
@@ -490,6 +491,42 @@ class TestClassesController < TestCase
         assert parents.length > 0 and parents.include? cls_id
       end
     end
+  end
+
+  def test_class_page_with_metric_count
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+
+    page_response = nil
+    count_terms = 0
+    last_page_n = nil
+    begin
+      call = "/ontologies/#{ont.acronym}/classes"
+      if page_response
+        last_page_n = page_response['nextPage']
+        call <<  "?page=#{page_response['nextPage']}"
+      end
+      get call
+      assert last_response.ok?
+      page_response = MultiJson.load(last_response.body)
+      page_response["collection"].each do |item|
+        assert_instance_of String, item["prefLabel"]
+        assert_instance_of String, item["@id"]
+        assert_instance_of Hash, item["@context"]
+        assert_instance_of Hash, item["links"]
+      end
+      assert last_response.ok?
+      count_terms = count_terms + page_response["collection"].length
+    end while page_response["nextPage"]
+    #bnodes thing got fixed. changed to 486.
+    assert count_terms == 486
+
+    #one more page should bring no results
+    call = "/ontologies/#{ont.acronym}/classes"
+    call <<  "?page=#{last_page_n+1}"
+    get call
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    assert page_response["collection"].length == 0
   end
 
 end
