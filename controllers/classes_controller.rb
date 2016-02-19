@@ -7,7 +7,7 @@ class ClassesController < ApplicationController
       includes_param_check
       ont, submission = get_ontology_and_submission
       submission.bring(metrics: [:classes])
-      if submission.metrics.classes.nil?
+      if submission.metrics.nil? or submission.metrics.classes.nil?
         error 403, "Unable to process due to missing metrics. Contact administrator"
       end
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
