@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 21eb8b92c05957e3df743e6766ea92c25288b6d5
+  revision: 4dc51402e198045db1274b365f0355a684347b2c
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -272,7 +272,7 @@ GEM
     rsolr (1.0.13)
       builder (>= 2.1.2)
     ruby-xxHash (0.4.0.1)
-    rubyzip (1.1.7)
+    rubyzip (1.2.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (4.31.0)
