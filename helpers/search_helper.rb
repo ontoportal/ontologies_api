@@ -109,7 +109,8 @@ module Sinatra
         params["ontologies"] = params["ontology_acronyms"].join(",") if params["ontology_acronyms"] && !params["ontology_acronyms"].empty?
         ontology_types = params[ONTOLOGY_TYPES_PARAM].nil? || params[ONTOLOGY_TYPES_PARAM].empty? ? [] : params[ONTOLOGY_TYPES_PARAM].split(",").map(&:strip)
         onts = restricted_ontologies(params)
-        onts.select! { |o| ontology_types.include?(o.ontologyType.get_code_from_id) } unless ontology_types.empty?
+
+        onts.select! { |o| ont_type = o.ontologyType.nil? ? "ONTOLOGY" : o.ontologyType.get_code_from_id; ontology_types.include?(ont_type) } unless ontology_types.empty?
         acronyms = restricted_ontologies_to_acronyms(params, onts)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
