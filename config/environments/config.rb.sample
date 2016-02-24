@@ -17,6 +17,18 @@ LinkedData.config do |config|
   config.goo_redis_host = "localhost"
   config.goo_redis_port = 6379
 
+  # Email notifications
+  config.enable_notifications   = false
+  config.email_sender           = "admin@example.org" # Default sender for emails
+  config.email_override         = "override@example.org" # all email gets sent here. Disable with email_override_disable.
+  config.email_disable_override = true
+  config.smtp_host              = "localhost"
+  config.smtp_port              = 25
+  config.smtp_auth_type         = :none # :none, :plain, :login, :cram_md5
+  config.smtp_domain            = "example.org"
+  # email of the instance administrator to get mail notifications when new user
+  config.email_admin             = "admin@example.org"
+
   #Ontology Analytics Redis
   config.ontology_analytics_redis_host = "localhost"
   config.ontology_analytics_redis_port = 6379

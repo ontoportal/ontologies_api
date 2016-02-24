@@ -112,6 +112,13 @@ class UsersController < ApplicationController
       user = instance_from_params(User, params)
       if user.valid?
         user.save
+        # Send an email to the administrator to warn him about the newly created user
+        begin
+          if !LinkedData.settings.email_admin.nil? && !LinkedData.settings.email_admin.empty?
+            LinkedData::Utils::Notifications.new_user(user)
+          end
+        rescue Exception => e
+        end
       else
         error 422, user.errors
       end
