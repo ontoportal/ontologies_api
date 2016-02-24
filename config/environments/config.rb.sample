@@ -26,8 +26,8 @@ LinkedData.config do |config|
   config.smtp_port              = 25
   config.smtp_auth_type         = :none # :none, :plain, :login, :cram_md5
   config.smtp_domain            = "example.org"
-  # email of the instance administrator to get mail notifications when new user
-  config.email_admin             = "admin@example.org"
+  # Emails of the instance administrators to get mail notifications when new user
+  config.email_admin             = ["admin@example.org"]
 
   #Ontology Analytics Redis
   config.ontology_analytics_redis_host = "localhost"
