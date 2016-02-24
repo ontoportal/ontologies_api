@@ -114,7 +114,7 @@ class UsersController < ApplicationController
         user.save
         # Send an email to the administrator to warn him about the newly created user
         begin
-          if !LinkedData.settings.email_admin.nil? && !LinkedData.settings.email_admin.empty?
+          if !LinkedData.settings.admin_emails.nil? && !LinkedData.settings.admin_emails.empty?
             LinkedData::Utils::Notifications.new_user(user)
           end
         rescue Exception => e
