@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 34046a1d13ae55ef5f105a87cb65637ff792783a
+  revision: de6fceb58ecc1d17fe426586b62db4d8a1543137
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 39bf41d29f24cc5eeffa456bdb4b970d00129350
+  revision: f5093484a754a8a5b13fefbe2c52b9fe6178cd41
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 7b76f8812f6219b0af0a03c344ba37871b8c5c1d
+  revision: e08df80836cd362085e023eb32101b6b32e71b7b
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -143,7 +143,7 @@ GEM
     capistrano-rbenv (2.0.4)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
-    coderay (1.1.0)
+    coderay (1.1.1)
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
@@ -207,7 +207,7 @@ GEM
       mime-types (>= 1.16, < 3)
     memoist (0.14.0)
     method_source (0.8.2)
-    mime-types (2.99)
+    mime-types (2.99.1)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.7)
@@ -221,7 +221,7 @@ GEM
     net-ssh (3.0.2)
     netrc (0.11.0)
     newrelic_rpm (3.15.0.314)
-    oj (2.14.4)
+    oj (2.14.5)
     os (0.9.6)
     pony (1.11)
       mail (>= 2.0)
@@ -269,10 +269,10 @@ GEM
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     retriable (1.4.1)
-    rsolr (1.0.13)
+    rsolr (1.1.1)
       builder (>= 2.1.2)
     ruby-xxHash (0.4.0.1)
-    rubyzip (1.1.7)
+    rubyzip (1.2.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (4.31.0)
