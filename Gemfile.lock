@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 141dd0c88ddbb401897870231c19eb4cfd1aebcd
+  revision: ba85ef7d83788be89d4850e95db2a8068f0b2311
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: aa8db213caaa90c695ace3cb1b26c92fb02b407f
+  revision: 0b5ad0c70a1564050a4cfb335e8ed6ca643f31db
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: dc6a84556b6e57e627c4ba27743d2a0da0d5b64c
+  revision: b70f6f5b45e51cd5d548c98d586e40095df403d6
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: db5c7e61f98a6bb8386b444d64d37a49a2cbbf61
+  revision: a9e79cf5798333b9ab77388cca923c4efa162e36
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 7496ccdaca5d748e0216a1908020220e354b9c61
+  revision: f6bcae343b2d8ad0f3271c4838ccfa7f8980a79f
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -214,7 +214,7 @@ GEM
       redis
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.4.2)
+    mysql2 (0.4.3)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -370,3 +370,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.11.2
