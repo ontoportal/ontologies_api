@@ -16,7 +16,9 @@ class CCVController < ApplicationController
     SYNONYMS_FOR_ANALYTICS_LIMIT = 4
 
     get do
-      reply 200, process_concept_search
+      #TODO: delete when ccv will be on production
+      reply(404, "Resource Index is not activated")
+      #reply 200, process_concept_search
     end
 
     # private

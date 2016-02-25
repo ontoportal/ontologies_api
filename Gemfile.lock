@@ -26,22 +26,6 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: f67f871e80938c6293f48eca30c3db3a18f98f53
-  branch: master
-  specs:
-    ncbo_cron (0.0.1)
-      dante
-      goo
-      google-api-client
-      mlanett-redis-lock
-      multi_json
-      ncbo_annotator
-      ontologies_linked_data
-      redis
-      rufus-scheduler (~> 2.0.24)
-
-GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
   revision: e08df80836cd362085e023eb32101b6b32e71b7b
   branch: master
@@ -59,26 +43,6 @@ GIT
     ncbo_resolver (0.0.1)
       recursive-open-struct
       redis
-
-GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 57e14477b55a295348565063955c12928557a17d
-  branch: master
-  specs:
-    ontologies_linked_data (0.0.1)
-      activesupport
-      bcrypt
-      goo
-      json
-      libxml-ruby
-      multi_json
-      ncbo_resource_index
-      oj
-      pony
-      rack
-      rack-test
-      rsolr
-      rubyzip
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
@@ -110,6 +74,42 @@ GIT
   specs:
     rack-post-body-to-params (0.1.8)
       activesupport (>= 2.3)
+
+GIT
+  remote: git://github.com/sifrproject/ncbo_cron.git
+  revision: fd4f175b6be39a6296a3aff3cfc9d8bb24949728
+  branch: lirmm_cron
+  specs:
+    ncbo_cron (0.0.1)
+      dante
+      goo
+      google-api-client
+      mlanett-redis-lock
+      multi_json
+      ncbo_annotator
+      ontologies_linked_data
+      redis
+      rufus-scheduler (~> 2.0.24)
+
+GIT
+  remote: git://github.com/sifrproject/ontologies_linked_data.git
+  revision: 64bde5b77b53bfbf4aca98919a4d209a9e092363
+  branch: lirmm_linked_data
+  specs:
+    ontologies_linked_data (0.0.1)
+      activesupport
+      bcrypt
+      goo
+      json
+      libxml-ruby
+      multi_json
+      ncbo_resource_index
+      oj
+      pony
+      rack
+      rack-test
+      rsolr
+      rubyzip
 
 GIT
   remote: https://github.com/palexander/shotgun.git
@@ -180,7 +180,6 @@ GEM
       jwt (~> 1.4)
       logging (~> 2.0)
       memoist (~> 0.12)
-      multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
     haml (4.0.7)
