@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 60b85b9aa68d0c9315cf9152cd404f211cb89099
+  revision: 252c931cc740cdfd581789993839ec52d60ea528
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: db5c7e61f98a6bb8386b444d64d37a49a2cbbf61
+  revision: 94221a5beb69f33dd3dd86c2e2ec96fc9ba1114e
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: e77e4b24d4defde211c1170f935cdaccdf8e5bcf
+  revision: fc3a4b536a4fb63fb291e6ea75f9eef1948af9ab
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -147,7 +147,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20160128)
+    domain_name (0.5.20160216)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (1.0.15)
       elasticsearch-api (= 1.0.15)
@@ -192,7 +192,7 @@ GEM
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.3)
-    jwt (1.5.2)
+    jwt (1.5.3)
     kgio (2.10.0)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -214,7 +214,7 @@ GEM
       redis
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.4.2)
+    mysql2 (0.4.3)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
