@@ -43,6 +43,8 @@ begin
     config.smtp_port              = 25
     config.smtp_auth_type         = :none # :none, :plain, :login, :cram_md5
     config.smtp_domain            = "example.org"
+    # Emails of the instance administrators to get mail notifications when new user or new ontology
+    config.admin_emails           = ["admin@example.org"]
 
     # PURL server config parameters
     config.enable_purl            = false
