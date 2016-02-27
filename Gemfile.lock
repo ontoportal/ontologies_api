@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 0b5ad0c70a1564050a4cfb335e8ed6ca643f31db
+  revision: a6fa6a937de1e48433accaaaf9bb88b063f00047
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: a9e79cf5798333b9ab77388cca923c4efa162e36
+  revision: e311ae13f116d0523effe3f574bc6c3052ef1a61
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -370,6 +370,3 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
-
-BUNDLED WITH
-   1.11.2
