@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: b47a2d918a6fb1d367f81c3284db97bdf9b1f093
-  branch: master
+  revision: 1d2c5837f7c176d22b1abc857063cc9146fb75f8
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 7c751c67f2d611b898a0011be26cabd3ee5aee57
-  branch: master
+  revision: 0cdec86c708b00552e46d05859a567e4b5b9d513
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -122,7 +122,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.22.1)
+    activesupport (3.2.22.2)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
@@ -221,7 +221,7 @@ GEM
     net-ssh (3.0.2)
     netrc (0.11.0)
     newrelic_rpm (3.15.0.314)
-    oj (2.14.5)
+    oj (2.14.6)
     os (0.9.6)
     pony (1.11)
       mail (>= 2.0)
@@ -248,7 +248,7 @@ GEM
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 5.0)
-    raindrops (0.15.0)
+    raindrops (0.16.0)
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
