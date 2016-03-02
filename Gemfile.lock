@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: bcba9ca59cb15d29663a52efb0ef4fe840947ede
+  revision: 92a224a128067034f2094fa32a5e6f5900610a97
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -275,7 +275,7 @@ GEM
     rubyzip (1.2.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.31.0)
+    sequel (4.32.0)
     signet (0.7.2)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -370,6 +370,3 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
-
-BUNDLED WITH
-   1.11.2
