@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f401f45ddf43fb0f374c6313ffb5820c3351e375
-  branch: staging
+  revision: 77c4c94c5beb15bc478322244755edea7334f1ec
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 92d304411171ebba9f04e47a859c500f375a43f0
-  branch: staging
+  revision: 20f612519965cceea8f44c59cc08db49df056233
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: bcba9ca59cb15d29663a52efb0ef4fe840947ede
-  branch: staging
+  revision: e511842690df74e1a9a4908cb882cf2e75cf461b
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: e3e5c79ab4919312fb75f7909744227af1ab380b
-  branch: staging
+  revision: ace42fea5d417b3a6a17301736d2a2484a51e9c1
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -275,7 +275,7 @@ GEM
     rubyzip (1.2.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.31.0)
+    sequel (4.32.0)
     signet (0.7.2)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -370,6 +370,3 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
-
-BUNDLED WITH
-   1.11.2
