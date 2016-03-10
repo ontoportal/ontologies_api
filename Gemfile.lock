@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 67f584923c0c66b1c9006758c854be1b58e2f4f9
+  revision: 491959e5557e96880828b3fc34eb9669046d85c4
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -300,7 +300,7 @@ GEM
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
     slop (3.6.0)
-    sshkit (1.8.1)
+    sshkit (1.9.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
@@ -370,3 +370,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.11.2
