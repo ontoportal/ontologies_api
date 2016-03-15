@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 491959e5557e96880828b3fc34eb9669046d85c4
+  revision: 469fed8d487f8ef13377b699d1f4f2f2c5e9caee
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 91ad3f2a786cdf9bb8996e19e9970e688feacd45
+  revision: 3ba8a3766d94c6154b58d937bd939dfe34f38545
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 5ab2d63cd2d54f447507b00317924adf97fd76bb
+  revision: 268ed68098c5256e9d2cd5888e7d9156ea39aa54
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -198,7 +198,7 @@ GEM
       addressable (~> 2.3)
     libxml-ruby (2.8.0)
     little-plugger (1.1.4)
-    logging (2.0.0)
+    logging (2.1.0)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     macaddr (1.7.1)
@@ -370,3 +370,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.11.2
