@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 0747ceb585ac2f0a87151bac39c6c2b85d4b390e
+  revision: c30db1784cd1c1116ca896c7cb733c1be1225042
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 4491e3416190dde327e8969413aca61e02427ed7
+  revision: 416d2cc961a8490ffa6be54646a8b55bafe995d5
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 7fa37ac992bd014d6f2dc996055a38b965c3f825
+  revision: 16889536dfd73807db6703821e0afa9ff516a033
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -218,7 +218,7 @@ GEM
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (3.0.2)
+    net-ssh (3.1.0)
     netrc (0.11.0)
     newrelic_rpm (3.15.0.314)
     oj (2.14.6)
