@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 1eb352d8bdc5df477ced7495d285dafbbb9e70cc
+  revision: c2c0e5996f7f12a19145daf8bb11ff53b467d431
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -370,6 +370,3 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
-
-BUNDLED WITH
-   1.11.2
