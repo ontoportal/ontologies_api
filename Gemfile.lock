@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: f4f95962ed1e32491d1493e06234098961e26bec
+  revision: 72ef8d53ca510beb131b0f5ee84df0128c0556ac
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -370,3 +370,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.11.2
