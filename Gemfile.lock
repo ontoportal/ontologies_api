@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: f3bef895f3e3851823f071637fd959c27058a3d4
+  revision: d7eb0936fbc393efeb6017def9b71db0d8a7c095
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -192,7 +192,7 @@ GEM
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (1.8.3)
-    jwt (1.5.3)
+    jwt (1.5.4)
     kgio (2.10.0)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -220,7 +220,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (3.1.1)
     netrc (0.11.0)
-    newrelic_rpm (3.15.0.314)
+    newrelic_rpm (3.15.1.316)
     oj (2.14.6)
     os (0.9.6)
     pony (1.11)
