@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 12b3ef4c0d36044092423819afcc29d28bd8c9fd
+  revision: a3fd74364f19b5818b14abdfaac91e7a2152882e
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: ef65f115a5c8dd8a91a7de0819b80ddc66fd59ce
+  revision: 9d74777f096f246f7694c5ace76a183adf4ed232
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: f59440865543e3a3b1299d93411585a2f0d08e49
+  revision: 9450ab613ce0eee8ef0720eca883d69c5ea0426c
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 5c6921d4a31a0c47be915967c9e40818dda0b82d
+  revision: 6fa620af64b7b407687b68eb804bd1576ea9c233
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: d7eb0936fbc393efeb6017def9b71db0d8a7c095
+  revision: 71cad22945cd39b3ffbe222dbef6d921c85cf32b
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 2f69bdf6ee1e91aa974fe844b5097e465a2fe596
+  revision: f6fab1c3b993a2ea521af22086a34ba1feeffd02
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -221,7 +221,7 @@ GEM
     net-ssh (3.1.1)
     netrc (0.11.0)
     newrelic_rpm (3.15.1.316)
-    oj (2.14.6)
+    oj (2.15.0)
     os (0.9.6)
     pony (1.11)
       mail (>= 2.0)
@@ -275,7 +275,7 @@ GEM
     rubyzip (1.2.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.32.0)
+    sequel (4.33.0)
     signet (0.7.2)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -313,9 +313,8 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
-    unicorn (5.0.1)
+    unicorn (5.1.0)
       kgio (~> 2.6)
-      rack
       raindrops (~> 0.7)
     unicorn-worker-killer (0.4.4)
       get_process_mem (~> 0)

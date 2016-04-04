@@ -30,6 +30,7 @@ class TestProvisionalRelationsController < TestCase
 
     #Create a test provisional relation
     @@test_rel = LinkedData::Models::ProvisionalRelation.new({
+        creator: @@test_user,
         source: @@test_pc,
         relationType: RDF::IRI.new("http://www.w3.org/2004/02/skos/core#exactMatch"),
         targetClassId: @@cls1.id,
@@ -80,6 +81,7 @@ class TestProvisionalRelationsController < TestCase
 
   def create_relation(targetCls, relType)
     rel = {
+        creator: @@test_user.id.to_s,
         source: @@test_pc.id.to_s,
         relationType: relType,
         targetClassId: targetCls.id.to_s,
