@@ -243,7 +243,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
-    rack-timeout (0.3.2)
+    rack-timeout (0.4.2)
     rainbows (5.0.0)
       kgio (~> 2.5)
       rack (~> 1.1)
