@@ -6,6 +6,10 @@ class ClassesController < ApplicationController
     get do
       includes_param_check
       ont, submission = get_ontology_and_submission
+      submission.bring(metrics: [:classes])
+      if submission.metrics.nil? or submission.metrics.classes.nil?
+        error 403, "Unable to process due to missing metrics. Contact administrator"
+      end
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
@@ -13,6 +17,7 @@ class ClassesController < ApplicationController
       page_data = LinkedData::Models::Class.in(submission)
                                 .include(ld)
                                 .page(page,size)
+                                .page_count_set(submission.metrics.classes)
                                 .all
       if unmapped && page_data.length > 0
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all

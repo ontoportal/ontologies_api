@@ -3,7 +3,64 @@ require_relative '../test_case'
 class TestSearchController < TestCase
 
   def self.before_suite
-    @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies
+     count, acronyms, bro = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+      process_submission: true,
+      acronym: "BROSEARCHTEST",
+      name: "BRO Search Test",
+      file_path: "./test/data/ontology_files/BRO_v3.2.owl",
+      ont_count: 1,
+      submission_count: 1,
+      ontology_type: "VALUE_SET_COLLECTION"
+    })
+
+    count, acronyms, mccl = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+      process_submission: true,
+      acronym: "MCCLSEARCHTEST",
+      name: "MCCL Search Test",
+      file_path: "./test/data/ontology_files/CellLine_OWL_BioPortal_v1.0.owl",
+      ont_count: 1,
+      submission_count: 1
+    })
+
+    @@ontologies = bro.concat(mccl)
+
+    @@test_user = LinkedData::Models::User.new(
+        username: "test_search_user",
+        email: "ncbo_search_user@example.org",
+        password: "test_user_password"
+    )
+    @@test_user.save
+
+    # Create a test ROOT provisional class
+    @@test_pc_root = LinkedData::Models::ProvisionalClass.new({
+      creator: @@test_user,
+      label: "Provisional Class - ROOT",
+      synonym: ["Test synonym for Prov Class ROOT", "Test syn ROOT provisional class"],
+      definition: ["Test definition for Prov Class ROOT"],
+      ontology: @@ontologies[0]
+    })
+    @@test_pc_root.save
+
+    @@cls_uri = RDF::URI.new("http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research")
+    # Create a test CHILD provisional class
+    @@test_pc_child = LinkedData::Models::ProvisionalClass.new({
+      creator: @@test_user,
+      label: "Provisional Class - CHILD",
+      synonym: ["Test synonym for Prov Class CHILD", "Test syn CHILD provisional class"],
+      definition: ["Test definition for Prov Class CHILD"],
+      ontology: @@ontologies[0],
+      subclassOf: @@cls_uri
+    })
+    @@test_pc_child.save
+  end
+
+  def self.after_suite
+    @@test_pc_root.delete
+    @@test_pc_child.delete
+    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
+    @@test_user.delete
+    LinkedData::Models::Ontology.indexClear
+    LinkedData::Models::Ontology.indexCommit
   end
 
   def test_search
@@ -23,7 +80,7 @@ class TestSearchController < TestCase
   end
 
   def test_search_ontology_filter
-    acronym = "MCCLTEST-0"
+    acronym = "MCCLSEARCHTEST-0"
     get "/search?q=cell%20li*&ontologies=#{acronym}"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
@@ -37,7 +94,7 @@ class TestSearchController < TestCase
   end
 
   def test_search_other_filters
-    acronym = "MCCLTEST-0"
+    acronym = "MCCLSEARCHTEST-0"
     get "/search?q=receptor%20antagonists&ontologies=#{acronym}&require_exact_match=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
@@ -54,7 +111,7 @@ class TestSearchController < TestCase
     assert results["collection"].length > 26
 
     # testing "also_search_obsolete" flag
-    acronym = "BROTEST-0"
+    acronym = "BROSEARCHTEST-0"
 
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}"
     results = MultiJson.load(last_response.body)
@@ -101,6 +158,26 @@ class TestSearchController < TestCase
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     coll = results["collection"]
+  end
+
+  def test_search_provisional_class
+    acronym = "BROSEARCHTEST-0"
+    ontology_type = "VALUE_SET_COLLECTION"
+    # roots only with provisional class test
+    get "search?also_search_provisional=true&valueset_roots_only=true&ontology_types=#{ontology_type}&ontologies=#{acronym}"
+    results = MultiJson.load(last_response.body)
+    assert_equal 10, results["collection"].length
+    provisional = results["collection"].select {|res| assert_equal ontology_type, res["ontologyType"]; res["provisional"]}
+    assert_equal 1, provisional.length
+    assert_equal @@test_pc_root.label, provisional[0]["prefLabel"]
+
+    # subtree root with provisional class test
+    get "search?ontology=#{acronym}&subtree_root_id=#{CGI::escape(@@cls_uri.to_s)}&also_search_provisional=true"
+    results = MultiJson.load(last_response.body)
+    assert_equal 21, results["collection"].length
+    provisional = results["collection"].select {|res| res["provisional"]}
+    assert_equal 1, provisional.length
+    assert_equal @@test_pc_child.label, provisional[0]["prefLabel"]
   end
 
 end

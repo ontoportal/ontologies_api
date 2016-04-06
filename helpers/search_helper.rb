@@ -107,7 +107,10 @@ module Sinatra
         end
 
         params["ontologies"] = params["ontology_acronyms"].join(",") if params["ontology_acronyms"] && !params["ontology_acronyms"].empty?
+        ontology_types = params[ONTOLOGY_TYPES_PARAM].nil? || params[ONTOLOGY_TYPES_PARAM].empty? ? [] : params[ONTOLOGY_TYPES_PARAM].split(",").map(&:strip)
         onts = restricted_ontologies(params)
+
+        onts.select! { |o| ont_type = o.ontologyType.nil? ? "ONTOLOGY" : o.ontologyType.get_code_from_id; ontology_types.include?(ont_type) } unless ontology_types.empty?
         acronyms = restricted_ontologies_to_acronyms(params, onts)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
@@ -116,7 +119,6 @@ module Sinatra
         filter_query = "#{filter_query} AND #{subtree_ids_clause}" unless (subtree_ids_clause.empty?)
 
         # ontology types are required for CEDAR project to differentiate between ontologies and value set collections
-        ontology_types = params[ONTOLOGY_TYPES_PARAM].nil? || params[ONTOLOGY_TYPES_PARAM].empty? ? [] : params[ONTOLOGY_TYPES_PARAM].split(",").map(&:strip)
         ontology_types_clause = ontology_types.empty? ? "" : get_quoted_field_query_param(ontology_types, "OR", "ontologyType")
         filter_query = "#{filter_query} AND #{ontology_types_clause}" unless (ontology_types_clause.empty?)
 
@@ -209,7 +211,7 @@ module Sinatra
 
           also_search_provisional = params[ALSO_SEARCH_PROVISIONAL_PARAM] || "false"
 
-          if also_search_provisional
+          if also_search_provisional == "true"
             prov_children = LinkedData::Models::ProvisionalClass.children(subtree_root_id)
             prov_children_ids = prov_children.map {|c| c.id.to_s}
             subtree_ids.concat prov_children_ids
@@ -220,14 +222,22 @@ module Sinatra
 
       def get_valueset_root_ids(onts, params)
         root_ids = []
+        also_search_provisional = params[ALSO_SEARCH_PROVISIONAL_PARAM] || "false"
 
         onts.each do |ont|
           next if ont.nil? || ont.ontologyType.nil? || !ont.ontologyType.value_set_collection?
           submission = ont.latest_submission(status: [:RDF])
           next if submission.nil?
+
           roots = submission.roots
           root_ids_ont = roots.map {|d| d.id.to_s}
           root_ids << root_ids_ont
+
+          if also_search_provisional == "true"
+            prov_classes = LinkedData::Models::ProvisionalClass.where(ontology: ont).include(:subclassOf).all
+            prov_class_ids = prov_classes.map {|c| c.id.to_s if c.subclassOf.nil?}
+            root_ids.concat prov_class_ids
+          end
         end
         root_ids.flatten
       end
