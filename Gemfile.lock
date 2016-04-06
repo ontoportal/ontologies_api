@@ -26,22 +26,6 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: f67f871e80938c6293f48eca30c3db3a18f98f53
-  branch: master
-  specs:
-    ncbo_cron (0.0.1)
-      dante
-      goo
-      google-api-client
-      mlanett-redis-lock
-      multi_json
-      ncbo_annotator
-      ontologies_linked_data
-      redis
-      rufus-scheduler (~> 2.0.24)
-
-GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
   revision: e08df80836cd362085e023eb32101b6b32e71b7b
   branch: master
@@ -93,8 +77,8 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: b3c41ccf5bdf9070da8258595cc3c5b8517e7497
-  branch: sifr_multilingual
+  revision: 1e321083b08bffe9de9b7377236631d306e8b49c
+  branch: sifr_metadata
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -109,8 +93,8 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: d60ff8bc0eca20148645453ceb027e14ba640ce9
-  branch: sifr_multilingual
+  revision: afbec4eccf865ebe2ed458c7e3c975bce54ac4ca
+  branch: sifr_metadata
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -147,7 +131,7 @@ GEM
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
     backports (3.6.8)
-    bcrypt (3.1.10)
+    bcrypt (3.1.11)
     builder (3.2.2)
     capistrano (3.4.0)
       i18n
@@ -386,3 +370,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.11.2
