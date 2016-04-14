@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 97d4aab74e59acad529e89f7fe4df462e2120a13
+  revision: 6ba21f6b183f2c653d35cf7b7bc042aafc6ecb54
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -133,7 +133,7 @@ GEM
     backports (3.6.8)
     bcrypt (3.1.11)
     builder (3.2.2)
-    capistrano (3.4.0)
+    capistrano (3.4.1)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
