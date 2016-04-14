@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 0fe60dfbc350235d833e839f6094d768377bbb1a
+  revision: b0b16ca8af76a02552d8ec87120ef1843240e190
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: e9a74ccd049916b1380a09e64be6c0357c8285e6
+  revision: 3758c99df4405dd03ab497c0766277f71ed3af37
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 5d2be186f7e318202e0d389008581db786612d8c
+  revision: 97d4aab74e59acad529e89f7fe4df462e2120a13
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -149,12 +149,12 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.15)
-      elasticsearch-api (= 1.0.15)
-      elasticsearch-transport (= 1.0.15)
-    elasticsearch-api (1.0.15)
+    elasticsearch (1.0.17)
+      elasticsearch-api (= 1.0.17)
+      elasticsearch-transport (= 1.0.17)
+    elasticsearch-api (1.0.17)
       multi_json
-    elasticsearch-transport (1.0.15)
+    elasticsearch-transport (1.0.17)
       faraday
       multi_json
     ethon (0.8.1)
@@ -292,7 +292,7 @@ GEM
       tilt (>= 1.3, < 3)
     sinatra-advanced-routes (0.5.3)
       sinatra (~> 1.0)
-    sinatra-contrib (1.4.6)
+    sinatra-contrib (1.4.7)
       backports (>= 2.0)
       multi_json
       rack-protection
