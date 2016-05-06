@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 34585cd8ea33b1d54c4d34eef0f9fc3c57aea40d
+  revision: b68c7805a068fcfc3055d7a99b32b09cee8158da
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 38d0c64ef9960b86c1c2fe93d8f32409e68dc73f
+  revision: 790c894cbcb04c35d7fdee24f7035be95da2fad1
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -95,7 +95,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 41dab44973c3f086bf335c2513cc208144e99a74
+  revision: 190fa44c3b63907d11555f5c18a86493cb9722d0
   branch: staging
   specs:
     sparql-client (1.0.4.1)
