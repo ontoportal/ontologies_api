@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 049d171fce5ed34cd334a00663713381348bd9bc
+  revision: 3c1fae7f30f1ebcd958a8dc01f1f4c8b8bdf7cc9
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -207,12 +207,12 @@ GEM
       mime-types (>= 1.16, < 4)
     memoist (0.14.0)
     method_source (0.8.2)
-    mime-types (2.99.1)
+    mime-types (2.99.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.7)
       redis
-    multi_json (1.12.0)
+    multi_json (1.12.1)
     multipart-post (2.0.0)
     mysql2 (0.4.4)
     net-http-persistent (2.9.4)
@@ -237,7 +237,7 @@ GEM
     rack-cache (1.6.1)
       rack (>= 0.4)
     rack-cors (0.4.0)
-    rack-mini-profiler (0.9.9.2)
+    rack-mini-profiler (0.10.1)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
@@ -305,7 +305,7 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     thread_safe (0.3.5)
-    tilt (2.0.3)
+    tilt (2.0.4)
     typhoeus (1.0.2)
       ethon (>= 0.9.0)
     tzinfo (1.2.2)
