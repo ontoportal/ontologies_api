@@ -78,9 +78,9 @@ class RecommenderController < ApplicationController
       # sum of weights
       if (wc + ws + wa + wd <= 0) then raise error 400, 'The sum of the weights must be greater than zero' end
 
-      ontologies = restricted_ontologies_to_acronyms(params)
+      acronyms = restricted_ontologies_to_acronyms(params)
       recommender = OntologyRecommender::Recommender.new
-      ranking = recommender.recommend(input, input_type, output_type, max_elements_set, ontologies, wc, ws, wa, wd)
+      ranking = recommender.recommend(input, input_type, output_type, max_elements_set, acronyms, wc, ws, wa, wd)
       reply 200, ranking
     end
   end

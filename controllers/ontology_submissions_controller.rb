@@ -145,6 +145,13 @@ class OntologySubmissionsController < ApplicationController
       end
     end
 
+    def delete_submissions(startId, endId)
+      startId.upto(endId + 1) do |i|
+        sub = LinkedData::Models::OntologySubmission.find(RDF::URI.new("http://data.bioontology.org/ontologies/MS/submissions/#{i}")).first
+        sub.delete if sub
+      end
+    end
+
   end
 
 
