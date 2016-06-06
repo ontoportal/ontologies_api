@@ -368,7 +368,7 @@ module Sinatra
         submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
         # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
         if includes_param.first == :all
-          submissions = submissions_query.include([:released, :creationDate, :status, :submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]).to_a
+          submissions = submissions_query.include([:released, :creationDate, :status, :submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]).to_a
         else
           submissions = submissions_query.include(includes).to_a
         end
