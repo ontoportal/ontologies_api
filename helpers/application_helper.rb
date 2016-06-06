@@ -368,20 +368,22 @@ module Sinatra
         submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
         # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
         if includes_param.first == :all
-          submissions = submissions_query.include([:released, :creationDate, :status, :submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]).to_a
+          including = [:released, :creationDate, :homepage, :publication, :documentation, :version, :description, :naturalLanguage, :status, :submissionId,
+                       :prefLabelProperty, :definitionProperty, :synonymProperty, :authorProperty, :classType, :hierarchyProperty, :obsoleteProperty, :obsoleteParent, :URI,
+                       :uploadFilePath, :diffFilePath, :masterFileName, :missingImports, :pullLocation, :metrics,
+                       {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
+          submissions = submissions_query.include(including).to_a
         else
           submissions = submissions_query.include(includes).to_a
         end
 
-        puts submissions
-
         # Figure out latest parsed submissions using all submissions
         latest_submissions = {}
         submissions.each do |sub|
-          if includes_param.first == :all
-            # Remove it when the sparql query to get included metadata will be fixed
-            sub.bring_remaining
-          end
+          # To retrieve all metadata, but too slow when a lot of ontologies
+          #if includes_param.first == :all
+          #  sub.bring_remaining
+          #end
           next if include_ready && !sub.ready?
           latest_submissions[sub.ontology.acronym] ||= sub
           latest_submissions[sub.ontology.acronym] = sub if sub.submissionId.to_i > latest_submissions[sub.ontology.acronym].submissionId.to_i
