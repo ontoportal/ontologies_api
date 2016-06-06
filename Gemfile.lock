@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: 38807907302fa7632f9c7d6a850b772e8287af23
+  revision: 21c4968f60e8a87d4f8a84efa9ff4163596ff3b6
   branch: sifr_metadata
   specs:
     ncbo_cron (0.0.1)
@@ -93,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 6be07baee205fc6351287749b62f97e025fb4c59
+  revision: 4b46bb0b70af80c9a9791070e161db06b3d5f168
   branch: sifr_metadata
   specs:
     ontologies_linked_data (0.0.1)
