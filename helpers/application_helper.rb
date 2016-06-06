@@ -371,7 +371,7 @@ module Sinatra
           including = [:released, :creationDate, :homepage, :publication, :documentation, :version, :description, :naturalLanguage, :status, :submissionId,
                        :prefLabelProperty, :definitionProperty, :synonymProperty, :authorProperty, :classType, :hierarchyProperty, :obsoleteProperty, :obsoleteParent, :URI,
                        :uploadFilePath, :diffFilePath, :masterFileName, :missingImports, :pullLocation, :metrics,
-                       {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
+                       {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
           submissions = submissions_query.include(including).to_a
         else
           submissions = submissions_query.include(includes).to_a
