@@ -94,8 +94,12 @@ class AdminController < ApplicationController
       end
     end
 
-    post "/clear_backend_cache" do
+    post "/clear_goo_cache" do
       redis_goo.flushdb
+      halt 204
+    end
+
+    post "/clear_http_cache" do
       redis_http.flushdb
       halt 204
     end

@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 049d171fce5ed34cd334a00663713381348bd9bc
+  revision: 38db2a3f751daa5edcad839a37795efba58a2860
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -95,7 +95,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 190fa44c3b63907d11555f5c18a86493cb9722d0
+  revision: a0076dedc65d6620b88223c7f69dbe5c5ada3b56
   branch: staging
   specs:
     sparql-client (1.0.4.1)
