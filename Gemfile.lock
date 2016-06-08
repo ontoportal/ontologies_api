@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 3b2328bda2859ab704f8a7f2919eb932c4fd5f16
-  branch: master
+  revision: eba14262307d0f41d500461ff05ab602c7cdc633
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 2e1a66efa4bc655667f9fbae930877ca971088a6
-  branch: master
+  revision: 38db2a3f751daa5edcad839a37795efba58a2860
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -95,8 +95,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 5c3bbd2c9d28d1c2f3efcc8c26de969c2fd4a433
-  branch: master
+  revision: a0076dedc65d6620b88223c7f69dbe5c5ada3b56
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -163,7 +163,7 @@ GEM
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.10)
-    get_process_mem (0.2.0)
+    get_process_mem (0.2.1)
     google-api-client (0.8.6)
       activesupport (>= 3.2)
       addressable (~> 2.3)
@@ -207,12 +207,12 @@ GEM
       mime-types (>= 1.16, < 4)
     memoist (0.14.0)
     method_source (0.8.2)
-    mime-types (2.99.1)
+    mime-types (2.99.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.7)
       redis
-    multi_json (1.12.0)
+    multi_json (1.12.1)
     multipart-post (2.0.0)
     mysql2 (0.4.4)
     net-http-persistent (2.9.4)
@@ -221,7 +221,7 @@ GEM
     net-ssh (3.1.1)
     netrc (0.11.0)
     newrelic_rpm (3.15.2.317)
-    oj (2.15.0)
+    oj (2.15.1)
     os (0.9.6)
     pony (1.11)
       mail (>= 2.0)
@@ -237,7 +237,7 @@ GEM
     rack-cache (1.6.1)
       rack (>= 0.4)
     rack-cors (0.4.0)
-    rack-mini-profiler (0.9.9.2)
+    rack-mini-profiler (0.10.1)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
@@ -275,7 +275,7 @@ GEM
     rubyzip (1.2.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.34.0)
+    sequel (4.35.0)
     signet (0.7.2)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -305,7 +305,7 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     thread_safe (0.3.5)
-    tilt (2.0.2)
+    tilt (2.0.5)
     typhoeus (1.0.2)
       ethon (>= 0.9.0)
     tzinfo (1.2.2)
