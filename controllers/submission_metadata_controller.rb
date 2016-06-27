@@ -1,6 +1,6 @@
-class MetadataController < ApplicationController
+class SubmissionMetadataController < ApplicationController
 
-  namespace "/metadata" do
+  namespace "/submission_metadata" do
 
     ##
     # Display all metadata for submissions
