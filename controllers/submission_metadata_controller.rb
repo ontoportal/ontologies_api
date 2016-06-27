@@ -9,7 +9,15 @@ class SubmissionMetadataController < ApplicationController
 
       LinkedData::Models::OntologySubmission.attributes(:all).each do |attr|
 
+        if LinkedData.settings.id_url_prefix.nil? || LinkedData.settings.id_url_prefix.empty?
+          id_url_prefix = "http://data.bioontology.org/"
+        else
+          id_url_prefix = LinkedData.settings.id_url_prefix
+        end
+
         attr_settings = {}
+        attr_settings[:@id] = "#{id_url_prefix}/submission_metadata/#{attr.to_s}"
+        attr_settings[:@type] = "#{id_url_prefix}/metadata/SubmissionMetadata"
         attr_settings[:attribute] = attr.to_s
 
         # Get metadata namespace
@@ -42,6 +50,10 @@ class SubmissionMetadataController < ApplicationController
             attr_settings[:enforce] << enforced.to_s
           end
         end
+
+        attr_settings[:@context] =  {
+            "@vocab" => "#{id_url_prefix}metadata/"
+        }
 
         all_attr << attr_settings
       end
