@@ -76,7 +76,7 @@ class ClassesController < ApplicationController
       reply cls.paths_to_root
     end
 
-    # Get a tree view
+    # Get a tree view (returns the tree from the roots classes to the specified class)
     get '/:cls/tree' do
       includes_param_check
       # We override include values other than the following, user-provided include ignored
