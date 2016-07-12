@@ -358,6 +358,7 @@ module Sinatra
         any = true if status.eql?("ANY")
         include_views = options[:also_include_views] || false
         includes = OntologySubmission.goo_attrs_to_load(includes_param)
+
         includes << :submissionStatus unless includes.include?(:submissionStatus)
         if any
           submissions_query = OntologySubmission.where
@@ -366,12 +367,10 @@ module Sinatra
         end
 
         submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
-        # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
+        # When asking to display all metadata, we are using bring_remaining on each submission. Slower but best way to retrieve all attrs
         if includes_param.first == :all
-          including = [:released, :creationDate, :homepage, :publication, :documentation, :version, :description, :naturalLanguage, :status, :submissionId,
-                       :prefLabelProperty, :definitionProperty, :synonymProperty, :authorProperty, :classType, :hierarchyProperty, :obsoleteProperty, :obsoleteParent, :URI,
-                       :uploadFilePath, :diffFilePath, :masterFileName, :missingImports, :pullLocation, :metrics,
-                       {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
+          including = [:submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl],
+                                       :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
           submissions = submissions_query.include(including).to_a
         else
           submissions = submissions_query.include(includes).to_a
@@ -380,10 +379,10 @@ module Sinatra
         # Figure out latest parsed submissions using all submissions
         latest_submissions = {}
         submissions.each do |sub|
-          # To retrieve all metadata, but too slow when a lot of ontologies
-          #if includes_param.first == :all
-          #  sub.bring_remaining
-          #end
+          # To retrieve all metadata, but slow when a lot of ontologies
+          if includes_param.first == :all
+            sub.bring_remaining
+          end
           next if include_ready && !sub.ready?
           latest_submissions[sub.ontology.acronym] ||= sub
           latest_submissions[sub.ontology.acronym] = sub if sub.submissionId.to_i > latest_submissions[sub.ontology.acronym].submissionId.to_i
