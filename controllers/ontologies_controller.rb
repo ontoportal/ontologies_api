@@ -38,7 +38,17 @@ class OntologiesController < ApplicationController
         latest = ont.latest_submission(status: :any)
       end
       check_last_modified(latest) if latest
-      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
+      # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
+      if latest
+        if includes_param.first == :all
+          latest.bring_remaining
+          latest.bring(*[{:contact=>[:name, :email], :ontology=>[:acronym, :name, :administeredBy, :group, :viewingRestriction, :doNotUpdate, :flat, :hasDomain, :summaryOnly, :acl, :viewOf, :ontologyType],
+                          :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}])
+        else
+          latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+        end
+      end
+      #remove the whole previous if block and replace by it: latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
       reply(latest || {})
     end
 

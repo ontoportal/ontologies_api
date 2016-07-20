@@ -83,6 +83,9 @@ module Sinatra
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:date_time)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
+          elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri) && attribute_settings[:enforce].include?(:list)
+            # in case its a list of URI, convert all value to IRI
+            value = value.map { |v| RDF::IRI.new(v) }
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
             value = RDF::IRI.new(value)
@@ -355,6 +358,7 @@ module Sinatra
         any = true if status.eql?("ANY")
         include_views = options[:also_include_views] || false
         includes = OntologySubmission.goo_attrs_to_load(includes_param)
+
         includes << :submissionStatus unless includes.include?(:submissionStatus)
         if any
           submissions_query = OntologySubmission.where
@@ -363,11 +367,22 @@ module Sinatra
         end
 
         submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
-        submissions = submissions_query.include(includes).to_a
+        # When asking to display all metadata, we are using bring_remaining on each submission. Slower but best way to retrieve all attrs
+        if includes_param.first == :all
+          including = [:submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl],
+                                       :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
+          submissions = submissions_query.include(including).to_a
+        else
+          submissions = submissions_query.include(includes).to_a
+        end
 
         # Figure out latest parsed submissions using all submissions
         latest_submissions = {}
         submissions.each do |sub|
+          # To retrieve all metadata, but slow when a lot of ontologies
+          if includes_param.first == :all
+            sub.bring_remaining
+          end
           next if include_ready && !sub.ready?
           latest_submissions[sub.ontology.acronym] ||= sub
           latest_submissions[sub.ontology.acronym] = sub if sub.submissionId.to_i > latest_submissions[sub.ontology.acronym].submissionId.to_i

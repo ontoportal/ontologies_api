@@ -22,7 +22,15 @@ class OntologySubmissionsController < ApplicationController
       ont = Ontology.find(params["acronym"]).include(:acronym).first
       error 422, "Ontology #{params["acronym"]} does not exist" unless ont
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
-      ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
+      if includes_param.first == :all
+        # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
+        ont.bring(submissions: [:released, :creationDate, :status, :submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus])
+        ont.submissions.each do |sub|
+          sub.bring_remaining
+        end
+      else
+        ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
+      end
       reply ont.submissions.sort {|a,b| b.submissionId.to_i <=> a.submissionId.to_i }  # descending order of submissionId
     end
 
@@ -142,6 +150,13 @@ class OntologySubmissionsController < ApplicationController
         send_file file_path, :filename => File.basename(file_path)
       else
         error 500, "Cannot read submission diff file: #{file_path}"
+      end
+    end
+
+    def delete_submissions(startId, endId)
+      startId.upto(endId + 1) do |i|
+        sub = LinkedData::Models::OntologySubmission.find(RDF::URI.new("http://data.bioontology.org/ontologies/MS/submissions/#{i}")).first
+        sub.delete if sub
       end
     end
 
