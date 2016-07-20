@@ -77,8 +77,8 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: 5d2343c1410616f93a7f922bbeada2902bc46b05
-  branch: agroportal_cron
+  revision: d51989ebeea25e6e3d644566ea3877769c84e841
+  branch: agroportal
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -93,8 +93,8 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: beb91e2be4435669fbf8da516e77c845ff9b22c9
-  branch: agroportal_linked_data
+  revision: 90753a8770555b99de7786fba3a3b51879a5cab7
+  branch: agroportal
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -196,7 +196,7 @@ GEM
     kgio (2.10.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    libxml-ruby (2.8.0)
+    libxml-ruby (2.9.0)
     little-plugger (1.1.4)
     logging (2.1.0)
       little-plugger (~> 1.1)
@@ -347,7 +347,7 @@ DEPENDENCIES
   oj (~> 2.0)
   ontologies_linked_data!
   pry
-  rack
+  rack (< 2.0)
   rack-accept (~> 0.4)
   rack-attack
   rack-cache (~> 1.0)

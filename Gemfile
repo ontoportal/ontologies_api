@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rack'
+gem 'rack', '<2.0'
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-contrib', '~> 1.0'
 gem 'sinatra-advanced-routes'
@@ -63,9 +63,9 @@ gem 'capistrano-rbenv', '~> 2.0.2', :require => false, :group => :development
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gem 'goo', github: 'ncbo/goo', branch: 'master'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
-gem 'ontologies_linked_data', github: 'sifrproject/ontologies_linked_data', branch: 'agroportal_linked_data'
+gem 'ontologies_linked_data', github: 'sifrproject/ontologies_linked_data', branch: 'agroportal'
 gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
-gem 'ncbo_cron', github: 'sifrproject/ncbo_cron', branch: 'agroportal_cron'
+gem 'ncbo_cron', github: 'sifrproject/ncbo_cron', branch: 'agroportal'
 gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'master'
 
 # Not versioned
