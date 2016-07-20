@@ -96,6 +96,9 @@ begin
     config.http_redis_host             = "localhost"
     config.http_redis_port             = 6380
     config.ontology_rank               = ""
+    config.resolver_redis_host = "localhost"
+    config.resolver_redis_port = 6379
+    config.restrict_download = ["ACR0", "ACR1", "ACR2"]
   end
 rescue NameError
   puts "(CNFG) >> OntologiesAPI not available, cannot load config"

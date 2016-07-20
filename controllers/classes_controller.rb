@@ -6,19 +6,14 @@ class ClassesController < ApplicationController
     get do
       includes_param_check
       ont, submission = get_ontology_and_submission
-      submission.bring(metrics: [:classes])
-      if submission.metrics.nil? or submission.metrics.classes.nil?
-        error 403, "Unable to process due to missing metrics. Contact administrator"
-      end
+      cls_count = submission.class_count(LOGGER)
+      error 403, "Unable to display classes due to missing metrics for #{submission.id.to_s}. Please contact the administrator." if cls_count < 0
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = ld.delete(:properties)
-      page_data = LinkedData::Models::Class.in(submission)
-                                .include(ld)
-                                .page(page,size)
-                                .page_count_set(submission.metrics.classes)
-                                .all
+      page_data = LinkedData::Models::Class.in(submission).include(ld).page(page, size).page_count_set(cls_count).all
+
       if unmapped && page_data.length > 0
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
@@ -53,13 +48,10 @@ class ClassesController < ApplicationController
         end
       end
 
-      unmapped = ld.delete(:properties) ||
-        (includes_param && includes_param.include?(:all))
+      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
       cls = get_class(submission, ld)
-      if unmapped
-        LinkedData::Models::Class.in(submission)
-          .models([cls]).include(:unmapped).all
-      end
+      LinkedData::Models::Class.in(submission).models([cls]).include(:unmapped).all if unmapped
+
       if includes_param.include?(:hasChildren)
         cls.load_has_children
       end
@@ -84,7 +76,7 @@ class ClassesController < ApplicationController
       reply cls.paths_to_root
     end
 
-    # Get a tree view
+    # Get a tree view (returns the tree from the roots classes to the specified class)
     get '/:cls/tree' do
       includes_param_check
       # We override include values other than the following, user-provided include ignored
@@ -125,8 +117,7 @@ class ClassesController < ApplicationController
       cls = get_class(submission)
       error 404 if cls.nil?
       ancestors = cls.ancestors
-      LinkedData::Models::Class.in(submission).models(ancestors)
-        .include(:prefLabel,:synonym,:definition).all
+      LinkedData::Models::Class.in(submission).models(ancestors).include(:prefLabel, :synonym, :definition).all
       reply ancestors
     end
 
@@ -139,8 +130,7 @@ class ClassesController < ApplicationController
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
       page_data = cls.retrieve_descendants(page,size)
-      LinkedData::Models::Class.in(submission).models(page_data)
-        .include(:prefLabel,:synonym,:definition).all
+      LinkedData::Models::Class.in(submission).models(page_data).include(:prefLabel, :synonym, :definition).all
       reply page_data
     end
 
@@ -148,6 +138,8 @@ class ClassesController < ApplicationController
     get '/:cls/children' do
       includes_param_check
       ont, submission = get_ontology_and_submission
+      cls_count = submission.class_count(LOGGER)
+      error 403, "Unable to display children due to missing metrics for #{submission.id.to_s}. Please contact the administrator." if cls_count < 0
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       cls = get_class(submission)
@@ -157,11 +149,13 @@ class ClassesController < ApplicationController
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
       page_data_query.aggregate(*aggregates) unless aggregates.empty?
-      page_data = page_data_query.page(page,size).all
+      page_data = page_data_query.page(page, size).page_count_set(cls_count).all
+
       if unmapped
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
       page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
+
       if ld.include?(:hasChildren)
         page_data.each do |c|
           c.load_has_children
@@ -203,8 +197,8 @@ class ClassesController < ApplicationController
           error(422, "all not allowed in include parameter for this endpoint")
         end
         if includes_param.include?(:ancestors) || includes_param.include?(:descendants)
-            error(422,
-            "in this endpoint ancestors and descendants are not allowed in include parameter")
+          error(422,
+                "in this endpoint ancestors and descendants are not allowed in include parameter")
         end
       end
     end

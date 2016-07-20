@@ -1,8 +1,12 @@
 require 'sinatra/base'
+require 'json'
 
 module Sinatra
   module Helpers
     module OntologyHelper
+
+      ISO_LANGUAGE_LIST = ::JSON.parse(IO.read("public/language_iso-639-1.json"))
+
       ##
       # Create a new OntologySubmission object based on the request data
       def create_submission(ont)
@@ -24,10 +28,19 @@ module Sinatra
           ont_submission.hasOntologyLanguage = OntologyFormat.find(params["hasOntologyLanguage"]).first
         end
 
+        # Check if the naturalLanguage provided is a valid ISO-639-1 code
+        if !ont_submission.naturalLanguage.nil?
+          if ISO_LANGUAGE_LIST.has_key?(ont_submission.naturalLanguage.downcase)
+            ont_submission.naturalLanguage = ont_submission.naturalLanguage.downcase
+          else
+            error 422, "You must specify a valid 2 digits language code (ISO-639-1) for naturalLanguage"
+          end
+        end
+
         if ont_submission.valid?
           ont_submission.save
           cron = NcboCron::Models::OntologySubmissionParser.new
-          cron.queue_submission(ont_submission, {all: true})
+          cron.queue_submission(ont_submission, {all: true, params: params})
         else
           error 400, ont_submission.errors
         end

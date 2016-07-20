@@ -7,7 +7,7 @@ timeout 180
 preload_app true
 user "ncbobp", "ncbobp"
 
-stderr_path "log/unicorn.stderr.log"
+#stderr_path "log/unicorn.stderr.log"
 #stdout_path "log/unicorn.stdout.log"
 pid "/var/run/unicorn/unicorn.pid"
 

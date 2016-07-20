@@ -99,6 +99,7 @@ class TestProvisionalClassesController < TestCase
         permanentId: "http://purl.obolibrary.org/obo/MI_0925",
         relations: [
           {
+              creator: @@test_user.id.to_s,
               relationType: "http://www.w3.org/2004/02/skos/core#exactMatch",
               targetClassId: @@cls.id.to_s,
               targetClassOntology: @@ontology.id.to_s
@@ -119,6 +120,7 @@ class TestProvisionalClassesController < TestCase
         permanentId: "http://purl.obolibrary.org/obo/MI_0925",
         relations: [
             {
+                creator: @@test_user.id.to_s,
                 relationType: "http://www.w3.org/2004/02/skos/core#exactMatch",
                 targetClassId: @@cls1.id.to_s,
                 targetClassOntology: @@ontology.id.to_s
