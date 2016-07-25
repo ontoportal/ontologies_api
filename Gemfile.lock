@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 520e700d4c26a43547d76e908d03f59f8cd21c94
+  revision: b7f30deaf230a535483032612436d2ee06ad512a
   branch: staging
   specs:
     goo (0.0.2)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: f2eaa1c73fc5d4dccc0c00286f113577ce9383bc
+  revision: 94b5b3ea25cc49a9f6e1044f8fdae02f2a07593c
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -149,12 +149,12 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20160615)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.18)
-      elasticsearch-api (= 1.0.18)
-      elasticsearch-transport (= 1.0.18)
-    elasticsearch-api (1.0.18)
+    elasticsearch (2.0.0)
+      elasticsearch-api (= 2.0.0)
+      elasticsearch-transport (= 2.0.0)
+    elasticsearch-api (2.0.0)
       multi_json
-    elasticsearch-transport (1.0.18)
+    elasticsearch-transport (2.0.0)
       faraday
       multi_json
     ethon (0.9.0)
@@ -256,7 +256,7 @@ GEM
       addressable (>= 2.2)
     recursive-open-struct (1.0.1)
     redcarpet (3.3.4)
-    redis (3.3.0)
+    redis (3.3.1)
     redis-activesupport (4.1.5)
       activesupport (>= 3, < 5)
       redis-store (~> 1.1.0)
@@ -308,7 +308,7 @@ GEM
     systemu (2.6.5)
     thread_safe (0.3.5)
     tilt (2.0.5)
-    typhoeus (1.0.2)
+    typhoeus (1.1.0)
       ethon (>= 0.9.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -371,3 +371,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.10.6
