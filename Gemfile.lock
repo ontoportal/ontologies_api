@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 1a184c1d44ba3b7cbf4a07ca6cfc8aae3b0ba474
+  revision: e38e6768dbae5cf87829cbf67fedc1850fa8d83b
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -371,3 +371,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.12.5
