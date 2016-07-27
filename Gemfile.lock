@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: b7f30deaf230a535483032612436d2ee06ad512a
+  revision: d2033f801830e2e6a98f9bd1030e4025e890c594
   branch: staging
   specs:
     goo (0.0.2)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 94b5b3ea25cc49a9f6e1044f8fdae02f2a07593c
+  revision: 276303e75f41e5adf5c2faa207ecd95d9e279710
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -188,10 +188,10 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
-    json (2.0.1)
+    json (2.0.2)
     json-schema (2.5.0)
       addressable (~> 2.3)
-    json_pure (2.0.1)
+    json_pure (2.0.2)
     jwt (1.5.4)
     kgio (2.10.0)
     launchy (2.4.3)
@@ -371,3 +371,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.12.5
