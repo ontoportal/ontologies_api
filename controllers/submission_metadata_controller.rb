@@ -27,6 +27,13 @@ class SubmissionMetadataController < ApplicationController
           attr_settings[:namespace] = LinkedData::Models::OntologySubmission.attribute_settings(attr)[:namespace].to_s
         end
 
+        # Get metadata label if one
+        if LinkedData::Models::OntologySubmission.attribute_settings(attr)[:label].nil?
+          attr_settings[:label] = nil
+        else
+          attr_settings[:label] = LinkedData::Models::OntologySubmission.attribute_settings(attr)[:label]
+        end
+
         # Get if it is an extracted metadata
         if LinkedData::Models::OntologySubmission.attribute_settings(attr)[:extractedMetadata]
           attr_settings[:extracted] = true
