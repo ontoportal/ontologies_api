@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: cfa21aae8fd0221ee8adee25a32ca8b091af1c27
+  revision: b62dfa9d735877191de14a08ecb544864c6a4469
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: e6558f43c590cc489bbca60e5a4dfc6922bbe1fb
+  revision: 72b6c7d47d906589f467b567d8b6e7b9622faac7
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 42549f672965fae6c68e862f4bb8ee67f4296072
+  revision: dd7a4eb071815c25e67eb397ae96c76b96b9ffa4
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: cadb052f3b00993331b993ffcb1dc1b2aad11c42
+  revision: 4d3020aa4aad63f45b384359b47f4b17194c3092
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -122,7 +122,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.22.2)
+    activesupport (3.2.22.4)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
@@ -147,7 +147,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20160615)
+    domain_name (0.5.20160826)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (2.0.0)
       elasticsearch-api (= 2.0.0)
@@ -164,8 +164,8 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.9.14)
     get_process_mem (0.2.1)
-    google-api-client (0.8.6)
-      activesupport (>= 3.2)
+    google-api-client (0.8.7)
+      activesupport (>= 3.2, < 5.0)
       addressable (~> 2.3)
       autoparse (~> 0.3)
       extlib (~> 0.9)
@@ -205,7 +205,7 @@ GEM
       systemu (~> 2.6.2)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
-    memoist (0.14.0)
+    memoist (0.15.0)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
@@ -222,8 +222,8 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
     netrc (0.11.0)
-    newrelic_rpm (3.16.0.318)
-    oj (2.17.1)
+    newrelic_rpm (3.16.2.321)
+    oj (2.17.3)
     os (0.9.6)
     pony (1.11)
       mail (>= 2.0)
@@ -234,7 +234,7 @@ GEM
     rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (4.4.1)
+    rack-attack (5.0.1)
       rack
     rack-cache (1.6.1)
       rack (>= 0.4)
@@ -271,7 +271,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (1.4.1)
-    rsolr (1.1.1)
+    rsolr (1.1.2)
       builder (>= 2.1.2)
     ruby-xxHash (0.4.0.1)
     rubyzip (1.2.0)
