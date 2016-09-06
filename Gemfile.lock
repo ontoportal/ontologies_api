@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: dd7a4eb071815c25e67eb397ae96c76b96b9ffa4
+  revision: eb81b568e60f44f1b84074962d2e5b833695eb6a
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -223,7 +223,7 @@ GEM
     net-ssh (3.2.0)
     netrc (0.11.0)
     newrelic_rpm (3.16.2.321)
-    oj (2.17.3)
+    oj (2.17.4)
     os (0.9.6)
     pony (1.11)
       mail (>= 2.0)
@@ -277,7 +277,7 @@ GEM
     rubyzip (1.2.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.37.0)
+    sequel (4.38.0)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
