@@ -99,6 +99,10 @@ class ClassesController < ApplicationController
 
       #add the other roots to the response
       roots = submission.roots(extra_include=[:hasChildren])
+
+      # if this path' root does not get returned by the submission.roots call, manually add it
+      roots << root_tree unless roots.map { |r| r.id }.include?(root_tree.id)
+
       roots.each_index do |i|
         r = roots[i]
         if r.id == root_tree.id
@@ -110,7 +114,6 @@ class ClassesController < ApplicationController
       end
       reply roots
     end
-
 
     # Get all ancestors for given class
     get '/:cls/ancestors' do
