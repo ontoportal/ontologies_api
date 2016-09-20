@@ -57,7 +57,7 @@ class TestProvisionalClassesController < TestCase
   def test_single_provisional_class
     get '/provisional_classes'
     pcs = MultiJson.load(last_response.body)
-    pc = pcs.first
+    pc = pcs["collection"].first
     get pc['@id']
     assert last_response.ok?
     retrieved_pc = MultiJson.load(last_response.body)
