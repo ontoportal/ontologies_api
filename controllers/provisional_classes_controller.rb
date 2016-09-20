@@ -17,13 +17,16 @@ class ProvisionalClassesController < ApplicationController
   end
 
   namespace "/provisional_classes" do
+
     # Display all provisional_classes
     get do
       check_last_modified_collection(LinkedData::Models::ProvisionalClass)
       incl_param = includes_param
       incl_param << :created if (!incl_param.empty? && !incl_param.include?(:created))
-      prov_classes = ProvisionalClass.where.include(ProvisionalClass.goo_attrs_to_load(incl_param)).to_a
-      reply prov_classes.sort {|a,b| b.created <=> a.created }  # most recent first
+      page, size = page_params
+      page_data = LinkedData::Models::ProvisionalClass.where.include(ProvisionalClass.goo_attrs_to_load(incl_param)).page(page, size).all
+      page_data.sort! {|a,b| b.created <=> a.created }  # most recent first
+      reply page_data
     end
 
     # Display a single provisional_class
