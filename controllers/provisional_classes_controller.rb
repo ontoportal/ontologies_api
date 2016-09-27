@@ -26,8 +26,7 @@ class ProvisionalClassesController < ApplicationController
       page, size = page_params
       inc = LinkedData::Models::ProvisionalClass.goo_attrs_to_load(incl_param)
       # most recent first
-      pg = LinkedData::Models::ProvisionalClass.where.order_by(created: :desc).include(inc).page(page, size).all
-      reply pg.all
+      reply LinkedData::Models::ProvisionalClass.where.order_by(created: :desc).include(inc).page(page, size).all
     end
 
     # Display a single provisional_class
