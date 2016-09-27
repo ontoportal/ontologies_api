@@ -24,8 +24,10 @@ class ProvisionalClassesController < ApplicationController
       incl_param = includes_param
       incl_param << :created if (!incl_param.empty? && !incl_param.include?(:created))
       page, size = page_params
+      inc = LinkedData::Models::ProvisionalClass.goo_attrs_to_load(incl_param)
       # most recent first
-      reply LinkedData::Models::ProvisionalClass.where.order_by(created: :desc).include(ProvisionalClass.goo_attrs_to_load(incl_param)).page(page, size).all
+      pg = LinkedData::Models::ProvisionalClass.where.order_by(created: :desc).include(inc).page(page, size).all
+      reply pg.all
     end
 
     # Display a single provisional_class
