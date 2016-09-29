@@ -39,6 +39,27 @@ module Sinatra
         ret_val
       end
 
+      def create_provisional_class(params)
+        ret_val = {"objects" => [], "errors" => {}}
+        relations = params.delete("relations")
+        pc = instance_from_params(ProvisionalClass, params)
+
+        if pc.valid?
+          pc.save
+          rels = save_provisional_class_relations(relations, pc)
+
+          # if there were any errors creating relations, fail the entire transaction
+          if rels["errors"].empty?
+            ret_val["objects"] << pc
+          else
+            pc.delete
+            ret_val["errors"] = rels["errors"]
+          end
+        else
+          ret_val["errors"] = pc.errors
+        end
+        ret_val
+      end
     end
   end
 end

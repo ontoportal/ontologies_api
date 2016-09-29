@@ -40,22 +40,9 @@ class ProvisionalClassesController < ApplicationController
 
     # Create a new provisional_class
     post do
-      relations = params.delete("relations")
-      pc = instance_from_params(ProvisionalClass, params)
-
-      if pc.valid?
-        pc.save
-        rels = save_provisional_class_relations(relations, pc)
-
-        # if there were any errors creating relations, fail the entire transaction
-        unless rels["errors"].empty?
-          pc.delete
-          error 400, rels["errors"]
-        end
-      else
-        error 400, pc.errors
-      end
-      reply 201, pc
+      ret_val = create_provisional_class(params)
+      error 400, ret_val["errors"] unless ret_val["errors"].empty?
+      reply 200, ret_val["objects"][0]
     end
 
     # Update an existing submission of a provisional_class
