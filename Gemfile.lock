@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: 3cab9dbe9230fe6cc8b55eadcfa7f5b46a9c5e33
+  revision: 8abf93713b80e765f2961b19419a76fe4dea983f
   branch: agroportal
   specs:
     ncbo_cron (0.0.1)
@@ -93,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 785448a9cbff07733c8a40c9e255bf838bfd01aa
+  revision: be4b4a884cb94b319928511fdbc9778eac6d2757
   branch: agroportal
   specs:
     ontologies_linked_data (0.0.1)
@@ -371,4 +371,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.12.3
+   1.13.3
