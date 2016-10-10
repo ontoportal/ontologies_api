@@ -41,9 +41,12 @@ class OntologiesController < ApplicationController
       # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
       if latest
         if includes_param.first == :all
+          # Bring what we need to display all attr of the submission
           latest.bring_remaining
-          latest.bring(*[{:contact=>[:name, :email], :ontology=>[:acronym, :name, :administeredBy, :group, :viewingRestriction, :doNotUpdate, :flat, :hasDomain, :summaryOnly, :acl, :viewOf, :ontologyType],
-                          :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}])
+          latest.bring({:contact=>[:name, :email],
+                      :ontology=>[:acronym, :name, :administeredBy, :group, :viewingRestriction, :doNotUpdate, :flat,
+                                  :hasDomain, :summaryOnly, :acl, :viewOf, :ontologyType],
+                      :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]})
         else
           latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
         end
