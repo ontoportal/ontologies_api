@@ -42,7 +42,7 @@ class ProvisionalClassesController < ApplicationController
     post do
       ret_val = create_provisional_class(params)
       error 400, ret_val["errors"] unless ret_val["errors"].empty?
-      reply 200, ret_val["objects"][0]
+      reply 201, ret_val["objects"][0]
     end
 
     # Update an existing submission of a provisional_class
