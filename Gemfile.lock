@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 2b79435bff06f2e321f389681648b8ced0af506c
-  branch: staging
+  revision: c75913939427a9265e1c047a31c5faee60e2eaea
+  branch: master
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: a418e6f4a8e2c8a7049b4e028d74db7f98d9e9b8
-  branch: staging
+  revision: 8bc30e99b6147839b31d8fb56c232804fc2b0e12
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: b702f7f928eca2af5bca889496b02bb915bdcbde
-  branch: staging
+  revision: accf96dbf1bd4d0f96fbff19293b6159ea096f74
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: dfac9aa2b76e36ac6870a38c443744a05db92348
-  branch: staging
+  revision: d76a4c3d645d86774a6a19c589e177006b5dced7
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 2d31bc3d794cef85e61fa47c25a50eaf250aac48
-  branch: staging
+  revision: c23f2d0695bd9fa232b19936318eb6206afa28c2
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -95,12 +95,12 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 7a2e3a2844bc9a8984134fa7b2e2ecb9c55856ae
-  branch: staging
+  revision: 7a2265337f71e0e312be76b08ce6d45685983146
+  branch: master
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
+      net-http-persistent (>= 1.4)
       rdf (>= 1.0)
 
 GIT
@@ -144,6 +144,7 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.1)
+    connection_pool (2.2.0)
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
@@ -217,7 +218,8 @@ GEM
     multi_json (1.12.1)
     multipart-post (2.0.0)
     mysql2 (0.4.4)
-    net-http-persistent (2.9.4)
+    net-http-persistent (3.0.0)
+      connection_pool (~> 2.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
