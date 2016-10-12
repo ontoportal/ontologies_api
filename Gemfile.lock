@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: c75913939427a9265e1c047a31c5faee60e2eaea
+  revision: c8cc22b62c09ab0fe415e4a3c206ef02da78dafd
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 8bc30e99b6147839b31d8fb56c232804fc2b0e12
+  revision: a88d998c4f860370199e4029a409bc3e15ac80fa
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_cron.git
-  revision: accf96dbf1bd4d0f96fbff19293b6159ea096f74
+  revision: a9c7fd23aadf39dc83fcab2de0532f15836f8abf
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: d76a4c3d645d86774a6a19c589e177006b5dced7
+  revision: 447500e6b1f635aa494331ec8da8362b3beb233c
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: c23f2d0695bd9fa232b19936318eb6206afa28c2
+  revision: 5985b89b7b60989e00ef83c42ae63d5d2a83ea46
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 27d89e4c3ed950935da97214bf5c1b5b76f7ac9a
+  revision: 00221f132d3c3c1961f65dbfc093ff83a95cc1d5
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -95,12 +95,12 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: 7a2265337f71e0e312be76b08ce6d45685983146
+  revision: 07ec7b130319035bf2bff40dd4bf094a6946ec61
   branch: master
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
-      net-http-persistent (>= 1.4)
+      net-http-persistent (= 2.9.4)
       rdf (>= 1.0)
 
 GIT
@@ -144,7 +144,6 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.1)
-    connection_pool (2.2.0)
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
@@ -218,8 +217,7 @@ GEM
     multi_json (1.12.1)
     multipart-post (2.0.0)
     mysql2 (0.4.4)
-    net-http-persistent (3.0.0)
-      connection_pool (~> 2.2)
+    net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
