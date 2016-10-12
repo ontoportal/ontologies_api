@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 4d3020aa4aad63f45b384359b47f4b17194c3092
+  revision: 27d89e4c3ed950935da97214bf5c1b5b76f7ac9a
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -100,7 +100,7 @@ GIT
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
-      net-http-persistent (>= 1.4)
+      net-http-persistent (= 2.9.4)
       rdf (>= 1.0)
 
 GIT
@@ -371,3 +371,6 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
+
+BUNDLED WITH
+   1.12.5
