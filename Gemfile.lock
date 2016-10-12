@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: c718d163fbbf69c3fa2098d884ca3cfd77a3b804
+  revision: c2213f7ae4545bab1ba8d0af8b9b5a346dfdcfd9
   branch: staging
   specs:
     goo (0.0.2)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 319a346ba7b9bcfc0f5f9b84b8b8da5b3bde959e
+  revision: 876c43625164c547b7ea14be558e3791c2a64e85
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -82,7 +82,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/resource_index.git
-  revision: 4d3020aa4aad63f45b384359b47f4b17194c3092
+  revision: 27d89e4c3ed950935da97214bf5c1b5b76f7ac9a
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch
@@ -95,12 +95,12 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/sparql-client.git
-  revision: a0076dedc65d6620b88223c7f69dbe5c5ada3b56
+  revision: 7a2e3a2844bc9a8984134fa7b2e2ecb9c55856ae
   branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
-      net-http-persistent (>= 1.4)
+      net-http-persistent (= 2.9.4)
       rdf (>= 1.0)
 
 GIT
