@@ -68,7 +68,7 @@ class TestProvisionalClassesController < TestCase
     get "/users/#{@@test_username}/provisional_classes"
     assert_equal 200, last_response.status
     pcs = MultiJson.load(last_response.body)
-    assert pcs.length == 3
+    assert_equal 3, pcs.length
   end
 
   def test_provisional_class_lifecycle
