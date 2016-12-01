@@ -1,20 +1,4 @@
 GIT
-  remote: git://github.com/ncbo/goo.git
-  revision: e2a1c7792ed6c633afbb691ffe9b7c1aa05ee3be
-  branch: master
-  specs:
-    goo (0.0.2)
-      addressable (= 2.3.5)
-      pry
-      rdf (= 1.0.8)
-      redis
-      rest-client
-      rsolr
-      sparql-client
-      systemu
-      uuid
-
-GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
   revision: 3b2328bda2859ab704f8a7f2919eb932c4fd5f16
   branch: master
@@ -74,6 +58,22 @@ GIT
   specs:
     rack-post-body-to-params (0.1.8)
       activesupport (>= 2.3)
+
+GIT
+  remote: git://github.com/sifrproject/goo.git
+  revision: e2a1c7792ed6c633afbb691ffe9b7c1aa05ee3be
+  branch: agroportal
+  specs:
+    goo (0.0.2)
+      addressable (= 2.3.5)
+      pry
+      rdf (= 1.0.8)
+      redis
+      rest-client
+      rsolr
+      sparql-client
+      systemu
+      uuid
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
@@ -147,7 +147,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20160310)
+    domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (1.0.17)
       elasticsearch-api (= 1.0.17)
@@ -185,7 +185,7 @@ GEM
       signet (~> 0.7)
     haml (4.0.7)
       tilt
-    http-cookie (1.0.2)
+    http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
@@ -264,10 +264,10 @@ GEM
     redis-store (1.1.7)
       redis (>= 2.2)
     ref (2.0.0)
-    rest-client (1.8.0)
+    rest-client (2.0.0)
       http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 3.0)
-      netrc (~> 0.7)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     retriable (1.4.1)
     rsolr (1.1.1)
       builder (>= 2.1.2)
