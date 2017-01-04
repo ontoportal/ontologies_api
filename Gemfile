@@ -28,11 +28,6 @@ gem 'redis', '~> 3.0'
 #gem 'redis-activesupport', github: 'redis-store/redis-activesupport', ref: 'c107458a2a6b5e7019c7f9410a8eb5307f921e61'
 gem 'redis-activesupport'
 
-# Testing
-gem 'simplecov', :require => false, :group => :test
-gem 'minitest', '~> 4.0'
-gem 'minitest-stub_any_instance'
-
 # Monitoring
 gem 'cube-ruby', require: 'cube'
 gem 'newrelic_rpm'
@@ -42,23 +37,9 @@ gem 'unicorn'
 gem 'rainbows'
 gem 'unicorn-worker-killer'
 
-# Debugging
-gem 'pry', :group => :development
-
-# Profiling
-gem 'rack-mini-profiler', :group => :profiling
-
-# Code reloading
-gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/shotgun.git', :branch => 'ncbo'
-
 # Templating
 gem 'haml'
 gem 'redcarpet'
-
-# Deployments
-gem 'capistrano', '~> 3.4.0', :require => false, :group => :development
-gem 'capistrano-bundler', '~> 1.1.1', :require => false, :group => :development
-gem 'capistrano-rbenv', '~> 2.0.2', :require => false, :group => :development
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'staging'
@@ -68,6 +49,26 @@ gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch:
 gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'staging'
 gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'staging'
 
-# Not versioned
+# NCBO gems (unversioned)
 gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
 gem 'ncbo_resource_index', git: 'https://github.com/ncbo/resource_index.git'
+	
+group :development do
+  gem 'capistrano', '~> 3.4.0', require: false
+  gem 'capistrano-bundler', '~> 1.1.1', require: false
+  gem 'capistrano-rbenv', '~> 2.0.2', require: false
+  gem 'pry'
+  gem 'shotgun', git: 'https://github.com/palexander/shotgun.git', branch: 'ncbo'
+end
+
+group :profiling do
+	gem 'rack-mini-profiler'
+end
+
+group :test do
+  gem 'minitest', '~> 4.0'
+  gem 'minitest-stub_any_instance'
+  gem 'simplecov', require: false
+end
+
+
