@@ -13,7 +13,7 @@ gem 'google-api-client', '<0.9'
 
 # Rack middleware
 gem 'rack-accept', '~> 0.4'
-gem 'rack-post-body-to-params', github: "palexander/rack-post-body-to-params", branch: "multipart_support" # github dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
+gem 'rack-post-body-to-params', git: 'https://github.com/palexander/rack-post-body-to-params.git', branch: "multipart_support" # github dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
 gem 'rack-cache', '~> 1.0'
 gem 'redis-rack-cache', '~> 1.0'
 gem 'rack-timeout'
@@ -61,13 +61,13 @@ gem 'capistrano-bundler', '~> 1.1.1', :require => false, :group => :development
 gem 'capistrano-rbenv', '~> 2.0.2', :require => false, :group => :development
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', github: 'ncbo/goo', branch: 'staging'
-gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'staging'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'staging'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'staging'
-gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'staging'
-gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'staging'
+gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'staging'
+gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'staging'
+gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'staging'
+gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'staging'
+gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'staging'
+gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'staging'
 
 # Not versioned
-gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'
-gem 'ncbo_resource_index', github: 'ncbo/resource_index'
+gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
+gem 'ncbo_resource_index', git: 'https://github.com/ncbo/resource_index.git'
