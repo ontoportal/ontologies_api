@@ -54,7 +54,7 @@ gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
 gem 'ncbo_resource_index', git: 'https://github.com/ncbo/resource_index.git'
 	
 group :development do
-  gem 'capistrano', '~> 3.4.0', require: false
+  gem 'capistrano', '~> 3.7', require: false
   gem 'capistrano-bundler', '~> 1.1.1', require: false
   gem 'capistrano-rbenv', '~> 2.0.2', require: false
   gem 'pry'
