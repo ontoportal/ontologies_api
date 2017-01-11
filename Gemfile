@@ -21,11 +21,10 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'rack-attack', :require => 'rack/attack'
 
 # Data access (caching)
-gem 'redis', '~> 3.0'
+# locking  redis gem to v3.3.1 since we are experiencing timeout issues with v3.3.2
+gem 'redis', '3.3.1' 
+#gem 'redis', '~> 3.0'
 
-# Pegging this to a particular commit because 4.2.1 is broken.
-# After redis-activesupport gets a version bump you can remove the 'git' and 'ref' param
-#gem 'redis-activesupport', github: 'redis-store/redis-activesupport', ref: 'c107458a2a6b5e7019c7f9410a8eb5307f921e61'
 gem 'redis-activesupport'
 
 # Monitoring
