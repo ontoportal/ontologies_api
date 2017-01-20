@@ -5,7 +5,7 @@ module Sinatra
   module Helpers
     module OntologyHelper
 
-      ISO_LANGUAGE_LIST = ::JSON.parse(IO.read("public/language_iso-639-1.json"))
+      #ISO_LANGUAGE_LIST = ::JSON.parse(IO.read("public/language_iso-639-1.json"))
 
       ##
       # Create a new OntologySubmission object based on the request data
@@ -28,7 +28,8 @@ module Sinatra
           ont_submission.hasOntologyLanguage = OntologyFormat.find(params["hasOntologyLanguage"]).first
         end
 
-        # Check if the naturalLanguage provided is a valid ISO-639-1 code
+        # Check if the naturalLanguage provided is a valid ISO-639-1 code (not used anymore, we let lexvo URI)
+=begin
         if !ont_submission.naturalLanguage.nil?
           if ISO_LANGUAGE_LIST.has_key?(ont_submission.naturalLanguage.downcase)
             ont_submission.naturalLanguage = ont_submission.naturalLanguage.downcase
@@ -36,6 +37,7 @@ module Sinatra
             error 422, "You must specify a valid 2 digits language code (ISO-639-1) for naturalLanguage"
           end
         end
+=end
 
         if ont_submission.valid?
           ont_submission.save
