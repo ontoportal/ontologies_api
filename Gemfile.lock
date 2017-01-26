@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 2b79435bff06f2e321f389681648b8ced0af506c
+  revision: 443ad7347e99300663072cc526a4dd41c95a0d46
   branch: staging
   specs:
     goo (0.0.2)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 0bc32a294b8ed8f2fa0844e78d92ba3777b63126
+  revision: 29134e05397b9f29fe4471dd16326fec11fa5c9d
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 867b7228f3cd60d48b58f529e653492dd358b1ed
+  revision: ab5b3a7dce606da71e4b016c6e1428f8276988b6
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -154,12 +154,12 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (5.0.0)
-      elasticsearch-api (= 5.0.0)
-      elasticsearch-transport (= 5.0.0)
-    elasticsearch-api (5.0.0)
+    elasticsearch (5.0.1)
+      elasticsearch-api (= 5.0.1)
+      elasticsearch-transport (= 5.0.1)
+    elasticsearch-api (5.0.1)
       multi_json
-    elasticsearch-transport (5.0.0)
+    elasticsearch-transport (5.0.1)
       faraday
       multi_json
     ethon (0.10.1)
@@ -227,7 +227,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (4.0.1)
     netrc (0.11.0)
-    newrelic_rpm (3.17.2.327)
+    newrelic_rpm (3.18.0.329)
     oj (2.18.1)
     os (0.9.6)
     pony (1.11)
@@ -241,7 +241,7 @@ GEM
       rack (>= 0.4)
     rack-attack (5.0.1)
       rack
-    rack-cache (1.6.1)
+    rack-cache (1.7.0)
       rack (>= 0.4)
     rack-cors (0.4.0)
     rack-mini-profiler (0.10.1)
@@ -288,7 +288,7 @@ GEM
       faraday (~> 0.9)
       jwt (~> 1.5)
       multi_json (~> 1.10)
-    simplecov (0.12.0)
+    simplecov (0.13.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
