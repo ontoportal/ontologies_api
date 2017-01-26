@@ -226,15 +226,15 @@
       %h3#nav_recommender Recommender
 
       %p
-        The Recommender endpoint receives a text or a list of keywords and suggests appropriate ontologies for it.
+        The Recommender endpoint receives a text or a list of keywords and suggests appropriate ontologies for them.
         %ul
           %li Recommend
           %ul
             %li
               <span class="label label-info">GET</span> <span class="label label-info">POST</span> <code>/recommender?input={input text or keywords}</code>
             %li
-              example:
-              %a{href: "/recommender?input=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye."} /recommender?input=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye.
+              example: suggest ontologies for the text "Melanoma is a malignant tumor of melanocytes which are found predominantly in skin but also in the bowel and the eye":
+              %a{href: "/recommender?input=Melanoma%20is%20a%20malignant%20tumor%20of%20melanocytes%20which%20are%20found%20predominantly%20in%20skin%20but%20also%20in%20the%20bowel%20and%20the%20eye"} /recommender?input=Melanoma%20is%20a%20malignant%20tumor%20of%20melanocytes%20which%20are%20found%20predominantly%20in%20skin%20but%20also%20in%20the%20bowel%20and%20the%20eye
           %li
             Parameters
             %ul
@@ -242,10 +242,21 @@
               %li output_type={1|2} // default = 1. 1 means that the output will be a ranked list of individual ontologies. 2 means that the output will be a ranked list of ontology sets.
               %li max_elements_set={2|3|4} // default = 3. Maximum number of ontologies per set (only for output_type = 2).
               %li wc={value in the range [0,1]} // default = 0.55. Weight assigned to the ontology coverage criterion.
-              %li ws={value in the range [0,1]} // default = 0.15. Weight assigned to the ontology specialization criterion.
               %li wa={value in the range [0,1]} // default = 0.15. Weight assigned to the ontology acceptance criterion.
               %li wd={value in the range [0,1]} // default = 0.15. Weight assigned to the ontology detail criterion.
+              %li ws={value in the range [0,1]} // default = 0.15. Weight assigned to the ontology specialization criterion.
               %li ontologies={ontology_id1, ontology_id2, …, ontology_idN} // default = (empty) (all BioPortal ontologies will be evaluated).
+          %li
+            Additional examples
+            %ul
+              %li Suggest ontologies for the <u>keywords</u> "leukocyte, phagocyte, motile cell, metabolising cell, dendritic cell, pipette":
+              %a{href: "/recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2"} /recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2
+              %li Suggest ontologies for the <u>keywords</u> "leukocyte, phagocyte, motile cell, metabolising cell, dendritic cell, pipette", <u>limited to the ontologies UBERON, CL, NCIT and EFO</u>:
+              %a{href: "/recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2&ontologies=UBERON,CL,NCIT,EFO"} /recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2&ontologies=UBERON,CL,NCIT,EFO
+              %li Suggest <u>ontology sets</u> for the <u>keywords</u> "leukocyte, phagocyte, motile cell, metabolising cell, dendritic cell, pipette":
+              %a{href: "/recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2&output_type=2"} /recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2&output_type=2
+              %li Suggest ontologies for the text "Melanoma is a malignant tumor of melanocytes which are found predominantly in skin but also in the bowel and the eye", <u>limiting the evaluation to ontology coverage</u> (the weights for the other criteria -acceptance, detail and specialization- will be set to 0):
+              %a{href: "/recommender?input=Melanoma%20is%20a%20malignant%20tumor%20of%20melanocytes%20which%20are%20found%20predominantly%20in%20skin%20but%20also%20in%20the%20bowel%20and%20the%20eye&wa=0&wd=0&ws=0"} /recommender?input=Melanoma%20is%20a%20malignant%20tumor%20of%20melanocytes%20which%20are%20found%20predominantly%20in%20skin%20but%20also%20in%20the%20bowel%20and%20the%20eye&wa=0&wd=0&ws=0
 
       %h3#nav_resource_index Resource Index
 
