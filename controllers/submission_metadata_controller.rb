@@ -58,6 +58,13 @@ class SubmissionMetadataController < ApplicationController
           end
         end
 
+        # Get display from the metadata
+        if LinkedData::Models::OntologySubmission.attribute_settings(attr)[:display].nil?
+          attr_settings[:display] = "no"
+        else
+          attr_settings[:display] = LinkedData::Models::OntologySubmission.attribute_settings(attr)[:display]
+        end
+
         attr_settings[:@context] =  {
             "@vocab" => "#{id_url_prefix}metadata/"
         }
