@@ -16,8 +16,8 @@ class SubmissionMetadataController < ApplicationController
         end
 
         attr_settings = {}
-        attr_settings[:@id] = "#{id_url_prefix}/submission_metadata/#{attr.to_s}"
-        attr_settings[:@type] = "#{id_url_prefix}/metadata/SubmissionMetadata"
+        attr_settings[:@id] = "#{id_url_prefix}submission_metadata/#{attr.to_s}"
+        attr_settings[:@type] = "#{id_url_prefix}metadata/SubmissionMetadata"
         attr_settings[:attribute] = attr.to_s
 
         # Get metadata namespace
