@@ -16,8 +16,8 @@ class SubmissionMetadataController < ApplicationController
         end
 
         attr_settings = {}
-        attr_settings[:@id] = "#{id_url_prefix}/submission_metadata/#{attr.to_s}"
-        attr_settings[:@type] = "#{id_url_prefix}/metadata/SubmissionMetadata"
+        attr_settings[:@id] = "#{id_url_prefix}submission_metadata/#{attr.to_s}"
+        attr_settings[:@type] = "#{id_url_prefix}metadata/SubmissionMetadata"
         attr_settings[:attribute] = attr.to_s
 
         # Get metadata namespace
@@ -56,6 +56,13 @@ class SubmissionMetadataController < ApplicationController
           LinkedData::Models::OntologySubmission.attribute_settings(attr)[:enforce].each do |enforced|
             attr_settings[:enforce] << enforced.to_s
           end
+        end
+
+        # Get display from the metadata
+        if LinkedData::Models::OntologySubmission.attribute_settings(attr)[:display].nil?
+          attr_settings[:display] = "no"
+        else
+          attr_settings[:display] = LinkedData::Models::OntologySubmission.attribute_settings(attr)[:display]
         end
 
         attr_settings[:@context] =  {
