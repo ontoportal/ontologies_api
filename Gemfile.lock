@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: c9d4f45ecab63eb4a0487c5744abf4db76cb6323
+  revision: 2596bf0fd30e971c6cdbda5ff4f5c1aa24e25fea
   branch: agroportal
   specs:
     ncbo_cron (0.0.1)
