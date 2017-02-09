@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: dcb8b02e9e147a37d8cb876b0107c568edcefb2e
+  revision: 4bbfecd8277dd9517f3977d7f1b1d206eeb8ed3d
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 29134e05397b9f29fe4471dd16326fec11fa5c9d
+  revision: 736db779403504be97ae02eec00b5bd42c791053
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 6434e688f14207495e2f47f4e06b923a09fce92f
+  revision: 57be7c16cf40762c09d07845a4b0c82ce32e47c4
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: ab5b3a7dce606da71e4b016c6e1428f8276988b6
+  revision: af56f000d50eca13e2a3afba6cdcb31bb20a2d4e
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -154,12 +154,12 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (5.0.1)
-      elasticsearch-api (= 5.0.1)
-      elasticsearch-transport (= 5.0.1)
-    elasticsearch-api (5.0.1)
+    elasticsearch (5.0.3)
+      elasticsearch-api (= 5.0.3)
+      elasticsearch-transport (= 5.0.3)
+    elasticsearch-api (5.0.3)
       multi_json
-    elasticsearch-transport (5.0.1)
+    elasticsearch-transport (5.0.3)
       faraday
       multi_json
     ethon (0.10.1)
@@ -244,7 +244,7 @@ GEM
     rack-cache (1.7.0)
       rack (>= 0.4)
     rack-cors (0.4.1)
-    rack-mini-profiler (0.10.1)
+    rack-mini-profiler (0.10.2)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
@@ -279,7 +279,7 @@ GEM
     rsolr (1.1.2)
       builder (>= 2.1.2)
     ruby-xxHash (0.4.0.1)
-    rubyzip (1.2.0)
+    rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (4.43.0)
