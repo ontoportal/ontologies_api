@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 443ad7347e99300663072cc526a4dd41c95a0d46
+  revision: d95c56eebe18e403edc61fddc580c9d89c2d1ee7
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 4bbfecd8277dd9517f3977d7f1b1d206eeb8ed3d
+  revision: ecf66f548716fb1cbe214cf995a2926155bd9023
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 736db779403504be97ae02eec00b5bd42c791053
+  revision: 192977dae23414b9bcd987c44e54cb259ec73694
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 57be7c16cf40762c09d07845a4b0c82ce32e47c4
+  revision: 246289e3b8c9382318990ae33c48996df9b9b2ce
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: af56f000d50eca13e2a3afba6cdcb31bb20a2d4e
+  revision: c72a323c1bb14d05b19f7acf64e520800d9f1cc1
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -201,7 +201,7 @@ GEM
     kgio (2.11.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    libxml-ruby (2.9.0)
+    libxml-ruby (3.0.0)
     little-plugger (1.1.4)
     logging (2.1.0)
       little-plugger (~> 1.1)
@@ -227,7 +227,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (4.0.1)
     netrc (0.11.0)
-    newrelic_rpm (3.18.0.329)
+    newrelic_rpm (3.18.1.330)
     oj (2.18.1)
     os (0.9.6)
     pony (1.11)
@@ -307,7 +307,7 @@ GEM
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
     slop (3.6.0)
-    sshkit (1.11.5)
+    sshkit (1.12.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
