@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: 2596bf0fd30e971c6cdbda5ff4f5c1aa24e25fea
+  revision: 358420e6005549c016ec3caf4620d038aec4061b
   branch: agroportal
   specs:
     ncbo_cron (0.0.1)
@@ -93,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 7f8c316d8816b3ac689e97c5ea4c678bb832721b
+  revision: 7d933c0a1a73216b421c8f6fd1232420c26148b6
   branch: agroportal
   specs:
     ontologies_linked_data (0.0.1)
@@ -196,7 +196,7 @@ GEM
     kgio (2.10.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    libxml-ruby (2.9.0)
+    libxml-ruby (3.0.0)
     little-plugger (1.1.4)
     logging (2.1.0)
       little-plugger (~> 1.1)
@@ -272,7 +272,7 @@ GEM
     rsolr (1.1.1)
       builder (>= 2.1.2)
     ruby-xxHash (0.4.0.1)
-    rubyzip (1.2.0)
+    rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (4.34.0)
@@ -371,4 +371,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.13.5
+   1.14.3
