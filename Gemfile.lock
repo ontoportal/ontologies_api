@@ -1,20 +1,4 @@
 GIT
-  remote: git://github.com/ncbo/goo.git
-  revision: e2a1c7792ed6c633afbb691ffe9b7c1aa05ee3be
-  branch: master
-  specs:
-    goo (0.0.2)
-      addressable (= 2.3.5)
-      pry
-      rdf (= 1.0.8)
-      redis
-      rest-client
-      rsolr
-      sparql-client
-      systemu
-      uuid
-
-GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
   revision: 3b2328bda2859ab704f8a7f2919eb932c4fd5f16
   branch: master
@@ -76,9 +60,25 @@ GIT
       activesupport (>= 2.3)
 
 GIT
+  remote: git://github.com/sifrproject/goo.git
+  revision: 0d042a1eb4bba24c873dd87afa0a672df653c9af
+  branch: lirmm
+  specs:
+    goo (0.0.2)
+      addressable (= 2.3.5)
+      pry
+      rdf (= 1.0.8)
+      redis
+      rest-client
+      rsolr
+      sparql-client
+      systemu
+      uuid
+
+GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: fd4f175b6be39a6296a3aff3cfc9d8bb24949728
-  branch: lirmm_cron
+  revision: 983ce98e93ba5f36969bdc0852923d60b695cb47
+  branch: lirmm
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -93,8 +93,8 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 64bde5b77b53bfbf4aca98919a4d209a9e092363
-  branch: lirmm_linked_data
+  revision: c961b79218cfd754d7dbf5d71fa2f7d499420494
+  branch: lirmm
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -147,7 +147,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20160310)
+    domain_name (0.5.20170223)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (1.0.17)
       elasticsearch-api (= 1.0.17)
@@ -184,7 +184,7 @@ GEM
       signet (~> 0.7)
     haml (4.0.7)
       tilt
-    http-cookie (1.0.2)
+    http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
@@ -195,7 +195,7 @@ GEM
     kgio (2.10.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    libxml-ruby (2.8.0)
+    libxml-ruby (3.0.0)
     little-plugger (1.1.4)
     logging (2.1.0)
       little-plugger (~> 1.1)
@@ -263,15 +263,15 @@ GEM
     redis-store (1.1.7)
       redis (>= 2.2)
     ref (2.0.0)
-    rest-client (1.8.0)
+    rest-client (2.0.1)
       http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 3.0)
-      netrc (~> 0.7)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     retriable (1.4.1)
     rsolr (1.1.1)
       builder (>= 2.1.2)
     ruby-xxHash (0.4.0.1)
-    rubyzip (1.2.0)
+    rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (4.34.0)
@@ -303,7 +303,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
-    thread_safe (0.3.5)
+    thread_safe (0.3.6)
     tilt (2.0.2)
     typhoeus (1.0.2)
       ethon (>= 0.9.0)
@@ -370,4 +370,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.12.3
+   1.14.3
