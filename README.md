@@ -9,6 +9,7 @@ Fork the project, create a branch, and then customize as necessary. There are se
 - [Git](http://git-scm.com/)
 - [Bundler](http://gembundler.com/)
     - Install with `gem install bundler` if you don't have it
+    - To use local ontologies_linked_data gem: `bundle config local.ontologies_linked_data ~/path_to/ontologies_linked_data/`
 - [4store](http://4store.org/)
     - NCBO code relies on 4store as the main datastore. There are several installation options, but the easiest is getting the [binaries](http://4store.org/trac/wiki/Download).
     - For starting, stopping, and restarting 4store easily, you can try setting up [4s-service](https://gist.github.com/4211360)

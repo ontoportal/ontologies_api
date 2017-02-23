@@ -61,6 +61,7 @@ gem 'capistrano-bundler', '~> 1.1.1', :require => false, :group => :development
 gem 'capistrano-rbenv', '~> 2.0.2', :require => false, :group => :development
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
+# Example: bundle config local.ontologies_linked_data ~/path_to/ontologies_linked_data/
 gem 'goo', github: 'sifrproject/goo', branch: 'agroportal'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
 gem 'ontologies_linked_data', github: 'sifrproject/ontologies_linked_data', branch: 'agroportal'
