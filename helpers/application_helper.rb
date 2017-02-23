@@ -27,9 +27,9 @@ module Sinatra
         params.each do |attribute, value|
           next if value.nil?
 
-          # Deal with empty strings
+          # Deal with empty strings for String and URI
           empty_string = value.is_a?(String) && value.empty?
-          old_string_value_exists = obj.respond_to?(attribute) && obj.send(attribute).is_a?(String)
+          old_string_value_exists = obj.respond_to?(attribute) && (obj.send(attribute).is_a?(String) || obj.send(attribute).is_a?(RDF::URI))
           if old_string_value_exists && empty_string
             value = nil
           elsif empty_string
@@ -88,7 +88,10 @@ module Sinatra
             value = value.map { |v| RDF::IRI.new(v) }
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
-            value = RDF::IRI.new(value)
+            if !value.nil?
+              # If pass an empty string for an URI : set it as nil.
+              value = RDF::IRI.new(value)
+            end
           end
 
           # Don't populate naming attributes if they exist
