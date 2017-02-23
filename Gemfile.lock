@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/goo.git
-  revision: e2a1c7792ed6c633afbb691ffe9b7c1aa05ee3be
+  revision: 0d042a1eb4bba24c873dd87afa0a672df653c9af
   branch: agroportal
   specs:
     goo (0.0.2)
@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: 893dffce7eb2f40f5549cf004a4c6708ce1a81de
+  revision: d2591ea4d0dfb4fca734bd1cfc3aace7766a60b3
   branch: agroportal
   specs:
     ncbo_cron (0.0.1)
@@ -93,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: f1662529694f19ba38ab6cb84fb508b94f46505d
+  revision: cfb63b6d2dbf66923b5a1771b8b434a46473b4da
   branch: agroportal
   specs:
     ontologies_linked_data (0.0.1)
@@ -147,7 +147,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20161129)
+    domain_name (0.5.20170223)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (1.0.17)
       elasticsearch-api (= 1.0.17)
@@ -264,7 +264,7 @@ GEM
     redis-store (1.1.7)
       redis (>= 2.2)
     ref (2.0.0)
-    rest-client (2.0.0)
+    rest-client (2.0.1)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
