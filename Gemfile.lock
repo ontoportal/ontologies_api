@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ncbo/goo.git
-  revision: 81138f88a16c416259112c4723579f8ab6352805
+  revision: ce2a5766e9c987951e226fad05e5d1c5bc171573
   branch: master
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: dde3c0e81289b46557d155c8dc441e02b9116cf3
+  revision: c69a44de6a92828d5fa674f33cba4f8f29c1902e
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: https://github.com/ncbo/ncbo_cron.git
-  revision: cf2f04159557e39662aa20f4a8e1634ab1cc3b44
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_cron.git
+  revision: a5cf07bcc3dc27ec26b4212b891b49dbafb70645
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 5d39a7b800cb4b96c61f35d2cb8e048891453001
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: 16dbbe3fd81b2ec1eb19c8c182d779f58f88295d
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: cf50b5737404f59e16017b040ac9c199645039bf
+  revision: 9fb051182d58295e05ab31bb450b386eddeae29d
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
