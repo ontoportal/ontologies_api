@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 303bd995214406114349c21e38a5f855ea6c1c2d
-  branch: master
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: cf2f04159557e39662aa20f4a8e1634ab1cc3b44
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 03512544265dce804fe5d9b54b138f1d022ee748
-  branch: master
+  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: 5d39a7b800cb4b96c61f35d2cb8e048891453001
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -147,7 +147,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20161129)
+    domain_name (0.5.20170223)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (5.0.3)
       elasticsearch-api (= 5.0.3)
@@ -187,7 +187,7 @@ GEM
       tilt
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.8.0)
+    i18n (0.8.1)
     json (2.0.3)
     json-schema (2.5.0)
       addressable (~> 2.3)
@@ -220,7 +220,7 @@ GEM
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (4.0.1)
+    net-ssh (4.1.0)
     netrc (0.11.0)
     newrelic_rpm (3.18.1.330)
     oj (2.18.1)
@@ -266,7 +266,7 @@ GEM
     redis-store (1.1.7)
       redis (>= 2.2)
     ref (2.0.0)
-    rest-client (2.0.0)
+    rest-client (2.0.1)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
@@ -306,7 +306,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
-    thread_safe (0.3.5)
+    thread_safe (0.3.6)
     tilt (2.0.6)
     typhoeus (1.1.2)
       ethon (>= 0.9.0)
