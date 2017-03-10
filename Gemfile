@@ -65,7 +65,7 @@ gem 'capistrano-rbenv', '~> 2.0.2', :require => false, :group => :development
 gem 'goo', github: 'sifrproject/goo', branch: 'agroportal'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
 gem 'ontologies_linked_data', github: 'sifrproject/ontologies_linked_data', branch: 'agroportal'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
+gem 'ncbo_annotator', github: 'sifrproject/ncbo_annotator', branch: 'agroportal'
 gem 'ncbo_cron', github: 'sifrproject/ncbo_cron', branch: 'agroportal'
 gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'master'
 

@@ -1,15 +1,4 @@
 GIT
-  remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 3b2328bda2859ab704f8a7f2919eb932c4fd5f16
-  branch: master
-  specs:
-    ncbo_annotator (0.0.1)
-      goo
-      ontologies_linked_data
-      redis
-      ruby-xxHash
-
-GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
   revision: b3720fefe530023f25b1bbefd624347a500f0764
   branch: master
@@ -76,8 +65,19 @@ GIT
       uuid
 
 GIT
+  remote: git://github.com/sifrproject/ncbo_annotator.git
+  revision: 331df4f117d41b2619566baa4d424e0fb5290594
+  branch: agroportal
+  specs:
+    ncbo_annotator (0.0.1)
+      goo
+      ontologies_linked_data
+      redis
+      ruby-xxHash
+
+GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: d2591ea4d0dfb4fca734bd1cfc3aace7766a60b3
+  revision: e37454b81b72bb816ef7e3e989c8621750093960
   branch: agroportal
   specs:
     ncbo_cron (0.0.1)
