@@ -58,7 +58,7 @@ class OntologiesController < ApplicationController
     ##
     # Update latest submission of an ontology
     REQUIRES_REPROCESS = ["prefLabelProperty", "definitionProperty", "synonymProperty", "authorProperty", "classType", "hierarchyProperty", "obsoleteProperty", "obsoleteParent"]
-    patch '/:acronym/latest_submission"' do
+    patch '/:acronym/latest_submission' do
       ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
 
