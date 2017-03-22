@@ -61,12 +61,8 @@ class OntologiesController < ApplicationController
     patch '/:acronym/latest_submission' do
       ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
-
-      if include_status
-        submission = ont.latest_submission(status: include_status.to_sym)
-      else
-        submission = ont.latest_submission(status: :any)
-      end
+      
+      submission = ont.latest_submission(status: :any)
 
       submission.bring(*OntologySubmission.attributes)
       populate_from_params(submission, params)
