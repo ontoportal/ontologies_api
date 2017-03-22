@@ -56,6 +56,36 @@ class OntologiesController < ApplicationController
     end
 
     ##
+    # Update latest submission of an ontology
+    REQUIRES_REPROCESS = ["prefLabelProperty", "definitionProperty", "synonymProperty", "authorProperty", "classType", "hierarchyProperty", "obsoleteProperty", "obsoleteParent"]
+    patch '/:acronym/latest_submission"' do
+      ont = Ontology.find(params["acronym"]).first
+      error 422, "You must provide an existing `acronym` to patch" if ont.nil?
+
+      if include_status
+        submission = ont.latest_submission(status: include_status.to_sym)
+      else
+        submission = ont.latest_submission(status: :any)
+      end
+
+      submission.bring(*OntologySubmission.attributes)
+      populate_from_params(submission, params)
+      add_file_to_submission(ont, submission)
+
+      if submission.valid?
+        submission.save
+        if (params.keys & REQUIRES_REPROCESS).length > 0 || request_has_file?
+          cron = NcboCron::Models::OntologySubmissionParser.new
+          cron.queue_submission(submission, {all: true})
+        end
+      else
+        error 422, submission.errors
+      end
+
+      halt 204
+    end
+
+    ##
     # Create an ontology
     post do
       create_ontology
