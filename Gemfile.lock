@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: de5777a128d4e85ea26cd361037180682e246694
+  revision: a7ba65bfee6026400104590494dada08e8e0a5ae
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 2450dbdc100c5c0926a78239abbf3a1ddc57a694
+  revision: 38dac9f5bc7aadc9db0bc723e45c9ddbc99c1ac6
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -37,7 +37,6 @@ GIT
       mlanett-redis-lock
       multi_json
       ncbo_annotator
-      omni_logger
       ontologies_linked_data
       redis
       rufus-scheduler (~> 2.0.24)
@@ -63,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 3be8c6ee3751291c69ef4a93e80bb6a987ce9a5d
+  revision: 286af92b57f4d12f7f510fd6abcabb6cf245f9f1
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -75,6 +74,7 @@ GIT
       multi_json
       ncbo_resource_index
       oj
+      omni_logger
       pony
       rack
       rack-test
