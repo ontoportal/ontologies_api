@@ -327,7 +327,7 @@ module Sinatra
 
         # Use a fake phrase because we want a normal wildcard query, not the suggest.
         # Replace this with a wildcard below.
-        get_edismax_query("avoid_search_mangling", params)
+        get_term_search_query("avoid_search_mangling", params)
         params.delete("ontology_acronyms")
         params.delete("q")
         params["qf"] = "resource_id"
