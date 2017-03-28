@@ -5,6 +5,7 @@ module Sinatra
   module Helpers
     module PropertiesSearchHelper
       ALLOWED_INCLUDES_PARAMS = [:label, :labelGenerated, :definition].freeze
+      PROPERTY_TYPES_PARAM = "property_types"
 
       def get_properties_search_query(text, params)
         validate_params_solr_population(ALLOWED_INCLUDES_PARAMS)
@@ -40,6 +41,10 @@ module Sinatra
         ontology_types_clause = ontology_types.empty? ? "" : get_quoted_field_query_param(ontology_types, "OR", "ontologyType")
         filter_query = "#{filter_query} AND #{ontology_types_clause}" unless (ontology_types_clause.empty?)
         filter_query << " AND definition:[* TO *]" if params[SearchHelper::REQUIRE_DEFINITIONS_PARAM] == "true"
+
+        property_types = params[PROPERTY_TYPES_PARAM].nil? || params[PROPERTY_TYPES_PARAM].empty? ? [] : params[PROPERTY_TYPES_PARAM].split(",").map(&:strip)
+        property_types_clause = property_types.empty? ? "" : get_quoted_field_query_param(property_types.map { |pt| pt.upcase }, "OR", "propertyType")
+        filter_query = "#{filter_query} AND #{property_types_clause}" unless (property_types_clause.empty?)
 
         params["fq"] = filter_query
         params["q"] = query
