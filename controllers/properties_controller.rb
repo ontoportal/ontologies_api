@@ -15,6 +15,14 @@ class PropertiesController < ApplicationController
       reply props
     end
 
+    get '/:property' do
+      prop = params[:property]
+      ont, submission = get_ontology_and_submission
+      p = ont.property(prop, submission)
+      error 404, "Property #{prop} not found in ontology #{ont.id.to_s}" if p.nil?
+      reply 200, p
+    end
+
     get '/:property/label' do
       expires 86400, :public
       ont, submission = get_ontology_and_submission

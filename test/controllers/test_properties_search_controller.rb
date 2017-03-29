@@ -55,5 +55,25 @@ class TestPropertiesSearchController < TestCase
     doc = results["collection"][0]
     assert_equal ["contact_person", "contact person"], doc["labelGenerated"]
     assert_equal 3, results["collection"].length
+
+    get '/property_search?q=has'
+    assert last_response.ok?
+    results = MultiJson.load(last_response.body)
+    assert_equal 17, results["collection"].length
+
+    get '/property_search?q=has&ontologies=MCCLSEARCHTEST-0'
+    assert last_response.ok?
+    results = MultiJson.load(last_response.body)
+    assert_equal 2, results["collection"].length
+
+    get '/property_search?q=has&ontology_types=ONTOLOGY'
+    assert last_response.ok?
+    results = MultiJson.load(last_response.body)
+    assert_equal 2, results["collection"].length
+
+    get '/property_search?q=has&ontologies=BROSEARCHTEST-0&property_types=annotation'
+    assert last_response.ok?
+    results = MultiJson.load(last_response.body)
+    assert_equal 2, results["collection"].length
   end
 end
