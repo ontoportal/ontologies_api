@@ -26,7 +26,7 @@ module Sinatra
           params["qf"] = "resource_id^20 labelExact^10 labelGeneratedExact^8"
           params["hl.fl"] = "resource_id labelExact labelGeneratedExact"
         else
-          params["qf"] = "labelExact^100 labelGeneratedExact^80 labelSuggestEdge^50 labelSuggestNgram resource_id"
+          params["qf"] = "labelExact^100 labelGeneratedExact^80 labelSuggestEdge^50 labelSuggestNgram label labelGenerated resource_id"
           query = solr_escape(text)
         end
 

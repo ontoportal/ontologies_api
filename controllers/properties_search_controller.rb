@@ -24,7 +24,7 @@ class PropertiesSearchController < ApplicationController
 
 
 
-      puts "Properties query: #{query}, params: #{params}"
+      # puts "Properties query: #{query}, params: #{params}"
 
 
 
