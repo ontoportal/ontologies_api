@@ -1,6 +1,6 @@
 require_relative '../test_case'
 
-class TestPropertiesSearchController < TestCase
+class TestPropertiesController < TestCase
 
   def self.before_suite
     count, acronyms, bro = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
@@ -21,56 +21,35 @@ class TestPropertiesSearchController < TestCase
                                                                                                    ont_count: 1,
                                                                                                    submission_count: 1
                                                                                                })
-
     @@ontologies = bro.concat(mccl)
+    @@acronyms = @@ontologies.map { |ont| ont.bring_remaining; ont.acronym }
   end
 
   def self.after_suite
     LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
-    LinkedData::Models::Ontology.indexClear(:property)
-    LinkedData::Models::Ontology.indexCommit(nil, :property)
   end
 
-  def test_property_search
-    get '/property_search?q=development_stage'
+  def test_properties
+    get "/ontologies/#{@@acronyms.first}/properties"
     assert last_response.ok?
-
-    acronyms = @@ontologies.map { |ont| ont.bring_remaining; ont.acronym }
     results = MultiJson.load(last_response.body)
+    assert_equal 84, results.length
 
-    results["collection"].each do |doc|
-      acronym = doc["links"]["ontology"].split('/')[-1]
-      assert acronyms.include?(acronym)
-    end
+    get "/ontologies/#{@@acronyms.last}/properties"
+    assert last_response.ok?
+    results = MultiJson.load(last_response.body)
+    assert_equal 35, results.length
   end
 
-  def test_search_filters
-    get '/property_search?q=contact person'
+  def test_single_property
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fbioontology.org%2Fontologies%2FBiomedicalResourceOntology.owl%23Originator"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
+    assert results.is_a?(Hash)
+    assert_equal ["Originator"], results["label"]
+    assert_equal "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Originator", results["@id"]
 
-    doc = results["collection"][0]
-    assert_equal ["contact_person", "contact person"], doc["labelGenerated"]
-    assert_equal 3, results["collection"].length
-
-    get '/property_search?q=has'
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    assert_equal 17, results["collection"].length
-
-    get '/property_search?q=has&ontologies=MCCLSEARCHTEST-0'
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    assert_equal 2, results["collection"].length
-
-    get '/property_search?q=has&ontology_types=ONTOLOGY'
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    assert_equal 2, results["collection"].length
-
-    get '/property_search?q=has&ontologies=BROSEARCHTEST-0&property_types=annotation'
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    assert_equal 2, results["collection"].length
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fbioontology.org%2Fontologies%2FBiomedicalResourceOntology.owl%23DummyProp"
+    assert_equal 404, last_response.status
   end
 end
