@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'multi_json'
+require 'uri'
 
 module Sinatra
   module Helpers
@@ -28,6 +29,8 @@ module Sinatra
         else
           params["qf"] = "labelExact^100 labelGeneratedExact^80 labelSuggestEdge^50 labelSuggestNgram label labelGenerated resource_id"
           query = solr_escape(text)
+          # double quote the query if it is a URL (ID searches)
+          query = "\"#{query}\"" if text =~ /\A#{URI::regexp(['http', 'https'])}\z/
         end
 
         params["ontologies"] = params["ontology_acronyms"].join(",") if params["ontology_acronyms"] && !params["ontology_acronyms"].empty?
