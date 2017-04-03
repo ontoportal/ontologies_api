@@ -5,7 +5,7 @@ require 'uri'
 module Sinatra
   module Helpers
     module PropertiesSearchHelper
-      ALLOWED_INCLUDES_PARAMS = [:label, :labelGenerated, :definition].freeze
+      ALLOWED_INCLUDES_PARAMS = [:label, :labelGenerated, :definition, :parents].freeze
       PROPERTY_TYPES_PARAM = "property_types"
 
       def get_properties_search_query(text, params)
@@ -43,6 +43,7 @@ module Sinatra
 
         ontology_types_clause = ontology_types.empty? ? "" : get_quoted_field_query_param(ontology_types, "OR", "ontologyType")
         filter_query = "#{filter_query} AND #{ontology_types_clause}" unless (ontology_types_clause.empty?)
+
         filter_query << " AND definition:[* TO *]" if params[SearchHelper::REQUIRE_DEFINITIONS_PARAM] == "true"
 
         property_types = params[PROPERTY_TYPES_PARAM].nil? || params[PROPERTY_TYPES_PARAM].empty? ? [] : params[PROPERTY_TYPES_PARAM].split(",").map(&:strip)
