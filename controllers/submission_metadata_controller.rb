@@ -58,6 +58,9 @@ class SubmissionMetadataController < ApplicationController
           end
         end
 
+        # Get enforcedValues from the metadata
+        attr_settings[:enforcedValues] = LinkedData::Models::OntologySubmission.attribute_settings(attr)[:enforcedValues]
+
         # Get display from the metadata
         if LinkedData::Models::OntologySubmission.attribute_settings(attr)[:display].nil?
           attr_settings[:display] = "no"
