@@ -1,7 +1,7 @@
 GIT
-  remote: https://github.com/ncbo/goo.git
-  revision: de90d22ec992dd8dea3ec97f6c9c69906de1ecc0
-  branch: staging
+  remote: git://github.com/ncbo/goo.git
+  revision: 7f1b081ffc8c37eed240c2dbd5255ec4821d5191
+  branch: master
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 492af1d56aef151a592012f0bd74abc97d0b72a3
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_annotator.git
+  revision: 407346cf7efd91f02c90085487bc5769007bc214
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 0bb7eac6e32690dc98c0bfc7e05531750c1d8b77
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_cron.git
+  revision: d14f0645fd5394f8af9517de02ed2eb1a1f3360d
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 4b881895ff7850909378e10f9448a5fe9dcbc9ac
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: c1ef4b3ff025f3c974051816955ec335766e5420
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 61ec3f1ccec89f544b9cc777666c3dde840ed282
-  branch: staging
+  remote: git://github.com/ncbo/ontologies_linked_data.git
+  revision: 1ae02b302f6b8e9753538733f81251d96dabf187
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -134,8 +134,7 @@ GEM
     backports (3.7.0)
     bcrypt (3.1.11)
     builder (3.2.3)
-    capistrano (3.8.0)
-      airbrussh (>= 1.0.0)
+    capistrano (3.4.1)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
