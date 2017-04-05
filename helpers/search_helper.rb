@@ -4,6 +4,7 @@ require 'multi_json'
 module Sinatra
   module Helpers
     module SearchHelper
+      ALLOWED_INCLUDES_PARAMS = [:prefLabel, :synonym, :definition, :notation, :cui, :semanticType, :properties].freeze
       ONTOLOGIES_PARAM = "ontologies"
       ONTOLOGY_PARAM = "subtree_ontology"
       EXACT_MATCH_PARAM = "require_exact_match"
@@ -25,6 +26,8 @@ module Sinatra
       MATCH_TYPE_PREFLABEL = "prefLabel"
       MATCH_TYPE_SYNONYM = "synonym"
       MATCH_TYPE_PROPERTY = "property"
+      MATCH_TYPE_LABEL = "label"
+      MATCH_TYPE_LABELGENERATED = "labelGenerated"
 
       MATCH_TYPE_MAP = {
           "resource_id" => "id",
@@ -37,6 +40,14 @@ module Sinatra
           "synonymSuggestEdge" => MATCH_TYPE_SYNONYM,
           "synonymSuggestNgram" => MATCH_TYPE_SYNONYM,
           MATCH_TYPE_PROPERTY => MATCH_TYPE_PROPERTY,
+          MATCH_TYPE_LABEL => MATCH_TYPE_LABEL,
+          "labelExact" => MATCH_TYPE_LABEL,
+          "labelSuggestEdge" => MATCH_TYPE_LABEL,
+          "labelSuggestNgram" => MATCH_TYPE_LABEL,
+          MATCH_TYPE_LABELGENERATED => MATCH_TYPE_LABELGENERATED,
+          "labelGeneratedExact" => MATCH_TYPE_LABELGENERATED,
+          "labellabelGeneratedSuggestEdge" => MATCH_TYPE_LABELGENERATED,
+          "labellabelGeneratedSuggestNgram" => MATCH_TYPE_LABELGENERATED,
           "notation" => "notation",
           "cui" => "cui",
           "semanticType" => "semanticType"
@@ -53,15 +64,15 @@ module Sinatra
 
       QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.compact.join(" ")
 
-      def get_edismax_query(text, params={})
-        validate_params_solr_population()
+      def get_term_search_query(text, params={})
+        validate_params_solr_population(ALLOWED_INCLUDES_PARAMS)
 
         # raise error if text is empty AND (none of the QUERYLESS_FIELDS_PARAMS has been passed
         # OR either an exact match OR suggest search is being executed)
-        if (text.nil? || text.strip.empty?)
-          if (!QUERYLESS_FIELDS_PARAMS.keys.any? {|k| params.key?(k)} ||
+        if text.nil? || text.strip.empty?
+          if !QUERYLESS_FIELDS_PARAMS.keys.any? {|k| params.key?(k)} ||
               params[EXACT_MATCH_PARAM] == "true" ||
-              params[SUGGEST_PARAM] == "true")
+              params[SUGGEST_PARAM] == "true"
             raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]"
           else
             text = ''
@@ -82,11 +93,11 @@ module Sinatra
 
         # text.gsub!(/\*+$/, '')
 
-        if (params[EXACT_MATCH_PARAM] == "true")
+        if params[EXACT_MATCH_PARAM] == "true"
           query = "\"#{solr_escape(text)}\""
           params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR}"
           params["hl.fl"] = "resource_id prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
-        elsif (params[SUGGEST_PARAM] == "true" || text[-1] == '*')
+        elsif params[SUGGEST_PARAM] == "true" || text[-1] == '*'
           text.gsub!(/\*+$/, '')
           query = "\"#{solr_escape(text)}\""
           params["qt"] = "/suggest_ncbo"
@@ -94,7 +105,7 @@ module Sinatra
           params["pf"] = "prefLabelSuggest^50"
           params["hl.fl"] = "prefLabelExact prefLabelSuggestEdge synonymSuggestEdge prefLabelSuggestNgram synonymSuggestNgram resource_id #{QUERYLESS_FIELDS_STR}"
         else
-          if (text.strip.empty?)
+          if text.strip.empty?
             query = '*'
           else
             query = solr_escape(text)
@@ -159,11 +170,11 @@ module Sinatra
         params["fq"] = filter_query
         params["q"] = query
 
-        return query
+        query
       end
 
-      def add_matched_fields(solr_response)
-        match = MATCH_TYPE_PREFLABEL
+      def add_matched_fields(solr_response, default_match)
+        match = default_match
         all_matches = {}
 
         solr_response["highlighting"].each do |key, matches|
@@ -316,7 +327,7 @@ module Sinatra
 
         # Use a fake phrase because we want a normal wildcard query, not the suggest.
         # Replace this with a wildcard below.
-        get_edismax_query("avoid_search_mangling", params)
+        get_term_search_query("avoid_search_mangling", params)
         params.delete("ontology_acronyms")
         params.delete("q")
         params["qf"] = "resource_id"
@@ -344,6 +355,12 @@ module Sinatra
         classes_hash
       end
 
+      def validate_params_solr_population(allowed_includes_params)
+        leftover = includes_param - allowed_includes_params
+        invalid = leftover.length > 0
+        message = "The `include` query string parameter cannot accept #{leftover.join(", ")}, please use only #{allowed_includes_params.join(", ")}"
+        error 400, message if invalid
+      end
     end
   end
 end

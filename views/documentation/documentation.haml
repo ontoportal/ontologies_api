@@ -7,7 +7,9 @@
         %li
           %a{href: "#nav_usage"} General Usage
         %li
-          %a{href: "#nav_search"} Search
+          %a{href: "#nav_search"} Term Search
+        %li
+          %a{href: "#nav_prop_search"} Ontology Property Search
         %li
           %a{href: "#nav_annotator"} Annotator
         %li
@@ -123,10 +125,10 @@
 
       %p Several endpoints are available for performing lookups for classes, annotations, and annotated resources. These endpoints are not strictly RESTful, but do return objects with links where relevant.
 
-      %h3#nav_search Classes Search
+      %h3#nav_search Term Search
 
       %p
-        An endpoint for searching classes and their properties is available
+        An endpoint for searching terms and their properties is available
         %ul
           %li
             Perform search
@@ -183,6 +185,29 @@
               %ul
                 %li ontology={ontology_id}
                 %li roots_only=true
+
+      %h3#nav_prop_search Ontology Property Search
+
+      %p
+        An endpoint for searching ontology properties by their labels and IDs (URIs)
+        %ul
+          %li
+            Perform search
+          %ul
+            %li
+              <span class="label label-info">GET</span> <span class="label label-info">POST</span> <code>/property_search?q={search query}</code>
+            %li
+              example:
+              %a{href: "/property_search?q=has dimension"} /property_search?q=has dimension
+          %li
+            Parameters
+            %ul
+              %li ontologies={ontology_id1,ontology_id2,ontology_id3}
+              %li require_exact_match={true|false}  // Restricts results only to the exact matches of the query by the property id, label, or the generated label (a label, auto-generated from the ID). default = false
+              %li require_definitions={true|false}  // Filter results only to those that include definitions. default = false
+              %li include={label, labelGenerated, definition, parents} // default = All of the properties in this example
+              %li ontology_types={ONTOLOGY,VALUE_SET_COLLECTION} // default = all ontology types are returned
+              %li property_types={object,annotation,datatype} // Restricts results to specific property types (object, annotation, datatype). default = all property types are returned
 
       %h3#nav_annotator Annotator
 

@@ -1,7 +1,7 @@
 GIT
-  remote: git://github.com/ncbo/goo.git
-  revision: ce2a5766e9c987951e226fad05e5d1c5bc171573
-  branch: master
+  remote: https://github.com/ncbo/goo.git
+  revision: de90d22ec992dd8dea3ec97f6c9c69906de1ecc0
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: c69a44de6a92828d5fa674f33cba4f8f29c1902e
-  branch: master
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: 492af1d56aef151a592012f0bd74abc97d0b72a3
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: a5cf07bcc3dc27ec26b4212b891b49dbafb70645
-  branch: master
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: 0bb7eac6e32690dc98c0bfc7e05531750c1d8b77
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 16dbbe3fd81b2ec1eb19c8c182d779f58f88295d
-  branch: master
+  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: 4b881895ff7850909378e10f9448a5fe9dcbc9ac
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 9fb051182d58295e05ab31bb450b386eddeae29d
-  branch: master
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: 61ec3f1ccec89f544b9cc777666c3dde840ed282
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -74,6 +74,7 @@ GIT
       multi_json
       ncbo_resource_index
       oj
+      omni_logger
       pony
       rack
       rack-test
@@ -130,10 +131,11 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    backports (3.6.8)
+    backports (3.7.0)
     bcrypt (3.1.11)
     builder (3.2.3)
-    capistrano (3.4.1)
+    capistrano (3.8.0)
+      airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
@@ -160,9 +162,9 @@ GEM
     ethon (0.10.1)
       ffi (>= 1.3.0)
     extlib (0.9.16)
-    faraday (0.11.0)
+    faraday (0.12.0.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.17)
+    ffi (1.9.18)
     get_process_mem (0.2.1)
     google-api-client (0.8.7)
       activesupport (>= 3.2, < 5.0)
@@ -198,7 +200,8 @@ GEM
       addressable (~> 2.3)
     libxml-ruby (3.0.0)
     little-plugger (1.1.4)
-    logging (2.1.0)
+    logger (1.2.8)
+    logging (2.2.0)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     macaddr (1.7.1)
@@ -222,8 +225,10 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
     netrc (0.11.0)
-    newrelic_rpm (3.18.1.330)
-    oj (2.18.1)
+    newrelic_rpm (4.0.0.332)
+    oj (2.18.5)
+    omni_logger (0.1.4)
+      logger
     os (0.9.6)
     pony (1.11)
       mail (>= 2.0)
@@ -246,11 +251,11 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rack-timeout (0.4.2)
-    rainbows (5.1.0)
+    rainbows (5.1.1)
       kgio (~> 2.5)
       rack (>= 1.1, < 3.0)
       unicorn (~> 5.1)
-    raindrops (0.17.0)
+    raindrops (0.18.0)
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
@@ -277,13 +282,13 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.43.0)
+    sequel (4.45.0)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
       jwt (~> 1.5)
       multi_json (~> 1.10)
-    simplecov (0.13.0)
+    simplecov (0.14.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
@@ -302,20 +307,20 @@ GEM
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
     slop (3.6.0)
-    sshkit (1.12.0)
+    sshkit (1.13.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     thread_safe (0.3.6)
-    tilt (2.0.6)
+    tilt (2.0.7)
     typhoeus (1.1.2)
       ethon (>= 0.9.0)
-    tzinfo (1.2.2)
+    tzinfo (1.2.3)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
-    unicorn (5.2.0)
+    unicorn (5.3.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     unicorn-worker-killer (0.4.4)
