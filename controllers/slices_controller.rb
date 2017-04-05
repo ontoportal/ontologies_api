@@ -31,6 +31,30 @@ class SlicesController < ApplicationController
       halt 204
     end
 
+    # Check to make sure each group has a corresponding slice (and ontologies match)
+    get '/synchronize_groups' do
+      error 403, "Access denied" unless current_user && current_user.admin?
+
+      groups = LinkedData::Models::Group.where.include(LinkedData::Models::Group.attributes(:all)).all
+      groups.each do |g|
+        slice = LinkedData::Models::Slice.find(g.acronym.downcase.gsub(" ", "_")).include(LinkedData::Models::Slice.attributes(:all)).first
+        if slice
+          slice.ontologies = g.ontologies
+          slice.save if slice.valid?
+        else
+          slice = LinkedData::Models::Slice.new({
+                             acronym: g.acronym.downcase.gsub(" ", "_"),
+                             name: g.name,
+                             description: g.description,
+                             ontologies: g.ontologies
+                           })
+          slice.save rescue reply "Error creating slice: " + slice.errors.to_s
+        end
+      end
+      reply LinkedData::Models::Slice.where.include(LinkedData::Models::Slice.attributes(:all)).all
+
+    end
+
 
     private
 
