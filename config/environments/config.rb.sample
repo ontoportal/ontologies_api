@@ -114,6 +114,9 @@ begin
     config.cron_schedule             = "30 */4 * * *"
     # Pull schedule
     config.pull_schedule             = "00 18 * * *"
+    # Pull long schedule for ontology that are pulled less frequently: run weekly on monday at 11 a.m. (23:00)
+    config.pull_schedule_long                       = "00 23 * * 1"
+    config.pull_long_ontologies                     = ["BIOREFINERY", "TRANSMAT", "GO"]
   end
 rescue NameError
   puts "(CNFG) >> NcboCron not available, cannot load config"
