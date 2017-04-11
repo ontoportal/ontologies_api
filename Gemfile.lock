@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_annotator.git
-  revision: f1e5eab333e3f6a3201be77ff561dade441b7547
+  revision: 9095a88b38edf1cd6a2050bcb1bc07404c059d56
   branch: agroportal
   specs:
     ncbo_annotator (0.0.1)
@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: 9e83cd1d82962f8cab0f1ac30c6d80a0df5f1f4b
+  revision: 15fe8cd119028216f9520fecec4e2ab36fcbe48d
   branch: agroportal
   specs:
     ncbo_cron (0.0.1)
@@ -93,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 23f7730eaacc4d385b9a20ea5fd46183151ec435
+  revision: 018d786a7ebe8599b966f5c91c52c400bf52e81f
   branch: agroportal
   specs:
     ontologies_linked_data (0.0.1)
@@ -312,7 +312,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.2)
+    unf_ext (0.0.7.3)
     unicorn (5.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
