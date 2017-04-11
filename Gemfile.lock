@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: e2da87c6ecaa76c5dd782d9cf466835102125a13
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_annotator.git
+  revision: b37cfe1d651f838dec1f0dddaadd5217c1831bca
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 93acc0f325995e7f88fb08b8c0bae760eb57f59d
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_cron.git
+  revision: 30971f8650d5acd340b956d808199f2d5fd3c07b
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: c1ef4b3ff025f3c974051816955ec335766e5420
+  revision: 0291fed76bff7839c2568acad02fa70a979f2d64
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 6991e74d38a8f1f79911cd5b9bb17c3fc82b436d
-  branch: staging
+  remote: git://github.com/ncbo/ontologies_linked_data.git
+  revision: 0a02d50ea791b5110df3b90b6799b62c860086a0
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
