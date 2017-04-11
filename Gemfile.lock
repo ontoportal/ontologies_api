@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 407346cf7efd91f02c90085487bc5769007bc214
-  branch: master
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: e2da87c6ecaa76c5dd782d9cf466835102125a13
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d14f0645fd5394f8af9517de02ed2eb1a1f3360d
-  branch: master
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: 93acc0f325995e7f88fb08b8c0bae760eb57f59d
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 1ae02b302f6b8e9753538733f81251d96dabf187
-  branch: master
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: 6991e74d38a8f1f79911cd5b9bb17c3fc82b436d
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -148,14 +148,14 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20170223)
+    domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (5.0.3)
-      elasticsearch-api (= 5.0.3)
-      elasticsearch-transport (= 5.0.3)
-    elasticsearch-api (5.0.3)
+    elasticsearch (5.0.4)
+      elasticsearch-api (= 5.0.4)
+      elasticsearch-transport (= 5.0.4)
+    elasticsearch-api (5.0.4)
       multi_json
-    elasticsearch-transport (5.0.3)
+    elasticsearch-transport (5.0.4)
       faraday
       multi_json
     ethon (0.10.1)
@@ -189,10 +189,10 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.1)
-    json (2.0.3)
+    json (2.0.4)
     json-schema (2.5.0)
       addressable (~> 2.3)
-    json_pure (2.0.3)
+    json_pure (2.0.4)
     jwt (1.5.6)
     kgio (2.11.0)
     launchy (2.4.3)
@@ -200,7 +200,7 @@ GEM
     libxml-ruby (3.0.0)
     little-plugger (1.1.4)
     logger (1.2.8)
-    logging (2.2.0)
+    logging (2.2.1)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     macaddr (1.7.1)
@@ -258,7 +258,7 @@ GEM
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (1.0.2)
+    recursive-open-struct (1.0.3)
     redcarpet (3.4.0)
     redis (3.3.3)
     redis-activesupport (4.1.5)
@@ -318,7 +318,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.2)
+    unf_ext (0.0.7.3)
     unicorn (5.3.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
