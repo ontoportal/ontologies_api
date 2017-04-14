@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 9df5fc16e46383feffda5aa26fee60b77f8d56f8
+  revision: 8a713a77deb8f6439cf97f0d4269f06ff960a496
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -83,10 +83,10 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/resource_index.git
-  revision: e8965cb03dbaa45123cbea6389654c79a50d078e
+  revision: 87f34062d236c87ea4ba7e0035a1e0726ac83abb
   specs:
     ncbo_resource_index (0.0.1)
-      elasticsearch
+      elasticsearch (= 2.0.0)
       mysql2
       pony
       ref
@@ -151,14 +151,14 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20170223)
+    domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (5.0.3)
-      elasticsearch-api (= 5.0.3)
-      elasticsearch-transport (= 5.0.3)
-    elasticsearch-api (5.0.3)
+    elasticsearch (2.0.0)
+      elasticsearch-api (= 2.0.0)
+      elasticsearch-transport (= 2.0.0)
+    elasticsearch-api (2.0.0)
       multi_json
-    elasticsearch-transport (5.0.3)
+    elasticsearch-transport (2.0.0)
       faraday
       multi_json
     ethon (0.10.1)
@@ -192,10 +192,10 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.1)
-    json (2.0.3)
+    json (2.0.4)
     json-schema (2.5.0)
       addressable (~> 2.3)
-    json_pure (2.0.3)
+    json_pure (2.0.4)
     jwt (1.5.6)
     kgio (2.11.0)
     launchy (2.4.3)
@@ -203,7 +203,7 @@ GEM
     libxml-ruby (3.0.0)
     little-plugger (1.1.4)
     logger (1.2.8)
-    logging (2.2.0)
+    logging (2.2.2)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     macaddr (1.7.1)
@@ -227,7 +227,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
     netrc (0.11.0)
-    newrelic_rpm (4.0.0.332)
+    newrelic_rpm (4.1.0.333)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -261,7 +261,7 @@ GEM
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (1.0.2)
+    recursive-open-struct (1.0.3)
     redcarpet (3.4.0)
     redis (3.3.1)
     redis-activesupport (4.1.5)
@@ -321,7 +321,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.2)
+    unf_ext (0.0.7.3)
     unicorn (5.3.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
