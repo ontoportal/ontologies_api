@@ -144,13 +144,15 @@
               %li ontologies={ontology_id1,ontology_id2,ontology_id3}
               %li require_exact_match={true|false}  // default = false
               %li suggest={true|false}  // default = false. Will perform a search specifically geared towards type-ahead suggestions.
-              %li also_search_views={true|false}  // default = false
+              %li also_search_views={true|false}  // Include ontology views in the search. default = false
               %li require_definitions={true|false}  // default = false
               %li also_search_properties={true|false}  // default = false
               %li also_search_obsolete={true|false}  // default = false (exclude obsolete terms)
               %li cui={C0018787,C0225807,C0018787}  // Allows restricting query by CUIs. default = null (no restriction)
               %li semantic_types={T023,T185,T061}  // Allows restricting query by Semantic Types (TUI). default = null (no restriction)
               %li include={prefLabel, synonym, definition, notation, cui, semanticType} // default = (see Common Parameters section)
+              %li page={integer representing the page number} // default = 1
+              %li pagesize={integer representing the size of the returned page} // default = 50
 
         %h4#nav_search_subtree Subtree Search
 
@@ -204,10 +206,13 @@
             %ul
               %li ontologies={ontology_id1,ontology_id2,ontology_id3}
               %li require_exact_match={true|false}  // Restricts results only to the exact matches of the query by the property id, label, or the generated label (a label, auto-generated from the ID). default = false
+              %li also_search_views={true|false}  // Include ontology views in the search. default = false
               %li require_definitions={true|false}  // Filter results only to those that include definitions. default = false
               %li include={label, labelGenerated, definition, parents} // default = All of the properties in this example
               %li ontology_types={ONTOLOGY,VALUE_SET_COLLECTION} // default = all ontology types are returned
               %li property_types={object,annotation,datatype} // Restricts results to specific property types (object, annotation, datatype). default = all property types are returned
+              %li page={integer representing the page number} // default = 1
+              %li pagesize={integer representing the size of the returned page} // default = 50
 
       %h3#nav_annotator Annotator
 
