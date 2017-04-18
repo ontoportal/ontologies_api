@@ -17,7 +17,8 @@ class PropertiesController < ApplicationController
 
     get '/roots' do
       ont, submission = get_ontology_and_submission
-      roots = ont.property_roots(submission, extra_include=[:children])
+      roots = ont.property_roots(submission)
+      # roots = ont.property_roots(submission, extra_include=[:children])
       reply 200, roots
     end
 
@@ -75,6 +76,17 @@ eso
       reply 200, roots
     end
 
+    # Get all ancestors for given property
+    get '/:property/ancestors' do
+      prop = params[:property]
+      ont, submission = get_ontology_and_submission
+      p = ont.property(prop, submission)
+      error 404, "Property #{prop} not found in ontology #{ont.id.to_s}" if p.nil?
+      ancestors = p.ancestors
+      p.class.in(submission).models(ancestors).include(:label, :definition).all
+
+      reply 200, ancestors
+    end
 
   end
 
