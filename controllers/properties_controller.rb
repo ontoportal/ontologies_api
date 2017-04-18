@@ -88,6 +88,18 @@ eso
       reply 200, ancestors
     end
 
+    # Get all descendants for given property
+    get '/:property/descendants' do
+      prop = params[:property]
+      ont, submission = get_ontology_and_submission
+      p = ont.property(prop, submission)
+      error 404, "Property #{prop} not found in ontology #{ont.id.to_s}" if p.nil?
+      descendants = p.descendants
+      p.class.in(submission).models(descendants).include(:label, :definition).all
+
+      reply 200, descendants
+    end
+
   end
 
 end

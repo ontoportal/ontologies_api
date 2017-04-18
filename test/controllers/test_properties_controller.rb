@@ -99,7 +99,6 @@ class TestPropertiesController < TestCase
 
   def test_property_tree
     get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23topConceptOf/tree"
-
     assert last_response.ok?
     pr = MultiJson.load(last_response.body)
     assert_equal 61, pr.length
@@ -127,6 +126,41 @@ class TestPropertiesController < TestCase
     end
 
     assert_equal 2, num_found
+  end
+
+  def test_property_ancestors
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23exactMatch/ancestors"
+    assert last_response.ok?
+    an = MultiJson.load(last_response.body)
+    assert_equal 3, an.length
+    assert_equal ["has close match", "is in mapping relation with", "is in semantic relation with"], an.map { |p| p["label"] }.flatten
+
+    get "/ontologies/#{@@acronyms.last}/properties/http%3A%2F%2Fwww.semanticweb.org%2Fontologies%2F2009%2F9%2F12%2FOntology1255323704656.owl%23overExpress/ancestors"
+    assert last_response.ok?
+    an = MultiJson.load(last_response.body)
+    assert_equal 1, an.length
+    assert_equal "http://www.semanticweb.org/ontologies/2009/9/12/Ontology1255323704656.owl#express", an[0]["@id"]
+  end
+
+  def test_property_descendants
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23note/descendants"
+    assert last_response.ok?
+    dn = MultiJson.load(last_response.body)
+    assert_equal 6, dn.length
+    assert_equal "http://www.w3.org/2002/07/owl#AnnotationProperty", dn[0]["@type"]
+    assert_equal ["http://www.w3.org/2004/02/skos/core#historyNote",
+                  "http://www.w3.org/2004/02/skos/core#example",
+                  "http://www.w3.org/2004/02/skos/core#scopeNote",
+                  "http://www.w3.org/2004/02/skos/core#editorialNote",
+                  "http://www.w3.org/2004/02/skos/core#changeNote",
+                  "http://www.w3.org/2004/02/skos/core#definition"].sort, dn.map { |d| d["@id"] }.sort
+
+    get "/ontologies/#{@@acronyms.last}/properties/http%3A%2F%2Fwww.semanticweb.org%2Fontologies%2F2009%2F9%2F12%2FOntology1255323704656.owl%23express/descendants"
+    assert last_response.ok?
+    dn = MultiJson.load(last_response.body)
+    assert_equal 2, dn.length
+    assert_equal ["http://www.semanticweb.org/ontologies/2009/9/12/Ontology1255323704656.owl#overExpress",
+                 "http://www.semanticweb.org/ontologies/2009/9/12/Ontology1255323704656.owl#underExpress"].sort, dn.map { |d| d["@id"] }.sort
   end
 
 end
