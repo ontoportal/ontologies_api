@@ -163,4 +163,45 @@ class TestPropertiesController < TestCase
                  "http://www.semanticweb.org/ontologies/2009/9/12/Ontology1255323704656.owl#underExpress"].sort, dn.map { |d| d["@id"] }.sort
   end
 
+  def test_property_parents
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23changeNote/parents"
+    assert last_response.ok?
+    pr = MultiJson.load(last_response.body)
+    assert_equal 1, pr.length
+    assert_equal "http://www.w3.org/2004/02/skos/core#note", pr[0]["@id"]
+
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23narrowMatch/parents"
+    assert last_response.ok?
+    pr = MultiJson.load(last_response.body)
+    assert_equal 2, pr.length
+    assert_equal ["http://www.w3.org/2004/02/skos/core#mappingRelation",
+                  "http://www.w3.org/2004/02/skos/core#narrower"].sort, pr.map { |p| p["@id"] }.sort
+
+    get "/ontologies/#{@@acronyms.last}/properties/http%3A%2F%2Fwww.semanticweb.org%2Fontologies%2F2009%2F9%2F12%2FOntology1255323704656.owl%23DSMZAccessionNumber/parents"
+    assert last_response.ok?
+    ch = MultiJson.load(last_response.body)
+    assert_empty ch
+  end
+
+  def test_property_children
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fbioontology.org%2Fontologies%2Fbiositemap.owl%23development_stage/children"
+    assert last_response.ok?
+    ch = MultiJson.load(last_response.body)
+    assert_empty ch
+
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23semanticRelation/children"
+    assert last_response.ok?
+    ch = MultiJson.load(last_response.body)
+    assert_equal 4, ch.length
+    assert_equal ["http://www.w3.org/2004/02/skos/core#broaderTransitive",
+                  "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+                  "http://www.w3.org/2004/02/skos/core#related",
+                  "http://www.w3.org/2004/02/skos/core#mappingRelation"].sort, ch.map { |c| c["@id"] }.sort
+
+    get "/ontologies/#{@@acronyms.last}/properties/http%3A%2F%2Fwww.semanticweb.org%2Fontologies%2F2009%2F9%2F12%2FOntology1255323704656.owl%23hasMutation/children"
+    assert last_response.ok?
+    ch = MultiJson.load(last_response.body)
+    assert_empty ch
+  end
+
 end

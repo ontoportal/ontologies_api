@@ -100,6 +100,34 @@ eso
       reply 200, descendants
     end
 
+    # Get all parents of given property
+    get '/:property/parents' do
+      prop = params[:property]
+      ont, submission = get_ontology_and_submission
+      p = ont.property(prop, submission)
+      error 404, "Property #{prop} not found in ontology #{ont.id.to_s}" if p.nil?
+
+      p.bring(:parents)
+      reply [] if p.parents.empty?
+
+      p.class.in(submission).models(p.parents).include(:label, :definition).all
+      reply 200, p.parents.select { |x| !x.id.to_s["owl#{p.class::TOP_PROPERTY}"] }
+    end
+
+    # Get all children of given property
+    get '/:property/children' do
+      prop = params[:property]
+      ont, submission = get_ontology_and_submission
+      p = ont.property(prop, submission)
+      error 404, "Property #{prop} not found in ontology #{ont.id.to_s}" if p.nil?
+
+      p.bring(:children)
+      reply [] if p.children.empty?
+
+      children = p.class.in(submission).models(p.children).include(:label, :definition).all
+      reply 200, children
+    end
+
   end
 
 end
