@@ -55,27 +55,24 @@ eso
       error 404, "Property #{prop} not found in ontology #{ont.id.to_s}" if p.nil?
       root_tree = p.tree
 
-      # #add the other roots to the response
-      # roots = ont.property_roots(submission, extra_include=[:hasChildren])
-      #
-      # # if this path' root does not get returned by the ont.property_roots call, manually add it
-      # roots << root_tree unless roots.map { |r| r.id }.include?(root_tree.id)
-      #
-      # roots.each_index do |i|
-      #   r = roots[i]
-      #
-      #   if r.id == root_tree.id
-      #     roots[i] = root_tree
-      #   else
-      #     roots[i].instance_variable_set("@children",[])
-      #     roots[i].loaded_attributes << :children
-      #   end
-      # end
-      #
-      # reply 200, roots
+      #add the other roots to the response
+      roots = ont.property_roots(submission, extra_include=[:hasChildren])
 
-      reply root_tree
+      # if this path' root does not get returned by the ont.property_roots call, manually add it
+      roots << root_tree unless roots.map { |r| r.id }.include?(root_tree.id)
 
+      roots.each_index do |i|
+        r = roots[i]
+
+        if r.id == root_tree.id
+          roots[i] = root_tree
+        else
+          roots[i].instance_variable_set("@children",[])
+          roots[i].loaded_attributes << :children
+        end
+      end
+
+      reply 200, roots
     end
 
     # Get all ancestors for given property
