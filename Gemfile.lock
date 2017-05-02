@@ -1,7 +1,7 @@
 GIT
-  remote: https://github.com/ncbo/goo.git
-  revision: d4c16f964e5a798e071769e627aaeed229c5c7f0
-  branch: staging
+  remote: git://github.com/ncbo/goo.git
+  revision: dd1b78375bae01cf8940354584cbde1e844d551b
+  branch: master
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: c66321e9d64cb54902b34b29d1475ac0a55fb12a
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_annotator.git
+  revision: 0bd49b791dac8ab3fb30990f9a02e5c7ba632ac3
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: https://github.com/ncbo/ncbo_cron.git
-  revision: cc569dd8558227ad0a359392c5984700017fe16d
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_cron.git
+  revision: d9294415c0ccbf0737716470cb64202c00312683
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: fd4d39310de40d18e4fe7278abdddee1f47c3789
-  branch: staging
+  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: 50e9a524327b776bac9e34a30d824520feb5a813
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 79eace4afd194ed5fda2262dbd3564f1391c19bb
-  branch: staging
+  remote: git://github.com/ncbo/ontologies_linked_data.git
+  revision: 36bdb6e16380c81acc6fdaa21bb46cb52b0400f8
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -82,7 +82,7 @@ GIT
       rubyzip
 
 GIT
-  remote: https://github.com/ncbo/resource_index.git
+  remote: git://github.com/ncbo/resource_index.git
   revision: 87f34062d236c87ea4ba7e0035a1e0726ac83abb
   specs:
     ncbo_resource_index (0.0.1)
@@ -127,8 +127,6 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    airbrussh (1.2.0)
-      sshkit (>= 1.6.1, != 1.7.0)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
@@ -136,8 +134,7 @@ GEM
     backports (3.8.0)
     bcrypt (3.1.11)
     builder (3.2.3)
-    capistrano (3.8.1)
-      airbrussh (>= 1.0.0)
+    capistrano (3.4.1)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
