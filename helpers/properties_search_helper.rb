@@ -16,6 +16,7 @@ module Sinatra
         params["stopwords"] = "true"
         params["lowercaseOperators"] = "true"
         params["fl"] = "*,score"
+        params[SearchHelper::INCLUDE_VIEWS_PARAM] = params[SearchHelper::ALSO_SEARCH_VIEWS] if params[SearchHelper::ALSO_SEARCH_VIEWS]
 
         # highlighting is used to determine the field that got matched
         params["hl"] = "on"

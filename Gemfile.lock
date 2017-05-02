@@ -1,7 +1,7 @@
 GIT
-  remote: git://github.com/ncbo/goo.git
-  revision: f9454b16d0123c21969a5554d76e7c15ed9881d3
-  branch: master
+  remote: https://github.com/ncbo/goo.git
+  revision: d4c16f964e5a798e071769e627aaeed229c5c7f0
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 64eff520056d1556e941b6fbed87ec73645bf73e
-  branch: master
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: c66321e9d64cb54902b34b29d1475ac0a55fb12a
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: a0b979b70088c1e3a493b4986699764dec00608d
-  branch: master
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: cc569dd8558227ad0a359392c5984700017fe16d
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 4504de1909332222d0c4e91a64d7409fa6079fa1
-  branch: master
+  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: fd4d39310de40d18e4fe7278abdddee1f47c3789
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: d1821f8611c09629b534bd9d414810b1fac1cf42
-  branch: master
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: 79eace4afd194ed5fda2262dbd3564f1391c19bb
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -82,7 +82,7 @@ GIT
       rubyzip
 
 GIT
-  remote: git://github.com/ncbo/resource_index.git
+  remote: https://github.com/ncbo/resource_index.git
   revision: 87f34062d236c87ea4ba7e0035a1e0726ac83abb
   specs:
     ncbo_resource_index (0.0.1)
@@ -127,14 +127,17 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
+    airbrussh (1.2.0)
+      sshkit (>= 1.6.1, != 1.7.0)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    backports (3.7.0)
+    backports (3.8.0)
     bcrypt (3.1.11)
     builder (3.2.3)
-    capistrano (3.4.1)
+    capistrano (3.8.1)
+      airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
@@ -161,7 +164,7 @@ GEM
     ethon (0.10.1)
       ffi (>= 1.3.0)
     extlib (0.9.16)
-    faraday (0.12.0.1)
+    faraday (0.12.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
     get_process_mem (0.2.1)
@@ -184,15 +187,16 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
-    haml (4.0.7)
+    haml (5.0.0)
+      temple (>= 0.8.0)
       tilt
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.1)
-    json (2.0.4)
+    json (2.1.0)
     json-schema (2.5.0)
       addressable (~> 2.3)
-    json_pure (2.0.4)
+    json_pure (2.1.0)
     jwt (1.5.6)
     kgio (2.11.0)
     launchy (2.4.3)
@@ -205,7 +209,7 @@ GEM
       multi_json (~> 1.10)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mail (2.6.4)
+    mail (2.6.5)
       mime-types (>= 1.16, < 4)
     memoist (0.15.0)
     method_source (0.8.2)
@@ -224,7 +228,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
     netrc (0.11.0)
-    newrelic_rpm (4.0.0.332)
+    newrelic_rpm (4.1.0.333)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -258,7 +262,7 @@ GEM
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (1.0.3)
+    recursive-open-struct (1.0.4)
     redcarpet (3.4.0)
     redis (3.3.3)
     redis-activesupport (4.1.5)
@@ -270,18 +274,19 @@ GEM
     redis-store (1.1.7)
       redis (>= 2.2)
     ref (2.0.0)
-    rest-client (2.0.1)
+    rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (1.4.1)
-    rsolr (1.1.2)
+    rsolr (2.0.0)
       builder (>= 2.1.2)
+      faraday
     ruby-xxHash (0.4.0.1)
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.45.0)
+    sequel (4.46.0)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -310,6 +315,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
+    temple (0.8.0)
     thread_safe (0.3.6)
     tilt (2.0.7)
     typhoeus (1.1.2)
@@ -318,7 +324,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.3)
+    unf_ext (0.0.7.4)
     unicorn (5.3.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)

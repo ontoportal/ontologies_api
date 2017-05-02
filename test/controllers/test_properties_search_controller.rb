@@ -21,7 +21,6 @@ class TestPropertiesSearchController < TestCase
                                                                                                    ont_count: 1,
                                                                                                    submission_count: 1
                                                                                                })
-
     @@ontologies = bro.concat(mccl)
   end
 
