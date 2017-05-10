@@ -1,4 +1,46 @@
 GIT
+  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: 50e9a524327b776bac9e34a30d824520feb5a813
+  branch: master
+  specs:
+    ncbo_ontology_recommender (0.0.1)
+      goo
+      ncbo_annotator
+      ontologies_linked_data
+      redis
+
+GIT
+  remote: git://github.com/ncbo/ncbo_resolver.git
+  revision: 67989c445e53e019b3b3fa4905e0aa9d519df0ed
+  specs:
+    ncbo_resolver (0.0.1)
+      recursive-open-struct
+      redis
+
+GIT
+  remote: git://github.com/ncbo/resource_index.git
+  revision: 87f34062d236c87ea4ba7e0035a1e0726ac83abb
+  specs:
+    ncbo_resource_index (0.0.1)
+      elasticsearch (= 2.0.0)
+      mysql2
+      pony
+      ref
+      ruby-xxHash
+      sequel
+      typhoeus
+
+GIT
+  remote: git://github.com/ncbo/sparql-client.git
+  revision: 135974d6ae369186f1fc9bdeed018e734a6d40b2
+  branch: master
+  specs:
+    sparql-client (1.0.4.1)
+      json_pure (>= 1.4)
+      net-http-persistent (= 2.9.4)
+      rdf (>= 1.0)
+
+GIT
   remote: git://github.com/palexander/rack-post-body-to-params.git
   revision: 0fd30e710386d0cb8a3a6833d9549d7b655d5398
   branch: multipart_support
@@ -8,7 +50,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/goo.git
-  revision: 0d042a1eb4bba24c873dd87afa0a672df653c9af
+  revision: 5fafc98b2f4d174a68d295ecd3b27b6aad5fba04
   branch: lirmm
   specs:
     goo (0.0.2)
@@ -50,25 +92,6 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 50e9a524327b776bac9e34a30d824520feb5a813
-  branch: master
-  specs:
-    ncbo_ontology_recommender (0.0.1)
-      goo
-      ncbo_annotator
-      ontologies_linked_data
-      redis
-
-GIT
-  remote: git://github.com/ncbo/ncbo_resolver.git
-  revision: 67989c445e53e019b3b3fa4905e0aa9d519df0ed
-  specs:
-    ncbo_resolver (0.0.1)
-      recursive-open-struct
-      redis
-
-GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
   revision: c961b79218cfd754d7dbf5d71fa2f7d499420494
   branch: lirmm
@@ -88,37 +111,6 @@ GIT
       rack-test
       rsolr
       rubyzip
-
-GIT
-  remote: git://github.com/ncbo/resource_index.git
-  revision: 87f34062d236c87ea4ba7e0035a1e0726ac83abb
-  specs:
-    ncbo_resource_index (0.0.1)
-      elasticsearch (= 2.0.0)
-      mysql2
-      pony
-      ref
-      ruby-xxHash
-      sequel
-      typhoeus
-
-GIT
-  remote: git://github.com/ncbo/sparql-client.git
-  revision: 135974d6ae369186f1fc9bdeed018e734a6d40b2
-  branch: master
-  specs:
-    sparql-client (1.0.4.1)
-      json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
-      rdf (>= 1.0)
-
-GIT
-  remote: git://github.com/palexander/rack-post-body-to-params.git
-  revision: 0fd30e710386d0cb8a3a6833d9549d7b655d5398
-  branch: multipart_support
-  specs:
-    rack-post-body-to-params (0.1.8)
-      activesupport (>= 2.3)
 
 GIT
   remote: https://github.com/palexander/shotgun.git
@@ -156,7 +148,7 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.1.5)
-    domain_name (0.5.20170223)
+    domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (2.0.0)
       elasticsearch-api (= 2.0.0)
@@ -283,7 +275,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (1.4.1)
-    rsolr (2.0.0)
+    rsolr (2.0.2)
       builder (>= 2.1.2)
       faraday
     ruby-xxHash (0.4.0.1)
@@ -387,4 +379,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.13.7
+   1.14.6
