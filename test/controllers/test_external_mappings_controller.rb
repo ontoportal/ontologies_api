@@ -49,7 +49,7 @@ class TestExternalMappingsController < TestCase
 
   end
 
-
+  # Testing of external mappings creation
   def create_external_mappings
 
     classes = { "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction"=> "BRO-TEST-MAP-0",
@@ -59,16 +59,15 @@ class TestExternalMappingsController < TestCase
     mapping = { classes: classes,
                 comment: "testing external mappings",
                 relation: ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"],
-                creator: "http://vm-bioportal-vincent:8080/users/admin"
+                creator: "tim"
     }
 
-    post "/mappings/",
-         MultiJson.dump(mapping),
-         "CONTENT_TYPE" => "application/json"
+    post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201
+
     response = MultiJson.load(last_response.body)
     assert response["process"]["comment"] == "testing external mappings"
-    assert response["process"]["creator"]["users/admin"]
+    assert response["process"]["creator"]["users/tim"]
     assert response["process"]["relation"] == ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"]
     assert response["process"]["date"] != nil
   end
@@ -81,12 +80,10 @@ class TestExternalMappingsController < TestCase
     mapping = { classes: classes,
                 comment: "testing external mappings",
                 relation: ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"],
-                creator: "http://vm-bioportal-vincent:8080/users/admin"
+                creator: "tim"
     }
 
-    post "/mappings",
-         MultiJson.dump(mapping),
-         "CONTENT_TYPE" => "application/json"
+    post "/mappings", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201
 
     # to check if the external mapping we wanted have been created
@@ -127,7 +124,7 @@ class TestExternalMappingsController < TestCase
     mapping = { classes: classes,
                 comment: "testing external mappings",
                 relation: ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"],
-                creator: "http://vm-bioportal-vincent:8080/users/admin"
+                creator: "tim"
     }
 
     post "/mappings",
