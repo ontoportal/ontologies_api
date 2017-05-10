@@ -32,7 +32,7 @@ class CCVController < ApplicationController
       include_analytics = params["include_analytics"].eql?('true') # default = false
       include_images = params["include_images"].eql?('true') # default = false
 
-      query = get_edismax_query(text, params)
+      query = get_term_search_query(text, params)
       set_page_params(params)
 
       loaded_submissions = Hash.new

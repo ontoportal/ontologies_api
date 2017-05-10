@@ -13,6 +13,10 @@ CROSSDOMAIN = <<EOS.freeze
 </cross-domain-policy>
 EOS
 
+  CLASS_MAP = {
+      Property: "LinkedData::Models::ObjectProperty"
+  }
+
   namespace "/" do
 
     get do
@@ -196,7 +200,16 @@ EOS
             cls = sub_cls unless sub_cls.nil?
           end
         end
+
+        # Check the map of NON-ONE-TO-ONE mappings
+        if cls.nil?
+          if CLASS_MAP.include?(cls_name.to_sym)
+            cls = CLASS_MAP[cls_name.to_sym].constantize
+          end
+        end
+
         next if cls.nil?
+
         routes.each do |route|
           next if route.verb == "HEAD"
           routes_by_class[cls] ||= []

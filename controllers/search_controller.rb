@@ -18,14 +18,14 @@ class SearchController < ApplicationController
       params ||= @params
       text = params["q"]
 
-      query = get_edismax_query(text, params)
+      query = get_term_search_query(text, params)
       # puts "Edismax query: #{query}, params: #{params}"
       set_page_params(params)
 
       docs = Array.new
       resp = LinkedData::Models::Class.search(query, params)
       total_found = resp["response"]["numFound"]
-      add_matched_fields(resp)
+      add_matched_fields(resp, Sinatra::Helpers::SearchHelper::MATCH_TYPE_PREFLABEL)
       ontology_rank = LinkedData::Models::Ontology.rank
 
       resp["response"]["docs"].each do |doc|

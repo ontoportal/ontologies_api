@@ -12,7 +12,7 @@ class ClassesController < ApplicationController
       page, size = page_params
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = ld.delete(:properties)
-      page_data = LinkedData::Models::Class.in(submission).include(ld).page(page, size).page_count_set(cls_count).all
+      page_data = LinkedData::Models::Class.in(submission).include(ld).page(page,size).page_count_set(cls_count).all
 
       if unmapped && page_data.length > 0
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
@@ -48,10 +48,13 @@ class ClassesController < ApplicationController
         end
       end
 
-      unmapped = ld.delete(:properties) || (includes_param && includes_param.include?(:all))
+      unmapped = ld.delete(:properties) ||
+          (includes_param && includes_param.include?(:all))
       cls = get_class(submission, ld)
-      LinkedData::Models::Class.in(submission).models([cls]).include(:unmapped).all if unmapped
-
+      if unmapped
+        LinkedData::Models::Class.in(submission)
+            .models([cls]).include(:unmapped).all
+      end
       if includes_param.include?(:hasChildren)
         cls.load_has_children
       end
@@ -96,6 +99,10 @@ class ClassesController < ApplicationController
 
       #add the other roots to the response
       roots = submission.roots(extra_include=[:hasChildren])
+
+      # if this path' root does not get returned by the submission.roots call, manually add it
+      roots << root_tree unless roots.map { |r| r.id }.include?(root_tree.id)
+
       roots.each_index do |i|
         r = roots[i]
         if r.id == root_tree.id
@@ -108,7 +115,6 @@ class ClassesController < ApplicationController
       reply roots
     end
 
-
     # Get all ancestors for given class
     get '/:cls/ancestors' do
       includes_param_check
@@ -117,7 +123,8 @@ class ClassesController < ApplicationController
       cls = get_class(submission)
       error 404 if cls.nil?
       ancestors = cls.ancestors
-      LinkedData::Models::Class.in(submission).models(ancestors).include(:prefLabel, :synonym, :definition).all
+      LinkedData::Models::Class.in(submission).models(ancestors)
+          .include(:prefLabel,:synonym,:definition).all
       reply ancestors
     end
 
@@ -130,7 +137,8 @@ class ClassesController < ApplicationController
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
       page_data = cls.retrieve_descendants(page,size)
-      LinkedData::Models::Class.in(submission).models(page_data).include(:prefLabel, :synonym, :definition).all
+      LinkedData::Models::Class.in(submission).models(page_data)
+          .include(:prefLabel,:synonym,:definition).all
       reply page_data
     end
 
@@ -138,8 +146,6 @@ class ClassesController < ApplicationController
     get '/:cls/children' do
       includes_param_check
       ont, submission = get_ontology_and_submission
-      cls_count = submission.class_count(LOGGER)
-      error 403, "Unable to display children due to missing metrics for #{submission.id.to_s}. Please contact the administrator." if cls_count < 0
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       page, size = page_params
       cls = get_class(submission)
@@ -149,13 +155,11 @@ class ClassesController < ApplicationController
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
       page_data_query.aggregate(*aggregates) unless aggregates.empty?
-      page_data = page_data_query.page(page, size).page_count_set(cls_count).all
-
+      page_data = page_data_query.page(page,size).all
       if unmapped
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
       page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
-
       if ld.include?(:hasChildren)
         page_data.each do |c|
           c.load_has_children
