@@ -63,7 +63,7 @@ class TestExternalMappingsController < TestCase
     }
 
     post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 201
+    assert last_response.status == 201, "Error creating the external mapping: #{last_response.body}"
 
     response = MultiJson.load(last_response.body)
     assert response["process"]["comment"] == "testing external mappings"
@@ -72,7 +72,7 @@ class TestExternalMappingsController < TestCase
     assert response["process"]["date"] != nil
   end
 
-
+  # Create and delete an external mapping
   def delete_external_mappings
     classes = { "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction"=> "BRO-TEST-MAP-0",
                 "http://www.movieontology.org/2009/10/01/movieontology.owl#Love"=> "ext:http://www.movieontology.org/2010/01/movieontology.owl"
@@ -83,8 +83,8 @@ class TestExternalMappingsController < TestCase
                 creator: "tim"
     }
 
-    post "/mappings", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 201
+    #post "/mappings", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
+    #assert last_response.status == 201
 
     # to check if the external mapping we wanted have been created
     mapping_created = false
@@ -113,10 +113,10 @@ class TestExternalMappingsController < TestCase
   end
 
 
-
+  # Create and delete an interportal mapping
   def delete_interportal_mappings
     # For this test to work the test.rb config file has to include:
-    # config.interportal_hash   = {"ncbo" => {"api" => "http://data.bioontology.org", "ui" => "http://bioportal.bioontology.org"}}
+    # config.interportal_hash   = {"ncbo" => {"api" => "http://data.bioontology.org", "ui" => "http://bioportal.bioontology.org", "apikey" => "..."}}
 
     classes = { "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction"=> "BRO-TEST-MAP-0",
                 "http://neurolog.unice.fr/ontoneurolog/v3.0/dolce-particular.owl#event"=> "ncbo:OntoVIP"
@@ -127,10 +127,8 @@ class TestExternalMappingsController < TestCase
                 creator: "tim"
     }
 
-    post "/mappings",
-         MultiJson.dump(mapping),
-         "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 201
+    post "/mappings", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 201, "Error creating the interportal mapping: #{last_response.body}"
 
     # to check if the interportal mapping we wanted have been created
     mapping_created = false
