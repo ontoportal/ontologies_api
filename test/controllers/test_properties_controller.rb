@@ -67,7 +67,7 @@ class TestPropertiesController < TestCase
     assert_equal 32, dpr.length
     # count annotation properties
     apr = pr.select { |p| p["@type"] == "http://www.w3.org/2002/07/owl#AnnotationProperty" }
-    assert_equal 11, apr.length
+    assert_equal 12, apr.length
     # check for non-root properties
     assert_empty pr.select { |p| ["http://www.w3.org/2004/02/skos/core#broaderTransitive",
                                   "http://www.w3.org/2004/02/skos/core#topConceptOf",
