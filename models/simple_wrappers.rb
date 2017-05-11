@@ -27,3 +27,5 @@ UserRole = LinkedData::Models::Users::Role
 ProvisionalClass = LinkedData::Models::ProvisionalClass
 
 ProvisionalRelation = LinkedData::Models::ProvisionalRelation
+
+SearchHelper = Sinatra::Helpers::SearchHelper

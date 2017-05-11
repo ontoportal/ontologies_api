@@ -78,14 +78,6 @@ module Sinatra
         return cls
       end
 
-      ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION = [:prefLabel, :synonym, :definition, :notation, :cui, :semanticType, :properties].freeze
-      def validate_params_solr_population
-        leftover = includes_param - ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION
-        invalid = leftover.length > 0
-        message = "The `include` query string parameter cannot accept #{leftover.join(", ")}, please use only #{ALLOWED_INCLUDES_PARAMS_SOLR_POPULATION.join(", ")}"
-        error 400, message if invalid
-      end
-
     end
   end
 end

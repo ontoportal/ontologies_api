@@ -397,7 +397,7 @@ module Sinatra
         ont = Ontology.find(@params["ontology"])
               .include(:acronym, :administeredBy, :acl, :viewingRestriction)
               .include(submissions:
-                       [:submissionId, submissionStatus: [:code], ontology: [:acronym]])
+                       [:submissionId, submissionStatus: [:code], ontology: [:acronym], metrics: :classes])
                 .first
         error(404, "Ontology '#{@params["ontology"]}' not found.") if ont.nil?
         check_access(ont) if LinkedData.settings.enable_security # Security check

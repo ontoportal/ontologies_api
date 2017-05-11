@@ -22,7 +22,7 @@ class AnnotatorController < ApplicationController
 
     # execute an annotator query
     def process_annotation(params=nil)
-      validate_params_solr_population()
+      validate_params_solr_population(Sinatra::Helpers::SearchHelper::ALLOWED_INCLUDES_PARAMS)
       params ||= @params
       params_copy = params.dup
 

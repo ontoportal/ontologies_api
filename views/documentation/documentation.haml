@@ -7,7 +7,9 @@
         %li
           %a{href: "#nav_usage"} General Usage
         %li
-          %a{href: "#nav_search"} Search
+          %a{href: "#nav_search"} Term Search
+        %li
+          %a{href: "#nav_prop_search"} Ontology Property Search
         %li
           %a{href: "#nav_annotator"} Annotator
         %li
@@ -123,10 +125,10 @@
 
       %p Several endpoints are available for performing lookups for classes, annotations, and annotated resources. These endpoints are not strictly RESTful, but do return objects with links where relevant.
 
-      %h3#nav_search Classes Search
+      %h3#nav_search Term Search
 
       %p
-        An endpoint for searching classes and their properties is available
+        An endpoint for searching terms and their properties is available
         %ul
           %li
             Perform search
@@ -142,13 +144,15 @@
               %li ontologies={ontology_id1,ontology_id2,ontology_id3}
               %li require_exact_match={true|false}  // default = false
               %li suggest={true|false}  // default = false. Will perform a search specifically geared towards type-ahead suggestions.
-              %li also_search_views={true|false}  // default = false
+              %li also_search_views={true|false}  // Include ontology views in the search. default = false
               %li require_definitions={true|false}  // default = false
               %li also_search_properties={true|false}  // default = false
               %li also_search_obsolete={true|false}  // default = false (exclude obsolete terms)
               %li cui={C0018787,C0225807,C0018787}  // Allows restricting query by CUIs. default = null (no restriction)
               %li semantic_types={T023,T185,T061}  // Allows restricting query by Semantic Types (TUI). default = null (no restriction)
               %li include={prefLabel, synonym, definition, notation, cui, semanticType} // default = (see Common Parameters section)
+              %li page={integer representing the page number} // default = 1
+              %li pagesize={integer representing the size of the returned page} // default = 50
 
         %h4#nav_search_subtree Subtree Search
 
@@ -183,6 +187,32 @@
               %ul
                 %li ontology={ontology_id}
                 %li roots_only=true
+
+      %h3#nav_prop_search Ontology Property Search
+
+      %p
+        An endpoint for searching ontology properties by their labels and IDs (URIs)
+        %ul
+          %li
+            Perform search
+          %ul
+            %li
+              <span class="label label-info">GET</span> <span class="label label-info">POST</span> <code>/property_search?q={search query}</code>
+            %li
+              example:
+              %a{href: "/property_search?q=has dimension"} /property_search?q=has dimension
+          %li
+            Parameters
+            %ul
+              %li ontologies={ontology_id1,ontology_id2,ontology_id3}
+              %li require_exact_match={true|false}  // Restricts results only to the exact matches of the query by the property id, label, or the generated label (a label, auto-generated from the ID). default = false
+              %li also_search_views={true|false}  // Include ontology views in the search. default = false
+              %li require_definitions={true|false}  // Filter results only to those that include definitions. default = false
+              %li include={label, labelGenerated, definition, parents} // default = All of the properties in this example
+              %li ontology_types={ONTOLOGY,VALUE_SET_COLLECTION} // default = all ontology types are returned
+              %li property_types={object,annotation,datatype} // Restricts results to specific property types (object, annotation, datatype). default = all property types are returned
+              %li page={integer representing the page number} // default = 1
+              %li pagesize={integer representing the size of the returned page} // default = 50
 
       %h3#nav_annotator Annotator
 
@@ -226,15 +256,15 @@
       %h3#nav_recommender Recommender
 
       %p
-        The Recommender endpoint receives a text or a list of keywords and suggests appropriate ontologies for it.
+        The Recommender endpoint receives a text or a list of keywords and suggests appropriate ontologies for them.
         %ul
           %li Recommend
           %ul
             %li
               <span class="label label-info">GET</span> <span class="label label-info">POST</span> <code>/recommender?input={input text or keywords}</code>
             %li
-              example:
-              %a{href: "/recommender?input=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye."} /recommender?input=Melanoma+is+a+malignant+tumor+of+melanocytes+which+are+found+predominantly+in+skin+but+also+in+the+bowel+and+the+eye.
+              example: suggest ontologies for the text "Melanoma is a malignant tumor of melanocytes which are found predominantly in skin but also in the bowel and the eye":
+              %a{href: "/recommender?input=Melanoma%20is%20a%20malignant%20tumor%20of%20melanocytes%20which%20are%20found%20predominantly%20in%20skin%20but%20also%20in%20the%20bowel%20and%20the%20eye"} /recommender?input=Melanoma%20is%20a%20malignant%20tumor%20of%20melanocytes%20which%20are%20found%20predominantly%20in%20skin%20but%20also%20in%20the%20bowel%20and%20the%20eye
           %li
             Parameters
             %ul
@@ -242,10 +272,21 @@
               %li output_type={1|2} // default = 1. 1 means that the output will be a ranked list of individual ontologies. 2 means that the output will be a ranked list of ontology sets.
               %li max_elements_set={2|3|4} // default = 3. Maximum number of ontologies per set (only for output_type = 2).
               %li wc={value in the range [0,1]} // default = 0.55. Weight assigned to the ontology coverage criterion.
-              %li ws={value in the range [0,1]} // default = 0.15. Weight assigned to the ontology specialization criterion.
               %li wa={value in the range [0,1]} // default = 0.15. Weight assigned to the ontology acceptance criterion.
               %li wd={value in the range [0,1]} // default = 0.15. Weight assigned to the ontology detail criterion.
+              %li ws={value in the range [0,1]} // default = 0.15. Weight assigned to the ontology specialization criterion.
               %li ontologies={ontology_id1, ontology_id2, …, ontology_idN} // default = (empty) (all BioPortal ontologies will be evaluated).
+          %li
+            Additional examples
+            %ul
+              %li Suggest ontologies for the <u>keywords</u> "leukocyte, phagocyte, motile cell, metabolising cell, dendritic cell, pipette":
+              %a{href: "/recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2"} /recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2
+              %li Suggest ontologies for the <u>keywords</u> "leukocyte, phagocyte, motile cell, metabolising cell, dendritic cell, pipette", <u>limited to the ontologies UBERON, CL, NCIT and EFO</u>:
+              %a{href: "/recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2&ontologies=UBERON,CL,NCIT,EFO"} /recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2&ontologies=UBERON,CL,NCIT,EFO
+              %li Suggest <u>ontology sets</u> for the <u>keywords</u> "leukocyte, phagocyte, motile cell, metabolising cell, dendritic cell, pipette":
+              %a{href: "/recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2&output_type=2"} /recommender?input=leukocyte,phagocyte,motile%20cell,metabolising%20cell,dendritic%20cell,%20pipette&input_type=2&output_type=2
+              %li Suggest ontologies for the text "Melanoma is a malignant tumor of melanocytes which are found predominantly in skin but also in the bowel and the eye", <u>limiting the evaluation to ontology coverage</u> (the weights for the other criteria -acceptance, detail and specialization- will be set to 0):
+              %a{href: "/recommender?input=Melanoma%20is%20a%20malignant%20tumor%20of%20melanocytes%20which%20are%20found%20predominantly%20in%20skin%20but%20also%20in%20the%20bowel%20and%20the%20eye&wa=0&wd=0&ws=0"} /recommender?input=Melanoma%20is%20a%20malignant%20tumor%20of%20melanocytes%20which%20are%20found%20predominantly%20in%20skin%20but%20also%20in%20the%20bowel%20and%20the%20eye&wa=0&wd=0&ws=0
 
       %h3#nav_resource_index Resource Index
 

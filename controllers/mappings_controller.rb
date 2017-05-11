@@ -57,8 +57,16 @@ class MappingsController < ApplicationController
       acr2 = ontologies[1]
 
       page, size = page_params
-      ont1 = LinkedData::Models::Ontology.find(acr1).first
-      ont2 = LinkedData::Models::Ontology.find(acr2).first
+      if acr1.start_with?("http://") || acr1.start_with?("https://")
+        ont1 = LinkedData::Models::Ontology.find(RDF::URI.new(acr1)).first
+      else
+        ont1 = LinkedData::Models::Ontology.find(acr1).first
+      end
+      if acr2.start_with?("http://") || acr2.start_with?("https://")
+        ont2 = LinkedData::Models::Ontology.find(RDF::URI.new(acr2)).first
+      else
+        ont2 = LinkedData::Models::Ontology.find(acr2).first
+      end
 
       if ont1.nil?
         # If the ontology given in param is external (mappings:external) or interportal (interportal:acronym)

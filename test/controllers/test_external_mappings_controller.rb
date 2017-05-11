@@ -43,51 +43,31 @@ class TestExternalMappingsController < TestCase
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
-    create_external_mappings
     delete_external_mappings
     delete_interportal_mappings
 
   end
 
-
-  def create_external_mappings
-
-    classes = { "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction"=> "BRO-TEST-MAP-0",
-                "http://www.movieontology.org/2009/10/01/movieontology.owl#Love"=> "ext:http://www.movieontology.org/2010/01/movieontology.owl"
-    }
-
-    mapping = { classes: classes,
-                comment: "testing external mappings",
-                relation: ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"],
-                creator: "http://vm-bioportal-vincent:8080/users/admin"
-    }
-
-    post "/mappings/",
-         MultiJson.dump(mapping),
-         "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 201
-    response = MultiJson.load(last_response.body)
-    assert response["process"]["comment"] == "testing external mappings"
-    assert response["process"]["creator"]["users/admin"]
-    assert response["process"]["relation"] == ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"]
-    assert response["process"]["date"] != nil
-  end
-
-
+  # Create and delete an external mapping
   def delete_external_mappings
     classes = { "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction"=> "BRO-TEST-MAP-0",
                 "http://www.movieontology.org/2009/10/01/movieontology.owl#Love"=> "ext:http://www.movieontology.org/2010/01/movieontology.owl"
     }
+
     mapping = { classes: classes,
                 comment: "testing external mappings",
                 relation: ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"],
-                creator: "http://vm-bioportal-vincent:8080/users/admin"
+                creator: "tim"
     }
 
-    post "/mappings",
-         MultiJson.dump(mapping),
-         "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 201
+    post "/mappings/", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 201, "Error creating the external mapping: #{last_response.body}"
+
+    response = MultiJson.load(last_response.body)
+    assert response["process"]["comment"] == "testing external mappings"
+    assert response["process"]["creator"]["users/tim"]
+    assert response["process"]["relation"] == ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"]
+    assert response["process"]["date"] != nil
 
     # to check if the external mapping we wanted have been created
     mapping_created = false
@@ -116,10 +96,10 @@ class TestExternalMappingsController < TestCase
   end
 
 
-
+  # Create and delete an interportal mapping
   def delete_interportal_mappings
     # For this test to work the test.rb config file has to include:
-    # config.interportal_hash   = {"ncbo" => {"api" => "http://data.bioontology.org", "ui" => "http://bioportal.bioontology.org"}}
+    # config.interportal_hash   = {"ncbo" => {"api" => "http://data.bioontology.org", "ui" => "http://bioportal.bioontology.org", "apikey" => "..."}}
 
     classes = { "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction"=> "BRO-TEST-MAP-0",
                 "http://neurolog.unice.fr/ontoneurolog/v3.0/dolce-particular.owl#event"=> "ncbo:OntoVIP"
@@ -127,13 +107,11 @@ class TestExternalMappingsController < TestCase
     mapping = { classes: classes,
                 comment: "testing external mappings",
                 relation: ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"],
-                creator: "http://vm-bioportal-vincent:8080/users/admin"
+                creator: "tim"
     }
 
-    post "/mappings",
-         MultiJson.dump(mapping),
-         "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 201
+    post "/mappings", MultiJson.dump(mapping), "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 201, "Error creating the interportal mapping: #{last_response.body}"
 
     # to check if the interportal mapping we wanted have been created
     mapping_created = false

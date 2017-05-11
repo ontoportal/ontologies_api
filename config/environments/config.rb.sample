@@ -7,11 +7,13 @@ begin
   LinkedData.config do |config|
     config.repository_folder     = "/srv/ncbo/repository"
     config.goo_host              = "localhost"
-    config.goo_port              = 8081
-    config.search_server_url     = "http://localhost:8082/solr/core1"
+    config.goo_port              = 9000
+    config.search_server_url     = "http://localhost:8082/solr/term_search_core1"
+    config.property_search_server_url = "http://localhost:8082/solr/prop_search_core1"
     config.rest_url_prefix       = "http://#{$SITE_URL}:8080/"
     config.replace_url_prefix    = true
     config.enable_security       = true
+
     config.apikey                = "24e0e77e-54e0-11e0-9d7b-005056aa3316"
     config.ui_host               = "http://#{$SITE_URL}"
     config.enable_monitoring     = false
@@ -114,6 +116,9 @@ begin
     config.cron_schedule             = "30 */4 * * *"
     # Pull schedule
     config.pull_schedule             = "00 18 * * *"
+    # Pull long schedule for ontology that are pulled less frequently: run weekly on monday at 11 a.m. (23:00)
+    config.pull_schedule_long                       = "00 23 * * 1"
+    config.pull_long_ontologies                     = ["BIOREFINERY", "TRANSMAT", "GO"]
   end
 rescue NameError
   puts "(CNFG) >> NcboCron not available, cannot load config"

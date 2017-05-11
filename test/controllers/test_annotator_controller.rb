@@ -259,17 +259,17 @@ eos
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
-    assert annotations.length == 9
-    assert annotations.first["annotatedClass"]["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
-    assert annotations.first["annotatedClass"]["prefLabel"] == "Aggregate Human Data"
+    assert_equal 9, annotations.length
+    assert_equal "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data", annotations.first["annotatedClass"]["@id"]
+    assert_equal "Aggregate Human Data", annotations.first["annotatedClass"]["prefLabel"]
 
     params = {text: text, include: "prefLabel,definition"}
     get "/annotator", params
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
-    assert annotations.length == 9
-    assert annotations.first["annotatedClass"]["@id"] == "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data"
-    assert annotations.first["annotatedClass"]["definition"] == ["A resource that provides data from clinical care that comprises combined data from multiple individual human subjects."]
+    assert_equal 9, annotations.length
+    assert_equal "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data", annotations.first["annotatedClass"]["@id"]
+    assert_equal ["A resource that provides data from clinical care that comprises combined data from multiple individual human subjects."], annotations.first["annotatedClass"]["definition"]
   end
 
   def test_recognizer_endpoint
@@ -339,7 +339,7 @@ eos
     process = LinkedData::Models::MappingProcess.new(
       :creator => user_creator, :name => "TEST Mapping Annotator")
     process.date = DateTime.now
-    process.relation = RDF::URI.new("http://bogus.relation.com/predicate")
+    process.relation = [RDF::URI.new("http://bogus.relation.com/predicate")]
     process.save
 
     4.times do |i|
