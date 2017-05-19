@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: c66321e9d64cb54902b34b29d1475ac0a55fb12a
+  revision: 5d25eec12848e4c5390c4197a05af9c96a3ff702
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: cc569dd8558227ad0a359392c5984700017fe16d
+  revision: 3e7e125611d40f12109119b6226f0960915670f5
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: fd4d39310de40d18e4fe7278abdddee1f47c3789
+  revision: 07b71781b53b52bd381dc58244fb84b721d9f60d
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 79eace4afd194ed5fda2262dbd3564f1391c19bb
+  revision: 6203680cd914b4e92e5e74bf74bbf18d97ad01c0
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -187,7 +187,7 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
-    haml (5.0.0)
+    haml (5.0.1)
       temple (>= 0.8.0)
       tilt
     http-cookie (1.0.3)
@@ -222,7 +222,7 @@ GEM
       redis
     multi_json (1.12.1)
     multipart-post (2.0.0)
-    mysql2 (0.4.5)
+    mysql2 (0.4.6)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -239,7 +239,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rack (1.6.5)
+    rack (1.6.8)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (5.0.1)
@@ -247,7 +247,7 @@ GEM
     rack-cache (1.7.0)
       rack (>= 0.4)
     rack-cors (0.4.1)
-    rack-mini-profiler (0.10.2)
+    rack-mini-profiler (0.10.4)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
@@ -279,7 +279,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (1.4.1)
-    rsolr (2.0.0)
+    rsolr (2.0.2)
       builder (>= 2.1.2)
       faraday
     ruby-xxHash (0.4.0.1)
@@ -296,7 +296,7 @@ GEM
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.0)
+    simplecov-html (0.10.1)
     sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
