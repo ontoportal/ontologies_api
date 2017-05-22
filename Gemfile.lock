@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 0bd49b791dac8ab3fb30990f9a02e5c7ba632ac3
-  branch: master
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: 5d25eec12848e4c5390c4197a05af9c96a3ff702
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d9294415c0ccbf0737716470cb64202c00312683
-  branch: master
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: b2a3e02f5ab1e32345607a570a987a149b8f1934
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 50e9a524327b776bac9e34a30d824520feb5a813
-  branch: master
+  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: 07b71781b53b52bd381dc58244fb84b721d9f60d
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 36bdb6e16380c81acc6fdaa21bb46cb52b0400f8
-  branch: master
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: 6203680cd914b4e92e5e74bf74bbf18d97ad01c0
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -184,7 +184,7 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
-    haml (5.0.0)
+    haml (5.0.1)
       temple (>= 0.8.0)
       tilt
     http-cookie (1.0.3)
@@ -219,7 +219,7 @@ GEM
       redis
     multi_json (1.12.1)
     multipart-post (2.0.0)
-    mysql2 (0.4.5)
+    mysql2 (0.4.6)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -236,7 +236,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rack (1.6.5)
+    rack (1.6.8)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (5.0.1)
@@ -244,7 +244,7 @@ GEM
     rack-cache (1.7.0)
       rack (>= 0.4)
     rack-cors (0.4.1)
-    rack-mini-profiler (0.10.2)
+    rack-mini-profiler (0.10.5)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
@@ -276,7 +276,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (1.4.1)
-    rsolr (2.0.0)
+    rsolr (2.0.2)
       builder (>= 2.1.2)
       faraday
     ruby-xxHash (0.4.0.1)
@@ -293,7 +293,7 @@ GEM
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.0)
+    simplecov-html (0.10.1)
     sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
