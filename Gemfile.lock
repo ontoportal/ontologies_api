@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/goo.git
-  revision: 5447337613a4320da4bc3d9a70255c3e83089021
+  revision: 47b4f702fa86559cc621a7d215d5ab747f124f90
   branch: agroportal_debug
   specs:
     goo (0.0.2)
@@ -66,7 +66,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_annotator.git
-  revision: 34c08bb653c9b7a2717ad8d5d5fe2c9ca4f2afe7
+  revision: 1a795c687496db93886ae9ecbd1583a489f4e512
   branch: agroportal
   specs:
     ncbo_annotator (0.0.1)
@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ncbo_cron.git
-  revision: 7ce87e6776bc50725a57dccd7b62a3ebba241f59
+  revision: 874e8e214b5977e44658f25354076b4cfa7e8307
   branch: agroportal
   specs:
     ncbo_cron (0.0.1)
@@ -93,7 +93,7 @@ GIT
 
 GIT
   remote: git://github.com/sifrproject/ontologies_linked_data.git
-  revision: 0c7c9d70a30541cab501f5cfe2a3b1e41c3a5eb6
+  revision: 98d7145674b2ee17c9bb2d9845de970242eb7725
   branch: agroportal
   specs:
     ontologies_linked_data (0.0.1)
