@@ -147,9 +147,9 @@ class TestSearchController < TestCase
     assert_equal 1, results["collection"].length
     assert_equal "X123456", results["collection"][0]["cui"][0]
 
-    get "search?q=Funding&ontologies=#{acronym}&include=prefLabel,synonym,definition,notation,cui,semanticType&semanticType=T028"
+    get "search?q=Funding&ontologies=#{acronym}&include=prefLabel,synonym,definition,notation,cui,semanticType&semantic_types=T028"
     results = MultiJson.load(last_response.body)
-    assert_equal 5, results["collection"].length
+    assert_equal 1, results["collection"].length
     assert_equal "T028", results["collection"][0]["semanticType"][0]
   end
 
