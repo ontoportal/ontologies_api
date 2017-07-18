@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 782245f93463e7fe9eb3b2dc9cce4d8eed4697b9
+  revision: b176d6f11cdfb0c4ecde972c10b0c51790b00152
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 175ee8e81935786ec21a8d76b97d7b20cab8f204
+  revision: 460e7f6de5ff5ee2d85832aaf02414003fa58b32
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: b2a3e02f5ab1e32345607a570a987a149b8f1934
+  revision: 3df4a046258f08d4ca00c5736780a6da7ac71c9d
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 9638be063b3a9ea85ffdc545aab9250a9a791a50
+  revision: f6eac263a37e7e8833186ca56c0067b224b12c4c
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: fba5c30e8c04a872570e84c60e0a771a83949e64
+  revision: a6a6c9e2603738d2bd243960d42f0154e76c7f9d
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -246,7 +246,7 @@ GEM
       rack
     rack-cache (1.7.0)
       rack (>= 0.4)
-    rack-cors (1.0.0)
+    rack-cors (1.0.1)
     rack-mini-profiler (0.10.5)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
