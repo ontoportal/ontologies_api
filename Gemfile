@@ -21,9 +21,7 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'rack-attack', :require => 'rack/attack'
 
 # Data access (caching)
-# locking  redis gem to v3.3.1 since we are experiencing timeout issues with v3.3.2
-gem 'redis', '3.3.1' 
-#gem 'redis', '~> 3.0'
+gem 'redis', '~> 3.3.3'
 
 gem 'redis-activesupport'
 
@@ -61,7 +59,8 @@ gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
 gem 'ncbo_resource_index', git: 'https://github.com/ncbo/resource_index.git'
 	
 group :development do
-  gem 'capistrano', '~> 3.7', require: false
+  gem 'capistrano', '~> 3.8', require: false
+  gem 'capistrano-locally', require: false
   gem 'capistrano-bundler', '~> 1.1.1', require: false
   gem 'capistrano-rbenv', '~> 2.0.2', require: false
   gem 'pry'
@@ -77,5 +76,3 @@ group :test do
   gem 'minitest-stub_any_instance'
   gem 'simplecov', require: false
 end
-
-
