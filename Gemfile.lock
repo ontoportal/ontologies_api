@@ -1,7 +1,7 @@
 GIT
-  remote: git://github.com/ncbo/goo.git
-  revision: d7bc14c6bdc99ed98399fc6000e4354b26577a85
-  branch: master
+  remote: https://github.com/ncbo/goo.git
+  revision: b176d6f11cdfb0c4ecde972c10b0c51790b00152
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: cbd1a795dda3870b6b4f5ab88eaecac0018f847b
-  branch: master
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: 460e7f6de5ff5ee2d85832aaf02414003fa58b32
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: d125f1051df9ed5a058e9f276a06e8afb0d1708b
-  branch: master
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: 3df4a046258f08d4ca00c5736780a6da7ac71c9d
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: c8006e317dbd96e033164c9ed153707e85a5bf4f
-  branch: master
+  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: f6eac263a37e7e8833186ca56c0067b224b12c4c
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -53,7 +53,7 @@ GIT
       redis
 
 GIT
-  remote: git://github.com/ncbo/ncbo_resolver.git
+  remote: https://github.com/ncbo/ncbo_resolver.git
   revision: 67989c445e53e019b3b3fa4905e0aa9d519df0ed
   specs:
     ncbo_resolver (0.0.1)
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 5d17205300d9e2a60be1b71d56a10ed0cecf8bb9
-  branch: master
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: a6a6c9e2603738d2bd243960d42f0154e76c7f9d
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -82,7 +82,7 @@ GIT
       rubyzip
 
 GIT
-  remote: git://github.com/ncbo/resource_index.git
+  remote: https://github.com/ncbo/resource_index.git
   revision: 3f48307daad953f3fc297fab328c9b00beadb70a
   specs:
     ncbo_resource_index (0.0.1)
@@ -95,9 +95,9 @@ GIT
       typhoeus
 
 GIT
-  remote: git://github.com/ncbo/sparql-client.git
-  revision: 135974d6ae369186f1fc9bdeed018e734a6d40b2
-  branch: master
+  remote: https://github.com/ncbo/sparql-client.git
+  revision: 2586eaa5bae4e41c24e7bdc10c985244df2521e7
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -105,7 +105,7 @@ GIT
       rdf (>= 1.0)
 
 GIT
-  remote: git://github.com/palexander/rack-post-body-to-params.git
+  remote: https://github.com/palexander/rack-post-body-to-params.git
   revision: 0fd30e710386d0cb8a3a6833d9549d7b655d5398
   branch: multipart_support
   specs:
@@ -373,7 +373,7 @@ DEPENDENCIES
   rainbows
   rake (~> 10.0)
   redcarpet
-  redis (~> 3.0)
+  redis (~> 3.3.3)
   redis-activesupport
   redis-rack-cache (~> 1.0)
   shotgun!
