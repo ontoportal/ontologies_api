@@ -11,6 +11,11 @@ module Sinatra
       def get_properties_search_query(text, params)
         validate_params_solr_population(ALLOWED_INCLUDES_PARAMS)
 
+        # raise error if text is empty
+        if text.nil? || text.strip.empty?
+          raise error 400, "The search query must be provided via /property_search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]"
+        end
+
         query = ""
         params["defType"] = "edismax"
         params["stopwords"] = "true"
