@@ -11,10 +11,6 @@ set :deploy_via, :remote_cache
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
-#NCBO_BRANCH is required for setting correct branch for NCBO gems
-NCBO_BRANCH = ENV.include?('NCBO_BRANCH') ? ENV['NCBO_BRANCH'] : 'staging'
-set :branch, "#{NCBO_BRANCH}" 
-
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, "#{APP_PATH}/#{fetch(:application)}"
 
@@ -53,20 +49,32 @@ set :default_env, {
 set :keep_releases, 5
 
 namespace :deploy do
-  desc 'Incorporate the bioportal_conf private repository content'
-  #Get cofiguration from repo if ENV NCBO_CONFIG_REPO is set 
-  #(should be set to NCBO private config repo)
-  task :get_config do
-    if ENV.include?('NCBO_CONFIG_REPO') 
-       PRIVATE_REPO = ENV['NCBO_CONFIG_REPO'] 
-       CONFIG_PATH = "/tmp/bioportal_config"
-       on roles(:app) do
-          execute "rm -rf #{CONFIG_PATH}"
-          execute "git clone -q #{PRIVATE_REPO} #{CONFIG_PATH}"
-          execute "rsync -av #{CONFIG_PATH}/#{fetch(:application)}/ #{release_path}/"
-          execute "rm -rf #{CONFIG_PATH}"
-      end
+  desc 'display remote system shell environment variables'
+  task :puts_remote_env do
+    on roles(:all) do
+      remote_env = capture("env")
+      puts remote_env
     end
+  end
+
+  desc 'Incorporate the bioportal_conf private repository content'
+  #Get cofiguration from repo if PRIVATE_CONFIG_REPO env var is set 
+  #or get config from local directory if LOCAL_CONFIG_PATH env var is set 
+  task :get_config do
+     if defined?(PRIVATE_CONFIG_REPO)
+       on roles(:app, :web) do
+          TMP_CONFIG_PATH = "/tmp/#{SecureRandom.hex(15)}"
+          execute "git clone -q #{PRIVATE_CONFIG_REPO} #{TMP_CONFIG_PATH}"
+          execute "rsync -av #{TMP_CONFIG_PATH}/#{fetch(:application)}/ #{release_path}/"
+          execute "rm -rf #{TMP_CONFIG_PATH}"
+       end
+     #end
+     elsif ENV.include?('LOCAL_CONFIG_PATH')
+       on roles(:app, :web) do
+          LOCAL_CONFIG_PATH = ENV['LOCAL_CONFIG_PATH']
+          execute "rsync -av #{LOCAL_CONFIG_PATH}/#{fetch(:application)}/ #{release_path}/"
+       end
+     end
   end
 
   desc 'Restart application'
@@ -79,9 +87,8 @@ namespace :deploy do
     end
   end
 
-  after :publishing, :get_config, :restart
-  after :get_config, :restart
-#  after :publishing, :restart
+  after :updating, :get_config
+  after :publishing, :restart
 
 #  after :restart, :clear_cache do
 #    on roles(:web), in: :groups, limit: 3, wait: 10 do
