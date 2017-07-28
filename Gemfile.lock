@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: a6a6c9e2603738d2bd243960d42f0154e76c7f9d
+  revision: 6877f87d20c60fe509b83aa190aa52571630a2cd
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -230,7 +230,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
     netrc (0.11.0)
-    newrelic_rpm (4.2.0.334)
+    newrelic_rpm (4.3.0.335)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -319,7 +319,7 @@ GEM
     systemu (2.6.5)
     temple (0.8.0)
     thread_safe (0.3.6)
-    tilt (2.0.7)
+    tilt (2.0.8)
     typhoeus (1.1.2)
       ethon (>= 0.9.0)
     tzinfo (1.2.3)
