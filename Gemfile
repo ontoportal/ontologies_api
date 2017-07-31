@@ -21,7 +21,7 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'rack-attack', :require => 'rack/attack'
 
 # Data access (caching)
-gem 'redis', '~> 3.0'
+gem 'redis', '~> 3.3.3'
 
 # Pegging this to a particular commit because 4.2.1 is broken.
 # After redis-activesupport gets a version bump you can remove the 'git' and 'ref' param
@@ -45,29 +45,41 @@ gem 'unicorn-worker-killer'
 # Debugging
 gem 'pry', :group => :development
 
-# Profiling
-gem 'rack-mini-profiler', :group => :profiling
+# NCBO gems (can be from a local dev path or from rubygems/git)
 
-# Code reloading
-gem 'shotgun', :group => 'development', :git => 'https://github.com/palexander/shotgun.git', :branch => 'ncbo'
+
+gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'staging'
+gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'staging'
+gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'staging'
+# gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'allegrograph_testing'
+# gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'allegrograph_testing'
+# gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'allegrograph_testing'
+
+
+
+gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'staging'
+gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'staging'
+gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'staging'
+
+# NCBO gems (unversioned)
+gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
+gem 'ncbo_resource_index', git: 'https://github.com/ncbo/resource_index.git'
+	
+group :development do
+  gem 'capistrano', '~> 3.8', require: false
+  gem 'capistrano-locally', require: false
+  gem 'capistrano-bundler', '~> 1.1.1', require: false
+  gem 'capistrano-rbenv', '~> 2.0.2', require: false
+  gem 'pry'
+  gem 'shotgun', git: 'https://github.com/palexander/shotgun.git', branch: 'ncbo'
+end
 
 # Templating
 gem 'haml'
 gem 'redcarpet'
 
-# Deployments
-gem 'capistrano', '~> 3.4.0', :require => false, :group => :development
-gem 'capistrano-bundler', '~> 1.1.1', :require => false, :group => :development
-gem 'capistrano-rbenv', '~> 2.0.2', :require => false, :group => :development
-
-# NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', github: 'ncbo/goo', branch: 'master'
-gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'master'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
-gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'master'
-gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'master'
-
-# Not versioned
-gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'
-gem 'ncbo_resource_index', github: 'ncbo/resource_index'
+group :test do
+  gem 'minitest', '~> 4.0'
+  gem 'minitest-stub_any_instance'
+  gem 'simplecov', require: false
+end

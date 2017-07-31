@@ -1,7 +1,7 @@
 GIT
-  remote: git://github.com/ncbo/goo.git
-  revision: dd1b78375bae01cf8940354584cbde1e844d551b
-  branch: master
+  remote: https://github.com/ncbo/goo.git
+  revision: 635972d07fafda13c1c4d5751429c0303fff70e7
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -15,9 +15,9 @@ GIT
       uuid
 
 GIT
-  remote: git://github.com/ncbo/ncbo_annotator.git
-  revision: 6c46160aba209efb48db44f5dc7b3151a35f2aa5
-  branch: master
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: 356df908cd2f1291efb14b56c83253d799beb5af
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,9 +26,9 @@ GIT
       ruby-xxHash
 
 GIT
-  remote: git://github.com/ncbo/ncbo_cron.git
-  revision: 32a1f3df8392491b1b3a547137a6116b0497a365
-  branch: master
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: 7dcc44d45f4137ee707d31b57397fbcc1268ae27
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,9 +42,9 @@ GIT
       rufus-scheduler (~> 2.0.24)
 
 GIT
-  remote: git://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f20ed117b2c685d4508ace504e1031c5fa1ea94b
-  branch: master
+  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: 4d3c670d970717ce8d255a4137f7e1a630c3e28b
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -61,9 +61,9 @@ GIT
       redis
 
 GIT
-  remote: git://github.com/ncbo/ontologies_linked_data.git
-  revision: 5d17205300d9e2a60be1b71d56a10ed0cecf8bb9
-  branch: master
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: 01dfd0750f49b9f7a7501b96763a0e10a56ee3d0
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -82,8 +82,8 @@ GIT
       rubyzip
 
 GIT
-  remote: git://github.com/ncbo/resource_index.git
-  revision: 87f34062d236c87ea4ba7e0035a1e0726ac83abb
+  remote: https://github.com/ncbo/resource_index.git
+  revision: 3f48307daad953f3fc297fab328c9b00beadb70a
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch (= 2.0.0)
@@ -127,6 +127,8 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
+    airbrussh (1.3.0)
+      sshkit (>= 1.6.1, != 1.7.0)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
@@ -134,13 +136,16 @@ GEM
     backports (3.8.0)
     bcrypt (3.1.11)
     builder (3.2.3)
-    capistrano (3.4.1)
+    capistrano (3.9.0)
+      airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
     capistrano-bundler (1.1.4)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
+    capistrano-locally (0.2.4)
+      capistrano (~> 3.0)
     capistrano-rbenv (2.0.4)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
@@ -161,7 +166,7 @@ GEM
     ethon (0.10.1)
       ffi (>= 1.3.0)
     extlib (0.9.16)
-    faraday (0.12.1)
+    faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
     get_process_mem (0.2.1)
@@ -176,8 +181,8 @@ GEM
       multi_json (~> 1.10)
       retriable (~> 1.4)
       signet (~> 0.6)
-    googleauth (0.5.1)
-      faraday (~> 0.9)
+    googleauth (0.5.3)
+      faraday (~> 0.12)
       jwt (~> 1.4)
       logging (~> 2.0)
       memoist (~> 0.12)
@@ -189,7 +194,7 @@ GEM
       tilt
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.8.1)
+    i18n (0.8.6)
     json (2.1.0)
     json-schema (2.5.0)
       addressable (~> 2.3)
@@ -206,9 +211,9 @@ GEM
       multi_json (~> 1.10)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mail (2.6.5)
+    mail (2.6.6)
       mime-types (>= 1.16, < 4)
-    memoist (0.15.0)
+    memoist (0.16.0)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
@@ -219,13 +224,13 @@ GEM
       redis
     multi_json (1.12.1)
     multipart-post (2.0.0)
-    mysql2 (0.4.6)
+    mysql2 (0.4.8)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
     netrc (0.11.0)
-    newrelic_rpm (4.1.0.333)
+    newrelic_rpm (4.3.0.335)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -243,13 +248,13 @@ GEM
       rack
     rack-cache (1.7.0)
       rack (>= 0.4)
-    rack-cors (0.4.1)
+    rack-cors (1.0.1)
     rack-mini-profiler (0.10.5)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
-    rack-test (0.6.3)
-      rack (>= 1.0)
+    rack-test (0.7.0)
+      rack (>= 1.0, < 3)
     rack-timeout (0.4.2)
     rainbows (5.1.1)
       kgio (~> 2.5)
@@ -259,7 +264,7 @@ GEM
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (1.0.4)
+    recursive-open-struct (1.0.5)
     redcarpet (3.4.0)
     redis (3.3.3)
     redis-activesupport (4.1.5)
@@ -283,7 +288,7 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.46.0)
+    sequel (4.48.0)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -308,13 +313,13 @@ GEM
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
     slop (3.6.0)
-    sshkit (1.13.1)
+    sshkit (1.14.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.8.0)
     thread_safe (0.3.6)
-    tilt (2.0.7)
+    tilt (2.0.8)
     typhoeus (1.1.2)
       ethon (>= 0.9.0)
     tzinfo (1.2.3)
@@ -336,8 +341,9 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
-  capistrano (~> 3.4.0)
+  capistrano (~> 3.8)
   capistrano-bundler (~> 1.1.1)
+  capistrano-locally
   capistrano-rbenv (~> 2.0.2)
   cube-ruby
   goo!
@@ -367,7 +373,7 @@ DEPENDENCIES
   rainbows
   rake (~> 10.0)
   redcarpet
-  redis (~> 3.0)
+  redis (~> 3.3.3)
   redis-activesupport
   redis-rack-cache (~> 1.0)
   shotgun!
@@ -380,4 +386,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.13.7
+   1.15.2
