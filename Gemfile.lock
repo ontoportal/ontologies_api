@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: b176d6f11cdfb0c4ecde972c10b0c51790b00152
+  revision: 635972d07fafda13c1c4d5751429c0303fff70e7
   branch: staging
   specs:
     goo (0.0.2)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: a6a6c9e2603738d2bd243960d42f0154e76c7f9d
+  revision: 01dfd0750f49b9f7a7501b96763a0e10a56ee3d0
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -136,7 +136,7 @@ GEM
     backports (3.8.0)
     bcrypt (3.1.11)
     builder (3.2.3)
-    capistrano (3.8.2)
+    capistrano (3.9.0)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -230,7 +230,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
     netrc (0.11.0)
-    newrelic_rpm (4.2.0.334)
+    newrelic_rpm (4.3.0.335)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -319,7 +319,7 @@ GEM
     systemu (2.6.5)
     temple (0.8.0)
     thread_safe (0.3.6)
-    tilt (2.0.7)
+    tilt (2.0.8)
     typhoeus (1.1.2)
       ethon (>= 0.9.0)
     tzinfo (1.2.3)
