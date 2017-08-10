@@ -48,7 +48,7 @@ class CCVController < ApplicationController
         doc = doc.symbolize_keys
         resource_id = doc[:resource_id]
         acronym = doc[:submissionAcronym]
-        ontology_uri = doc[:ontologyId].first.sub(/\/submissions\/.*/, "")
+        ontology_uri = doc[:ontologyId].sub(/\/submissions\/.*/, "")
         ontology_rank = LinkedData::OntologiesAPI.settings.ontology_rank[acronym] || 0
         doc[:synonym] ||= []
         doc[:definition] ||= []

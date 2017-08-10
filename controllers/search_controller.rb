@@ -38,7 +38,7 @@ class SearchController < ApplicationController
         # TODO: The `rescue next` on the following line shouldn't be here
         # However, at some point we didn't store the ontologyId in the index
         # and these records haven't been cleared out so this is getting skipped
-        ontology_uri = doc[:ontologyId].first.sub(/\/submissions\/.*/, "") rescue next
+        ontology_uri = doc[:ontologyId].sub(/\/submissions\/.*/, "") rescue next
         ontology = LinkedData::Models::Ontology.read_only(id: ontology_uri, acronym: doc[:submissionAcronym])
         submission = LinkedData::Models::OntologySubmission.read_only(id: doc[:ontologyId], ontology: ontology)
         doc[:submission] = submission

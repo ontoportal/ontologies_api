@@ -96,10 +96,10 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 2586eaa5bae4e41c24e7bdc10c985244df2521e7
+  revision: 657883c87cb64f4a8ecd04e72f3b1d2a97c92d96
   branch: staging
   specs:
-    sparql-client (1.0.4.1)
+    sparql-client (1.0.1)
       json_pure (>= 1.4)
       net-http-persistent (= 2.9.4)
       rdf (>= 1.0)
@@ -189,7 +189,7 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
-    haml (5.0.1)
+    haml (5.0.2)
       temple (>= 0.8.0)
       tilt
     http-cookie (1.0.3)
@@ -288,7 +288,7 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.48.0)
+    sequel (4.49.0)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -386,4 +386,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.15.2
+   1.15.3
