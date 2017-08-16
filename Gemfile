@@ -43,7 +43,7 @@ gem 'redcarpet'
 
 gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'staging'
 gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'staging'
-gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'staging'
+gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'solr_6_upgrade'
 # gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'allegrograph_testing'
 # gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'allegrograph_testing'
 # gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'allegrograph_testing'
