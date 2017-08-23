@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 8ee5804f8e1f18f109dedde4dc9cb2040d41d60a
-  branch: master
+  revision: 054ea37df26c0952a216e3ae725e9f10b55c316a
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: d1948c6de371779a2de57f89a84d34189dad84e5
-  branch: master
+  revision: dac5f70a7885db6862090b5d384fc84aea4bd9d0
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 70fb90dd985f988891e68b493227652aad40b5de
-  branch: master
+  revision: 0b146680d1777527b0ed92692ac1c771b6b5dcb1
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 36ff13f9c4c9dad0ad894da743033ba80b3214a4
-  branch: master
+  revision: a016cc9cb2085402c6b8fb4d865f642c72739109
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: ff5920539091bf325870933f70f587026d9ba715
-  branch: master
+  revision: e795bd5364ad5f0fc4b7bd4d985c86fb069070dd
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -96,10 +96,10 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 135974d6ae369186f1fc9bdeed018e734a6d40b2
-  branch: master
+  revision: 657883c87cb64f4a8ecd04e72f3b1d2a97c92d96
+  branch: staging
   specs:
-    sparql-client (1.0.4.1)
+    sparql-client (1.0.1)
       json_pure (>= 1.4)
       net-http-persistent (= 2.9.4)
       rdf (>= 1.0)
@@ -166,7 +166,7 @@ GEM
     ethon (0.10.1)
       ffi (>= 1.3.0)
     extlib (0.9.16)
-    faraday (0.12.2)
+    faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
     get_process_mem (0.2.1)
@@ -189,7 +189,7 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
-    haml (5.0.1)
+    haml (5.0.2)
       temple (>= 0.8.0)
       tilt
     http-cookie (1.0.3)
@@ -224,7 +224,7 @@ GEM
       redis
     multi_json (1.12.1)
     multipart-post (2.0.0)
-    mysql2 (0.4.8)
+    mysql2 (0.4.9)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -260,7 +260,7 @@ GEM
       kgio (~> 2.5)
       rack (>= 1.1, < 3.0)
       unicorn (~> 5.1)
-    raindrops (0.18.0)
+    raindrops (0.19.0)
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
@@ -288,17 +288,17 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (4.48.0)
+    sequel (4.49.0)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
       jwt (~> 1.5)
       multi_json (~> 1.10)
-    simplecov (0.14.1)
+    simplecov (0.15.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.1)
+    simplecov-html (0.10.2)
     sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -320,7 +320,7 @@ GEM
     temple (0.8.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    typhoeus (1.1.2)
+    typhoeus (1.3.0)
       ethon (>= 0.9.0)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
@@ -338,6 +338,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-16
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -386,4 +387,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.15.2
+   1.15.3

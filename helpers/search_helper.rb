@@ -342,7 +342,7 @@ module Sinatra
           resource_id = doc[:resource_id]
           doc.delete :resource_id
           doc[:id] = resource_id
-          ontology_uri = doc[:ontologyId].first.sub(/\/submissions\/.*/, "")
+          ontology_uri = doc[:ontologyId].sub(/\/submissions\/.*/, "")
           ont_uri_class_uri = ontology_uri + resource_id
           old_class = old_classes_hash[ont_uri_class_uri]
           next unless old_class

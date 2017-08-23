@@ -34,7 +34,7 @@ class PropertiesSearchController < ApplicationController
         doc.delete :resource_id
         doc[:id] = resource_id
 
-        ontology_uri = doc[:ontologyId].first.sub(/\/submissions\/.*/, "")
+        ontology_uri = doc[:ontologyId].sub(/\/submissions\/.*/, "")
         ontology = LinkedData::Models::Ontology.read_only(id: ontology_uri, acronym: doc[:submissionAcronym])
         submission = LinkedData::Models::OntologySubmission.read_only(id: doc[:ontologyId], ontology: ontology)
         doc[:submission] = submission
