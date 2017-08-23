@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: a91e5ed0796331319a1aebd15c4865a45c822a13
+  revision: 0b146680d1777527b0ed92692ac1c771b6b5dcb1
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -338,6 +338,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-16
 
 DEPENDENCIES
   activesupport (~> 3.0)
