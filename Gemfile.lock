@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 054ea37df26c0952a216e3ae725e9f10b55c316a
+  revision: 8049cba3cdf3c9608d80f9796dfc0c42581eeadc
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: dac5f70a7885db6862090b5d384fc84aea4bd9d0
+  revision: acafb8dfdd64a827a16c2eec45eac91344dcbbba
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 0b146680d1777527b0ed92692ac1c771b6b5dcb1
+  revision: d40f3ca2c1473ef1f7f107cd254ad88c1b24367d
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: a016cc9cb2085402c6b8fb4d865f642c72739109
+  revision: c0bd3ef967b804eed2e0d6b830961af6827ab3b8
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 93e3be5c6acf48f5829f0d93a288ddb4ee147309
+  revision: 5fdd58f217bdc3896bcfbfd65fedb6dd53cd1bac
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -164,7 +164,7 @@ GEM
     elasticsearch-transport (2.0.0)
       faraday
       multi_json
-    ethon (0.10.1)
+    ethon (0.11.0)
       ffi (>= 1.3.0)
     extlib (0.9.16)
     faraday (0.13.1)
@@ -289,7 +289,7 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.1.0)
+    sequel (5.2.0)
     signet (0.8.1)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -322,7 +322,7 @@ GEM
     tilt (2.0.8)
     typhoeus (1.3.0)
       ethon (>= 0.9.0)
-    tzinfo (1.2.3)
+    tzinfo (1.2.4)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
@@ -387,4 +387,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.15.3
+   1.15.4
