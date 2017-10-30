@@ -83,7 +83,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/resource_index.git
-  revision: 7bf1e21c619bac49dff4479fa79783aa370e06bb
+  revision: 9d1f0a4e2f2816990a1f80ee576c73a08e34e754
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch (= 2.0.0)
