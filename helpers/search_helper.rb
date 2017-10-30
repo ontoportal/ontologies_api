@@ -117,7 +117,9 @@ module Sinatra
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
-        params["ontologies"] = params["ontology_acronyms"].join(",") if params["ontology_acronyms"] && !params["ontology_acronyms"].empty?
+        params[ONTOLOGIES_PARAM] = params["ontology_acronyms"].join(",") if params["ontology_acronyms"] && !params["ontology_acronyms"].empty?
+        subtree_ids = get_subtree_ids(params)
+
         ontology_types = params[ONTOLOGY_TYPES_PARAM].nil? || params[ONTOLOGY_TYPES_PARAM].empty? ? [] : params[ONTOLOGY_TYPES_PARAM].split(",").map(&:strip)
         onts = restricted_ontologies(params)
 
@@ -125,7 +127,6 @@ module Sinatra
         acronyms = restricted_ontologies_to_acronyms(params, onts)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
-        subtree_ids = get_subtree_ids(params)
         subtree_ids_clause = (subtree_ids.nil? || subtree_ids.empty?) ? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
         filter_query = "#{filter_query} AND #{subtree_ids_clause}" unless (subtree_ids_clause.empty?)
 

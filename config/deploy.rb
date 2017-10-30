@@ -31,7 +31,7 @@ set :deploy_to, "#{APP_PATH}/#{fetch(:application)}"
 
 # Default value for linked_dirs is []
 #set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :linked_dirs, %w{log vendor/bundle public/system}
+set :linked_dirs, %w{log tmp/pids tmp/sockets vendor/bundle public/system}
 
 # rbenv
 #set :rbenv_type, :system #or :user
@@ -52,6 +52,7 @@ namespace :deploy do
   desc 'display remote system shell environment variables'
   task :puts_remote_env do
     on roles(:all) do
+      puts "deploying #{fetch(:branch)} branch/tag"
       remote_env = capture("env")
       puts remote_env
     end
