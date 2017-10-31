@@ -69,10 +69,8 @@ namespace :deploy do
           execute "rsync -av #{TMP_CONFIG_PATH}/#{fetch(:application)}/ #{release_path}/"
           execute "rm -rf #{TMP_CONFIG_PATH}"
        end
-     #end
-     elsif ENV.include?('LOCAL_CONFIG_PATH')
+     elsif defined?(LOCAL_CONFIG_PATH)
        on roles(:app, :web) do
-          LOCAL_CONFIG_PATH = ENV['LOCAL_CONFIG_PATH']
           execute "rsync -av #{LOCAL_CONFIG_PATH}/#{fetch(:application)}/ #{release_path}/"
        end
      end
