@@ -9,6 +9,29 @@ class AdminController < ApplicationController
       end
     }
 
+    # TODO: remove this endpoint. It's termporary to test the update check functionality
+    # get "/latestversion" do
+    #   iid = params["iid"]
+    #   ver = params["version"]
+    #
+    #   latest_ver_info = {
+    #       update_version: "2.5RC3", #"2.6RC1",
+    #       update_available: true,
+    #       notes: "blah blah and more"
+    #   }
+    #   reply MultiJson.dump latest_ver_info
+    # end
+
+    get "/update_info" do
+      um = NcboCron::Models::UpdateManager.new
+      um.check_for_update if params["force_check"].eql?('true')
+      reply um.update_info
+    end
+
+    get "/update_check_enabled" do
+      reply NcboCron.settings.enable_update_check ? 'true' : 'false'
+    end
+
     get "/objectspace" do
       GC.start
       gdb_objs = Hash.new 0

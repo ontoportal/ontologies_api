@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 0b146680d1777527b0ed92692ac1c771b6b5dcb1
+  revision: b51544e49dfc3edd18767a685dab46f9959e4203
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: a016cc9cb2085402c6b8fb4d865f642c72739109
+  revision: bcf559c9dcc5b9719bce9bb3b93f7a0391ed13ca
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -83,7 +83,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/resource_index.git
-  revision: f1c3c0736ce4879444e1bcb432d8b8cb54904a65
+  revision: 9d1f0a4e2f2816990a1f80ee576c73a08e34e754
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch (= 2.0.0)
@@ -164,7 +164,7 @@ GEM
     elasticsearch-transport (2.0.0)
       faraday
       multi_json
-    ethon (0.10.1)
+    ethon (0.11.0)
       ffi (>= 1.3.0)
     extlib (0.9.16)
     faraday (0.13.1)
@@ -213,13 +213,14 @@ GEM
       multi_json (~> 1.10)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mail (2.6.6)
-      mime-types (>= 1.16, < 4)
+    mail (2.7.0)
+      mini_mime (>= 0.1.1)
     memoist (0.16.0)
     method_source (0.9.0)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mini_mime (0.1.4)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.7)
@@ -237,6 +238,7 @@ GEM
     omni_logger (0.1.4)
       logger
     os (0.9.6)
+    parseconfig (1.0.8)
     pony (1.11)
       mail (>= 2.0)
     pry (0.11.2)
@@ -250,7 +252,7 @@ GEM
     rack-cache (1.7.1)
       rack (>= 0.4)
     rack-cors (1.0.2)
-    rack-mini-profiler (0.10.5)
+    rack-mini-profiler (0.10.6)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
@@ -289,7 +291,7 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.1.0)
+    sequel (5.2.0)
     signet (0.8.1)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -322,7 +324,7 @@ GEM
     tilt (2.0.8)
     typhoeus (1.3.0)
       ethon (>= 0.9.0)
-    tzinfo (1.2.3)
+    tzinfo (1.2.4)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
@@ -362,6 +364,7 @@ DEPENDENCIES
   newrelic_rpm
   oj (~> 2.0)
   ontologies_linked_data!
+  parseconfig
   pry
   rack
   rack-accept (~> 0.4)

@@ -171,10 +171,6 @@ module Sinatra
         params["fq"] = filter_query
         params["q"] = query
 
-
-        binding.pry
-
-
         query
       end
 
