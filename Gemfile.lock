@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 79f3ccd5b43a2200ea62709684c037ab8f8e07e5
+  revision: bb4e709234497c0ca0ccb95db08e3eb0c107cb4f
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -220,7 +220,7 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mini_mime (0.1.4)
+    mini_mime (1.0.0)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.7)
