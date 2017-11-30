@@ -20,6 +20,22 @@ class ClassesController < ApplicationController
       reply page_data
     end
 
+    # Get root classes using a paginated mode
+    get '/roots_paged' do
+      includes_param_check
+      ont, submission = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
+      load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = load_attrs.delete(:properties)
+      page, size = page_params
+      roots = submission.roots(load_attrs, page, size)
+
+      if unmapped && roots.length > 0
+        LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
+      end
+      reply roots
+    end
+
     # Get root classes
     get '/roots' do
       includes_param_check
@@ -151,20 +167,33 @@ class ClassesController < ApplicationController
       cls = get_class(submission)
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties)
-      aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
-      page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
-      page_data_query.aggregate(*aggregates) unless aggregates.empty?
+
+
+      # binding.pry
+
+      # unmapped = ld.delete(:properties)
+      # aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
+
+
+      # binding.pry
+
+      page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission)
+      # page_data_query.aggregate(*aggregates) unless aggregates.empty?
       page_data = page_data_query.page(page,size).all
-      if unmapped
-        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
-      end
-      page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
-      if ld.include?(:hasChildren)
-        page_data.each do |c|
-          c.load_has_children
-        end
-      end
+
+
+      # binding.pry
+
+
+      # if unmapped
+      #   LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+      # end
+      # page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
+      # if ld.include?(:hasChildren)
+      #   page_data.each do |c|
+      #     c.load_has_children
+      #   end
+      # end
       reply page_data
     end
 
