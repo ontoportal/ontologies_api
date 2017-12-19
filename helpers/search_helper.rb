@@ -17,6 +17,7 @@ module Sinatra
       SUGGEST_PARAM = "suggest" # NCBO-932
       # the three below are for NCBO-1512, NCBO-1513, NCBO-1515
       VALUESET_ROOTS_ONLY_PARAM = "valueset_roots_only"
+      ROOTS_ONLY_PARAM = "roots_only"
       VALUESET_EXCLUDE_ROOTS_PARAM = "valueset_exclude_roots"
       ONTOLOGY_TYPES_PARAM = "ontology_types"
 
@@ -135,7 +136,7 @@ module Sinatra
         filter_query = "#{filter_query} AND #{ontology_types_clause}" unless (ontology_types_clause.empty?)
 
         # NCBO-1512, NCBO-1513, NCBO-1515 - CEDAR valueset requirements
-        valueset_roots_only = params[VALUESET_ROOTS_ONLY_PARAM] || "false"
+        valueset_roots_only = params[VALUESET_ROOTS_ONLY_PARAM] || params[ROOTS_ONLY_PARAM] || "false"
         valueset_exclude_roots = params[VALUESET_EXCLUDE_ROOTS_PARAM] || "false"
 
         if valueset_roots_only == "true" || valueset_exclude_roots == "true"
@@ -237,10 +238,11 @@ module Sinatra
         also_search_provisional = params[ALSO_SEARCH_PROVISIONAL_PARAM] || "false"
 
         onts.each do |ont|
-          next if ont.nil? || ont.ontologyType.nil? || !ont.ontologyType.value_set_collection?
+          next if ont.nil?
           submission = ont.latest_submission(status: [:RDF])
           next if submission.nil?
 
+          submission.bring
           roots = submission.roots
           root_ids_ont = roots.map {|d| d.id.to_s}
           root_ids << root_ids_ont

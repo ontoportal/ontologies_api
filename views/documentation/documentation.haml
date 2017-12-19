@@ -174,19 +174,18 @@
         %h4#nav_search_roots_only Roots Only Search
 
         %p
-          The same endpoint allows limiting a search to root classes only. The endpoint requires a combination of parameters "ontology" and "roots_only=true". Both are required when performing a roots-only search.
+          The same endpoint allows limiting a search to root classes only.
           %ul
             %li
               Perform a roots-only search
             %ul
               %li
                 example:
-                %a{href: "/search?q=melanoma&ontology=NCIT&roots_only=true"} /search?q=melanoma&ontology=NCIT&roots_only=true
+                %a{href: "/search?q=melanoma&ontologies=NCIT,GO&roots_only=true"} /search?q=melanoma&ontology=NCIT,GO&roots_only=true
             %li
               Parameters
               %ul
-                %li ontology={ontology_id}
-                %li roots_only=true
+                %li roots_only={true|false}
 
       %h3#nav_prop_search Ontology Property Search
 

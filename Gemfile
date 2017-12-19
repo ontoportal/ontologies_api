@@ -10,6 +10,7 @@ gem 'json-schema', '~> 2.0'
 gem 'rake', '~> 10.0'
 gem 'activesupport', '~> 3.0'
 gem 'google-api-client', '<0.9'
+gem 'parseconfig'
 
 # Rack middleware
 gem 'rack-accept', '~> 0.4'

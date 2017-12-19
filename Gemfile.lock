@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 59f145cdae84842977528d80be0c8cb13be94183
-  branch: master
+  revision: e3216b5e5d71dd783a3effb410f78ecbfc61b81b
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 06d7afae57ee03fd0908f66bc78152c056bb040a
-  branch: master
+  revision: fd7c6a6b3d09e42ee32b5a7b9c56b17b027617cc
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: b10a95249c0ab3685eefddbad67799c010a79531
-  branch: master
+  revision: 41dda0d3c159c15322fff4f9a875127b36233332
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 8254656f85eeac9f1a0df5488ac36bc24bfed3be
-  branch: master
+  revision: 49744afcd8fa72c6754201bd22f74bf95ab8005c
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 33015eba86419aa3bb6fa5bc099ac4590a4ce85b
-  branch: master
+  revision: f7a08d27fd98318bd5ec33d0a13658566d1035b8
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -96,8 +96,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 135974d6ae369186f1fc9bdeed018e734a6d40b2
-  branch: master
+  revision: f7b6888b923f312a1190957c6f96a2ba0ffd2e1c
+  branch: staging
   specs:
     sparql-client (1.0.4.1)
       json_pure (>= 1.4)
@@ -136,7 +136,7 @@ GEM
     backports (3.10.3)
     bcrypt (3.1.11)
     builder (3.2.3)
-    capistrano (3.10.0)
+    capistrano (3.10.1)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -182,7 +182,7 @@ GEM
       multi_json (~> 1.10)
       retriable (~> 1.4)
       signet (~> 0.6)
-    googleauth (0.6.1)
+    googleauth (0.6.2)
       faraday (~> 0.12)
       jwt (>= 1.4, < 3.0)
       logging (~> 2.0)
@@ -195,14 +195,14 @@ GEM
       tilt
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.9.0)
+    i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     json (2.1.0)
     json-schema (2.5.0)
       addressable (~> 2.3)
     json_pure (2.1.0)
     jwt (2.1.0)
-    kgio (2.11.0)
+    kgio (2.11.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     libxml-ruby (3.0.0)
@@ -213,33 +213,35 @@ GEM
       multi_json (~> 1.10)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mail (2.6.6)
-      mime-types (>= 1.16, < 4)
+    mail (2.7.0)
+      mini_mime (>= 0.1.1)
     memoist (0.16.0)
     method_source (0.9.0)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mini_mime (1.0.0)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.1)
     mlanett-redis-lock (0.2.7)
       redis
     multi_json (1.12.2)
     multipart-post (2.0.0)
-    mysql2 (0.4.9)
+    mysql2 (0.4.10)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.2.0)
     netrc (0.11.0)
-    newrelic_rpm (4.5.0.337)
+    newrelic_rpm (4.6.0.338)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
     os (0.9.6)
+    parseconfig (1.0.8)
     pony (1.11)
       mail (>= 2.0)
-    pry (0.11.2)
+    pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     rack (1.6.8)
@@ -250,11 +252,11 @@ GEM
     rack-cache (1.7.1)
       rack (>= 0.4)
     rack-cors (1.0.2)
-    rack-mini-profiler (0.10.6)
+    rack-mini-profiler (0.10.7)
       rack (>= 1.2.0)
     rack-protection (1.5.3)
       rack
-    rack-test (0.7.0)
+    rack-test (0.8.2)
       rack (>= 1.0, < 3)
     rack-timeout (0.4.2)
     rainbows (5.1.1)
@@ -282,14 +284,14 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (1.4.1)
-    rsolr (2.0.2)
+    rsolr (2.1.0)
       builder (>= 2.1.2)
-      faraday
+      faraday (>= 0.9.0)
     ruby-xxHash (0.4.0.1)
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.2.0)
+    sequel (5.3.0)
     signet (0.8.1)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -313,7 +315,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.14.0)
+    sshkit (1.15.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
@@ -362,6 +364,7 @@ DEPENDENCIES
   newrelic_rpm
   oj (~> 2.0)
   ontologies_linked_data!
+  parseconfig
   pry
   rack
   rack-accept (~> 0.4)
