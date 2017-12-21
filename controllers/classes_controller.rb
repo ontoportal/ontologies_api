@@ -167,33 +167,20 @@ class ClassesController < ApplicationController
       cls = get_class(submission)
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-
-
-      # binding.pry
-
-      # unmapped = ld.delete(:properties)
-      # aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
-
-
-      # binding.pry
-
-      page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission)
-      # page_data_query.aggregate(*aggregates) unless aggregates.empty?
+      unmapped = ld.delete(:properties)
+      aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
+      page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
+      page_data_query.aggregate(*aggregates) unless aggregates.empty?
       page_data = page_data_query.page(page,size).all
-
-
-      # binding.pry
-
-
-      # if unmapped
-      #   LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
-      # end
-      # page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
-      # if ld.include?(:hasChildren)
-      #   page_data.each do |c|
-      #     c.load_has_children
-      #   end
-      # end
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+      end
+      page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
+      if ld.include?(:hasChildren)
+        page_data.each do |c|
+          c.load_has_children
+        end
+      end
       reply page_data
     end
 
