@@ -13,8 +13,8 @@ class OntologiesController < ApplicationController
       else
         onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
       end
-
-      subs = retrieve_latest_submissions(options={status:"ANY", also_include_views: allow_views})
+      options = {also_include_views: allow_views, status: (params["include_status"] || "ANY")}
+      subs = retrieve_latest_submissions(options)
       metrics_include = LinkedData::Models::Metric.goo_attrs_to_load(includes_param)
       LinkedData::Models::OntologySubmission.where.models(subs.values).include(metrics: metrics_include).all
 

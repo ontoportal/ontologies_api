@@ -369,6 +369,7 @@ module Sinatra
         latest_submissions = {}
         submissions.each do |sub|
           next if include_ready && !sub.ready?
+          next if sub.ontology.nil?
           latest_submissions[sub.ontology.acronym] ||= sub
           latest_submissions[sub.ontology.acronym] = sub if sub.submissionId.to_i > latest_submissions[sub.ontology.acronym].submissionId.to_i
         end
