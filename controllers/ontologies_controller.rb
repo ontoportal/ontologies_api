@@ -5,6 +5,7 @@ class OntologiesController < ApplicationController
     ##
     # Display all ontologies
     get do
+      onts = nil
       check_last_modified_collection(Ontology)
       allow_views = params['also_include_views'] ||= false
       if allow_views
@@ -150,6 +151,42 @@ class OntologiesController < ApplicationController
       end
 
       reply 201, ont
+    end
+  end
+
+  namespace "/ontologies_full" do
+    ##
+    # Display all ontologies with submissions and metrics
+    get do
+      resp = []
+      onts = nil
+      allow_views = params['also_include_views'] ||= false
+
+      if allow_views
+        onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
+      else
+        onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
+      end
+      options = {also_include_views: allow_views, status: (params["include_status"] || "ANY")}
+      subs = retrieve_latest_submissions(options)
+      metrics_include = LinkedData::Models::Metric.goo_attrs_to_load(includes_param)
+      LinkedData::Models::OntologySubmission.where.models(subs.values).include(metrics: metrics_include).all
+
+      onts.each do |ont|
+        sub = subs[ont.acronym]
+        sub.ontology = nil if sub
+        metrics = nil
+
+        begin
+          metrics = sub.nil? ? nil : sub.metrics
+        rescue
+          metrics = nil
+        end
+
+        resp << {ontology: ont, latest_submission: subs[ont.acronym], metrics: metrics}
+      end
+
+      reply resp
     end
   end
 end
