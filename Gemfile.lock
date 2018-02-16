@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 377c200fa119c212cf90744385354d088179ea31
+  revision: 37aa4f32e4df8f5ff92205966c1af5fb091b050f
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: fd7c6a6b3d09e42ee32b5a7b9c56b17b027617cc
+  revision: ad92e7c60a029896bbdb4acf5ab85ab28b5dda10
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 27602ff7f1b587fcb00b28e7d09a7ed765c6927a
+  revision: 25e8db04eb947297a1ed4760ad5f862f1b93c1b9
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 129286e1e3eb1f366e6f88d3aa9034c57a70d3e7
+  revision: 4501b78d94951c9e467376b0063753f58ada7198
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -83,7 +83,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/resource_index.git
-  revision: 9d1f0a4e2f2816990a1f80ee576c73a08e34e754
+  revision: 75e384e2563638cb91541082c9256f80b60b6ae9
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch (= 2.0.0)
@@ -195,7 +195,7 @@ GEM
       tilt
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.9.3)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     json (2.1.0)
     json-schema (2.5.0)
@@ -390,4 +390,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
