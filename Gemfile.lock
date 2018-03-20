@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 3a779c95112bf7b1744cf5e71dae1d35a7ee9a00
+  revision: 9bc30a49f6be823f70123fea7b0f6b53bbb4ccf5
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 8af36f2e94b69d2db62e37209a80810e93f7d68f
+  revision: 84556bb3f69f7882bb117196a27197ea4965223b
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: cde38b68d4dd044fba426a08e0b4542fb3486110
+  revision: 2470e5722c34f08229b771a8079a094da0e2b820
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 7c22683c2d676848a08ce73a88a1533656a3a7be
+  revision: 8b407a0f504d6df06fff9a73a8e9a8f1616504ff
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -83,7 +83,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/resource_index.git
-  revision: 9d1f0a4e2f2816990a1f80ee576c73a08e34e754
+  revision: 75e384e2563638cb91541082c9256f80b60b6ae9
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch (= 2.0.0)
@@ -144,7 +144,7 @@ GEM
     capistrano-bundler (1.1.4)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
-    capistrano-locally (0.2.4)
+    capistrano-locally (0.2.5)
       capistrano (~> 3.0)
     capistrano-rbenv (2.0.4)
       capistrano (~> 3.1)
@@ -153,7 +153,7 @@ GEM
     concurrent-ruby (1.0.5)
     cube-ruby (0.0.3)
     dante (0.2.0)
-    docile (1.1.5)
+    docile (1.3.0)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     elasticsearch (2.0.0)
@@ -169,7 +169,7 @@ GEM
     extlib (0.9.16)
     faraday (0.14.0)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.18)
+    ffi (1.9.23)
     get_process_mem (0.2.1)
     google-api-client (0.8.7)
       activesupport (>= 3.2, < 5.0)
@@ -195,7 +195,7 @@ GEM
       tilt
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.9.3)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     json (2.1.0)
     json-schema (2.5.0)
@@ -233,7 +233,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (4.2.0)
     netrc (0.11.0)
-    newrelic_rpm (4.7.1.340)
+    newrelic_rpm (4.8.0.341)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -244,19 +244,19 @@ GEM
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    rack (1.6.8)
+    rack (1.6.9)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (5.0.1)
+    rack-attack (5.1.0)
       rack
     rack-cache (1.7.1)
       rack (>= 0.4)
     rack-cors (1.0.2)
     rack-mini-profiler (0.10.7)
       rack (>= 1.2.0)
-    rack-protection (1.5.3)
+    rack-protection (1.5.5)
       rack
-    rack-test (0.8.2)
+    rack-test (0.8.3)
       rack (>= 1.0, < 3)
     rack-timeout (0.4.2)
     rainbows (5.1.1)
@@ -267,7 +267,7 @@ GEM
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (1.0.5)
+    recursive-open-struct (1.1.0)
     redcarpet (3.4.0)
     redis (3.3.5)
     redis-activesupport (4.1.5)
@@ -291,14 +291,14 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.4.0)
+    sequel (5.6.0)
     signet (0.8.1)
       addressable (~> 2.3)
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
-    simplecov (0.15.1)
-      docile (~> 1.1.0)
+    simplecov (0.16.1)
+      docile (~> 1.1)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
@@ -315,7 +315,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.15.1)
+    sshkit (1.16.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
@@ -390,4 +390,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.15.4
+   1.16.1
