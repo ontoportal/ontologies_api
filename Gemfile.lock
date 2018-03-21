@@ -169,7 +169,7 @@ GEM
     extlib (0.9.16)
     faraday (0.14.0)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.23)
+    ffi (1.9.21)
     get_process_mem (0.2.1)
     google-api-client (0.8.7)
       activesupport (>= 3.2, < 5.0)
@@ -227,7 +227,7 @@ GEM
       redis
     multi_json (1.13.1)
     multipart-post (2.0.0)
-    mysql2 (0.4.10)
+    mysql2 (0.5.0)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -349,6 +349,7 @@ DEPENDENCIES
   capistrano-locally
   capistrano-rbenv (~> 2.0.2)
   cube-ruby
+  ffi (< 1.9.22)
   goo!
   google-api-client (< 0.9)
   haml
