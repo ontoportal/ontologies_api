@@ -20,6 +20,7 @@ gem 'redis-rack-cache', '~> 1.0'
 gem 'rack-timeout'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'rack-attack', :require => 'rack/attack'
+gem 'ffi', '< 1.9.22'
 
 # Data access (caching)
 gem 'redis', '~> 3.3.3'

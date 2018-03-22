@@ -38,12 +38,21 @@ class ClassesController < ApplicationController
 
     # Get root classes
     get '/roots' do
+      params ||= @params
       includes_param_check
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
-      roots = submission.roots(load_attrs)
+      sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
+      roots = nil
+
+      if sort
+        roots = submission.roots_sorted(load_attrs)
+      else
+        roots = submission.roots(load_attrs)
+      end
+
       if unmapped && roots.length > 0
         LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
       end
@@ -97,7 +106,9 @@ class ClassesController < ApplicationController
 
     # Get a tree view
     get '/:cls/tree' do
+      params ||= @params
       includes_param_check
+      sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
       # We override include values other than the following, user-provided include ignored
       display_attrs = "prefLabel,hasChildren,children,obsolete,subClassOf"
       params["display"] = display_attrs
@@ -111,10 +122,18 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
-      root_tree = cls.tree
+      root_tree = nil
+      roots = nil
 
-      #add the other roots to the response
-      roots = submission.roots(extra_include=[:hasChildren])
+      if sort
+        root_tree = cls.tree_sorted
+        #add the other roots to the response
+        roots = submission.roots_sorted(extra_include=[:hasChildren])
+      else
+        root_tree = cls.tree
+        #add the other roots to the response
+        roots = submission.roots(extra_include=[:hasChildren])
+      end
 
       # if this path' root does not get returned by the submission.roots call, manually add it
       roots << root_tree unless roots.map { |r| r.id }.include?(root_tree.id)
