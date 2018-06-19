@@ -42,13 +42,12 @@ gem 'redcarpet'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
 
-
-gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'staging'
-gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'staging'
-gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'staging'
-# gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'allegrograph_testing'
-# gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'allegrograph_testing'
-# gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'allegrograph_testing'
+# gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'staging'
+# gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'staging'
+# gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'staging'
+gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'allegrograph_testing'
+gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'allegrograph_testing'
+gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'allegrograph_testing'
 
 
 
