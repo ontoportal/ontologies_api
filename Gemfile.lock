@@ -247,7 +247,7 @@ GEM
     rack (1.6.10)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (5.2.0)
+    rack-attack (5.3.1)
       rack
     rack-cache (1.8.0)
       rack (>= 0.4)
