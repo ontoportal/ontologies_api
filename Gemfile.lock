@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: aaeb72f8484341342e30b4857419b8b8e41509e5
+  revision: 9e72f2506dc39c65531d8e049f8a70a784168c14
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: d7c8540742313c19bca10edfaf9340fc36c62912
+  revision: 2628d82c00cfdecca97afff53af98c48034963a8
   branch: allegrograph_testing
   specs:
     ontologies_linked_data (0.0.1)
@@ -227,7 +227,7 @@ GEM
       redis
     multi_json (1.13.1)
     multipart-post (2.0.0)
-    mysql2 (0.5.1)
+    mysql2 (0.5.2)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -247,8 +247,8 @@ GEM
     rack (1.6.10)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-attack (5.3.0)
-      rack
+    rack-attack (5.4.0)
+      rack (>= 1.0, < 3)
     rack-cache (1.8.0)
       rack (>= 0.4)
     rack-cors (1.0.2)
@@ -291,7 +291,7 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.9.0)
+    sequel (5.10.0)
     signet (0.8.1)
       addressable (~> 2.3)
       faraday (~> 0.9)
