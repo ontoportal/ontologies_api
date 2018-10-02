@@ -9,7 +9,7 @@ end
 
 # Setup global logging
 require 'rack/logger'
-if [:development, :console].include?(settings.environment)
+if [:development, :console, :test].include?(settings.environment)
   LOGGER = CustomLogger.new(STDOUT)
   LOGGER.level = Logger::DEBUG
 else
