@@ -116,11 +116,9 @@ class TestSearchController < TestCase
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}"
     results = MultiJson.load(last_response.body)
     assert_equal 22, results["collection"].length
-
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&also_search_obsolete=false"
     results = MultiJson.load(last_response.body)
     assert_equal 22, results["collection"].length
-
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&also_search_obsolete=true"
     results = MultiJson.load(last_response.body)
     assert_equal 29, results["collection"].length
@@ -129,7 +127,6 @@ class TestSearchController < TestCase
     get "search?q=training&ontologies=#{acronym}"
     results = MultiJson.load(last_response.body)
     assert_equal 3, results["collection"].length
-
     get "search?q=training&ontology=#{acronym}&subtree_root_id=http%3A%2F%2Fbioontology.org%2Fontologies%2FActivity.owl%23Activity"
     results = MultiJson.load(last_response.body)
     assert_equal 1, results["collection"].length
@@ -151,6 +148,30 @@ class TestSearchController < TestCase
     results = MultiJson.load(last_response.body)
     assert_equal 1, results["collection"].length
     assert_equal "T028", results["collection"][0]["semanticType"][0]
+  end
+
+  def test_subtree_search
+    acronym = "BROSEARCHTEST-0"
+    class_id = RDF::IRI.new "http://bioontology.org/ontologies/Activity.owl#Activity"
+    pc1 = LinkedData::Models::ProvisionalClass.new({label: "Test Provisional Parent for Training", subclassOf: class_id, creator: @@test_user, ontology: @@ontologies[0]})
+    pc1.save
+    pc2 = LinkedData::Models::ProvisionalClass.new({label: "Test Provisional Leaf for Training", subclassOf: pc1.id, creator: @@test_user, ontology: @@ontologies[0]})
+    pc2.save
+
+    get "search?q=training&ontology=#{acronym}&subtree_root_id=#{CGI.escape(class_id.to_s)}"
+    results = MultiJson.load(last_response.body)
+    assert_equal 1, results["collection"].length
+
+    get "search?q=training&ontology=#{acronym}&subtree_root_id=#{CGI.escape(class_id.to_s)}&also_search_provisional=true"
+    results = MultiJson.load(last_response.body)
+    assert_equal 3, results["collection"].length
+
+    pc2.delete
+    pc2 = LinkedData::Models::ProvisionalClass.find(pc2.id).first
+    assert_nil pc2
+    pc1.delete
+    pc1 = LinkedData::Models::ProvisionalClass.find(pc1.id).first
+    assert_nil pc1
   end
 
   def test_wildcard_search
