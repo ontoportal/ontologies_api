@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 8c3c8441f1589a0472f1754c4fc65a871d84b829
+  revision: 2f0eac81028ed24809932e13e16a52db5c4832e6
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -150,7 +150,7 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.2)
-    concurrent-ruby (1.1.3)
+    concurrent-ruby (1.1.4)
     cube-ruby (0.0.3)
     dante (0.2.0)
     docile (1.3.1)
