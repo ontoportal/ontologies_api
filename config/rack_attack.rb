@@ -9,7 +9,7 @@ attack_store = ActiveSupport::Cache::RedisStore.new(attack_redis_host_port)
 Rack::Attack.cache.store = attack_store
 
 RACK_ATTACK_EXCEPTIONS = Set.new(["ncbobioportal", "biomixer"])
-Rack::Attack.whitelist('always allow') do |req|
+Rack::Attack.safelist('always allow') do |req|
   req.env["REMOTE_USER"] && (RACK_ATTACK_EXCEPTIONS.include?(req.env["REMOTE_USER"].username) || req.env["REMOTE_USER"].admin?)
 end
 
