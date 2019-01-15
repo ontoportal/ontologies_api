@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 46f798cde3e4bec756686ab87f7afa7b5e5c3105
+  revision: 8f8fcdd6eb99195e3f2dbf51a4eb3ef7313cdb1e
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 7d31fe3a2081eeb4fd23acf2cf6ef8f2e50de103
+  revision: 8dc504cc22dceb800ca09093c1affc7bd9ec7ee9
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 6140886a7532c73fee1eafbf48a0bdd679096974
+  revision: 789ee1608178c5b1438006147af04b074e26f29c
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: db94378cfbe5592db20b8ecea7ffccc2779fba59
+  revision: 8397b728016793edd8a55fa9c74e16399f67298d
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 7e849f1e89f1dc11907ec7612e9384169f3cde16
+  revision: fde8aa808c7e2ca2a7a44bb9a47ab46145aeff0f
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -164,7 +164,7 @@ GEM
     elasticsearch-transport (2.0.0)
       faraday
       multi_json
-    ethon (0.11.0)
+    ethon (0.12.0)
       ffi (>= 1.3.0)
     extlib (0.9.16)
     faraday (0.15.4)
@@ -182,7 +182,7 @@ GEM
       multi_json (~> 1.10)
       retriable (~> 1.4)
       signet (~> 0.6)
-    googleauth (0.7.1)
+    googleauth (0.8.0)
       faraday (~> 0.12)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
@@ -226,9 +226,9 @@ GEM
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (5.0.2)
+    net-ssh (5.1.0)
     netrc (0.11.0)
-    newrelic_rpm (5.6.0.349)
+    newrelic_rpm (5.7.0.350)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -254,7 +254,7 @@ GEM
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rack-timeout (0.5.1)
-    rainbows (5.1.1)
+    rainbows (5.2.0)
       kgio (~> 2.5)
       rack (>= 1.1, < 3.0)
       unicorn (~> 5.1)
@@ -286,7 +286,7 @@ GEM
     rubyzip (1.2.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.15.0)
+    sequel (5.16.0)
     signet (0.11.0)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -315,12 +315,11 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.8.0)
-    thread_safe (0.3.6)
     tilt (2.0.9)
     typhoeus (1.3.1)
       ethon (>= 0.9.0)
-    tzinfo (1.2.5)
-      thread_safe (~> 0.1)
+    tzinfo (2.0.0)
+      concurrent-ruby (~> 1.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
@@ -386,4 +385,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.17.1
+   1.17.3
