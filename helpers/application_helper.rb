@@ -112,7 +112,7 @@ module Sinatra
       # Usage: +reply object+, +reply 201, object+
       def reply(*response)
         status = response.shift
-        if !status.instance_of?(Fixnum)
+        if !status.instance_of?(Integer)
           response.unshift status
           status = 200
         end
@@ -137,7 +137,7 @@ module Sinatra
       def halt(*response)
         status, headers, obj = nil
         obj = response.first if response.length == 1
-        if obj.instance_of?(Fixnum)
+        if obj.instance_of?(Integer)
           # This is a status-only response
           status = obj
           obj = nil
@@ -158,7 +158,7 @@ module Sinatra
       #   +error 400, "Error message"+
       def error(*message)
         status = message.shift
-        if !status.instance_of?(Fixnum)
+        if !status.instance_of?(Integer)
           message.unshift status
           status = 500
         end
