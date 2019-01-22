@@ -77,4 +77,5 @@ group :test do
   gem 'minitest', '~> 4.0'
   gem 'minitest-stub_any_instance'
   gem 'simplecov', require: false
+  gem 'rack-test'
 end
