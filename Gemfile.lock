@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 8dc504cc22dceb800ca09093c1affc7bd9ec7ee9
+  revision: 75a19d7d25ab702716c57ab2cce36a07d1dd080f
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 789ee1608178c5b1438006147af04b074e26f29c
+  revision: a2a44c2a711288e06acf5497b69423cf89e40521
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: fde8aa808c7e2ca2a7a44bb9a47ab46145aeff0f
+  revision: 67316ee767a7e826b135a4a309ae7a691677d694
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -334,7 +334,7 @@ GEM
 
 PLATFORMS
   ruby
-  x86_64-darwin-16
+  x86_64-darwin-17
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -368,6 +368,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rack-post-body-to-params!
+  rack-test
   rack-timeout
   rainbows
   rake (~> 10.0)
@@ -385,4 +386,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.17.3
+   2.0.1
