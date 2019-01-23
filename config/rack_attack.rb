@@ -8,7 +8,7 @@ attack_redis_host_port = {host: LinkedData::OntologiesAPI.settings.http_redis_ho
 attack_store = ActiveSupport::Cache::RedisStore.new(attack_redis_host_port)
 Rack::Attack.cache.store = attack_store
 
-safe_ips = LinkedData::OntologiesAPI.settings.safe_ips || Set.new
+safe_ips = LinkedData::OntologiesAPI.settings.safe_ips ||= Set.new
 safe_ips.each do |safe_ip|
   Rack::Attack.safelist_ip(safe_ip)
 end
