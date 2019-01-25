@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 8f8fcdd6eb99195e3f2dbf51a4eb3ef7313cdb1e
+  revision: 4d33598341c38b1a2655b5fd8cbda94cd97d0c60
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 8dc504cc22dceb800ca09093c1affc7bd9ec7ee9
+  revision: 4d6151b2d9a6992d678f9c9c2f657dbdedabf1c2
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 789ee1608178c5b1438006147af04b074e26f29c
+  revision: cff0cf450ba079355db81a0fa63cf782f250cfe2
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: fde8aa808c7e2ca2a7a44bb9a47ab46145aeff0f
+  revision: c23063440cffe5ca0e8befd261107b6c61fc00b4
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -334,7 +334,6 @@ GEM
 
 PLATFORMS
   ruby
-  x86_64-darwin-16
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -385,4 +384,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.17.3
+   2.0.1
