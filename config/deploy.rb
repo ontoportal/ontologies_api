@@ -92,7 +92,7 @@ namespace :deploy do
           execute "rm -rf #{TMP_CONFIG_PATH}"
        end
      elsif defined?(LOCAL_CONFIG_PATH)
-       on roles(:api) do
+       on roles(:app) do
           execute "rsync -av #{LOCAL_CONFIG_PATH}/#{fetch(:application)}/ #{release_path}/"
        end
      end
