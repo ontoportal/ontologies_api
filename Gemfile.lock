@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 4d33598341c38b1a2655b5fd8cbda94cd97d0c60
+  revision: 949f138edac591c71ba0726ce318ee3392b3d21d
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 4d6151b2d9a6992d678f9c9c2f657dbdedabf1c2
+  revision: 21f6b73065aa82f8ee609af0b89416441c74d0cc
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: cff0cf450ba079355db81a0fa63cf782f250cfe2
+  revision: 405c63c324dc6acbaf0cd7e14bada6fe1de6d0f6
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 8397b728016793edd8a55fa9c74e16399f67298d
+  revision: c0d2e5d032f2087e2089c2cea5f601b98019384d
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: c23063440cffe5ca0e8befd261107b6c61fc00b4
+  revision: 1a244881f90f33c3b38c906de524c4bae072c3f3
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 3eb2b95f9311b551f1575f0dbf29a5ee1437bf9f
+  revision: 3b7e2b14c83a6ffde90c6f7e78c3b5767c2e3a4c
   branch: staging
   specs:
     sparql-client (1.0.1)
@@ -228,7 +228,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (5.1.0)
     netrc (0.11.0)
-    newrelic_rpm (5.7.0.350)
+    newrelic_rpm (6.0.0.351)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -310,7 +310,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.18.0)
+    sshkit (1.18.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
