@@ -3,7 +3,7 @@ require_relative "../test_case"
 
 OUTER_APP = Rack::Builder.parse_file(File.join([settings.root, "config.ru"])).first
 
-class TestRackAttackV2 < TestCase
+class TestRackAttack < TestCase
   include Rack::Test::Methods
 
   def app
