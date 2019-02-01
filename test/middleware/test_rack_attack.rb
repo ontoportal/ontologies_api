@@ -1,124 +1,176 @@
-require "rack/test"
-require_relative "../test_case"
+require 'rack'
+require 'open-uri'
+require_relative '../test_case'
 
-OUTER_APP = Rack::Builder.parse_file(File.join([settings.root, "config.ru"])).first
+RACK_CONFIG = File.join([settings.root, "config.ru"])
 
 class TestRackAttack < TestCase
-  include Rack::Test::Methods
-
-  def app
-    OUTER_APP
-  end
-
+  
   def self.before_suite
     # Store app settings
-    @@enable_security = LinkedData.settings.enable_security
-    @@enable_throttling = LinkedData::OntologiesAPI.settings.enable_throttling
-    @@limit = LinkedData::OntologiesAPI.settings.req_per_second_per_ip
+    @@auth_setting = LinkedData.settings.enable_security
+    @@throttling_setting = LinkedData.settings.enable_throttling
+    @@req_per_sec_limit = LinkedData::OntologiesAPI.settings.req_per_second_per_ip
     @@safe_ips = LinkedData::OntologiesAPI.settings.safe_ips
-
+    
     LinkedData.settings.enable_security = true
     LinkedData::OntologiesAPI.settings.enable_throttling = true
-    LinkedData::OntologiesAPI.settings.req_per_second_per_ip = 5
+    LinkedData::OntologiesAPI.settings.req_per_second_per_ip = 1
     LinkedData::OntologiesAPI.settings.safe_ips = Set.new(["1.2.3.4", "1.2.3.5"])
-    require_relative "../../config/rack_attack"
 
-    @@user = LinkedData::Models::User.new({
-      username: "user",
-      password: "test_password",
-      email: "test_email@example.org"
-    })
+    @@user = LinkedData::Models::User.new({username: "user", password: "test_password", email: "test_email@example.org"})
     @@user.save
-  
+
+    @@bp_user = LinkedData::Models::User.new({username: "ncbobioportal", password: "test_password", email: "test_email@example.org"})
+    @@bp_user.save
+
     admin_role = LinkedData::Models::Users::Role.find("ADMINISTRATOR").first
-    @@admin = LinkedData::Models::User.new({
-      username: "admin",
-      password: "test_password",
-      email: "test_email@example.org",
-      role: [admin_role]
-    })
+    @@admin = LinkedData::Models::User.new({username: "admin", password: "test_password", email: "test_email@example.org", role: [admin_role]})
     @@admin.save
 
-    @@ncbobioportal_user = LinkedData::Models::User.new({
-      username: "ncbobioportal",
-      password: "test_password",
-      email: "test_email@example.org"
-    })
-    @@ncbobioportal_user.save
-    
-    @@biomixer_user = LinkedData::Models::User.new({
-      username: "biomixer",
-      password: "test_password",
-      email: "test_email@example.org",
-    })
-    @@biomixer_user.save
-  end
+    # Redirect output or we get a bunch of noise from Rack (gets reset in the after_suite method).
+    $stdout = File.open("/dev/null", "w")
+    $stderr = File.open("/dev/null", "w")
 
-  def test_throttling_exceed_limit
-    statuses = Set.new
-    (LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 5).times do |i|
-      header "Authorization", "apikey token=#{@@user.apikey}"
-      get "/", {}, "REMOTE_ADDR" => "1.2.3.6"
-      statuses << last_response.status
+    # http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Dynamic.2C_private_or_ephemeral_ports
+    @@port1 = Random.rand(55000..65535)
+
+    # Fork the process to create two servers. This isolates the Rack::Attack configuration, which makes other tests fail if included.
+    @@pid1 = fork do
+      require_relative '../../config/rack_attack'
+      Rack::Server.start(
+        config: RACK_CONFIG,
+        Port: @@port1
+      )
+      Signal.trap("HUP") { Process.exit! }
     end
-    assert_includes statuses, 429, "Failed to throttle excessive requests"
-  end
 
-  def test_throttling_under_limit
-    LinkedData::OntologiesAPI.settings.req_per_second_per_ip.times do
-      header "Authorization", "apikey token=#{@@user.apikey}"
-      get "/", {}, "REMOTE_ADDR" => "1.2.3.7"
-      assert last_response.status != 429, "Requests under the reqs/sec limit were throttled"
+    @@port2 = Random.rand(55000..65535) # http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Dynamic.2C_private_or_ephemeral_ports
+    @@pid2 = fork do
+      require_relative '../../config/rack_attack'
+      Rack::Server.start(
+        config: RACK_CONFIG,
+        Port: @@port2
+      )
+      Signal.trap("HUP") { Process.exit! }
     end
-  end
 
-  def test_throttling_admin_override
-    (LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 5).times do |i|
-      header "Authorization", "apikey token=#{@@admin.apikey}"
-      get "/", {}, "REMOTE_ADDR" => "1.2.3.8"
-      assert last_response.status != 429, "Requests from an administrative account were throttled"
-    end
-  end
-
-  def test_throttling_ncbobioportal_override
-    (LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 5).times do |i|
-      header "Authorization", "apikey token=#{@@ncbobioportal_user.apikey}"
-      get "/", {}, "REMOTE_ADDR" => "1.2.3.9"
-      assert last_response.status != 429, "Requests from the ncbobioportal account were throttled"
-    end
-  end
-
-  def test_throttling_biomixer_override
-    (LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 5).times do |i|
-      header "Authorization", "apikey token=#{@@biomixer_user.apikey}"
-      get "/", {}, "REMOTE_ADDR" => "1.2.3.10"
-      assert last_response.status != 429, "Requests from the biomixer account were throttled"
-    end
-  end
-
-  def test_throttling_safe_ip_override
-    safe_ips = LinkedData::OntologiesAPI.settings.safe_ips
-    limit = LinkedData::OntologiesAPI.settings.req_per_second_per_ip
-
-    safe_ips.each do |safe_ip|
-      (limit * 5).times do |i|
-        header "Authorization", "apikey token=#{@@user.apikey}"
-        get "/", {}, "REMOTE_ADDR" => safe_ip
-        assert last_response.status != 429, "Requests from a safelisted IP address were throttled"
-      end
-    end
+    # Give the servers time to start.
+    sleep(5)
   end
 
   def self.after_suite
     # Restore app settings
-    LinkedData.settings.enable_security = @@enable_security
-    LinkedData::OntologiesAPI.settings.enable_throttling = @@enable_throttling
-    LinkedData::OntologiesAPI.settings.req_per_second_per_ip = @@limit
+    LinkedData.settings.enable_security = @@auth_setting
+    LinkedData::OntologiesAPI.settings.enable_throttling = @@throttling_setting
+    LinkedData::OntologiesAPI.settings.req_per_second_per_ip = @@req_per_sec_limit
     LinkedData::OntologiesAPI.settings.safe_ips = @@safe_ips
     
-    @@user.delete
+    Process.kill("HUP", @@pid1)
+    Process.wait(@@pid1)
+    Process.kill("HUP", @@pid2)
+    Process.wait(@@pid2)
+    
+    $stdout = STDOUT
+    $stderr = STDERR
+    
     @@admin.delete
-    @@ncbobioportal_user.delete
-    @@biomixer_user.delete
+    @@user.delete
+    @@bp_user.delete
+  end
+
+  def test_throttling_limit
+    request_in_threads do
+      assert_raises(OpenURI::HTTPError) { request() }
+    end
+  end
+
+  def test_throttling_limit_with_forwarding
+    limit = LinkedData::OntologiesAPI.settings.req_per_second_per_ip 
+    headers = {"Authorization" => "apikey token=#{@@user.apikey}", "X-Forwarded-For" => "1.2.3.6"}
+    
+    exception = assert_raises(OpenURI::HTTPError) do
+      (limit * 5).times do
+        open("http://127.0.0.1:#{@@port1}/ontologies", headers)
+      end
+    end
+    assert_match /429 Too Many Requests/, exception.message
+  end
+
+  def test_throttling_admin_override
+    request_in_threads do
+      assert_raises(OpenURI::HTTPError) { request() }
+
+      request(user: @@admin) do |r|
+        assert r.status[0].to_i == 200
+      end
+    end
+  end
+
+  def test_two_servers_one_ip
+    request_in_threads do
+      assert_raises(OpenURI::HTTPError) { request() }
+      assert_raises(OpenURI::HTTPError) { request(port: @@port2) }
+    end
+  end
+
+  def test_throttling_ui_override
+    request_in_threads do
+      assert_raises(OpenURI::HTTPError) { request() }
+
+      request(user: @@bp_user) do |r|
+        assert r.status[0].to_i == 200
+      end
+    end
+  end
+
+  def test_throttling_safe_ips_override
+    limit = LinkedData::OntologiesAPI.settings.req_per_second_per_ip
+    safe_ips = LinkedData::OntologiesAPI.settings.safe_ips
+
+    safe_ips.each do |safe_ip|
+      headers = {"Authorization" => "apikey token=#{@@user.apikey}", "X-Forwarded-For" => "#{safe_ip}"}
+      (limit * 5).times do
+        response = open("http://127.0.0.1:#{@@port1}/ontologies", headers)
+        refute_match /429/, response.status.first, "Requests from a safelisted IP address were throttled"      
+      end
+    end
+  end
+
+  private
+
+  def request(user: nil, port: nil)
+    user ||= @@user
+    port ||= @@port1
+    headers = {"Authorization" => "apikey token=#{user.apikey}"}
+    # Make sure to do the request at least twice as many times as the limit
+    # in order to more effectively reach the throttling limit.
+    # Sometimes a single request can get through without failing depending
+    # on the order of the request as it coincides with the threaded requests.
+    (LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 2).times do
+      open("http://127.0.0.1:#{port}/ontologies", headers)
+    end
+  end
+
+  def request_in_threads(&block)
+    thread_count = LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 5
+    threads = []
+    begin
+      thread_count.times do
+        threads << Thread.new do
+          while true
+            sleep(0.2)
+            request() rescue next
+          end
+        end
+      end
+
+      sleep(0.4)
+
+      yield
+    ensure
+      sleep(1)
+      threads.each {|t| t.kill; t.join}
+    end
   end
 end
