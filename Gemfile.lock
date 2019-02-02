@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 77ccbf39c69091d6eb273492e54a0aa7a9cd85a2
-  branch: master
+  revision: 27ba20dae4a0c687f9e259ae0708bb15043d3544
+  branch: staging
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 53669f2baa33d63ace8ca9112d6c3810bbcd0051
-  branch: master
+  revision: 13abfd2ee1b63a4f03366aea84722ed19fd60929
+  branch: staging
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 3ef48b179abc6b5734abe5b297e43e5105909235
-  branch: master
+  revision: 51ad4ee33b0b922ebea55c96ff67f95dcd63297b
+  branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 873c189726adab2033060d522624380ea91c6cd2
-  branch: master
+  revision: 655d009cb00e54b86a6d8b25d194209e36bc53e0
+  branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: e6f00505d382d4bdca6b7f04fcbcae4569a4062a
-  branch: master
+  revision: 358e354cfa4750626bc5e68cb13ae10345482e4c
+  branch: staging
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -285,7 +285,7 @@ GEM
     rubyzip (1.2.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.16.0)
+    sequel (5.17.0)
     signet (0.11.0)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -334,6 +334,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-17
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -367,6 +368,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rack-post-body-to-params!
+  rack-test
   rack-timeout
   rainbows
   rake (~> 10.0)
