@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 5ed5db7bdaf1b9dfc5b803e8cad75aba984131ab
+  revision: 2e92c99c30c790ff651f15f3f0c4a699a8e03950
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -242,7 +242,7 @@ GEM
     rack-cache (1.8.0)
       rack (>= 0.4)
     rack-cors (1.0.2)
-    rack-mini-profiler (1.0.1)
+    rack-mini-profiler (1.0.2)
       rack (>= 1.2.0)
     rack-protection (1.5.5)
       rack
@@ -285,7 +285,7 @@ GEM
     rubyzip (1.2.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.16.0)
+    sequel (5.17.0)
     signet (0.11.0)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -309,7 +309,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.18.1)
+    sshkit (1.18.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
@@ -334,6 +334,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-17
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -367,6 +368,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rack-post-body-to-params!
+  rack-test
   rack-timeout
   rainbows
   rake (~> 10.0)
