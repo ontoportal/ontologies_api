@@ -171,9 +171,15 @@ class ClassesController < ApplicationController
       page, size = page_params
       cls = get_class(submission,load_attrs=[])
       error 404 if cls.nil?
+      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
+      unmapped = ld.delete(:properties)
       page_data = cls.retrieve_descendants(page,size)
       LinkedData::Models::Class.in(submission).models(page_data)
           .include(:prefLabel,:synonym,:definition).all
+      if unmapped
+        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+      end
+      page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
       reply page_data
     end
 
