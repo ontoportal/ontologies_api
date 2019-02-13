@@ -119,25 +119,10 @@ module Sinatra
 
         params[ONTOLOGIES_PARAM] = params["ontology_acronyms"].join(",") if params["ontology_acronyms"] && !params["ontology_acronyms"].empty?
 
-
-
-
-
-
-
-        # # sets ONTOLOGIES_PARM if subtree search is enabled
-        # # needs to be done BEFORE querying ontologies, but the
-        # # filter needs to be added AFTER the acronyms clause
-        # subtree_filter_query = subtree_filter_query(params)
-
-        subtree_ids = get_subtree_ids(params)
-
-
-
-
-
-
-
+        # sets ONTOLOGIES_PARM if subtree search is enabled
+        # needs to be done BEFORE querying ontologies, but the
+        # filter needs to be added AFTER the acronyms clause
+        subtree_filter_query = subtree_filter_query(params)
 
         ontology_types = params[ONTOLOGY_TYPES_PARAM].nil? || params[ONTOLOGY_TYPES_PARAM].empty? ? [] : params[ONTOLOGY_TYPES_PARAM].split(",").map(&:strip)
         onts = restricted_ontologies(params)
@@ -145,23 +130,8 @@ module Sinatra
         acronyms = restricted_ontologies_to_acronyms(params, onts)
         filter_query = get_quoted_field_query_param(acronyms, "OR", "submissionAcronym")
 
-
-
-
-
-
-
-        # # add subtree filter query if not empty
-        # filter_query << subtree_filter_query
-
-        subtree_ids_clause = (subtree_ids.nil? || subtree_ids.empty?) ? "" : get_quoted_field_query_param(subtree_ids, "OR", "resource_id")
-        filter_query = "#{filter_query} AND #{subtree_ids_clause}" unless (subtree_ids_clause.empty?)
-
-
-
-
-
-
+        # add subtree filter query if not empty
+        filter_query << subtree_filter_query
 
         # ontology types are required for CEDAR project to differentiate between ontologies and value set collections
         ontology_types_clause = ontology_types.empty? ? "" : get_quoted_field_query_param(ontology_types, "OR", "ontologyType")
@@ -207,30 +177,8 @@ module Sinatra
         query
       end
 
-
-
-
-
-
-      # def subtree_filter_query(params)
-      #   filter_query = ""
-      #   subtree_root_id = params[SUBTREE_ID_PARAM]
-      #
-      #   if subtree_root_id
-      #     ontology = params[ONTOLOGY_PARAM].nil? ? nil : params[ONTOLOGY_PARAM].split(",")
-      #
-      #     if ontology.nil? || ontology.empty? || ontology.length > 1
-      #       raise error 400, "A subtree search requires a single ontology: /search?q=<query>&ontology=CNO&subtree_id=http%3a%2f%2fwww.w3.org%2f2004%2f02%2fskos%2fcore%23Concept"
-      #     end
-      #
-      #     params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
-      #     filter_query = " AND #{get_quoted_field_query_param([subtree_root_id], "", "parents")}"
-      #   end
-      #   filter_query
-      # end
-
-      def get_subtree_ids(params)
-        subtree_ids = nil
+      def subtree_filter_query(params)
+        filter_query = ""
         subtree_root_id = params[SUBTREE_ID_PARAM]
 
         if subtree_root_id
@@ -240,34 +188,11 @@ module Sinatra
             raise error 400, "A subtree search requires a single ontology: /search?q=<query>&ontology=CNO&subtree_id=http%3a%2f%2fwww.w3.org%2f2004%2f02%2fskos%2fcore%23Concept"
           end
 
-          ont, submission = get_ontology_and_submission
-          params[:cls] = subtree_root_id
           params[ONTOLOGIES_PARAM] = params[ONTOLOGY_PARAM]
-
-          cls = get_class(submission)
-          subtree_ids = cls.descendants.map {|d| d.id.to_s}
-          subtree_ids.push(subtree_root_id)
-
-          also_search_provisional = params[ALSO_SEARCH_PROVISIONAL_PARAM] || "false"
-
-          if also_search_provisional == "true"
-            prov_children = LinkedData::Models::ProvisionalClass.children(subtree_root_id)
-            prov_children_ids = prov_children.map {|c| c.id.to_s}
-            subtree_ids.concat prov_children_ids
-          end
+          filter_query = " AND #{get_quoted_field_query_param([subtree_root_id], "", "parents")}"
         end
-        subtree_ids
+        filter_query
       end
-
-
-
-
-
-
-
-
-
-
 
       def add_matched_fields(solr_response, default_match)
         match = default_match
