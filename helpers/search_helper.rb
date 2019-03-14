@@ -59,7 +59,8 @@ module Sinatra
           "cui" => "cui",
           "semantic_types" => "semanticType",
           ONTOLOGY_TYPES_PARAM => "ontologyType",
-          ALSO_SEARCH_PROVISIONAL_PARAM => nil
+          ALSO_SEARCH_PROVISIONAL_PARAM => nil,
+          SUBTREE_ID_PARAM => "parents"
       }
 
       QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.compact.join(" ")
