@@ -85,6 +85,8 @@ class TestRackAttack < TestCase
     end
   end
 
+  # TODO: Upgrading rack-attack from 5 to 6 causes this test to fail with a 500 Internal Server error.
+  #   Project is currently pinned at 5.4.2. Investigate failure at the time we decide to upgrade.
   def test_throttling_limit_with_forwarding
     limit = LinkedData::OntologiesAPI.settings.req_per_second_per_ip 
     headers = {"Authorization" => "apikey token=#{@@user.apikey}", "X-Forwarded-For" => "1.2.3.6"}
