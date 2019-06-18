@@ -9,7 +9,7 @@ gem 'oj', '~> 2.0'
 gem 'json-schema', '~> 2.0'
 gem 'rake', '~> 10.0'
 gem 'activesupport', '~> 3.0'
-gem 'google-api-client', '<0.9'
+gem 'google-api-client', '~> 0.10'
 gem 'parseconfig'
 
 # Rack middleware
@@ -19,7 +19,7 @@ gem 'rack-cache', '~> 1.0'
 gem 'redis-rack-cache', '~> 1.0'
 gem 'rack-timeout'
 gem 'rack-cors', :require => 'rack/cors'
-gem 'rack-attack', :require => 'rack/attack'
+gem 'rack-attack', '~> 5.4.2', require: 'rack/attack'
 gem 'ffi', '< 1.9.22'
 
 # Data access (caching)
@@ -76,4 +76,5 @@ group :test do
   gem 'minitest', '~> 4.0'
   gem 'minitest-stub_any_instance'
   gem 'simplecov', require: false
+  gem 'rack-test'
 end
