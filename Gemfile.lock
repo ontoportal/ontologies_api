@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: d1466af2c47f9fa88f24fde2f290b4c8a8c22670
+  revision: 6b8e7c748a29d71ab85408965102cf15b2978db0
   branch: allegrograph_testing
   specs:
     ontologies_linked_data (0.0.1)
@@ -386,4 +386,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.0.1
+   2.0.2
