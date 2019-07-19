@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: ac6aefe9647320f5bae57c9b0a785bcaee39ca32
+  revision: 9cb9d82ab52a4746eab3098d1e02f9be3c970571
   branch: allegrograph_testing
   specs:
     goo (0.0.2)
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 870a2f38a4dbac454957d49466975bbe2e871a04
-  branch: staging
+  revision: 8f5cec02df564ca1d1094fa7bec783402715e69f
+  branch: allegrograph_testing
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 6b8e7c748a29d71ab85408965102cf15b2978db0
+  revision: 1ca9b9ae9744807e7889a1ee208ddd6cf4719aac
   branch: allegrograph_testing
   specs:
     ontologies_linked_data (0.0.1)

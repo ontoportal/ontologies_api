@@ -52,7 +52,7 @@ gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_da
 
 
 gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'staging'
-gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'staging'
+gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'allegrograph_testing'
 gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'staging'
 
 # NCBO gems (unversioned)
