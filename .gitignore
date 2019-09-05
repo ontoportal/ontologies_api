@@ -17,7 +17,6 @@ logs/**
 cache/**
 vendor/bundle/*
 
-
 # YARD artifacts
 .yardoc
 _yardoc
@@ -43,15 +42,15 @@ config/*.p12
 test/data/uploaded_ontologies/**/*
 test/data/ontology_files/repo/**/*
 
+# Ignore jEnv
+.java-version
+
 # Ignore RubyMine editor files
 .idea
 
 *.swp
 
 .ruby-version
-
-
-
 
 config/environments/console.rb
 
