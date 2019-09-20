@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 4e53ed11e5b253b4091204bd1eda00ddfb1ceeb5
+  revision: fc186f1921694e85ca018c69b0a7c6a9e5142896
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 060e5a8499a059298758ef78d70d54c98d5e07d0
+  revision: 9b6b788a15321f6471fcb0e6e8f25ba24015591a
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: dbd6471b53fa0b4c6eef1414977351866e16f903
+  revision: c6773884228e57b1fa2cd49f287b525646506622
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 9d5f693c5b25d47fc3a5d23e701a1fccb2d4b24c
+  revision: c3cef60cc7c84bdce13675381b666c4d394635ed
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -127,7 +127,7 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    airbrussh (1.3.3)
+    airbrussh (1.3.4)
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.15.0)
     bcrypt (3.1.13)
@@ -294,7 +294,7 @@ GEM
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
-    simplecov (0.17.0)
+    simplecov (0.17.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
@@ -316,7 +316,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
-    temple (0.8.1)
+    temple (0.8.2)
     tilt (2.0.9)
     typhoeus (1.3.1)
       ethon (>= 0.9.0)
