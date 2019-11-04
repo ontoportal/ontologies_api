@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: fc0548c4f93c0bfc78ba3c65be893bd8a94eb248
+  revision: 3722885c9cd209d274828b421f051753f29118d5
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: fc186f1921694e85ca018c69b0a7c6a9e5142896
+  revision: 59d7b0663f60cf5455c670d1d9fd36617300d8c1
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 9b6b788a15321f6471fcb0e6e8f25ba24015591a
+  revision: 492d2d3ce37b8ccf1a8b2e89b5451d5c32924d51
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: c6773884228e57b1fa2cd49f287b525646506622
+  revision: e2ffacfb30a36b830c8fbb193ee7efc4d09294ab
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: c3cef60cc7c84bdce13675381b666c4d394635ed
+  revision: 846ec5b2fe7cd26d1ab3a7b8fdbe4d499f9c7d90
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -127,12 +127,12 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    airbrussh (1.3.4)
+    airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.15.0)
     bcrypt (3.1.13)
     builder (3.2.3)
-    capistrano (3.11.1)
+    capistrano (3.11.2)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -164,9 +164,9 @@ GEM
       multi_json
     ethon (0.12.0)
       ffi (>= 1.3.0)
-    faraday (0.15.4)
+    faraday (0.17.0)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.21)
+    ffi (1.11.1)
     get_process_mem (0.2.4)
       ffi (~> 1.0)
     google-api-client (0.10.3)
@@ -178,13 +178,13 @@ GEM
       mime-types (>= 1.6)
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
-    googleauth (0.9.0)
+    googleauth (0.10.0)
       faraday (~> 0.12)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
-      signet (~> 0.7)
+      signet (~> 0.12)
     haml (5.1.2)
       temple (>= 0.8.0)
       tilt
@@ -211,13 +211,13 @@ GEM
     method_source (0.9.2)
     mime-types (3.3)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2019.0904)
+    mime-types-data (3.2019.1009)
     mini_mime (1.0.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.2)
     mlanett-redis-lock (0.2.7)
       redis
-    multi_json (1.13.1)
+    multi_json (1.14.1)
     multipart-post (2.1.1)
     mysql2 (0.5.2)
     net-http-persistent (2.9.4)
@@ -225,7 +225,7 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     netrc (0.11.0)
-    newrelic_rpm (6.6.0.358)
+    newrelic_rpm (6.7.0.359)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -244,13 +244,13 @@ GEM
     rack-cache (1.9.0)
       rack (>= 0.4)
     rack-cors (1.0.3)
-    rack-mini-profiler (1.0.2)
+    rack-mini-profiler (1.1.3)
       rack (>= 1.2.0)
     rack-protection (1.5.5)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rack-timeout (0.5.1)
+    rack-timeout (0.5.2)
     rainbows (5.2.0)
       kgio (~> 2.5)
       rack (>= 1.1, < 3.0)
@@ -285,11 +285,11 @@ GEM
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
     ruby-xxHash (0.4.0.1)
-    rubyzip (1.2.4)
+    rubyzip (2.0.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.24.0)
-    signet (0.11.0)
+    sequel (5.26.0)
+    signet (0.12.0)
       addressable (~> 2.3)
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
@@ -317,7 +317,7 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.8.2)
-    tilt (2.0.9)
+    tilt (2.0.10)
     typhoeus (1.3.1)
       ethon (>= 0.9.0)
     tzinfo (2.0.0)
@@ -346,7 +346,7 @@ DEPENDENCIES
   capistrano-locally
   capistrano-rbenv (~> 2.0.2)
   cube-ruby
-  ffi (< 1.9.22)
+  ffi
   goo!
   google-api-client (~> 0.10)
   haml
