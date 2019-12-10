@@ -20,7 +20,7 @@ gem 'redis-rack-cache', '~> 1.0'
 gem 'rack-timeout'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'rack-attack', '~> 5.4.2', require: 'rack/attack'
-gem 'ffi', '< 1.9.22'
+gem 'ffi'
 
 # Data access (caching)
 gem 'redis', '~> 3.3.3'
@@ -50,16 +50,14 @@ gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_da
 # gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'allegrograph_testing'
 # gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'allegrograph_testing'
 
-
-
-gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'master'
-gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'master'
-gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'master'
+gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'staging'
+gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'staging'
+gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'staging'
 
 # NCBO gems (unversioned)
 gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
 gem 'ncbo_resource_index', git: 'https://github.com/ncbo/resource_index.git'
-    
+
 group :development do
   gem 'capistrano', '~> 3.8', require: false
   gem 'capistrano-locally', require: false
