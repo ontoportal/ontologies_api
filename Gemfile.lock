@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 76c8e2ac9bfff6ada076948cd4232c3054cfb1dd
+  revision: 84e00c49d74fd77889c844ee3092886190f311c5
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: dd304f4a2c8a593a236822bd99f3f5db649672f8
+  revision: d94123335c9430a808ac3fd12c5a33f59734265d
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: ba40914e715f1d5956ff495fb33dd5fcea268eb8
+  revision: c7612d53a151b17e2ac61c6139a6233324e63475
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: fd1a2ea1abde1fa2320a0bf5a7f3bbd7fa0c3049
+  revision: 5fb41c820d0f9c1859cbd99a6c5a24a8cb664828
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -198,7 +198,7 @@ GEM
     json (2.3.0)
     json-schema (2.5.0)
       addressable (~> 2.3)
-    json_pure (2.2.0)
+    json_pure (2.3.0)
     jwt (2.2.1)
     kgio (2.11.3)
     libxml-ruby (3.1.0)
@@ -326,7 +326,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
-    unicorn (5.5.3)
+    unicorn (5.5.4)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     unicorn-worker-killer (0.4.4)
