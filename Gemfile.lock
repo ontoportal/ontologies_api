@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 703736edcb1526d954ed6867c1ac1e748837ac71
-  branch: staging
+  revision: 0dba0f9626e21946d9b44065325af6b0c32b4f8e
+  branch: master
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 76c8e2ac9bfff6ada076948cd4232c3054cfb1dd
-  branch: staging
+  revision: 6d0c6f4cf3146abfcee9d54757121dc09dc1da3d
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: dd304f4a2c8a593a236822bd99f3f5db649672f8
-  branch: staging
+  revision: b1b1f2f846ee2cd9b0657be9bf02b84e492a7dc9
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -43,8 +43,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: ba40914e715f1d5956ff495fb33dd5fcea268eb8
-  branch: staging
+  revision: 02fc1f4de76a30ec9516e347d89452074c0efd12
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: fd1a2ea1abde1fa2320a0bf5a7f3bbd7fa0c3049
-  branch: staging
+  revision: cfe036ffd7d6aea5e184fb0861c0e502a8e06099
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -198,7 +198,7 @@ GEM
     json (2.3.0)
     json-schema (2.5.0)
       addressable (~> 2.3)
-    json_pure (2.2.0)
+    json_pure (2.3.0)
     jwt (2.2.1)
     kgio (2.11.3)
     libxml-ruby (3.1.0)
@@ -290,7 +290,7 @@ GEM
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (5.30.0)
-    signet (0.13.0)
+    signet (0.13.2)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.5, < 3.0)
@@ -326,7 +326,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
-    unicorn (5.5.3)
+    unicorn (5.5.4)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     unicorn-worker-killer (0.4.4)
