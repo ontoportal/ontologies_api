@@ -341,10 +341,10 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
-  capistrano (~> 3.8)
-  capistrano-bundler (~> 1.1.1)
+  capistrano (~> 3)
+  capistrano-bundler
   capistrano-locally
-  capistrano-rbenv (~> 2.0.2)
+  capistrano-rbenv
   cube-ruby
   ffi
   goo!
