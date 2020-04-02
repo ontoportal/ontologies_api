@@ -34,11 +34,13 @@ server 'localhost', roles: %w{app}
 #     # password: 'please use keys'
 #   }
 # setting per server overrides global ssh_options
+
 NCBO_BRANCH = ENV.include?('NCBO_BRANCH') ? ENV['NCBO_BRANCH'] : 'master'
 set :branch, "#{NCBO_BRANCH}"
+set :deploy_to, "/srv/ontoportal/#{fetch(:application)}"
 
-#private git repo for configuraiton
-##PRIVATE_CONFIG_REPO = ENV.include?('PRIVATE_CONFIG_REPO') ? ENV['PRIVATE_CONFIG_REPO'] : 'git@github.com:your_org/private-config-repo.git'
+# private git repo for configuraiton
+# PRIVATE_CONFIG_REPO = ENV.include?('PRIVATE_CONFIG_REPO') ? ENV['PRIVATE_CONFIG_REPO'] : 'git@github.com:your_org/private-config-repo.git'
 
-#location of configuration files
-LOCAL_CONFIG_PATH = ENV.include?('LOCAL_CONFIG_PATH') ? ENV['LOCAL_CONFIG_PATH'] : '/srv/ncbo/virtual_appliance/appliance_config'
+# location of local configuration files
+LOCAL_CONFIG_PATH = ENV.include?('LOCAL_CONFIG_PATH') ? ENV['LOCAL_CONFIG_PATH'] : '/srv/ontoportal/virtual_appliance/appliance_config'
