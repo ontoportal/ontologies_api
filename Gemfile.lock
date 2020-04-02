@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 9cb9d82ab52a4746eab3098d1e02f9be3c970571
+  revision: a30326fc3605ab98b128cf10b7a854524e7740f2
   branch: allegrograph_testing
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 4e53ed11e5b253b4091204bd1eda00ddfb1ceeb5
+  revision: 140bd852b060daa9cb824b4e10cddad824591ce4
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 8f5cec02df564ca1d1094fa7bec783402715e69f
+  revision: e2cbea6565435b94cb2ab73ce68bc74e0979f875
   branch: allegrograph_testing
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 3bbaf5926461c42819904dcfb1c02a932ff35d99
+  revision: 2f771fc389f284a2fe5f0cac29a4e5b68283d6f6
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 1ca9b9ae9744807e7889a1ee208ddd6cf4719aac
+  revision: 503d1cf66eda129bdf8eaf1e5fb23bf8126baa03
   branch: allegrograph_testing
   specs:
     ontologies_linked_data (0.0.1)
@@ -83,11 +83,11 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/resource_index.git
-  revision: 75e384e2563638cb91541082c9256f80b60b6ae9
+  revision: 24a7f14a6da4f4a0eaba1016ca5a378dfccd7441
   specs:
     ncbo_resource_index (0.0.1)
       elasticsearch (= 2.0.0)
-      mysql2
+      mysql2 (= 0.5.2)
       pony
       ref
       ruby-xxHash
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 9e0012652e0b95eae72f13d514cfc2faa702296e
+  revision: 2025f80c5520b09215a9ed543ae32b71a98e261d
   branch: allegrograph_testing
   specs:
     sparql-client (1.0.1)
@@ -127,12 +127,12 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    airbrussh (1.3.3)
+    airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    backports (3.15.0)
+    backports (3.17.0)
     bcrypt (3.1.13)
-    builder (3.2.3)
-    capistrano (3.11.0)
+    builder (3.2.4)
+    capistrano (3.12.1)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -146,7 +146,7 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.2)
-    concurrent-ruby (1.1.5)
+    concurrent-ruby (1.1.6)
     cube-ruby (0.0.3)
     dante (0.2.0)
     declarative (0.0.10)
@@ -164,10 +164,10 @@ GEM
       multi_json
     ethon (0.12.0)
       ffi (>= 1.3.0)
-    faraday (0.15.4)
+    faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.21)
-    get_process_mem (0.2.4)
+    get_process_mem (0.2.5)
       ffi (~> 1.0)
     google-api-client (0.10.3)
       addressable (~> 2.3)
@@ -178,13 +178,13 @@ GEM
       mime-types (>= 1.6)
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
-    googleauth (0.9.0)
-      faraday (~> 0.12)
+    googleauth (0.11.0)
+      faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
-      signet (~> 0.7)
+      signet (~> 0.12)
     haml (5.1.2)
       temple (>= 0.8.0)
       tilt
@@ -195,29 +195,29 @@ GEM
     hurley (0.2)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    json (2.2.0)
+    json (2.3.0)
     json-schema (2.5.0)
       addressable (~> 2.3)
-    json_pure (2.2.0)
+    json_pure (2.3.0)
     jwt (2.2.1)
-    kgio (2.11.2)
+    kgio (2.11.3)
     libxml-ruby (3.1.0)
-    logger (1.4.1)
+    logger (1.4.2)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    memoist (0.16.0)
-    method_source (0.9.2)
-    mime-types (3.2.2)
+    memoist (0.16.2)
+    method_source (1.0.0)
+    mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2019.0331)
+    mime-types-data (3.2019.1009)
     mini_mime (1.0.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.2)
     mlanett-redis-lock (0.2.7)
       redis
-    multi_json (1.13.1)
+    multi_json (1.14.1)
     multipart-post (2.1.1)
     mysql2 (0.5.2)
     net-http-persistent (2.9.4)
@@ -225,41 +225,42 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     netrc (0.11.0)
-    newrelic_rpm (6.5.0.357)
+    newrelic_rpm (6.9.0.363)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
-    os (1.0.1)
+    os (1.1.0)
     parseconfig (1.0.8)
     pony (1.13.1)
       mail (>= 2.0)
-    pry (0.12.2)
-      coderay (~> 1.1.0)
-      method_source (~> 0.9.0)
-    rack (1.6.11)
+    pry (0.13.0)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    rack (1.6.13)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (5.4.2)
       rack (>= 1.0, < 3)
-    rack-cache (1.9.0)
+    rack-cache (1.11.0)
       rack (>= 0.4)
-    rack-cors (1.0.3)
-    rack-mini-profiler (1.0.2)
+    rack-cors (1.0.6)
+      rack (>= 1.6.0)
+    rack-mini-profiler (2.0.1)
       rack (>= 1.2.0)
     rack-protection (1.5.5)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rack-timeout (0.5.1)
-    rainbows (5.2.0)
+    rack-timeout (0.6.0)
+    rainbows (5.2.1)
       kgio (~> 2.5)
       rack (>= 1.1, < 3.0)
       unicorn (~> 5.1)
-    raindrops (0.19.0)
+    raindrops (0.19.1)
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (1.1.0)
+    recursive-open-struct (1.1.1)
     redcarpet (3.5.0)
     redis (3.3.5)
     redis-activesupport (4.1.5)
@@ -281,24 +282,23 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rsolr (2.2.1)
+    rsolr (2.3.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
     ruby-xxHash (0.4.0.1)
-    rubyzip (1.2.3)
+    rubyzip (2.3.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.23.0)
-    signet (0.11.0)
+    sequel (5.31.0)
+    signet (0.13.2)
       addressable (~> 2.3)
-      faraday (~> 0.9)
+      faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
-    simplecov (0.17.0)
+    simplecov (0.18.5)
       docile (~> 1.1)
-      json (>= 1.8, < 3)
-      simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.2)
+      simplecov-html (~> 0.11)
+    simplecov-html (0.12.2)
     sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -312,21 +312,21 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.20.0)
+    sshkit (1.21.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
-    temple (0.8.1)
-    tilt (2.0.9)
+    temple (0.8.2)
+    tilt (2.0.10)
     typhoeus (1.3.1)
       ethon (>= 0.9.0)
-    tzinfo (2.0.0)
+    tzinfo (2.0.1)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.6)
-    unicorn (5.5.1)
+    unf_ext (0.0.7.7)
+    unicorn (5.5.4)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     unicorn-worker-killer (0.4.4)
@@ -389,4 +389,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
