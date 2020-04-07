@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: a30326fc3605ab98b128cf10b7a854524e7740f2
+  revision: 34e6e5b20b6ac5d421a76aaebee28fe392e2763c
   branch: allegrograph_testing
   specs:
     goo (0.0.2)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 503d1cf66eda129bdf8eaf1e5fb23bf8126baa03
+  revision: 2b3e915a3ffb922be9f5e9985e87aef78bbe77b3
   branch: allegrograph_testing
   specs:
     ontologies_linked_data (0.0.1)
@@ -166,7 +166,7 @@ GEM
       ffi (>= 1.3.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.21)
+    ffi (1.12.2)
     get_process_mem (0.2.5)
       ffi (~> 1.0)
     google-api-client (0.10.3)
@@ -241,7 +241,7 @@ GEM
       rack (>= 0.4)
     rack-attack (5.4.2)
       rack (>= 1.0, < 3)
-    rack-cache (1.11.0)
+    rack-cache (1.11.1)
       rack (>= 0.4)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
@@ -290,7 +290,7 @@ GEM
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (5.31.0)
-    signet (0.13.2)
+    signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.5, < 3.0)
@@ -320,7 +320,7 @@ GEM
     tilt (2.0.10)
     typhoeus (1.3.1)
       ethon (>= 0.9.0)
-    tzinfo (2.0.1)
+    tzinfo (2.0.2)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     unf (0.1.4)
@@ -346,7 +346,7 @@ DEPENDENCIES
   capistrano-locally
   capistrano-rbenv (~> 2.0.2)
   cube-ruby
-  ffi (< 1.9.22)
+  ffi
   goo!
   google-api-client (~> 0.10)
   haml
