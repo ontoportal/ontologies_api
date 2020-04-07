@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 5b9bea70e00ed356cac136f2132d00f95af2652b
+  revision: 8e89c6be4a921484a0b15aa1304cea1bf5c0377e
   branch: staging
   specs:
     goo (0.0.2)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: b0f4e36655d71aa43fa34c0b274e96aa1bb8e2a2
+  revision: 4d3ec79191c499db399b9f25ba001245da3d7fff
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 3b7e2b14c83a6ffde90c6f7e78c3b5767c2e3a4c
+  revision: 2025f80c5520b09215a9ed543ae32b71a98e261d
   branch: staging
   specs:
     sparql-client (1.0.1)
@@ -240,7 +240,7 @@ GEM
       rack (>= 0.4)
     rack-attack (5.4.2)
       rack (>= 1.0, < 3)
-    rack-cache (1.11.0)
+    rack-cache (1.11.1)
       rack (>= 0.4)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
@@ -289,7 +289,7 @@ GEM
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sequel (5.31.0)
-    signet (0.13.2)
+    signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.5, < 3.0)
@@ -319,7 +319,7 @@ GEM
     tilt (2.0.10)
     typhoeus (1.3.1)
       ethon (>= 0.9.0)
-    tzinfo (2.0.1)
+    tzinfo (2.0.2)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     unf (0.1.4)
