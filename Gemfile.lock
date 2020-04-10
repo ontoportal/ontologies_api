@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 1ef709ba989cf7ef6b072b3d65325bcd87a2a3f0
+  revision: b6f58ab55c9010e5d84aaa21b78ab69c076bcb7c
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -129,10 +129,10 @@ GEM
     addressable (2.3.5)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    backports (3.17.0)
+    backports (3.17.1)
     bcrypt (3.1.13)
     builder (3.2.4)
-    capistrano (3.12.1)
+    capistrano (3.13.0)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -224,7 +224,7 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     netrc (0.11.0)
-    newrelic_rpm (6.9.0.363)
+    newrelic_rpm (6.10.0.364)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
