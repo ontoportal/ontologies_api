@@ -18,7 +18,7 @@ gem 'rack-accept', '~> 0.4'
 gem 'rack-attack', '~> 5.4.2', require: 'rack/attack'
 gem 'rack-cache', '~> 1.0'
 gem 'rack-cors', require: 'rack/cors'
-gem 'rack-post-body-to-params', github: 'palexander/rack-post-body-to-params', branch: 'multipart_support' # github dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
+gem 'rack-post-body-to-params', git: 'https://github.com/palexander/rack-post-body-to-params.git', branch: "multipart_support" # github dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
 gem 'rack-timeout'
 gem 'redis-rack-cache', '~> 1.0'
 
@@ -28,6 +28,7 @@ gem 'redis-activesupport'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
+gem 'newrelic_rpm'
 
 # HTTP server
 gem 'rainbows'
@@ -39,20 +40,16 @@ gem 'haml'
 gem 'redcarpet'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', github: 'ncbo/goo', branch: 'staging'
-gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'staging'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'staging'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'staging'
-gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'staging'
-gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'staging'
+gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'master'
+gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'master'
+gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'master'
+gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'master'
+gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'master'
+gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'master'
 
 # NCBO gems (unversioned)
-gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'
-gem 'ncbo_resource_index', github: 'ncbo/resource_index'
-
-group :production, :staging do
-  gem 'newrelic_rpm'
-end
+gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
+gem 'ncbo_resource_index', git: 'https://github.com/ncbo/resource_index.git'
 
 group :development do
   gem 'capistrano', '~> 3', require: false
@@ -60,7 +57,7 @@ group :development do
   gem 'capistrano-locally', require: false
   gem 'capistrano-rbenv', require: false
   gem 'pry'
-  gem 'shotgun', github: 'palexander/shotgun', branch: 'ncbo'
+  gem 'shotgun', git: 'https://github.com/palexander/shotgun.git', branch: 'ncbo'
 end
 
 group :profiling do
