@@ -260,6 +260,7 @@ eos
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
     assert_equal 9, annotations.length
+    annotations.sort! { |a,b| a["annotatedClass"]["prefLabel"].downcase <=> b["annotatedClass"]["prefLabel"].downcase }
     assert_equal "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data", annotations.first["annotatedClass"]["@id"]
     assert_equal "Aggregate Human Data", annotations.first["annotatedClass"]["prefLabel"]
 
@@ -268,6 +269,7 @@ eos
     assert last_response.ok?
     annotations = MultiJson.load(last_response.body)
     assert_equal 9, annotations.length
+    annotations.sort! { |a,b| a["annotatedClass"]["prefLabel"].downcase <=> b["annotatedClass"]["prefLabel"].downcase }
     assert_equal "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Aggregate_Human_Data", annotations.first["annotatedClass"]["@id"]
     assert_equal ["A resource that provides data from clinical care that comprises combined data from multiple individual human subjects."], annotations.first["annotatedClass"]["definition"]
   end
