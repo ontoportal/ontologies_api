@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/sifrproject/goo.git
   revision: 7ac908e827a9fbbfe22d407dcec750714f04d013
-  branch: agroportal
+  branch: virtual-appliance-3.0-merge
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -17,7 +17,7 @@ GIT
 GIT
   remote: https://github.com/sifrproject/ncbo_annotator.git
   revision: b1718a1bfa7b7b32b40ae6e1eccf10720f62baaf
-  branch: agroportal
+  branch: virtual-appliance-3.0-merge
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -28,7 +28,7 @@ GIT
 GIT
   remote: https://github.com/sifrproject/ncbo_cron.git
   revision: 72e2684630d9d960760580815f5307b4f87b7111
-  branch: agroportal
+  branch: virtual-appliance-3.0-merge
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -63,7 +63,7 @@ GIT
 GIT
   remote: https://github.com/sifrproject/ontologies_linked_data.git
   revision: 4bbc4720168c61aad252a3a6641e59de85321bcc
-  branch: agroportal
+  branch: virtual-appliance-3.0-merge
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
