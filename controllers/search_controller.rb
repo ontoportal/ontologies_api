@@ -48,10 +48,12 @@ class SearchController < ApplicationController
         docs.push(instance)
       end
 
-      if !text.nil? && text[-1] == '*'
-        docs.sort! {|a, b| [b[:score], a[:prefLabelExact].downcase, b[:ontology_rank]] <=> [a[:score], b[:prefLabelExact].downcase, a[:ontology_rank]]}
-      else
-        docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
+      unless params['sort']
+        if !text.nil? && text[-1] == '*'
+          docs.sort! {|a, b| [b[:score], a[:prefLabelExact].downcase, b[:ontology_rank]] <=> [a[:score], b[:prefLabelExact].downcase, a[:ontology_rank]]}
+        else
+          docs.sort! {|a, b| [b[:score], b[:ontology_rank]] <=> [a[:score], a[:ontology_rank]]}
+        end
       end
 
       #need to return a Page object

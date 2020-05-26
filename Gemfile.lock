@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: be037d5becc6f8e055ff46076005e136adc93c79
+  revision: 04c4299a8ccb74156db0caa80ca42f00345a299f
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 01f4381541a46cebf38c6dcdfddf9ec737f66d7c
+  revision: 7a87ba20a6503fb162912f7aaa996c621d2cac62
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
