@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_cron.git
-  revision: 9067144ccc296b777685ec91fb1f7bc0c77bcd2c
+  revision: e7c499cf6222d02431082d5968fb287860e2df0f
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_cron (0.0.1)
@@ -101,7 +101,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ontologies_linked_data.git
-  revision: 8db4fb8345a653e7455a804065a2daf6bf240275
+  revision: de7147ad5c66916600c1b23e62a8be934457935b
   branch: virtual-appliance-3.0-merge
   specs:
     ontologies_linked_data (0.0.1)
@@ -132,7 +132,7 @@ GEM
     backports (3.17.2)
     bcrypt (3.1.13)
     builder (3.2.4)
-    capistrano (3.14.0)
+    capistrano (3.14.1)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
