@@ -74,7 +74,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_annotator.git
-  revision: abc52f5753feb9db8622279a12a0a8b490d4607d
+  revision: 2343268dd7a15b1b16c6c4a775546e5a1183ed3e
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_annotator (0.0.1)
