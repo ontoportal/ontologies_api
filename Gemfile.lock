@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/goo.git
-  revision: 1aacead52c7f5445a17f9e12d4799ec4d59c166f
+  revision: 711b8d90bdc4351dcaf8ebde97cae87b828a5079
   branch: virtual-appliance-3.0-merge
   specs:
     goo (0.0.2)
@@ -101,7 +101,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ontologies_linked_data.git
-  revision: de7147ad5c66916600c1b23e62a8be934457935b
+  revision: 98f1e65b0edf64dda6ef6cbc41aa2d674032e7d4
   branch: virtual-appliance-3.0-merge
   specs:
     ontologies_linked_data (0.0.1)
