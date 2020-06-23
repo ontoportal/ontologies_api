@@ -35,8 +35,8 @@ server 'localhost', roles: %w{app}
 #   }
 # setting per server overrides global ssh_options
 
-NCBO_BRANCH = ENV.include?('NCBO_BRANCH') ? ENV['NCBO_BRANCH'] : 'master'
-set :branch, "#{NCBO_BRANCH}"
+BRANCH = ENV.include?('BRANCH') ? ENV['BRANCH'] : 'master'
+set :branch, "#{BRANCH}"
 set :deploy_to, "/srv/ontoportal/#{fetch(:application)}"
 
 # private git repo for configuraiton

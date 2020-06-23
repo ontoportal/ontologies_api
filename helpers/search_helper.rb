@@ -55,19 +55,20 @@ module Sinatra
 
       # list of fields that allow empty query text
       QUERYLESS_FIELDS_PARAMS = {
+          "ontologies" => nil,
           "notation" => "notation",
           "cui" => "cui",
           "semantic_types" => "semanticType",
           ONTOLOGY_TYPES_PARAM => "ontologyType",
           ALSO_SEARCH_PROVISIONAL_PARAM => nil,
-          SUBTREE_ID_PARAM => "parents"
+          SUBTREE_ID_PARAM => nil
       }
 
       QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.compact.join(" ")
 
       def get_term_search_query(text, params={})
         validate_params_solr_population(ALLOWED_INCLUDES_PARAMS)
-
+        sort = params.delete('sort')
         # raise error if text is empty AND (none of the QUERYLESS_FIELDS_PARAMS has been passed
         # OR either an exact match OR suggest search is being executed)
         if text.nil? || text.strip.empty?
@@ -77,6 +78,7 @@ module Sinatra
             raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]"
           else
             text = ''
+            params['sort'] = 'prefLabelExact asc, submissionAcronym asc' if sort == 'prefLabel'
           end
         end
 
