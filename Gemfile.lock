@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 527d18df488d94288d869184b643b755fc2df68b
+  revision: e578ea8e54f89ce14f750e84966366f3752d6ab2
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -32,7 +32,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 0e7f983ec590bf3cac4369366a0bffb80bd9adb2
+  revision: 298f9c9a8d2637650a62f8102679aa30084bf878
   branch: master
   specs:
     sparql-client (1.0.1)
@@ -101,7 +101,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ontologies_linked_data.git
-  revision: 2b94b88da6a2c92e5dbd0cf2b3da8a72643b0259
+  revision: fc83433e667793459e2090e55571d8c514f865fe
   branch: virtual-appliance-3.0-merge
   specs:
     ontologies_linked_data (0.0.1)
@@ -129,7 +129,7 @@ GEM
     addressable (2.3.5)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    backports (3.17.2)
+    backports (3.18.1)
     bcrypt (3.1.13)
     builder (3.2.4)
     capistrano (3.14.1)
@@ -177,7 +177,7 @@ GEM
       mime-types (>= 1.6)
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
-    googleauth (0.12.0)
+    googleauth (0.13.0)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
@@ -259,7 +259,7 @@ GEM
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    recursive-open-struct (1.1.1)
+    recursive-open-struct (1.1.2)
     redcarpet (3.5.0)
     redis (3.3.5)
     redis-activesupport (4.1.5)
