@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_cron.git
-  revision: b57de3ceaacf56dca2d4a79d4a0428370126b2da
+  revision: eeafc4a04428a2c302c2e7bcd2c822d7afd41994
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_cron (0.0.1)
