@@ -74,7 +74,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_annotator.git
-  revision: 9affdd7f9b55d5e1ab41f770f3acda5be4142a5a
+  revision: 2d15fc372a722a9fe0927e4b0eb6a4af58b73d48
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_annotator (0.0.1)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_cron.git
-  revision: cefb5000e0ca14a0cb73f28098c181ab5b50869e
+  revision: 4f633776324f42570113e5a3944dc0d55a63f658
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_cron (0.0.1)
@@ -101,7 +101,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ontologies_linked_data.git
-  revision: a58959593db538f41f7b660d59a54698d3a3550f
+  revision: 59e6f981c379465042c68902c87e72739c66c3e6
   branch: virtual-appliance-3.0-merge
   specs:
     ontologies_linked_data (0.0.1)
