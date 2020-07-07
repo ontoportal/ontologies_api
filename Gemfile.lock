@@ -131,6 +131,7 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.18.1)
     bcrypt (3.1.13)
+    bigdecimal (1.4.2)
     builder (3.2.4)
     capistrano (3.14.1)
       airbrussh (>= 1.0.0)
@@ -339,6 +340,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 3.0)
+  bigdecimal (= 1.4.2)
   capistrano (~> 3)
   capistrano-bundler
   capistrano-locally

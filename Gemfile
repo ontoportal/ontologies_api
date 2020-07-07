@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'activesupport', '~> 3.0'
+# see https://github.com/ncbo/ontologies_api/issues/69
+gem 'bigdecimal', '1.4.2'
 gem 'google-api-client', '~> 0.10'
 gem 'json-schema', '~> 2.0'
 gem 'multi_json', '~> 1.0'
