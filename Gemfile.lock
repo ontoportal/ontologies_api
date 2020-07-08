@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 722817503b3effe5ea16c2eb5c10d145808fb6d8
+  revision: c5b78b13ef9e5a77034072303ee8336ae4b3097b
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 867b71847bdc28613467e2736fbefc5bd11668e2
+  revision: 10fff7156a162a8c8707bcf85f8a25032343a883
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: bbe44bf3a6cf73f1e575257764e07b86907787de
+  revision: 3b94a61cd1d24e6e5620651e7af3c83437cf8b9c
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 15859fe491ec2f3790db04739c9939eb8a7cf909
+  revision: f9aa85f890b166fbe6cca2582b12359169e4f450
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -149,7 +149,7 @@ GEM
     concurrent-ruby (1.1.6)
     cube-ruby (0.0.3)
     dante (0.2.0)
-    declarative (0.0.10)
+    declarative (0.0.20)
     declarative-option (0.1.0)
     docile (1.3.2)
     domain_name (0.5.20190701)
@@ -195,10 +195,10 @@ GEM
     hurley (0.2)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    json (2.3.0)
+    json (2.3.1)
     json-schema (2.5.0)
       addressable (~> 2.3)
-    json_pure (2.3.0)
+    json_pure (2.3.1)
     jwt (2.2.1)
     kgio (2.11.3)
     libxml-ruby (3.2.0)
@@ -289,7 +289,7 @@ GEM
     rubyzip (2.3.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.33.0)
+    sequel (5.34.0)
     signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -337,6 +337,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-17
 
 DEPENDENCIES
   activesupport (~> 3.0)
