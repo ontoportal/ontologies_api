@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: c5b78b13ef9e5a77034072303ee8336ae4b3097b
+  revision: d86932f22c371781cce9b0765e664f2bda61c154
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 10fff7156a162a8c8707bcf85f8a25032343a883
+  revision: 587ba9c93113eeb344d6592b53067da983f66bbd
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 3b94a61cd1d24e6e5620651e7af3c83437cf8b9c
+  revision: b401f0beaee6f774817c3c50fe7f5ed1b31ca8bb
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -96,7 +96,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 2ab48e2b7b2aca5fd7ab99b9de36151bd7510de0
+  revision: a1e6beaf6790df68921cbed9bd1719299b9add3e
   branch: staging
   specs:
     sparql-client (1.0.1)
@@ -138,11 +138,11 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (>= 1.9.0)
-    capistrano-bundler (1.6.0)
+    capistrano-bundler (2.0.0)
       capistrano (~> 3.1)
     capistrano-locally (0.2.6)
       capistrano (~> 3.0)
-    capistrano-rbenv (2.1.6)
+    capistrano-rbenv (2.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.3)
@@ -217,7 +217,7 @@ GEM
     minitest-stub_any_instance (1.0.2)
     mlanett-redis-lock (0.2.7)
       redis
-    multi_json (1.14.1)
+    multi_json (1.15.0)
     multipart-post (2.1.1)
     mysql2 (0.5.2)
     net-http-persistent (2.9.4)
