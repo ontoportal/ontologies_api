@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 14a049dee1feec961ae5d0124c3444e03fa3e8e4
+  revision: a0c6a80abf824d901c464028d5a70ada4ca824ea
   branch: staging
   specs:
     goo (0.0.2)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 587ba9c93113eeb344d6592b53067da983f66bbd
+  revision: e85e9745b509847d81ac4ba29b5b5086ddd589b3
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: b401f0beaee6f774817c3c50fe7f5ed1b31ca8bb
+  revision: 20f4c00effb064ca1fc98e2228088599a3d4a0ce
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: f9aa85f890b166fbe6cca2582b12359169e4f450
+  revision: 2ac98f94eab42a0c9b818c6d6a037a0364f7d710
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -138,7 +138,7 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (>= 1.9.0)
-    capistrano-bundler (2.0.0)
+    capistrano-bundler (2.0.1)
       capistrano (~> 3.1)
     capistrano-locally (0.2.6)
       capistrano (~> 3.0)
