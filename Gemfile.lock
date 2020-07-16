@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/goo.git
-  revision: bf42c5c632cfc6475b38fc4e2694d2b8e65d32e4
+  revision: 09e8627a5a894f43eb4c9fd336a999da4a3015c3
   branch: virtual-appliance-3.0-merge
   specs:
     goo (0.0.2)
@@ -74,7 +74,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_annotator.git
-  revision: 2d15fc372a722a9fe0927e4b0eb6a4af58b73d48
+  revision: 2932e8791cb142ab56fb469c169602e1f542aa5e
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_annotator (0.0.1)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_cron.git
-  revision: 4f633776324f42570113e5a3944dc0d55a63f658
+  revision: 121176a04e3e3a74dc6c554cc0a2e6b7cee46f91
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_cron (0.0.1)
@@ -101,7 +101,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ontologies_linked_data.git
-  revision: 59e6f981c379465042c68902c87e72739c66c3e6
+  revision: d2edaaf6a494606c66fa634bf3533b09abbf33a3
   branch: virtual-appliance-3.0-merge
   specs:
     ontologies_linked_data (0.0.1)
@@ -217,7 +217,7 @@ GEM
     minitest-stub_any_instance (1.0.2)
     mlanett-redis-lock (0.2.7)
       redis
-    multi_json (1.14.1)
+    multi_json (1.15.0)
     multipart-post (2.1.1)
     mysql2 (0.5.2)
     net-http-persistent (2.9.4)
