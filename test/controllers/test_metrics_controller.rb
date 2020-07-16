@@ -15,7 +15,7 @@ class TestMetricsController < TestCase
               "classesWithOneChild"=>14,
               "classesWithMoreThan25Children"=>2,
               "classesWithNoDefinition"=>11,
-              "individuals"=>80,
+              "individuals"=>124,
               "properties"=>63,
               "maxDepth"=> 7 }
     @@options = {ont_count: 2,
