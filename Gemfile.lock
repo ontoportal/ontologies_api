@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: e578ea8e54f89ce14f750e84966366f3752d6ab2
+  revision: b66fcef20e58ef52be4c686890429a69922c4ca1
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -32,7 +32,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 298f9c9a8d2637650a62f8102679aa30084bf878
+  revision: 87bc0e8976519cdcdef06169556677467a10fcfc
   branch: master
   specs:
     sparql-client (1.0.1)
@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/goo.git
-  revision: 09e8627a5a894f43eb4c9fd336a999da4a3015c3
+  revision: 34aa8878748aca41f94b65fd3ce28629d54f2d92
   branch: virtual-appliance-3.0-merge
   specs:
     goo (0.0.2)
@@ -74,7 +74,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_annotator.git
-  revision: 2932e8791cb142ab56fb469c169602e1f542aa5e
+  revision: 59df18f09806fb158b278b0988963309eb8b18cc
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_annotator (0.0.1)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ncbo_cron.git
-  revision: 121176a04e3e3a74dc6c554cc0a2e6b7cee46f91
+  revision: ef1c99ff870c2ab00029225e05a87222fc15c52e
   branch: virtual-appliance-3.0-merge
   specs:
     ncbo_cron (0.0.1)
@@ -101,7 +101,7 @@ GIT
 
 GIT
   remote: https://github.com/sifrproject/ontologies_linked_data.git
-  revision: d2edaaf6a494606c66fa634bf3533b09abbf33a3
+  revision: 0c7bc7c0da315a6dd2c37402b1e07d3f7b30a193
   branch: virtual-appliance-3.0-merge
   specs:
     ontologies_linked_data (0.0.1)
@@ -138,11 +138,11 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (>= 1.9.0)
-    capistrano-bundler (1.6.0)
+    capistrano-bundler (2.0.1)
       capistrano (~> 3.1)
     capistrano-locally (0.2.6)
       capistrano (~> 3.0)
-    capistrano-rbenv (2.1.6)
+    capistrano-rbenv (2.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.3)
