@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: d86932f22c371781cce9b0765e664f2bda61c154
+  revision: ae5a489156521f9b17d0c6165cbb677aa885b915
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: e85e9745b509847d81ac4ba29b5b5086ddd589b3
+  revision: 1fa907cc930f66d339c7a5293e1900360e5611a1
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 20f4c00effb064ca1fc98e2228088599a3d4a0ce
+  revision: a7a576ad7170f933c87c7f95e214a95d785b6739
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 2ac98f94eab42a0c9b818c6d6a037a0364f7d710
+  revision: 9181b5a9d2d91fb6e5605074d65ecbc82664e3fd
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -225,7 +225,7 @@ GEM
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
     netrc (0.11.0)
-    newrelic_rpm (6.11.0.365)
+    newrelic_rpm (6.12.0.367)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -262,7 +262,7 @@ GEM
       addressable (>= 2.2)
     recursive-open-struct (1.1.2)
     redcarpet (3.5.0)
-    redis (3.3.5)
+    redis (4.2.1)
     redis-activesupport (4.1.5)
       activesupport (>= 3, < 5)
       redis-store (~> 1.1.0)
@@ -377,7 +377,7 @@ DEPENDENCIES
   rainbows
   rake (~> 10.0)
   redcarpet
-  redis (~> 3.3.3)
+  redis
   redis-activesupport
   redis-rack-cache (~> 1.0)
   shotgun!
