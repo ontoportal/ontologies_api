@@ -25,7 +25,7 @@ gem 'rack-timeout'
 gem 'redis-rack-cache', '~> 1.0'
 
 # Data access (caching)
-gem 'redis', '~> 3.3.3'
+gem 'redis'
 gem 'redis-activesupport'
 
 # Monitoring
