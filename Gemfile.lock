@@ -376,7 +376,7 @@ DEPENDENCIES
   rainbows
   rake (~> 10.0)
   redcarpet
-  redis (~> 3.3.3)
+  redis
   redis-activesupport
   redis-rack-cache (~> 1.0)
   shotgun!
