@@ -16,7 +16,9 @@ class CCVController < ApplicationController
     SYNONYMS_FOR_ANALYTICS_LIMIT = 4
 
     get do
-      reply 200, process_concept_search
+      #TODO: delete when ccv will be on production
+      reply(404, "Resource Index is not activated")
+      #reply 200, process_concept_search
     end
 
     # private
@@ -48,7 +50,7 @@ class CCVController < ApplicationController
         doc = doc.symbolize_keys
         resource_id = doc[:resource_id]
         acronym = doc[:submissionAcronym]
-        ontology_uri = doc[:ontologyId].first.sub(/\/submissions\/.*/, "")
+        ontology_uri = doc[:ontologyId].sub(/\/submissions\/.*/, "")
         ontology_rank = LinkedData::OntologiesAPI.settings.ontology_rank[acronym] || 0
         doc[:synonym] ||= []
         doc[:definition] ||= []
@@ -167,8 +169,6 @@ class CCVController < ApplicationController
       start_year = 2014
 
       google_client = authenticate_google
-      api_method = google_client.discovered_api('analytics', 'v3').data.ga.get
-      # use synonyms for analytics results
       synonyms = synonyms.map {|s| escape_characters_in_string(s)}
       # add the query itself to the list to be queried for analytics
       synonyms.unshift(query)
@@ -179,22 +179,24 @@ class CCVController < ApplicationController
         start_index = 1
 
         loop do
-          results = google_client.execute(:api_method => api_method, :parameters => {
-              'ids'         => NcboCron.settings.analytics_profile_id,
-              'start-date'  => start_date,
-              'end-date'    => Date.today.to_s,
-              'dimensions'  => 'ga:pagePath,ga:year,ga:month',
-              'metrics'     => 'ga:pageviews',
-              'filters'     => "ga:pagePath=~^\\/search\\/?\\?q=#{syn}.*$",
-              'start-index' => start_index,
-              'max-results' => max_results
-          })
+          results = google_client.get_ga_data(
+              ids          = NcboCron.settings.analytics_profile_id,
+              start_date   = start_date,
+              end_date     = Date.today.to_s,
+              metrics      = 'ga:pageviews',
+              {
+                  dimensions:  'ga:pagePath,ga:year,ga:month',
+                  filters:     "ga:pagePath=~^\\/search\\/?\\?q=#{syn}.*$",
+                  start_index: start_index,
+                  max_results: max_results
+              }
+          )
 
-          num_results = results.data.rows.length
+          num_results = results.rows.length
           break if num_results == 0
           start_index += max_results
 
-          results.data.rows.each do |row|
+          results.rows.each do |row|
             if (aggregated_results.has_key?(row[1].to_i))
               # month
               if (aggregated_results[row[1].to_i].has_key?(row[2].to_i))
@@ -223,19 +225,17 @@ class CCVController < ApplicationController
     end
 
     def authenticate_google
-      client = Google::APIClient.new(
-          :application_name => NcboCron.settings.analytics_app_name,
-          :application_version => NcboCron.settings.analytics_app_version
-      )
-      key = Google::APIClient::KeyUtils.load_from_pkcs12(NcboCron.settings.analytics_path_to_key_file, 'notasecret')
+      Google::Apis::ClientOptions.default.application_name = NcboCron.settings.analytics_app_name
+      Google::Apis::ClientOptions.default.application_version = NcboCron.settings.analytics_app_version
+      client = Google::Apis::AnalyticsV3::AnalyticsService.new
+      key = Google::APIClient::KeyUtils::load_from_pkcs12(NcboCron.settings.analytics_path_to_key_file, 'notasecret')
       client.authorization = Signet::OAuth2::Client.new(
           :token_credential_uri => 'https://accounts.google.com/o/oauth2/token',
-          :audience => 'https://accounts.google.com/o/oauth2/token',
-          :scope => 'https://www.googleapis.com/auth/analytics.readonly',
-          :issuer => NcboCron.settings.analytics_service_account_email_address,
-          :signing_key => key
-      )
-      client.authorization.fetch_access_token!
+          :audience             => 'https://accounts.google.com/o/oauth2/token',
+          :scope                => 'https://www.googleapis.com/auth/analytics.readonly',
+          :issuer               => NcboCron.settings.analytics_service_account_email_address,
+          :signing_key          => key
+      ).tap { |auth| auth.fetch_access_token! }
       client
     end
 

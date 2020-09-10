@@ -27,9 +27,9 @@ module Sinatra
         params.each do |attribute, value|
           next if value.nil?
 
-          # Deal with empty strings
+          # Deal with empty strings for String and URI
           empty_string = value.is_a?(String) && value.empty?
-          old_string_value_exists = obj.respond_to?(attribute) && obj.send(attribute).is_a?(String)
+          old_string_value_exists = obj.respond_to?(attribute) && (obj.send(attribute).is_a?(String) || obj.send(attribute).is_a?(RDF::URI))
           if old_string_value_exists && empty_string
             value = nil
           elsif empty_string
@@ -83,9 +83,15 @@ module Sinatra
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:date_time)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains DateTime class
             value = DateTime.parse(value)
+          elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri) && attribute_settings[:enforce].include?(:list)
+            # in case its a list of URI, convert all value to IRI
+            value = value.map { |v| RDF::IRI.new(v) }
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
-            value = RDF::IRI.new(value)
+            if !value.nil?
+              # If pass an empty string for an URI : set it as nil.
+              value = RDF::IRI.new(value)
+            end
           end
 
           # Don't populate naming attributes if they exist
@@ -112,7 +118,7 @@ module Sinatra
       # Usage: +reply object+, +reply 201, object+
       def reply(*response)
         status = response.shift
-        if !status.instance_of?(Fixnum)
+        if !status.instance_of?(Integer)
           response.unshift status
           status = 200
         end
@@ -137,7 +143,7 @@ module Sinatra
       def halt(*response)
         status, headers, obj = nil
         obj = response.first if response.length == 1
-        if obj.instance_of?(Fixnum)
+        if obj.instance_of?(Integer)
           # This is a status-only response
           status = obj
           obj = nil
@@ -158,7 +164,7 @@ module Sinatra
       #   +error 400, "Error message"+
       def error(*message)
         status = message.shift
-        if !status.instance_of?(Fixnum)
+        if !status.instance_of?(Integer)
           message.unshift status
           status = 500
         end
@@ -355,6 +361,7 @@ module Sinatra
         any = true if status.eql?("ANY")
         include_views = options[:also_include_views] || false
         includes = OntologySubmission.goo_attrs_to_load(includes_param)
+
         includes << :submissionStatus unless includes.include?(:submissionStatus)
         if any
           submissions_query = OntologySubmission.where
@@ -363,12 +370,24 @@ module Sinatra
         end
 
         submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
-        submissions = submissions_query.include(includes).to_a
+        # When asking to display all metadata, we are using bring_remaining on each submission. Slower but best way to retrieve all attrs
+        if includes_param.first == :all
+          including = [:submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl,
+                                       :group, :hasDomain, :views, :viewOf, :flat], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
+          submissions = submissions_query.include(including).to_a
+        else
+          submissions = submissions_query.include(includes).to_a
+        end
 
         # Figure out latest parsed submissions using all submissions
         latest_submissions = {}
         submissions.each do |sub|
+          # To retrieve all metadata, but slow when a lot of ontologies
+          if includes_param.first == :all
+            sub.bring_remaining
+          end
           next if include_ready && !sub.ready?
+          next if sub.ontology.nil?
           latest_submissions[sub.ontology.acronym] ||= sub
           latest_submissions[sub.ontology.acronym] = sub if sub.submissionId.to_i > latest_submissions[sub.ontology.acronym].submissionId.to_i
         end

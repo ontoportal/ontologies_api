@@ -227,7 +227,7 @@ class TestMappingsController < TestCase
       response = MultiJson.load(last_response.body)
       assert response["process"]["comment"] == "comment for mapping test #{i}"
       assert response["process"]["creator"]["users/tim"]
-      assert response["process"]["relation"] == relations[i]
+      assert response["process"]["relation"] == [relations[i]]
       assert response["process"]["date"] != nil
       response["classes"].each do |cls|
         if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]
@@ -322,7 +322,7 @@ class TestMappingsController < TestCase
       response = MultiJson.load(last_response.body)
       assert response["process"]["comment"] == "comment for mapping test #{i}"
       assert response["process"]["creator"]["users/tim"]
-      assert response["process"]["relation"] == relations[i]
+      assert response["process"]["relation"] == [relations[i]]
       assert response["process"]["date"] != nil
       response["classes"].each do |cls|
         if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]

@@ -11,8 +11,8 @@ require 'sinatra/multi_route'
 require 'oj'
 require 'multi_json'
 require 'cgi'
-require 'google/api_client'
-require 'google/api_client/auth/installed_app'
+require 'google/apis/analytics_v3'
+require 'google/api_client/auth/key_utils'
 
 # NCBO dependencies
 require 'ontologies_linked_data'
@@ -52,6 +52,18 @@ use Rack::Static,
 # Setup the environment
 environment = settings.environment.nil? ? :development : settings.environment
 require_relative "config/config"
+
+if ENV['OVERRIDE_CONNECT_GOO'] == 'true'
+  LinkedData.config do |config|
+    config.goo_backend_name  = ENV['GOO_BACKEND_NAME']
+    config.goo_port          = ENV['GOO_PORT'].to_i
+    config.goo_host          = ENV['GOO_HOST']
+    config.goo_path_query    = ENV['GOO_PATH_QUERY']
+    config.goo_path_data     = ENV['GOO_PATH_DATA']
+    config.goo_path_update   = ENV['GOO_PATH_UPDATE']
+  end
+end
+
 require_relative "config/environments/#{environment}.rb"
 
 # Development-specific options

@@ -5,6 +5,7 @@ class OntologiesController < ApplicationController
     ##
     # Display all ontologies
     get do
+      onts = nil
       check_last_modified_collection(Ontology)
       allow_views = params['also_include_views'] ||= false
       if allow_views
@@ -38,8 +39,47 @@ class OntologiesController < ApplicationController
         latest = ont.latest_submission(status: :any)
       end
       check_last_modified(latest) if latest
-      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
+      # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
+      if latest
+        if includes_param.first == :all
+          # Bring what we need to display all attr of the submission
+          latest.bring_remaining
+          latest.bring({:contact=>[:name, :email],
+                      :ontology=>[:acronym, :name, :administeredBy, :group, :viewingRestriction, :doNotUpdate, :flat,
+                                  :hasDomain, :summaryOnly, :acl, :viewOf, :ontologyType],
+                      :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]})
+        else
+          latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+        end
+      end
+      #remove the whole previous if block and replace by it: latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
       reply(latest || {})
+    end
+
+    ##
+    # Update latest submission of an ontology
+    REQUIRES_REPROCESS = ["prefLabelProperty", "definitionProperty", "synonymProperty", "authorProperty", "classType", "hierarchyProperty", "obsoleteProperty", "obsoleteParent"]
+    patch '/:acronym/latest_submission' do
+      ont = Ontology.find(params["acronym"]).first
+      error 422, "You must provide an existing `acronym` to patch" if ont.nil?
+      
+      submission = ont.latest_submission(status: :any)
+
+      submission.bring(*OntologySubmission.attributes)
+      populate_from_params(submission, params)
+      add_file_to_submission(ont, submission)
+
+      if submission.valid?
+        submission.save
+        if (params.keys & REQUIRES_REPROCESS).length > 0 || request_has_file?
+          cron = NcboCron::Models::OntologySubmissionParser.new
+          cron.queue_submission(submission, {all: true})
+        end
+      else
+        error 422, submission.errors
+      end
+
+      halt 204
     end
 
     ##
@@ -145,11 +185,54 @@ class OntologiesController < ApplicationController
 
       if ont.valid?
         ont.save
+        # Send an email to the administrator to warn him about the newly created ontology
+        begin
+          if !LinkedData.settings.admin_emails.nil? && !LinkedData.settings.admin_emails.empty?
+            LinkedData::Utils::Notifications.new_ontology(ont)
+          end
+        rescue Exception => e
+        end
       else
         error 422, ont.errors
       end
 
       reply 201, ont
+    end
+  end
+
+  namespace "/ontologies_full" do
+    ##
+    # Display all ontologies with submissions and metrics
+    get do
+      resp = []
+      onts = nil
+      allow_views = params['also_include_views'] ||= false
+
+      if allow_views
+        onts = Ontology.where.include(Ontology.goo_attrs_to_load(includes_param)).to_a
+      else
+        onts = Ontology.where.filter(Goo::Filter.new(:viewOf).unbound).include(Ontology.goo_attrs_to_load(includes_param)).to_a
+      end
+      options = {also_include_views: allow_views, status: (params["include_status"] || "ANY")}
+      subs = retrieve_latest_submissions(options)
+      metrics_include = LinkedData::Models::Metric.goo_attrs_to_load(includes_param)
+      LinkedData::Models::OntologySubmission.where.models(subs.values).include(metrics: metrics_include).all
+
+      onts.each do |ont|
+        sub = subs[ont.acronym]
+        sub.ontology = nil if sub
+        metrics = nil
+
+        begin
+          metrics = sub.nil? ? nil : sub.metrics
+        rescue
+          metrics = nil
+        end
+
+        resp << {ontology: ont, latest_submission: subs[ont.acronym], metrics: metrics}
+      end
+
+      reply resp
     end
   end
 end

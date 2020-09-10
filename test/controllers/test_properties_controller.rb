@@ -33,7 +33,7 @@ class TestPropertiesController < TestCase
     get "/ontologies/#{@@acronyms.first}/properties"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
-    assert_equal 84, results.length
+    assert_equal 85, results.length
 
     get "/ontologies/#{@@acronyms.last}/properties"
     assert last_response.ok?
@@ -57,7 +57,7 @@ class TestPropertiesController < TestCase
     get "/ontologies/#{@@acronyms.first}/properties/roots"
     assert last_response.ok?
     pr = MultiJson.load(last_response.body)
-    assert_equal 61, pr.length
+    assert_equal 62, pr.length
 
     # count object properties
     opr = pr.select { |p| p["@type"] == "http://www.w3.org/2002/07/owl#ObjectProperty" }
@@ -67,7 +67,7 @@ class TestPropertiesController < TestCase
     assert_equal 32, dpr.length
     # count annotation properties
     apr = pr.select { |p| p["@type"] == "http://www.w3.org/2002/07/owl#AnnotationProperty" }
-    assert_equal 11, apr.length
+    assert_equal 12, apr.length
     # check for non-root properties
     assert_empty pr.select { |p| ["http://www.w3.org/2004/02/skos/core#broaderTransitive",
                                   "http://www.w3.org/2004/02/skos/core#topConceptOf",
@@ -101,7 +101,7 @@ class TestPropertiesController < TestCase
     get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23topConceptOf/tree"
     assert last_response.ok?
     pr = MultiJson.load(last_response.body)
-    assert_equal 61, pr.length
+    assert_equal 62, pr.length
     num_found = 0
 
     pr.each do |p|
