@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 1d2352c5990fbff6ff2a17ccde53576ed690f8df
+  revision: ee76178f54dc1a42b4a50028c37fb5c3d86e50da
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -42,8 +42,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 819d8122422fe16c3934468ab1658863883ed629
-  branch: virtual-appliance-3.0-merge
+  revision: 5d4b78df14266a1c2ee86887fbd342e72e8eb1a5
+  branch: master
   specs:
     goo (0.0.2)
       addressable (= 2.3.5)
@@ -58,8 +58,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_annotator.git
-  revision: 5fbb4233899d997bf7ddf01b2e2513f37656580c
-  branch: virtual-appliance-3.0-merge
+  revision: 37ceb2827dd9423d2fa3c30d06bb87a65623598e
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -69,8 +69,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: 025b8b3d1b031d6411ce41a8c77666780c6a2b23
-  branch: virtual-appliance-3.0-merge
+  revision: 167552b4dbda8e7b0409dfe95439b9bb55a85951
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -85,8 +85,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 9df67f2181e04e3d6c4134952085e83f5070558b
-  branch: virtual-appliance-3.0-merge
+  revision: d2461b99929c73f10615eb495bb1c4407c193872
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -129,8 +129,8 @@ GEM
     addressable (2.3.5)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    backports (3.18.1)
-    bcrypt (3.1.15)
+    backports (3.18.2)
+    bcrypt (3.1.16)
     bigdecimal (1.4.2)
     builder (3.2.4)
     capistrano (3.14.1)
@@ -167,7 +167,7 @@ GEM
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.13.1)
-    get_process_mem (0.2.5)
+    get_process_mem (0.2.7)
       ffi (~> 1.0)
     google-api-client (0.10.3)
       addressable (~> 2.3)
@@ -262,7 +262,7 @@ GEM
       addressable (>= 2.2)
     recursive-open-struct (1.1.2)
     redcarpet (3.5.0)
-    redis (4.2.1)
+    redis (4.2.2)
     redis-activesupport (4.1.5)
       activesupport (>= 3, < 5)
       redis-store (~> 1.1.0)
@@ -289,7 +289,7 @@ GEM
     rubyzip (2.3.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.35.0)
+    sequel (5.36.0)
     signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -326,7 +326,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
-    unicorn (5.6.0)
+    unicorn (5.7.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     unicorn-worker-killer (0.4.4)
