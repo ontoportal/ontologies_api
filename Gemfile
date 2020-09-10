@@ -42,11 +42,11 @@ gem 'haml'
 gem 'redcarpet'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', git: 'https://github.com/ontoportal-lirmm/goo.git', branch: 'virtual-appliance-3.0-merge'
-gem 'ncbo_annotator', git: 'https://github.com/ontoportal-lirmm/ncbo_annotator.git', branch: 'virtual-appliance-3.0-merge'
-gem 'ncbo_cron', git: 'https://github.com/ontoportal-lirmm/ncbo_cron.git', branch: 'virtual-appliance-3.0-merge'
+gem 'goo', git: 'https://github.com/ontoportal-lirmm/goo.git', branch: 'master'
+gem 'ncbo_annotator', git: 'https://github.com/ontoportal-lirmm/ncbo_annotator.git', branch: 'master'
+gem 'ncbo_cron', git: 'https://github.com/ontoportal-lirmm/ncbo_cron.git', branch: 'master'
 gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'master'
-gem 'ontologies_linked_data', git: 'https://github.com/ontoportal-lirmm/ontologies_linked_data.git', branch: 'virtual-appliance-3.0-merge'
+gem 'ontologies_linked_data', git: 'https://github.com/ontoportal-lirmm/ontologies_linked_data.git', branch: 'master'
 gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'master'
 
 # NCBO gems (unversioned)
