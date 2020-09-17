@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_annotator.git
-  revision: b51d6754c4cb9459bb71e8b47c6ba822880c44e5
+  revision: 41f2661b91f3af74ccfe978e27631851eecb9a4b
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: 59963f21bd25902347622fe38ad28538c9ffdfa3
+  revision: 58c6443118da57ab84d35b3798422067c1560ff9
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 31bd503f54b33f3887b877b4f1f55c1530abffc1
+  revision: cf984c0542fcc521e2a252931f35e2dfc62c0904
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -245,7 +245,7 @@ GEM
       rack (>= 0.4)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
-    rack-mini-profiler (2.0.4)
+    rack-mini-profiler (2.1.0)
       rack (>= 1.2.0)
     rack-protection (1.5.5)
       rack
