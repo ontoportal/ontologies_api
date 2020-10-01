@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_annotator.git
-  revision: 9ae68c29f665607e9b10c225d9a637de7de4273c
+  revision: 1f596c77ab44e8b2402450bb36869919572b7900
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: 82191e37fc40cf3f419771d43bebff004feff0df
+  revision: 2c0ac7ad75e922931506906cc554ed57503ce6c3
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -289,7 +289,7 @@ GEM
     rubyzip (2.3.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.36.0)
+    sequel (5.37.0)
     signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
