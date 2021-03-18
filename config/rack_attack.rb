@@ -16,14 +16,13 @@ safe_ips.each do |safe_ip|
   Rack::Attack.safelist_ip(safe_ip)
 end
 
-safe_accounts = LinkedData::OntologiesAPI.settings.safe_accounts ||= Set.new(%w[ncbobioportal ontoportal_ui
-                                                                                biomixer])
-Rack::Attack.safelist('mark safe accounts such as ontoportal_ui and biomixer as safe') do |req|
-  safe_accounts.include?(req.env['REMOTE_USER']&.username)
+safe_accounts = Set.new(['ncbobioportal', 'ontoportal_ui', 'biomixer'])
+Rack::Attack.safelist('mark ncbobioportal and biomixer as safe') do |req|
+  req.env["REMOTE_USER"] && (safe_accounts.include?(req.env["REMOTE_USER"].username))
 end
 
 Rack::Attack.safelist('mark administrators as safe') do |req|
-  req.env['REMOTE_USER']&.admin?
+  req.env["REMOTE_USER"] && req.env["REMOTE_USER"].admin?
 end
 
 Rack::Attack.throttle('req/ip', limit: LinkedData::OntologiesAPI.settings.req_per_second_per_ip, period: 1.second) do |req|
@@ -31,12 +30,12 @@ Rack::Attack.throttle('req/ip', limit: LinkedData::OntologiesAPI.settings.req_pe
 end
 
 Rack::Attack.throttled_response = lambda do |env|
-  match_data = env['rack.attack.match_match_data']
+  data = env['rack.attack.match_data']
   headers = {
-    'RateLimit-Limit' => match_data[:limit].to_s,
+    'RateLimit-Limit' => data[:limit].to_s,
     'RateLimit-Remaining' => '0',
-    'RateLimit-Reset' => match_data[:period].to_s
+    'RateLimit-Reset' => data[:period].to_s
   }
-  body = "You have made #{match_data[:count]} requests in the last #{match_data[:period]} seconds. For user #{env['REMOTE_USER']}, we limit API Keys to #{match_data[:limit]} requests every #{match_data[:period]} seconds"
+  body = "You have made #{data[:count]} requests in the last #{data[:period]} seconds. For user #{env["REMOTE_USER"]}, we limit API Keys to #{data[:limit]} requests every #{data[:period]} seconds"
   [429, headers, [body]]
 end
