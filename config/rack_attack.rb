@@ -21,7 +21,7 @@ end
 safe_accounts = LinkedData::OntologiesAPI.settings.safe_accounts ||= Set.new(%w[ncbobioportal ontoportal_ui
                                                                                 biomixer])
 Rack::Attack.safelist('mark safe accounts such as ontoportal_ui and biomixer as safe') do |req|
-  safe_accounts.include?(req.env['REMOTE_USER']&.username)
+  req.env['REMOTE_USER'] && safe_accounts.include?(req.env['REMOTE_USER'].username)
 end
 
 Rack::Attack.safelist('mark administrators as safe') do |req|
