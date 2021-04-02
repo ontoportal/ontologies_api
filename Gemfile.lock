@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 533fbfc37ad59df96aa483117a49f1468f17cedf
+  revision: 5904d5299a01d1d6335866daee544c8512777828
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 0dde58759fe25a041011bf2908f2fe63d3b9a0dc
+  revision: 7061ec737d23a3381c9692dd30e4b56e76dedc41
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -181,7 +181,7 @@ GEM
       mime-types (>= 1.6)
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
-    googleauth (0.16.0)
+    googleauth (0.16.1)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
