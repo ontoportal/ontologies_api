@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 89ad2b74f53202037bb825d972e542c0d2d86b06
+  revision: 0a18c31f45d62efcaccaf24c2056b1ad2e2a2216
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: bda8dcb506f22a9b9aa0fd83570acfb0d9b9164c
+  revision: a1d5cd82b01333961dadbedac3b9cd5ad8261bec
   branch: staging
   specs:
     ncbo_cron (0.0.1)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: eb7b70bca406cb1424476fdb3745bd7f6b9cb16e
+  revision: bb64ff69498ae8be83eba72fc4afb92cc85c161c
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 893c3a830d8c57c9f14961b00b8b91788ac9ab79
+  revision: 49cf12f7bc0dcbcb3dd1e751fa98ecfb5cc1e1ea
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -163,19 +163,23 @@ GEM
       multi_json
     ethon (0.14.0)
       ffi (>= 1.15.0)
-    faraday (1.4.3)
+    faraday (1.5.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
+      faraday-httpclient (~> 1.0.1)
       faraday-net_http (~> 1.0)
       faraday-net_http_persistent (~> 1.1)
+      faraday-patron (~> 1.0)
       multipart-post (>= 1.2, < 3)
       ruby2_keywords (>= 0.0.4)
     faraday-em_http (1.0.0)
     faraday-em_synchrony (1.0.0)
     faraday-excon (1.1.0)
+    faraday-httpclient (1.0.1)
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.1.0)
+    faraday-patron (1.0.0)
     ffi (1.15.3)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
@@ -221,7 +225,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0225)
+    mime-types-data (3.2021.0704)
     mini_mime (1.1.0)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.2)
@@ -235,7 +239,7 @@ GEM
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
     netrc (0.11.0)
-    newrelic_rpm (7.1.0)
+    newrelic_rpm (7.2.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -297,10 +301,10 @@ GEM
       faraday (>= 0.9.0)
     ruby-xxHash (0.4.0.1)
     ruby2_keywords (0.0.4)
-    rubyzip (2.3.0)
+    rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.45.0)
+    sequel (5.46.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
