@@ -38,6 +38,9 @@ server 'localhost', roles: %w{app}
 BRANCH = ENV.include?('BRANCH') ? ENV['BRANCH'] : 'master'
 set :branch, "#{BRANCH}"
 set :deploy_to, "/srv/ontoportal/#{fetch(:application)}"
+# install gems into a common direcotry shared across ui, api and ncbo_cron to reduce disk usage
+set :bundle_path, '/srv/ontoportal/.bundle'
+remove :linked_dirs, 'vendor/bundle'
 
 # private git repo for configuraiton
 # PRIVATE_CONFIG_REPO = ENV.include?('PRIVATE_CONFIG_REPO') ? ENV['PRIVATE_CONFIG_REPO'] : 'git@github.com:your_org/private-config-repo.git'
