@@ -57,6 +57,8 @@ class OntologySubmissionsController < ApplicationController
       error 422, "You must provide an existing `submissionId` to patch" if submission.nil?
 
       submission.bring(*OntologySubmission.attributes)
+      params.delete("uploadFilePath")
+      params.delete("diffFilePath")
       populate_from_params(submission, params)
       add_file_to_submission(ont, submission)
 
