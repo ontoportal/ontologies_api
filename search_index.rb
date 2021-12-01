@@ -3,7 +3,7 @@ require 'ontologies_linked_data'
 require 'ncbo_annotator'
 require_relative 'config/config'
 #require_relative 'config/environments/production'
-require_relative 'config/environments/stage'
+require_relative 'config/environments/development.rb.sample'
 
 logger = Logger.new("indexing.log")
 

@@ -6,7 +6,8 @@ class InstancesController < ApplicationController
     check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
     cls = get_class(sub)
     error 404 if cls.nil?
-    reply LinkedData::InstanceLoader.get_instances_by_class(sub.id, cls.id)
+    page, size = page_params
+    reply LinkedData::InstanceLoader.get_instances_by_class(sub.id, cls.id, page, size)
   end
 
   namespace "/ontologies/:ontology/instances" do

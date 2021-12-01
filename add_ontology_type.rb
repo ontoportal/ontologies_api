@@ -5,7 +5,7 @@ require 'ncbo_cron'
 require_relative 'config/config'
 # require_relative 'config/environments/production'
 # require_relative 'config/environments/stage'
-require_relative 'config/environments/development'
+require_relative 'config/environments/development.rb.sample'
 
 
 value_set_collections = ["NLMVS", "CEDARVS"]

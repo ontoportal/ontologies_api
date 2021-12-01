@@ -7,6 +7,7 @@ module Rack
 
     def call(env)
       if env['HTTP_HOST']
+
         # remove the port if there is one
         domain = env['HTTP_HOST'].gsub(/:\d+$/, '')
 
