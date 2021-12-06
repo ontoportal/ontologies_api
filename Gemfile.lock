@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: d920eedcc78001a28dc96eb4d640c7d0d05f5001
+  revision: 468a13df5253ea9f17c8718b065f2b58b4bb071d
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -306,7 +306,7 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.50.0)
+    sequel (5.51.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
