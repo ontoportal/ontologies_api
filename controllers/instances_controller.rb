@@ -37,6 +37,19 @@ class InstancesController < ApplicationController
       reply page_data
     end
 
+    get '/:inst' do
+      ont, sub = get_ontology_and_submission
+      check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
+
+      unmapped = (includes_param && includes_param.include?(:all))
+
+      page_data = LinkedData::Models::Instance.find(@params["inst"]).include(LinkedData::Models::Instance.attributes).in(sub).first
+
+      if unmapped
+        LinkedData::Models::Instance.in(sub).models([page_data]).include(:unmapped).all
+      end
+      reply page_data
+    end
   end
 end
 
