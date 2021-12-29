@@ -27,7 +27,11 @@ class InstancesController < ApplicationController
       page, size = page_params
 
       unmapped = (includes_param && includes_param.include?(:all))
-      page_data = LinkedData::Models::Instance.in(sub)
+
+
+      f_label = (Goo::Filter.new(:label).regex(@params["search"])) if @params["search"] != ""
+      page_data = LinkedData::Models::Instance.where.filter(f_label)
+                                              .in(sub)
                                               .include(LinkedData::Models::Instance.attributes)
                                               .page(page,size).all
 
