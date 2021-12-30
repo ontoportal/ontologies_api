@@ -7,15 +7,16 @@ class InstancesController < ApplicationController
     check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
     cls = get_class(sub)
     error 404 if cls.nil?
+
     page, size = page_params
+    attributes = get_attributes_to_include(includes_param)
 
-    unmapped =  (includes_param && includes_param.include?(:all))
-    page_data = LinkedData::Models::Instance.where(cls.id.nil? ? nil :{types: RDF::URI.new(cls.id.to_s)}).in(sub)
-                                            .include(LinkedData::Models::Instance.attributes).page(page,size).all
+    page_data = LinkedData::Models::Instance.where(filter_classes_by(cls.id))
+                                            .filter(label_regex_filter).in(sub)
+                                            .include(attributes).page(page,size).all
 
-    if unmapped && page_data.length > 0
-      LinkedData::Models::Instance.in(sub).models(page_data).include(:unmapped).all
-    end
+    bring_unmapped_if_needed  includes_param, page_data , sub
+
     reply page_data
   end
 
@@ -24,20 +25,16 @@ class InstancesController < ApplicationController
     get do
       ont, sub = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
+
       page, size = page_params
+      attributes = get_attributes_to_include(includes_param)
 
-      unmapped = (includes_param && includes_param.include?(:all))
-
-
-      f_label = (Goo::Filter.new(:label).regex(@params["search"])) if @params["search"] != ""
-      page_data = LinkedData::Models::Instance.where.filter(f_label)
+      page_data = LinkedData::Models::Instance.where.filter(label_regex_filter)
                                               .in(sub)
-                                              .include(LinkedData::Models::Instance.attributes)
+                                              .include(attributes)
                                               .page(page,size).all
 
-      if unmapped && page_data.length > 0
-        LinkedData::Models::Instance.in(sub).models(page_data).include(:unmapped).all
-      end
+      bring_unmapped_if_needed  includes_param, page_data , sub
       reply page_data
     end
 
@@ -45,16 +42,17 @@ class InstancesController < ApplicationController
       ont, sub = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
 
-      unmapped = (includes_param && includes_param.include?(:all))
+      attributes = get_attributes_to_include(includes_param)
 
-      page_data = LinkedData::Models::Instance.find(@params["inst"]).include(LinkedData::Models::Instance.attributes).in(sub).first
+      page_data = LinkedData::Models::Instance.find(@params["inst"]).include(attributes).in(sub).first
 
-      if unmapped
-        LinkedData::Models::Instance.in(sub).models([page_data]).include(:unmapped).all
-      end
+
+      bring_unmapped_if_needed  includes_param, [page_data] , sub
       reply page_data
     end
   end
+
+
 end
 
 
