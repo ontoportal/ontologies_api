@@ -11,6 +11,10 @@ module Sinatra
         class_uri.nil? ? nil :{types: RDF::URI.new(class_uri.to_s)}
       end
 
+      def get_order_by_from(params , default_sort = :label , default_order = :asc)
+        {(params["sortby"] || default_sort).to_sym => params["order"] || default_order}
+      end
+
       def get_attributes_to_include(includes_param)
         ld = LinkedData::Models::Instance.goo_attrs_to_load(includes_param)
         ld.delete(:properties)

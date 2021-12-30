@@ -10,10 +10,12 @@ class InstancesController < ApplicationController
 
     page, size = page_params
     attributes = get_attributes_to_include(includes_param)
-
+    order_by = get_order_by_from(@params)
     page_data = LinkedData::Models::Instance.where(filter_classes_by(cls.id))
                                             .filter(label_regex_filter).in(sub)
-                                            .include(attributes).page(page,size).all
+                                            .include(attributes)
+                                            .order_by(order_by)
+                                            .page(page,size).all
 
     bring_unmapped_if_needed  includes_param, page_data , sub
 
@@ -28,10 +30,11 @@ class InstancesController < ApplicationController
 
       page, size = page_params
       attributes = get_attributes_to_include(includes_param)
-
+      order_by = get_order_by_from(@params)
       page_data = LinkedData::Models::Instance.where.filter(label_regex_filter)
                                               .in(sub)
                                               .include(attributes)
+                                              .order_by(order_by)
                                               .page(page,size).all
 
       bring_unmapped_if_needed  includes_param, page_data , sub
