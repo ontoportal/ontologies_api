@@ -8,18 +8,19 @@ class InstancesController < ApplicationController
     cls = get_class(sub)
     error 404 if cls.nil?
 
-    page, size = page_params
-    attributes = get_attributes_to_include(includes_param)
-    order_by = get_order_by_from(@params)
+    attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params
+
 
 
     page_data = LinkedData::Models::Instance.where(filter_classes_by(cls.id))
                                             .in(sub)
                                             .include(attributes)
-    page_data.order_by(order_by) unless (order_by.nil?)
+
+    page_data.filter(filter_by_label) unless filter_by_label.nil?
+    page_data.order_by(order_by) unless order_by.nil?
     page_data = page_data.page(page,size).all
 
-    bring_unmapped_if_needed  includes_param, page_data , sub
+    bring_unmapped_to page_data , sub if bring_unmapped_needed
 
     reply page_data
   end
@@ -30,18 +31,19 @@ class InstancesController < ApplicationController
       ont, sub = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
 
-      page, size = page_params
-      attributes = get_attributes_to_include(includes_param)
-      order_by = get_order_by_from(@params)
+      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params
 
-      page_data = LinkedData::Models::Instance.where.filter(label_regex_filter)
+
+      page_data = LinkedData::Models::Instance.where
                                               .in(sub)
                                               .include(attributes)
-      page_data.order_by(order_by) unless (order_by.nil?)
+
+      page_data.filter(filter_by_label) unless filter_by_label.nil?
+      page_data.order_by(order_by) unless order_by.nil?
       page_data = page_data.page(page,size).all
 
+      bring_unmapped_to page_data , sub if bring_unmapped_needed
 
-      bring_unmapped_if_needed  includes_param, page_data , sub
       reply page_data
     end
 
@@ -49,12 +51,12 @@ class InstancesController < ApplicationController
       ont, sub = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
 
-      attributes = get_attributes_to_include(includes_param)
+      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params
 
       page_data = LinkedData::Models::Instance.find(@params["inst"]).include(attributes).in(sub).first
 
+      bring_unmapped_to [page_data] , sub if bring_unmapped_needed
 
-      bring_unmapped_if_needed  includes_param, [page_data] , sub
       reply page_data
     end
   end
