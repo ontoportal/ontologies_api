@@ -4,7 +4,7 @@ module Sinatra
   module Helpers
     module InstancesHelper
       def label_regex_filter
-        (Goo::Filter.new(:label).regex(@params["search"])) if @params["search"] != ""
+        (Goo::Filter.new(:label).regex(@params["search"])) if @params["search"] != nil
       end
 
       def filter_classes_by(class_uri)
@@ -12,7 +12,7 @@ module Sinatra
       end
 
       def get_order_by_from(params , default_sort = :label , default_order = :asc)
-        {(params["sortby"] || default_sort).to_sym => params["order"] || default_order}
+        {(params["sortby"] || default_sort).to_sym => params["order"] || default_order} unless params["sortby"].nil? || params["sortby"] == ""
       end
 
       def get_attributes_to_include(includes_param)
