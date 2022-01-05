@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: ba3edcdd1e2f6ee630b3cca29e08cc209229186e
+  revision: 89a8f665f70644989adf70cd132bf0f38ef3414d
   branch: master
   specs:
     goo (0.0.2)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 7f148110a08b23b9c401b117a2c86021d92a72f5
+  revision: db2377e860d709649e10ef1f125ff7a88f76def6
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -129,7 +129,7 @@ GEM
     addressable (2.3.5)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    backports (3.21.0)
+    backports (3.23.0)
     bcrypt (3.1.16)
     bigdecimal (1.4.2)
     builder (3.2.4)
@@ -218,7 +218,7 @@ GEM
     jwt (2.3.0)
     kgio (2.11.4)
     libxml-ruby (3.2.1)
-    logger (1.4.4)
+    logger (1.5.0)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
     mail (2.7.1)
@@ -298,7 +298,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rsolr (2.3.0)
+    rsolr (2.4.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
     ruby-xxHash (0.4.0.1)
@@ -306,7 +306,7 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.51.0)
+    sequel (5.52.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -356,7 +356,7 @@ GEM
       macaddr (~> 1.0)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -409,4 +409,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.1.4
+   2.3.4
