@@ -3,20 +3,20 @@
 ontologies_api provides a RESTful interface for accessing [BioPortal](https://bioportal.bioontology.org/) (an open repository of biomedical ontologies). Supported services include downloads, search, access to terms and concepts, text annotation, and much more.
 
 ## Prerequisites
-- Command line interface (iterm, xterm, etc)
-- [Ruby 2.x](http://www.ruby-lang.org/en/downloads/) (most recent patch level -- see rbenv below for information on managing multiple versions)
+
+- [Ruby 2.x](http://www.ruby-lang.org/en/downloads/) (most recent patch level)
+- [rbenv](https://github.com/sstephenson/rbenv) and [ruby-build](https://github.com/sstephenson/ruby-build) (optional)
+    - If you need to switch Ruby versions for other projects, you may want to install something like rbenv to manage your Ruby environment.
 - [Git](http://git-scm.com/)
-- [Bundler](http://gembundler.com/)
-    - Install with `gem install bundler` if you don't have it
-- [4store](http://4store.org/)
-    - NCBO code relies on 4store as the main datastore. There are several installation options, but the easiest is getting the [binaries](http://4store.org/trac/wiki/Download).
+- [Bundler](https://bundler.io/)
+- [4store](https://github.com/ncbo/4store)
+    - BioPortal relies on 4store as the main datastore
     - For starting, stopping, and restarting 4store easily, you can try setting up [4s-service](https://gist.github.com/4211360)
 - [Redis](http://redis.io)
-    - Redis is used for caching (HTTP, query caching, Annotator cache)
+    - Used for caching (HTTP, query caching, Annotator cache)
 - [Solr](http://lucene.apache.org/solr/)
-    - NCBO indexes class content using Solr (a Lucene-based server)
-- [rbenv](https://github.com/sstephenson/rbenv) and [ruby-build](https://github.com/sstephenson/ruby-build)
-    - If you anticipate needing to switch Ruby versions for other projects, you may want to install something like [rbenv](https://github.com/sstephenson/rbenv) to manage multiple Ruby installations
+    - BioPortal indexes ontology class and property content using Solr (a Lucene-based server)
+
 
 ## Installing
 Here are the steps to run at the command line to get the code, get the dependencies, run the tests, and then run the application:
