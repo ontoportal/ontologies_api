@@ -17,20 +17,9 @@ ontologies_api provides a RESTful interface for accessing [BioPortal](https://bi
 - [Solr](http://lucene.apache.org/solr/)
     - BioPortal indexes ontology class and property content using Solr (a Lucene-based server)
 
+## Configuring Solr
 
-## Installing
-Here are the steps to run at the command line to get the code, get the dependencies, run the tests, and then run the application:
-
-    git clone github.com:ncbo/ontologies_api.git
-    cd ontologies_api
-    bundle install
-    bundle exec rake test
-    bundle exec shotgun
-
-All dependencies for the project(s) are managed using Bundler, which ensures that all developers are using the same version of the software. Most of the dependencies are Ruby-only, but occasionally something will rely on a compiled C-language binary, which can make working on Windows challenging.
-
-### Solr
-To configure Solr for ontologies_api usage, we'll be modifying the example project included with Solr. Do the following:
+To configure Solr for ontologies_api usage, modify the example project included with Solr by doing the following:
 
     cd $SOLR_HOME
     cp example ncbo
@@ -54,6 +43,16 @@ To configure Solr for ontologies_api usage, we'll be modifying the example proje
     java -Dsolr.solr.home=solr -jar start.jar
     # Edit the ontologieS_api/config/environments/{env}.rb file to point to your running instance:
     # http://localhost:8983/solr/NCBO1
+
+
+## Installing
+Here are the steps to run at the command line to get the code, get the dependencies, run the tests, and then run the application:
+
+    git clone github.com:ncbo/ontologies_api.git
+    cd ontologies_api
+    bundle install
+    bundle exec rake test
+    bundle exec shotgun
 
 ## Contributing
 
