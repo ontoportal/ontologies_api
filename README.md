@@ -2,9 +2,6 @@
 
 ontologies_api provides a RESTful interface for accessing [BioPortal](https://bioportal.bioontology.org/) (an open repository of biomedical ontologies). Supported services include downloads, search, access to terms and concepts, text annotation, and much more.
 
-## Usage
-Fork the project, create a branch, and then customize as necessary. There are several classes that are included that give you an idea of how to use extend the existing framework.
-
 ## Prerequisites
 - Command line interface (iterm, xterm, etc)
 - [Ruby 2.x](http://www.ruby-lang.org/en/downloads/) (most recent patch level -- see rbenv below for information on managing multiple versions)
