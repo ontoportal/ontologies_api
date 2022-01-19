@@ -44,15 +44,54 @@ To configure Solr for ontologies_api usage, modify the example project included 
     # Edit the ontologieS_api/config/environments/{env}.rb file to point to your running instance:
     # http://localhost:8983/solr/NCBO1
 
-
 ## Installing
-Here are the steps to run at the command line to get the code, get the dependencies, run the tests, and then run the application:
 
-    git clone github.com:ncbo/ontologies_api.git
-    cd ontologies_api
-    bundle install
-    bundle exec rake test
-    bundle exec shotgun
+### Clone the repository
+
+```
+$ git clone git@github.com:ncbo/ontologies_api.git
+$ cd ontologies_api
+```
+
+### Install the dependencies
+
+```
+$ bundle install
+```
+
+### Create an environment configuration file
+
+```
+$ cp config/environments/config.rb.sample config/environments/development.rb
+```
+
+[config.rb.sample](https://github.com/ncbo/ontologies_api/blob/1e68882df83cf78cbb78281b1447c303c783e4c2/config/environments/config.rb.sample) can be copied and renamed to match whatever environment you're running, e.g.:
+
+production.rb<br />
+development.rb<br />
+test.rb
+
+### Run the unit tests (optional)
+
+Requires a configuration file for the test environment:
+
+```
+$ cp config/environments/config.rb.sample config/environments/test.rb
+```
+
+Execute the suite of tests from the command line:
+
+```
+$ bundle exec rake test 
+```
+
+### Run the application
+
+```
+$ bundle exec rackup --port 9393 
+```
+
+Once started, the application will be available at localhost:9393.
 
 ## Contributing
 
