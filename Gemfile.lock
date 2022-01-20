@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: 1ed0c880913192da5919ec802f15951b91c42273
+  revision: 2071d58b51678a8c9a19ec6127a7490bd216f2ff
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -360,7 +360,7 @@ GEM
       macaddr (~> 1.0)
 
 PLATFORMS
-  x86_64-linux
+  ruby
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -413,4 +413,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.4
+   2.1.4
