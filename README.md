@@ -95,7 +95,7 @@ Once started, the application will be available at localhost:9393.
 
 ## Contributing
 
-We encourage contributions! Please check out the [contributing guide](CONTRIBUTING.mc) for guidelines on how to proceed.
+We encourage contributions! Please check out the [contributing guide](CONTRIBUTING.md) for guidelines on how to proceed.
 
 ## Acknowledgements
 
