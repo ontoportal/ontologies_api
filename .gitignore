@@ -49,6 +49,11 @@ test/data/ontology_files/repo/**/*
 # Ignore RubyMine editor files
 .idea
 
+# Eclipse project files
+.settings/
+.classpath
+.project
+
 *.swp
 
 .ruby-version
@@ -64,3 +69,5 @@ test/test_run.log
 test/data/ontology_files/catalog-v001.xml
 
 create_permissions.log
+
+ontologies_api.iml
