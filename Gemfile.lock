@@ -57,8 +57,8 @@ GIT
       uuid
 
 GIT
-  remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: e224f46dafc254b7d4a1685eb6c5c26d97ab33b7
+  remote: https://github.com/ontoportal-lirmm/ncbo_annotator.git
+  revision: 9c399786b08c6562d083f3b6ddd3935c7c0a97b5
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -86,25 +86,6 @@ GIT
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
   revision: ac4a68542c339f50b5c0a424d1fad20ba970a850
-  branch: master
-  specs:
-    ncbo_ontology_recommender (0.0.1)
-      goo
-      ncbo_annotator
-      ontologies_linked_data
-      redis
-
-GIT
-  remote: https://github.com/ncbo/ncbo_resolver.git
-  revision: 67989c445e53e019b3b3fa4905e0aa9d519df0ed
-  specs:
-    ncbo_resolver (0.0.1)
-      recursive-open-struct
-      redis
-
-GIT
-  remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: e6bedc3a025a87d9fe0b27700efbe83771dca404
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -433,4 +414,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.5
+   2.3.4
