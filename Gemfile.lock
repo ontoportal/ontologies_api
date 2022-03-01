@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 37996775b44ec673e7371b6f34220329c1026558
+  revision: 06421b2a06807865adc94af6276afee4aa438cea
   branch: staging
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 3f9a10e86d9fc5313f13b9138bd84355af7f7108
+  revision: 2725353b0852fc6dc7ce7c44746b631d7edf3ec8
   branch: staging
   specs:
     ncbo_annotator (0.0.1)
@@ -27,13 +27,13 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: d78c37012e05b68fc1d4fa0669f48f20343f57c9
+  revision: 85b023cfc5650f9d005879a36676b6e172a380ef
   branch: staging
   specs:
     ncbo_cron (0.0.1)
       dante
       goo
-      google-api-ruby-client
+      google-api-client
       mlanett-redis-lock
       multi_json
       ncbo_annotator
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 04705cd79667cd9ccf9945252a09e1247f00fdfd
+  revision: 2b8e0a4126048e73a39fa7a210eb91f8e2abaa70
   branch: staging
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: f58bf7766e9a23fabd1380bdc628bad4735c5edf
+  revision: 42a8f7e2e94599fc43b810e402f15efde73230cc
   branch: staging
   specs:
     ontologies_linked_data (0.0.1)
@@ -163,7 +163,7 @@ GEM
       multi_json
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    faraday (1.9.3)
+    faraday (1.10.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -198,7 +198,6 @@ GEM
       mime-types (>= 1.6)
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
-    google-api-ruby-client (9001.0)
     googleauth (0.17.1)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.4, < 3.0)
@@ -246,7 +245,7 @@ GEM
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
     netrc (0.11.0)
-    newrelic_rpm (8.4.0)
+    newrelic_rpm (8.5.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -266,7 +265,7 @@ GEM
       rack (>= 0.4)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
-    rack-mini-profiler (2.3.3)
+    rack-mini-profiler (3.0.0)
       rack (>= 1.2.0)
     rack-protection (1.5.5)
       rack
@@ -303,15 +302,15 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rsolr (2.4.0)
+    rsolr (2.5.0)
       builder (>= 2.1.2)
-      faraday (>= 0.9.0)
+      faraday (>= 0.9, < 3, != 2.0.0)
     ruby-xxHash (0.4.0.2)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.53.0)
+    sequel (5.54.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -322,7 +321,7 @@ GEM
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
-    simplecov_json_formatter (0.1.3)
+    simplecov_json_formatter (0.1.4)
     sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
