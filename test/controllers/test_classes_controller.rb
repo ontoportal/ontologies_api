@@ -106,7 +106,7 @@ class TestClassesController < TestCase
       count_terms = count_terms + page_response["collection"].length
     end while page_response["nextPage"]
     #bnodes thing got fixed. changed to 486.
-    assert count_terms == 486
+    assert_equal 486, count_terms
 
     #one more page should bring no results
     call = "/ontologies/#{ont.acronym}/classes"
@@ -518,7 +518,7 @@ class TestClassesController < TestCase
       count_terms = count_terms + page_response["collection"].length
     end while page_response["nextPage"]
     #bnodes thing got fixed. changed to 486.
-    assert count_terms == 486
+    assert_equal 486, count_terms
 
     #one more page should bring no results
     call = "/ontologies/#{ont.acronym}/classes"
