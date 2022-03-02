@@ -10,6 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build docker-compose
+      working-directory: ./test
       run: docker-compose build
     - name: Run unit tests
+      working-directory: ./test
       run: docker-compose up --exit-code-from unit-test
