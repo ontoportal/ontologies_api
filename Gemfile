@@ -21,7 +21,8 @@ gem 'rack-accept', '~> 0.4'
 gem 'rack-attack', '~> 5.4.2', require: 'rack/attack'
 gem 'rack-cache', '~> 1.0'
 gem 'rack-cors', require: 'rack/cors'
-gem 'rack-post-body-to-params', git: 'https://github.com/palexander/rack-post-body-to-params.git', branch: "multipart_support" # github dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
+# GitHub dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
+gem 'rack-post-body-to-params', git: 'https://github.com/palexander/rack-post-body-to-params.git', branch: "multipart_support"
 gem 'rack-timeout'
 gem 'redis-rack-cache', '~> 1.0'
 
@@ -43,12 +44,12 @@ gem 'haml'
 gem 'redcarpet'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'master'
-gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'master'
-gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'master'
-gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'master'
-gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'master'
-gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'master'
+gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'develop'
+gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'develop'
+gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'develop'
+gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'develop'
+gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'develop'
+gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'develop'
 
 # NCBO gems (unversioned)
 gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
