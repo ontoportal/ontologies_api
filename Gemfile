@@ -45,15 +45,18 @@ gem 'redcarpet'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'develop'
-gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'develop'
-gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'develop'
+gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'remove_ncbo_resource_index'
+#gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'develop'
+gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'remove_ncbo_resource_index'
+#gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'develop'
 gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'develop'
-gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'develop'
+# switch back to develop branch after ontologies_linked_data is released
+gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'remove_ncbo_resource_index'
+#gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'develop'
 gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'develop'
 
 # NCBO gems (unversioned)
 gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
-gem 'ncbo_resource_index', git: 'https://github.com/ncbo/resource_index.git'
 
 group :development do
   gem 'capistrano', '~> 3', require: false

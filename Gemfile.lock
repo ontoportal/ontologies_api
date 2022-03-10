@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: ed6283cb05a2e5a003d11c80cd63661533b98141
+  revision: 9aa06b55b82e1168d1a842ec797dca464f8fc947
   branch: develop
   specs:
     goo (0.0.2)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 09a6db612046402078f024c1e0f70c1cd49fa32a
-  branch: develop
+  revision: 4e599cf48787a4ea53ecad4bf90e7f7426796284
+  branch: remove_ncbo_resource_index
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 28a9095ae8b19576fc2173c3daf67195f1159b4e
-  branch: develop
+  revision: 88ef72de33a87e1d7086a22d1b3f791faa8cb8d4
+  branch: remove_ncbo_resource_index
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -62,8 +62,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 23e41f7ca3e4f55ded008ad889d678006342f56e
-  branch: develop
+  revision: dac406167b740576dd43eecbd5ae85e15bc3de9e
+  branch: remove_ncbo_resource_index
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -72,7 +72,6 @@ GIT
       json
       libxml-ruby
       multi_json
-      ncbo_resource_index
       oj
       omni_logger
       pony
@@ -80,19 +79,6 @@ GIT
       rack-test
       rsolr
       rubyzip
-
-GIT
-  remote: https://github.com/ncbo/resource_index.git
-  revision: 24a7f14a6da4f4a0eaba1016ca5a378dfccd7441
-  specs:
-    ncbo_resource_index (0.0.1)
-      elasticsearch (= 2.0.0)
-      mysql2 (= 0.5.2)
-      pony
-      ref
-      ruby-xxHash
-      sequel
-      typhoeus
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
@@ -153,16 +139,6 @@ GEM
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (2.0.0)
-      elasticsearch-api (= 2.0.0)
-      elasticsearch-transport (= 2.0.0)
-    elasticsearch-api (2.0.0)
-      multi_json
-    elasticsearch-transport (2.0.0)
-      faraday
-      multi_json
-    ethon (0.15.0)
-      ffi (>= 1.15.0)
     faraday (1.10.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -239,7 +215,6 @@ GEM
       redis
     multi_json (1.15.0)
     multipart-post (2.1.1)
-    mysql2 (0.5.2)
     net-http-persistent (2.9.4)
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
@@ -291,7 +266,6 @@ GEM
       redis-store (~> 1.1.0)
     redis-store (1.1.7)
       redis (>= 2.2)
-    ref (2.0.0)
     representable (3.1.1)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -310,7 +284,6 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.54.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -342,8 +315,6 @@ GEM
     temple (0.8.2)
     tilt (2.0.10)
     trailblazer-option (0.1.2)
-    typhoeus (1.4.0)
-      ethon (>= 0.9.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
@@ -384,7 +355,6 @@ DEPENDENCIES
   ncbo_cron!
   ncbo_ontology_recommender!
   ncbo_resolver!
-  ncbo_resource_index!
   newrelic_rpm
   oj (~> 2.0)
   ontologies_linked_data!
