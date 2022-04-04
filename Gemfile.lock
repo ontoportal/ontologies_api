@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 56fc95c3a9981e2467afe6f61ff466e5e550ed48
+  revision: 7e18f1001dfca89045cb8ba7839b1a0b33334495
   branch: master
   specs:
     goo (0.0.2)
@@ -58,7 +58,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_annotator.git
-  revision: 9c399786b08c6562d083f3b6ddd3935c7c0a97b5
+  revision: 2ebcb237008958d7a8eb45319cd986312a814dae
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: c770ffb0474ba0f0695f13304d722e772c9f4948
+  revision: 5f6fd0862476c4e2f3a797572630abc2969e53dc
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: fc4d30bf7f571b0e58cdfccbb91d9cb794661d3c
+  revision: f4e385e2da567b0a4b55156e9913f0da3501acff
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -146,7 +146,7 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.3)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.1.10)
     cube-ruby (0.0.3)
     dante (0.2.0)
     declarative (0.0.20)
@@ -222,7 +222,7 @@ GEM
     jwt (2.3.0)
     kgio (2.11.4)
     libxml-ruby (3.2.2)
-    logger (1.5.0)
+    logger (1.5.1)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
     mail (2.7.1)
@@ -310,7 +310,7 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.54.0)
+    sequel (5.55.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
