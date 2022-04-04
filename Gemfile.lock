@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: c823534a5385935152e04511bb2ea3b4ed5454c6
+  revision: f663811e128f11ac02500b6032493ce4b4ffac01
   branch: development
   specs:
     ncbo_cron (0.0.1)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 39a64acf9719f5418cb582afa82178cc2a2c1903
+  revision: cf964e994d22dc749b169fe4e04bf5858d3c5649
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -310,7 +310,7 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.54.0)
+    sequel (5.55.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
