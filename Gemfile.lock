@@ -69,7 +69,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: d40e218bb77e10f3806b3255406e87012d8b90c3
+  revision: 3ba11ef857730e24c27278705b78fdc54b9cfc4a
   branch: development
   specs:
     ncbo_cron (0.0.1)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 5a35460f2c0af8e8046ec23692b3a90dd7ebbfe3
+  revision: b5118976535589964f7de31b51f23f52989ede65
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -245,7 +245,7 @@ GEM
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
     netrc (0.11.0)
-    newrelic_rpm (8.5.0)
+    newrelic_rpm (8.6.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -414,4 +414,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.4
+   2.3.7
