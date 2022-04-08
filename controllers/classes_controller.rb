@@ -29,7 +29,7 @@ class ClassesController < ApplicationController
       unmapped = load_attrs.delete(:properties)
       page, size = page_params
 
-      roots = submission.roots(load_attrs, page, size, concept_scheme: concept_scheme)
+      roots = submission.roots(load_attrs, page, size, concept_schemes: concept_schemes)
 
       if unmapped && roots.length > 0
         LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
@@ -50,9 +50,9 @@ class ClassesController < ApplicationController
       roots = nil
 
       if sort
-        roots = submission.roots_sorted(load_attrs, concept_scheme: concept_scheme)
+        roots = submission.roots_sorted(load_attrs, concept_schemes: concept_schemes)
       else
-        roots = submission.roots(load_attrs, concept_scheme: concept_scheme)
+        roots = submission.roots(load_attrs, concept_schemes: concept_schemes)
       end
 
       if unmapped && roots.length > 0
@@ -250,8 +250,8 @@ class ClassesController < ApplicationController
       end
     end
 
-    def concept_scheme
-       params["concept_scheme"]
+    def concept_schemes
+       params["concept_scheme"]&.split(',')
     end
   end
 end
