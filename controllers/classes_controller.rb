@@ -28,7 +28,8 @@ class ClassesController < ApplicationController
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
       page, size = page_params
-      roots = submission.roots(load_attrs, page, size)
+
+      roots = submission.roots(load_attrs, page, size, concept_scheme: concept_scheme)
 
       if unmapped && roots.length > 0
         LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
@@ -45,12 +46,13 @@ class ClassesController < ApplicationController
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
       sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
+
       roots = nil
 
       if sort
-        roots = submission.roots_sorted(load_attrs)
+        roots = submission.roots_sorted(load_attrs, concept_scheme: concept_scheme)
       else
-        roots = submission.roots(load_attrs)
+        roots = submission.roots(load_attrs, concept_scheme: concept_scheme)
       end
 
       if unmapped && roots.length > 0
@@ -128,11 +130,11 @@ class ClassesController < ApplicationController
       if sort
         root_tree = cls.tree_sorted
         #add the other roots to the response
-        roots = submission.roots_sorted(extra_include=[:hasChildren])
+        roots = submission.roots_sorted(extra_include=[:hasChildren], concept_scheme: concept_scheme)
       else
         root_tree = cls.tree
         #add the other roots to the response
-        roots = submission.roots(extra_include=[:hasChildren])
+        roots = submission.roots(extra_include=[:hasChildren], concept_scheme: concept_scheme)
       end
 
       # if this path' root does not get returned by the submission.roots call, manually add it
@@ -248,5 +250,8 @@ class ClassesController < ApplicationController
       end
     end
 
+    def concept_scheme
+       params["concept_scheme"]
+    end
   end
 end
