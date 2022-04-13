@@ -10,8 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build docker-compose
-      working-directory: ./test
       run: docker-compose build
     - name: Run unit tests
-      working-directory: ./test
-      run: docker-compose run --rm unit-test wait-for-it solr-ut:8984 -- bundle exec rake test TESTOPTS='-v'
+      run: docker-compose run --rm api wait-for-it solr-ut:8983 -- bundle exec rake test

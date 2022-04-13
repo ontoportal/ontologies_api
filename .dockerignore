@@ -1,6 +1,7 @@
 # Git
 .git
 .gitignore
+create_permissions.log
 # Logs
 log/*
 # Temp files
