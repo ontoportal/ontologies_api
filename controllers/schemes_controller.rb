@@ -1,19 +1,33 @@
 class SchemesController < ApplicationController
-  get '/ontologies/:ontology/schemes' do
-    ont, submission = get_ontology_and_submission
-    attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params
 
-    page_data = LinkedData::Models::SKOS::Scheme.where
-                                            .in(submission)
-                                            .include(attributes)
+  namespace "/ontologies/:ontology/schemes" do
+    get  do
+      submission, attributes, bring_unmapped_needed = schemes_setting_params
 
-    page_data = page_data.all
-    if bring_unmapped_needed
-      LinkedData::Models::SKOS::Scheme.in(submission).models(page_data).include(:unmapped).all
+      page_data = LinkedData::Models::SKOS::Scheme.where
+                                                  .in(submission)
+                                                  .include(attributes)
+
+      page_data = page_data.all
+      if bring_unmapped_needed
+        LinkedData::Models::SKOS::Scheme.in(submission).models(page_data).include(:unmapped).all
+      end
+
+      reply page_data
     end
 
-    reply page_data
+    get '/:scheme' do
+      submission, attributes, bring_unmapped_needed = schemes_setting_params
+      scheme_uri = get_scheme_uri(params)
+
+      data = LinkedData::Models::SKOS::Scheme.find(scheme_uri).in(submission).include(attributes).first
+      if data && bring_unmapped_needed
+        LinkedData::Models::SKOS::Scheme.in(submission).models([data]).include(:unmapped).all
+      end
+      reply data
+    end
   end
+
 
 end
 
