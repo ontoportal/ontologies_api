@@ -130,11 +130,11 @@ class ClassesController < ApplicationController
       if sort
         root_tree = cls.tree_sorted
         #add the other roots to the response
-        roots = submission.roots_sorted(extra_include=[:hasChildren], concept_scheme: concept_scheme)
+        roots = submission.roots_sorted(extra_include=[:hasChildren], concept_schemes: concept_schemes)
       else
         root_tree = cls.tree
         #add the other roots to the response
-        roots = submission.roots(extra_include=[:hasChildren], concept_scheme: concept_scheme)
+        roots = submission.roots(extra_include=[:hasChildren], concept_schemes: concept_schemes)
       end
 
       # if this path' root does not get returned by the submission.roots call, manually add it
@@ -251,7 +251,7 @@ class ClassesController < ApplicationController
     end
 
     def concept_schemes
-       params["concept_scheme"]&.split(',')
+      params["concept_scheme"]&.split(',')
     end
   end
 end
