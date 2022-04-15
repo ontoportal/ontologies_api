@@ -16,6 +16,17 @@ class SchemesController < ApplicationController
       reply page_data
     end
 
+    get '/:scheme' do
+      submission, attributes, bring_unmapped_needed = schemes_setting_params
+      scheme_uri = get_scheme_uri(params)
+
+      data = LinkedData::Models::SKOS::Scheme.find(scheme_uri).in(submission).include(attributes).first
+      if data && bring_unmapped_needed
+        LinkedData::Models::SKOS::Scheme.in(submission).models([data]).include(:unmapped).all
+      end
+      reply data
+    end
+  end
 
 
 end
