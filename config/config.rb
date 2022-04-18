@@ -27,7 +27,6 @@ module LinkedData::OntologiesAPI
     @settings.enable_unicorn_workerkiller ||= false
     @settings.req_per_second_per_ip       ||= 15
     @settings.ontology_report_path        ||= "../ontologies_report.json"
-    @settings.resource_index_rest_url     ||= "http://rest.bioontology.org/resource_index/"
 
     if @settings.enable_monitoring
       puts "(API) >> Slow queries log enabled: #{@settings.slow_request_log}"
