@@ -128,11 +128,11 @@ class ClassesController < ApplicationController
       roots = nil
 
       if sort
-        root_tree = cls.tree_sorted
+        root_tree = cls.tree_sorted(concept_schemes: concept_schemes)
         #add the other roots to the response
         roots = submission.roots_sorted(extra_include=[:hasChildren], concept_schemes: concept_schemes)
       else
-        root_tree = cls.tree
+        root_tree = cls.tree(concept_schemes: concept_schemes)
         #add the other roots to the response
         roots = submission.roots(extra_include=[:hasChildren], concept_schemes: concept_schemes)
       end
