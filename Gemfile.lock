@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 8c188b290b830890415854bf8c37c3a28404b328
+  revision: 1877f6c3950d5b4b7730cd679cbff7abcb623f41
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -245,7 +245,7 @@ GEM
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
     netrc (0.11.0)
-    newrelic_rpm (8.6.0)
+    newrelic_rpm (8.7.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -310,7 +310,7 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.55.0)
+    sequel (5.56.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -414,4 +414,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.4
+   2.3.7
