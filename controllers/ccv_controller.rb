@@ -192,7 +192,7 @@ class CCVController < ApplicationController
               }
           )
 
-          num_results = results.rows.length
+          num_results = results.total_results
           break if num_results == 0
           start_index += max_results
 

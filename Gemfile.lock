@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 60c686f9408fddc86e930fa5afcb1774f8dc693d
+  revision: dd9681d91873341850df5b49a0e7b8dd87a3d252
   branch: development
   specs:
     goo (0.0.2)
@@ -85,7 +85,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 1877f6c3950d5b4b7730cd679cbff7abcb623f41
+  revision: fa49a53a6f14569a8ad77bcd1baa503f2380c011
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -360,7 +360,7 @@ GEM
       macaddr (~> 1.0)
 
 PLATFORMS
-  x86_64-linux
+  x86_64-darwin-21
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -414,4 +414,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.4
+   2.3.7
