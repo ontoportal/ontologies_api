@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 89a8f665f70644989adf70cd132bf0f38ef3414d
+  revision: d0dd816a0afd5b85a02c4b909502cf3a93e6be58
   branch: master
   specs:
     goo (0.0.2)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f2e4e8c7430e8c04465f6994db02dcc6f53dcf77
+  revision: 91f419f7381c3c49b945fc4510c7952a00aaaf90
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: e6bedc3a025a87d9fe0b27700efbe83771dca404
+  revision: 052e17698a59ff548a749fa7e365156c39aa7305
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -163,7 +163,7 @@ GEM
       multi_json
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    faraday (1.9.3)
+    faraday (1.10.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -245,7 +245,7 @@ GEM
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
     netrc (0.11.0)
-    newrelic_rpm (8.4.0)
+    newrelic_rpm (8.5.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -265,7 +265,7 @@ GEM
       rack (>= 0.4)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
-    rack-mini-profiler (2.3.3)
+    rack-mini-profiler (3.0.0)
       rack (>= 1.2.0)
     rack-protection (1.5.5)
       rack
@@ -302,15 +302,15 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rsolr (2.4.0)
+    rsolr (2.5.0)
       builder (>= 2.1.2)
-      faraday (>= 0.9.0)
+      faraday (>= 0.9, < 3, != 2.0.0)
     ruby-xxHash (0.4.0.2)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.53.0)
+    sequel (5.54.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -321,7 +321,7 @@ GEM
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
-    simplecov_json_formatter (0.1.3)
+    simplecov_json_formatter (0.1.4)
     sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
