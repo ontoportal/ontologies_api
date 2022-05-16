@@ -36,17 +36,17 @@ class TestInstancesController < TestCase
     instance_count = 0
     page_count = nil
     begin
-      call = "/ontologies/#{ont.acronym}/instances"
+      call = "/ontologies/#{ont.acronym}/instances?include=all"
       if response
         page_count = response['nextPage']
-        call <<  "?page=#{response['nextPage']}"
+        call <<  "&page=#{response['nextPage']}"
       end
       get call
       assert last_response.ok?
       response = MultiJson.load(last_response.body)
       response['collection'].each do |inst|
-        assert inst['id'].instance_of? String
-        assert inst['label'].instance_of? String
+        assert inst['@id'].instance_of? String
+        assert inst['label'].instance_of? Array
         assert inst['properties'].instance_of? Hash
       end
       assert last_response.ok?
@@ -94,8 +94,8 @@ class TestInstancesController < TestCase
       call = "/ontologies/#{ont.acronym}/classes/#{CGI.escape(cls_id)}/instances"
       get call
       assert last_response.ok?
-      instances = MultiJson.load(last_response.body)
-      instances.map! { |inst| inst["id"] }
+      instances = MultiJson.load(last_response.body)['collection']
+      instances.map! { |inst| inst["@id"] }
       assert_equal known_instances[cls_id].sort, instances.sort 
     end
   end
