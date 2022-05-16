@@ -12,6 +12,16 @@ REDIS_PORT       = ENV.include?('REDIS_PORT')       ? ENV['REDIS_PORT']       : 
 MGREP_HOST       = ENV.include?('MGREP_HOST')       ? ENV['MGREP_HOST']       : 'localhost'
 MGREP_PORT       = ENV.include?('MGREP_PORT')       ? ENV['MGREP_PORT']       : 55555
 
+
+begin
+  # For prefLabel extract main_lang first, or anything if no main found.
+  # For other properties only properties with a lang that is included in main_lang are used
+  Goo.main_languages = ['en']
+  Goo.use_cache = false
+rescue NoMethodError
+  puts "(CNFG) >> Goo.main_lang not available"
+end
+
 LinkedData.config do |config|
   config.goo_host                      = GOO_HOST.to_s
   config.goo_port                      = GOO_PORT.to_i
@@ -23,7 +33,24 @@ LinkedData.config do |config|
   config.ontology_analytics_redis_port = REDIS_PORT.to_i
   config.search_server_url             = "http://#{SOLR_HOST}:8983/solr/term_search_core1".to_s
   config.property_search_server_url    = "http://#{SOLR_HOST}:8983/solr/prop_search_core1".to_s
-#  config.enable_notifications          = false
+  #  config.enable_notifications          = false
+  config.interportal_hash = {
+    "agroportal" => {
+      "api" => "http://data.agroportal.lirmm.fr",
+      "ui" => "http://agroportal.lirmm.fr",
+      "apikey" => "1cfae05f-9e67-486f-820b-b393dec5764b"
+    },
+    "ncbo" => {
+      "api" => "http://data.bioontology.org",
+      "ui" => "http://bioportal.bioontology.org",
+      "apikey" => "4a5011ea-75fa-4be6-8e89-f45c8c84844e"
+    },
+    "sifr" => {
+      "api" => "http://data.bioportal.lirmm.fr",
+      "ui" => "http://bioportal.lirmm.fr",
+      "apikey" => "1cfae05f-9e67-486f-820b-b393dec5764b"
+    }
+  }
 end
 
 Annotator.config do |config|

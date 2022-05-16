@@ -366,9 +366,15 @@ class TestMappingsController < TestCase
     get "/mappings/statistics/ontologies/"
     assert last_response.ok?
     stats = MultiJson.load(last_response.body)
-    data = {"BRO-TEST-MAP-0"=>18,
-            "CNO-TEST-MAP-0"=>19,
-            "FAKE-TEST-MAP-0"=>17}
+    data = {"CNO-TEST-MAP-0"=>19,
+            "BRO-TEST-MAP-0"=>18,
+            "FAKE-TEST-MAP-0"=>17,
+            "http://data.bioontology.org/metadata/InterportalMappings/agroportal"=>0,
+            "http://data.bioontology.org/metadata/InterportalMappings/ncbo"=>0,
+            "http://data.bioontology.org/metadata/InterportalMappings/sifr"=>0,
+            "http://data.bioontology.org/metadata/ExternalMappings"=>0
+           }
+
     assert_equal data, stats
   end
 
