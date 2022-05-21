@@ -21,9 +21,10 @@ module Sinatra
 
         # Make sure everything is loaded
         if obj.is_a?(LinkedData::Models::Base)
-          obj.bring_remaining unless !obj.exist?
+          obj.bring_remaining if obj.exist?
+          no_writable_attributes = obj.class.attributes(:all) - obj.class.attributes
+          params = params.reject  {|k,v| no_writable_attributes.include? k.to_sym}
         end
-
         params.each do |attribute, value|
           next if value.nil?
 
