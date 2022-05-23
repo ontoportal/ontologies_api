@@ -26,6 +26,18 @@ class SlicesController < ApplicationController
       halt 204
     end
 
+    # Update an existing slice
+    patch '/:slice' do
+      slice = LinkedData::Models::Slice.find(params[:slice]).include(LinkedData::Models::Slice.attributes(:all)).first
+      populate_from_params(slice, params)
+      if slice.valid?
+        slice.save
+      else
+        error 422, slice.errors
+      end
+      halt 204
+    end
+    
     private
 
     def create_slice
