@@ -19,6 +19,13 @@ class SlicesController < ApplicationController
     post do
       create_slice
     end
+
+    # Delete a slice
+    delete '/:slice' do
+      LinkedData::Models::Slice.find(params[:slice]).first.delete
+      halt 204
+    end
+
     private
 
     def create_slice
