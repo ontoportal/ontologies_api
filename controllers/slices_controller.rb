@@ -7,6 +7,30 @@ class SlicesController < ApplicationController
       reply LinkedData::Models::Slice.where.include(includes).all
     end
 
+    # Check to make sure each group has a corresponding slice (and ontologies match)
+    get '/synchronize_groups' do
+      error 403, "Access denied" unless current_user && current_user.admin?
+
+      groups = LinkedData::Models::Group.where.include(LinkedData::Models::Group.attributes(:all)).all
+      groups.each do |g|
+        slice = LinkedData::Models::Slice.find(g.acronym.downcase.gsub(" ", "_")).include(LinkedData::Models::Slice.attributes(:all)).first
+        if slice
+          slice.ontologies = g.ontologies
+          slice.save if slice.valid?
+        else
+          slice = LinkedData::Models::Slice.new({
+                                                  acronym: g.acronym.downcase.gsub(" ", "_"),
+                                                  name: g.name,
+                                                  description: g.description,
+                                                  ontologies: g.ontologies
+                                                })
+          slice.save rescue reply "Error creating slice: " + slice.errors.to_s
+        end
+      end
+      reply LinkedData::Models::Slice.where.include(LinkedData::Models::Slice.attributes(:all)).all
+
+    end
+
     get '/:slice_id' do
       slice = LinkedData::Models::Slice.where(acronym: params["slice_id"]).first
       error 404, "Slice #{params['slice_id']} not found" if slice.nil?
@@ -14,7 +38,6 @@ class SlicesController < ApplicationController
       slice.bring(*LinkedData::Models::Slice.goo_attrs_to_load(includes_param))
       reply slice
     end
-
     ##
     # Create a new slice
     post do
@@ -38,32 +61,7 @@ class SlicesController < ApplicationController
       end
       halt 204
     end
-
-    # Check to make sure each group has a corresponding slice (and ontologies match)
-    get '/synchronize_groups' do
-      error 403, "Access denied" unless current_user && current_user.admin?
-
-      groups = LinkedData::Models::Group.where.include(LinkedData::Models::Group.attributes(:all)).all
-      groups.each do |g|
-        slice = LinkedData::Models::Slice.find(g.acronym.downcase.gsub(" ", "_")).include(LinkedData::Models::Slice.attributes(:all)).first
-        if slice
-          slice.ontologies = g.ontologies
-          slice.save if slice.valid?
-        else
-          slice = LinkedData::Models::Slice.new({
-                             acronym: g.acronym.downcase.gsub(" ", "_"),
-                             name: g.name,
-                             description: g.description,
-                             ontologies: g.ontologies
-                           })
-          slice.save rescue reply "Error creating slice: " + slice.errors.to_s
-        end
-      end
-      reply LinkedData::Models::Slice.where.include(LinkedData::Models::Slice.attributes(:all)).all
-
-    end
-
-
+    
     private
 
     def create_slice
@@ -75,11 +73,11 @@ class SlicesController < ApplicationController
       end
 
       slice = LinkedData::Models::Slice.new({
-        acronym: params["acronym"],
-        name: params["name"],
-        description: params["description"],
-        ontologies: ontologies
-       })
+                                              acronym: params["acronym"],
+                                              name: params["name"],
+                                              description: params["description"],
+                                              ontologies: ontologies
+                                            })
 
       if slice.valid?
         slice.save
