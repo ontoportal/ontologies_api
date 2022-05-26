@@ -209,7 +209,7 @@ GEM
       temple (>= 0.8.0)
       tilt
     http-accept (1.7.0)
-    http-cookie (1.0.4)
+    http-cookie (1.0.5)
       domain_name (~> 0.5)
     httpclient (2.8.3)
     hurley (0.2)
@@ -349,7 +349,7 @@ GEM
     uber (0.1.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.8.1)
+    unf_ext (0.0.8.2)
     unicorn (5.8.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
@@ -414,4 +414,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.7
+   2.3.14
