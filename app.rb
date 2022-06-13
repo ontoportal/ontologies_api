@@ -60,18 +60,11 @@ if ENV['OVERRIDE_CONFIG'] == 'true'
     config.goo_path_query    = ENV['GOO_PATH_QUERY']
     config.goo_path_data     = ENV['GOO_PATH_DATA']
     config.goo_path_update   = ENV['GOO_PATH_UPDATE']
-
-
     config.goo_redis_host    = ENV['GOO_REDIS_HOST']
     config.goo_redis_port    = ENV['GOO_REDIS_PORT']
     config.http_redis_host   = ENV['HTTP_REDIS_HOST']
     config.http_redis_port   = ENV['HTTP_REDIS_PORT']
-
-
-
   end
-
-
 
   Annotator.config do |config|
     config.annotator_redis_host = ENV['ANNOTATOR_REDIS_HOST']
@@ -79,11 +72,6 @@ if ENV['OVERRIDE_CONFIG'] == 'true'
     config.mgrep_host           = ENV['MGREP_HOST']
     config.mgrep_port           = ENV['MGREP_PORT']
   end
-
-
-
-
-
 end
 
 require_relative "config/environments/#{environment}.rb"
