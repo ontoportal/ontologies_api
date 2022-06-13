@@ -60,10 +60,10 @@ if ENV['OVERRIDE_CONFIG'] == 'true'
     config.goo_path_query    = ENV['GOO_PATH_QUERY']
     config.goo_path_data     = ENV['GOO_PATH_DATA']
     config.goo_path_update   = ENV['GOO_PATH_UPDATE']
-    config.goo_redis_host    = ENV['GOO_REDIS_HOST']
-    config.goo_redis_port    = ENV['GOO_REDIS_PORT']
-    config.http_redis_host   = ENV['HTTP_REDIS_HOST']
-    config.http_redis_port   = ENV['HTTP_REDIS_PORT']
+    config.goo_redis_host    = ENV['REDIS_HOST']
+    config.goo_redis_port    = ENV['REDIS_PORT']
+    config.http_redis_host   = ENV['REDIS_HOST']
+    config.http_redis_port   = ENV['REDIS_PORT']
   end
 
   Annotator.config do |config|
