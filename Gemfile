@@ -22,7 +22,7 @@ gem 'rack-attack', '~> 5.4.2', require: 'rack/attack'
 gem 'rack-cache', '~> 1.0'
 gem 'rack-cors', require: 'rack/cors'
 # GitHub dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
-gem 'rack-post-body-to-params', git: 'https://github.com/palexander/rack-post-body-to-params.git', branch: 'multipart_support'
+gem 'rack-post-body-to-params', github: 'palexander/rack-post-body-to-params', branch: 'multipart_support'
 gem 'rack-timeout'
 gem 'redis-rack-cache', '~> 1.0'
 
@@ -44,15 +44,15 @@ gem 'haml'
 gem 'redcarpet'
 
 # NCBO
-gem 'goo', git: 'https://github.com/ncbo/goo.git', branch: 'develop'
-gem 'ncbo_annotator', git: 'https://github.com/ncbo/ncbo_annotator.git', branch: 'develop'
-gem 'ncbo_cron', git: 'https://github.com/ncbo/ncbo_cron.git', branch: 'develop'
-gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'develop'
-gem 'ontologies_linked_data', git: 'https://github.com/ncbo/ontologies_linked_data.git', branch: 'develop'
-gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'develop'
+gem 'goo', github: 'ncbo/goo', branch: 'develop'
+gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'develop'
+gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'develop'
+gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'develop'
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'develop'
+gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'develop'
 
 # NCBO (unversioned)
-gem 'ncbo_resolver', git: 'https://github.com/ncbo/ncbo_resolver.git'
+gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'
 
 group :development do
   gem 'capistrano', '~> 3', require: false
@@ -60,7 +60,7 @@ group :development do
   gem 'capistrano-locally', require: false
   gem 'capistrano-rbenv', require: false
   gem 'pry'
-  gem 'shotgun', git: 'https://github.com/palexander/shotgun.git', branch: 'ncbo'
+  gem 'shotgun', github: 'palexander/shotgun', branch: 'ncbo'
 end
 
 group :profiling do
