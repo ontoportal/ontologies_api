@@ -44,7 +44,7 @@ services:
       GOO_BACKEND_NAME: 4store
       GOO_PORT: 9000
       GOO_HOST: 4store-ut
-      GOO_PATH_QUERY: /sparqlaaaaaa/
+      GOO_PATH_QUERY: /sparql/
       GOO_PATH_DATA: /data/
       GOO_PATH_UPDATE: /update/
     profiles:
