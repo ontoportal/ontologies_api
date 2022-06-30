@@ -1,4 +1,4 @@
-name: Ruby Unit Tests
+name: Ruby Unit Tests with 4store backend
 
 on:
   push:
@@ -12,4 +12,4 @@ jobs:
     - name: Build docker-compose
       run: docker-compose build
     - name: Run unit tests
-      run: docker-compose run --rm api wait-for-it solr-ut:8983 -- bundle exec rake test
+      run: docker-compose run --rm api wait-for-it solr-ut:8983 -- bundle exec rake test TESTOPTS='-v'
