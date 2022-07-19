@@ -13,6 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build docker-compose
-      run: docker-compose build --profile 4store
+      run: docker-compose --profile 4store build #profile flag is set in order to build all containers in this step
     - name: Run unit tests
       run: docker-compose run --rm ${{ matrix.backend }} wait-for-it solr-ut:8983 -- bundle exec rake test TESTOPTS='-v'
