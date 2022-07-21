@@ -47,7 +47,7 @@ gem 'goo', git: 'https://github.com/ontoportal-lirmm/goo.git', branch: 'developm
 gem 'ncbo_annotator', git: 'https://github.com/ontoportal-lirmm/ncbo_annotator.git', branch: 'master'
 gem 'ncbo_cron', git: 'https://github.com/ontoportal-lirmm/ncbo_cron.git', branch: 'development'
 gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'master'
-gem 'sparql-client', git: 'https://github.com/ncbo/sparql-client.git', branch: 'master'
+gem 'sparql-client', git: 'https://github.com/ontoportal-lirmm/sparql-client.git', branch: 'master'
 gem 'ontologies_linked_data', git: 'https://github.com/ontoportal-lirmm/ontologies_linked_data.git', branch: 'development'
 
 # NCBO gems (unversioned)
