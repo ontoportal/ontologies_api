@@ -17,7 +17,7 @@ gem 'sinatra-contrib', '~> 1.0'
 # Rack middleware
 gem 'ffi'
 gem 'rack-accept', '~> 0.4'
-gem 'rack-attack', '~> 5.4.2', require: 'rack/attack'
+gem 'rack-attack', '~> 6.6.1', require: 'rack/attack'
 gem 'rack-cache', '~> 1.0'
 gem 'rack-cors', require: 'rack/cors'
 # GitHub dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
