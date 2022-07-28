@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: b7874b1fd4a3e067a8370543c153cc261e9021f6
+  revision: 7fe22f03b56a944822c986269076a2e2aa64d6a2
   branch: develop
   specs:
     goo (0.0.2)
@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 00d04b4a4a43da4534aee5662a5175e74ff7d628
+  revision: bad8c646205014b1fc82793fb9c07d7075b4c068
   branch: develop
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: ca01815c2db998ebb9073db20d86dd9ef47717ab
+  revision: 7954f243ff2b76d9393e44e435f30529e6e697db
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 392e483aa29512b7dbc12dbddff973bbf289f1a8
+  revision: 27d4b63963343349fccd78b78e1957509ac685c5
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 52b7cec3c5b13d964aa2c20b463598e66dcb7270
+  revision: 53cd329b4a4a5fa4c4294cf4fe2dd43b0d748948
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -105,7 +105,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    airbrussh (1.4.0)
+    airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.23.0)
     bcrypt (3.1.18)
@@ -306,7 +306,7 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.8.2)
-    tilt (2.0.10)
+    tilt (2.0.11)
     trailblazer-option (0.1.2)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
@@ -325,6 +325,7 @@ GEM
     webrick (1.7.0)
 
 PLATFORMS
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
