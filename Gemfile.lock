@@ -59,7 +59,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: cc47ab0b56f09fe8aa990ce3f89e7385d2753953
+  revision: 368c6ca9a9a96f941f428a7d0df7b9845037f5be
   branch: development
   specs:
     ncbo_cron (0.0.1)
@@ -413,4 +413,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.14
+   2.3.15
