@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: b00599b40920cd30e5725862bba5b2609812fb58
+  revision: 6010ff60b99dc1282822b8a1fb59bd59f453755f
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -59,7 +59,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: 2f9c66d3dc99a8146320b6f04ef82bea7739aa1a
+  revision: 0c9951d7f30314c370c806a9eb8a5a89e2552aaa
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -75,7 +75,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: b9a3395eeb241a2e1554c6a614ed66638bd9ad74
+  revision: 2e4f9c1c3debc144df317a6d777a58b90405f644
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -85,7 +85,6 @@ GIT
       json
       libxml-ruby
       multi_json
-      ncbo_resource_index
       oj
       omni_logger
       pony
@@ -133,7 +132,7 @@ GEM
     bcrypt (3.1.18)
     bigdecimal (1.4.2)
     builder (3.2.4)
-    capistrano (3.17.0)
+    capistrano (3.17.1)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -163,7 +162,7 @@ GEM
       multi_json
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    faraday (1.10.0)
+    faraday (1.10.1)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -310,7 +309,7 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.58.0)
+    sequel (5.59.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
