@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: b00599b40920cd30e5725862bba5b2609812fb58
+  revision: 6010ff60b99dc1282822b8a1fb59bd59f453755f
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -75,7 +75,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 25fb6acb43e58f710ddd88ee6628436d747b0e7a
+  revision: 197e7024094f706cb0dab2d78c15bc6ba63d26d5
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -85,7 +85,6 @@ GIT
       json
       libxml-ruby
       multi_json
-      ncbo_resource_index
       oj
       omni_logger
       pony
@@ -127,13 +126,13 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     addressable (2.3.5)
-    airbrussh (1.4.0)
+    airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.23.0)
     bcrypt (3.1.18)
     bigdecimal (1.4.2)
     builder (3.2.4)
-    capistrano (3.17.0)
+    capistrano (3.17.1)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -163,7 +162,7 @@ GEM
       multi_json
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    faraday (1.10.0)
+    faraday (1.10.1)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -310,7 +309,7 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    sequel (5.58.0)
+    sequel (5.59.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -340,7 +339,7 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.8.2)
-    tilt (2.0.10)
+    tilt (2.0.11)
     trailblazer-option (0.1.2)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
@@ -414,4 +413,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.15
+   2.3.14
