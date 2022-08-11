@@ -4,7 +4,6 @@ gem 'activesupport', '~> 3.0'
 # see https://github.com/ncbo/ontologies_api/issues/69
 gem 'bigdecimal', '1.4.2'
 gem 'faraday', '~> 1.9'
-gem 'google-api-client', '~> 0.10'
 gem 'json-schema', '~> 2.0'
 gem 'multi_json', '~> 1.0'
 gem 'oj', '~> 2.0'
@@ -18,13 +17,13 @@ gem 'sinatra-contrib', '~> 1.0'
 # Rack middleware
 gem 'ffi'
 gem 'rack-accept', '~> 0.4'
-gem 'rack-attack', '~> 5.4.2', require: 'rack/attack'
+gem 'rack-attack', '~> 6.6.1', require: 'rack/attack'
 gem 'rack-cache', '~> 1.0'
 gem 'rack-cors', require: 'rack/cors'
 # GitHub dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
 gem 'rack-post-body-to-params', github: 'palexander/rack-post-body-to-params', branch: 'multipart_support'
 gem 'rack-timeout'
-gem 'redis-rack-cache', '~> 1.0'
+gem 'redis-rack-cache', '~> 2.0'
 
 # Data access (caching)
 gem 'redis'
@@ -35,7 +34,6 @@ gem 'cube-ruby', require: 'cube'
 gem 'newrelic_rpm'
 
 # HTTP server
-gem 'rainbows'
 gem 'unicorn'
 gem 'unicorn-worker-killer'
 
@@ -50,9 +48,6 @@ gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'master'
 gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'master'
 gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'master'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
-
-# NCBO (unversioned)
-gem 'ncbo_resolver', github: 'ncbo/ncbo_resolver'
 
 group :development do
   gem 'capistrano', '~> 3', require: false
