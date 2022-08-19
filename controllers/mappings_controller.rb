@@ -147,6 +147,18 @@ class MappingsController < ApplicationController
       reply(201, mapping)
     end
 
+    post '/load' do
+      begin
+        mappings = parse_bulk_load_file
+        loaded_mappings, errors = LinkedData::Mappings.bulk_load_mappings(mappings, current_user, check_exist: true)
+        response = {}
+        response[:created] = loaded_mappings unless loaded_mappings.empty?
+        response[:errors] = errors unless errors.empty?
+        reply(201, response)
+      rescue ::JSON::ParserError => e
+        error(404, "File parsing error: #{e.message}")
+      end
+    end
     # Delete a mapping
     delete '/:mapping' do
       mapping_id = RDF::URI.new(replace_url_prefix(params[:mapping]))
