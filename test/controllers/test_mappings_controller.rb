@@ -249,88 +249,24 @@ class TestMappingsController < TestCase
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
+    mappings, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations = build_mappings_hash
+    created = []
 
-    mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
-      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
-      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools" ]
-    mapping_ont_a = ["BRO-TEST-MAP-0","BRO-TEST-MAP-0","BRO-TEST-MAP-0"]
-
-
-    mapping_term_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000202",
-      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
-      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000205" ]
-    mapping_ont_b = ["CNO-TEST-MAP-0","CNO-TEST-MAP-0","CNO-TEST-MAP-0"]
-
-    relations = [ "http://www.w3.org/2004/02/skos/core#exactMatch",
-                  "http://www.w3.org/2004/02/skos/core#closeMatch",
-                  "http://www.w3.org/2004/02/skos/core#relatedMatch" ]
-
-    3.times do |i|
-      classes = {}
-      classes[mapping_term_a[i]] = mapping_ont_a[i]
-      classes[mapping_term_b[i]] = mapping_ont_b[i]
-
-      mapping = { classes: classes,
-                  comment: "comment for mapping test #{i}",
-                  relation: relations[i],
-                  creator: "http://data.bioontology.org/users/tim"
-      }
-
-      post "/mappings/",
-            MultiJson.dump(mapping),
-            "CONTENT_TYPE" => "application/json"
+    mappings.each_with_index do |mapping, i|
+      post '/mappings/',
+           MultiJson.dump(mapping),
+           "CONTENT_TYPE" => "application/json"
 
       assert last_response.status == 201
-      response = MultiJson.load(last_response.body)
-      assert response["process"]["comment"] == "comment for mapping test #{i}"
-      assert response["process"]["creator"]["users/tim"]
-      assert response["process"]["relation"] == relations[i]
-      assert response["process"]["date"] != nil
-      response["classes"].each do |cls|
-        if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]
-          assert cls["@id"] == mapping_term_a[i]
-        elsif cls["links"]["ontology"].split("/")[-1] == mapping_ont_b[i]
-          assert cls["@id"] == mapping_term_b[i]
-        else
-          assert 1==0, "uncontrolled mapping response in post"
-        end
-      end
+      created << MultiJson.load(last_response.body)
       # to ensure different in times in dates. Later test on recent mappings
       sleep(1.2)
     end
 
-    #there three mappings in BRO with processes
-    NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
-    ontology = "BRO-TEST-MAP-0"
-    get "/ontologies/#{ontology}/mappings?pagesize=1000&page=1"
-    assert last_response.ok?
-    mappings = MultiJson.load(last_response.body)
-    mappings = mappings["collection"]
-    assert mappings.length == 21
-    rest_count = 0
-    mappings.each do |x|
-      if x["process"] != nil
-        rest_count += 1
-        #assert x["@id"] != nil
-      end
-    end
-    assert rest_count == 3
+    commun_created_mappings_test(created, mapping_ont_a,
+                                 mapping_ont_b, mapping_term_a,
+                                 mapping_term_b, relations)
 
-    get "/mappings/recent/"
-    assert last_response.status == 200
-    response = MultiJson.load(last_response.body)
-    assert (response.length == 5)
-    date = nil
-    response.each do |x|
-      assert x["@id"] != nil
-      assert x["classes"].length == 2
-      assert x["process"] != nil
-      date_x = DateTime.iso8601(x["process"]["date"])
-      if date
-        assert date >= date_x
-      end
-      date = date_x
-    end
   end
 
   def delete_mapping
