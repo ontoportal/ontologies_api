@@ -4,7 +4,7 @@ class TestMappingsController < TestCase
 
   def self.before_suite
 
-    ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
+    ["BRO-TEST-MAP-0", "CNO-TEST-MAP-0", "FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
       end
@@ -14,29 +14,29 @@ class TestMappingsController < TestCase
       end
     end
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-      process_submission: true,
-      acronym: "BRO-TEST-MAP",
-      name: "BRO-TEST-MAP",
-      file_path: "./test/data/ontology_files/BRO_v3.2.owl",
-      ont_count: 1,
-      submission_count: 1
-    })
+                                                                         process_submission: true,
+                                                                         acronym: "BRO-TEST-MAP",
+                                                                         name: "BRO-TEST-MAP",
+                                                                         file_path: "./test/data/ontology_files/BRO_v3.2.owl",
+                                                                         ont_count: 1,
+                                                                         submission_count: 1
+                                                                       })
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-      process_submission: true,
-      acronym: "CNO-TEST-MAP",
-      name: "CNO-TEST-MAP",
-      file_path: "./test/data/ontology_files/CNO_05.owl",
-      ont_count: 1,
-      submission_count: 1
-    })
+                                                                         process_submission: true,
+                                                                         acronym: "CNO-TEST-MAP",
+                                                                         name: "CNO-TEST-MAP",
+                                                                         file_path: "./test/data/ontology_files/CNO_05.owl",
+                                                                         ont_count: 1,
+                                                                         submission_count: 1
+                                                                       })
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-      process_submission: true,
-      acronym: "FAKE-TEST-MAP",
-      name: "FAKE-TEST-MAP",
-      file_path: "./test/data/ontology_files/fake_for_mappings.owl",
-      ont_count: 1,
-      submission_count: 1
-    })
+                                                                         process_submission: true,
+                                                                         acronym: "FAKE-TEST-MAP",
+                                                                         name: "FAKE-TEST-MAP",
+                                                                         file_path: "./test/data/ontology_files/fake_for_mappings.owl",
+                                                                         ont_count: 1,
+                                                                         submission_count: 1
+                                                                       })
     NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
   end
 
@@ -162,7 +162,7 @@ class TestMappingsController < TestCase
     get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{page}&display=prefLabel"
     assert last_response.ok?
     mappings = MultiJson.load(last_response.body)
-    assert mappings["collection"].all? {|m| m["classes"].all? {|c| c["prefLabel"].is_a?(String) && c["prefLabel"].length > 0} }
+    assert mappings["collection"].all? { |m| m["classes"].all? { |c| c["prefLabel"].is_a?(String) && c["prefLabel"].length > 0 } }
 
     def_count = 0
     next_page = 1
@@ -170,7 +170,7 @@ class TestMappingsController < TestCase
       get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{next_page}&display=prefLabel,definition"
       assert last_response.ok?
       mappings = MultiJson.load(last_response.body)
-      def_count += mappings["collection"].map {|m| m["classes"].map {|c| (c["definition"] || []).length }}.flatten.sum
+      def_count += mappings["collection"].map { |m| m["classes"].map { |c| (c["definition"] || []).length } }.flatten.sum
       next_page = mappings["nextPage"]
     end while (next_page)
     assert 10, def_count
@@ -284,24 +284,23 @@ class TestMappingsController < TestCase
     rest_predicate = LinkedData::Mappings.mapping_predicates()["REST"][0]
     epr = Goo.sparql_query_client(:main)
     epr.query("SELECT (count(?s) as ?c) WHERE { ?s <#{rest_predicate}> ?o . }")
-          .each do |sol|
+       .each do |sol|
       assert sol[:c].object == 0
     end
 
     mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
-      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
-      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools" ]
-    mapping_ont_a = ["BRO-TEST-MAP-0","BRO-TEST-MAP-0","BRO-TEST-MAP-0"]
-
+                      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
+                      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools"]
+    mapping_ont_a = ["BRO-TEST-MAP-0", "BRO-TEST-MAP-0", "BRO-TEST-MAP-0"]
 
     mapping_term_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000202",
-      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
-      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000205" ]
-    mapping_ont_b = ["CNO-TEST-MAP-0","CNO-TEST-MAP-0","CNO-TEST-MAP-0"]
+                      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
+                      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000205"]
+    mapping_ont_b = ["CNO-TEST-MAP-0", "CNO-TEST-MAP-0", "CNO-TEST-MAP-0"]
 
-    relations = [ "http://www.w3.org/2004/02/skos/core#exactMatch",
-                  "http://www.w3.org/2004/02/skos/core#closeMatch",
-                  "http://www.w3.org/2004/02/skos/core#relatedMatch" ]
+    relations = ["http://www.w3.org/2004/02/skos/core#exactMatch",
+                 "http://www.w3.org/2004/02/skos/core#closeMatch",
+                 "http://www.w3.org/2004/02/skos/core#relatedMatch"]
 
     3.times do |i|
       classes = {}
@@ -315,8 +314,8 @@ class TestMappingsController < TestCase
       }
 
       post "/mappings/",
-            MultiJson.dump(mapping),
-            "CONTENT_TYPE" => "application/json"
+           MultiJson.dump(mapping),
+           "CONTENT_TYPE" => "application/json"
 
       assert last_response.status == 201
       response = MultiJson.load(last_response.body)
@@ -330,7 +329,7 @@ class TestMappingsController < TestCase
         elsif cls["links"]["ontology"].split("/")[-1] == mapping_ont_b[i]
           assert cls["@id"] == mapping_term_b[i]
         else
-          assert 1==0, "uncontrolled mapping response in post"
+          assert 1 == 0, "uncontrolled mapping response in post"
         end
       end
       sleep(1.2) # to ensure different in times in dates. Later test on recent mappings
@@ -352,7 +351,7 @@ class TestMappingsController < TestCase
 
     epr = Goo.sparql_query_client(:main)
     epr.query("SELECT (count(?s) as ?c) WHERE { ?s <#{rest_predicate}> ?o . }")
-          .each do |sol|
+       .each do |sol|
       assert sol[:c].object == 0
     end
   end
