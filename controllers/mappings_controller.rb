@@ -13,7 +13,7 @@ class MappingsController < ApplicationController
     end
 
     mappings = LinkedData::Mappings.mappings_ontology(submission,
-                                                      0,0,
+                                                      0, 0,
                                                       cls.id)
     populate_mapping_classes(mappings.to_a)
     reply mappings
@@ -23,15 +23,15 @@ class MappingsController < ApplicationController
   get '/ontologies/:ontology/mappings' do
     ontology = ontology_from_acronym(@params[:ontology])
     if ontology.nil?
-        error(404, "Ontology not found")
+      error(404, "Ontology not found")
     end
     page, size = page_params
     submission = ontology.latest_submission
     if submission.nil?
-        error(404, "Submission not found for ontology " + ontology.acronym)
+      error(404, "Submission not found for ontology " + ontology.acronym)
     end
     mappings = LinkedData::Mappings.mappings_ontology(submission,
-                                                      page,size,
+                                                      page, size,
                                                       nil)
     populate_mapping_classes(mappings)
     reply mappings
@@ -98,8 +98,8 @@ class MappingsController < ApplicationController
           error(404, "Submission not found for ontology #{acr2}")
         end
       end
-      mappings = LinkedData::Mappings.mappings_ontologies(sub1,sub2,
-                                                          page,size)
+      mappings = LinkedData::Mappings.mappings_ontologies(sub1, sub2,
+                                                          page, size)
       populate_mapping_classes(mappings)
       reply mappings
     end
@@ -113,7 +113,7 @@ class MappingsController < ApplicationController
       else
         mappings = LinkedData::Mappings.recent_rest_mappings(size + 15)
         populate_mapping_classes(mappings)
-        reply mappings[0..size-1]
+        reply mappings[0..size - 1]
       end
     end
 
@@ -237,6 +237,18 @@ class MappingsController < ApplicationController
       reply(201, mapping)
     end
 
+    post '/load' do
+      begin
+        mappings = parse_bulk_load_file
+        loaded_mappings, errors = LinkedData::Mappings.bulk_load_mappings(mappings, current_user, check_exist: true)
+        response = {}
+        response[:created] = loaded_mappings unless loaded_mappings.empty?
+        response[:errors] = errors unless errors.empty?
+        reply(201, response)
+      rescue ::JSON::ParserError => e
+        error(404, "File parsing error: #{e.message}")
+      end
+    end
     # Delete a mapping
     delete '/:mapping' do
       mapping_id = RDF::URI.new(replace_url_prefix(params[:mapping]))
@@ -256,9 +268,9 @@ class MappingsController < ApplicationController
       persistent_counts = {}
       f = Goo::Filter.new(:pair_count) == false
       LinkedData::Models::MappingCount.where.filter(f)
-      .include(:ontologies,:count)
-      .all
-      .each do |m|
+                                      .include(:ontologies, :count)
+                                      .all
+                                      .each do |m|
         persistent_counts[m.ontologies.first] = m.count
       end
       reply persistent_counts
@@ -279,9 +291,9 @@ class MappingsController < ApplicationController
       persistent_counts = {}
       LinkedData::Models::MappingCount.where(pair_count: true)
                                       .and(ontologies: ontology.acronym)
-      .include(:ontologies,:count)
-      .all
-      .each do |m|
+                                      .include(:ontologies, :count)
+                                      .all
+                                      .each do |m|
         other = m.ontologies.first
         if other == ontology.acronym
           other = m.ontologies[1]

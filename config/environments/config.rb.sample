@@ -82,11 +82,8 @@ rescue NameError
   puts "(CNFG) >> Annotator not available, cannot load config"
 end
 
-begin
-  OntologyRecommender.config do |config|
-  end
-rescue NameError
-  puts "(CNFG) >> OntologyRecommender not available, cannot load config"
+LinkedData::OntologiesAPI.config do |config|
+  config.restrict_download = ["ACR0", "ACR1", "ACR2"]
 end
 
 begin

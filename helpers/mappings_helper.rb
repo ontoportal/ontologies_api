@@ -67,6 +67,18 @@ module Sinatra
       rescue URI::InvalidURIError
         false
       end
+      ##
+      # Parse the uploaded mappings file
+      def parse_bulk_load_file
+        filename, tmpfile = file_from_request
+        if tmpfile
+          if filename.nil?
+            error 400, "Failure to resolve mappings json filename from upload file."
+          end
+          Array(::JSON.parse(tmpfile.read,{:symbolize_names => true}))
+        end
+
+      end
     end
   end
 end
