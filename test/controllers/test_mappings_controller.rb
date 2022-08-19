@@ -54,6 +54,34 @@ class TestMappingsController < TestCase
     mappings_statistics_for_ontology
   end
 
+  def test_mappings_file_load
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
+
+    mappings, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations = build_mappings_hash(old_style: false)
+    file = Tempfile.open do |file|
+      file.write(mappings.to_json)
+      file.rewind
+      file
+    end
+
+    user = User.all.first
+    user.bring :apikey
+
+    header 'Authorization', "apikey token=#{user.apikey}"
+    post '/mappings/load',
+         file: Rack::Test::UploadedFile.new(file.to_path, 'application/json')
+
+    assert last_response.status == 201
+    response = MultiJson.load(last_response.body)
+    created = response["created"]
+
+    LinkedData::Mappings.create_mapping_counts(Logger.new(TestLogFile.new))
+    commun_created_mappings_test(created, mapping_ont_a, mapping_ont_b,
+                                 mapping_term_a, mapping_term_b, relations)
+  end
+
   private
 
   def commun_created_mappings_test(created, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations)
