@@ -1,15 +1,26 @@
-FROM ruby:2.6
+ARG RUBY_VERSION
+ARG DISTRO_NAME=bullseye
 
-RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends openjdk-11-jre-headless raptor2-utils wait-for-it
+FROM ruby:$RUBY_VERSION-$DISTRO_NAME
 
-# The Gemfile Caching Trick
-# we install gems before copying the code in its own layer so that gems would not have to get
-# installed every single time code is updated
+RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
+  openjdk-11-jre-headless \
+  raptor2-utils \
+  wait-for-it \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /srv/ontoportal/ontologies_api
+RUN mkdir -p /srv/ontoportal/bundle
 COPY Gemfile* /srv/ontoportal/ontologies_api/
+
 WORKDIR /srv/ontoportal/ontologies_api
-RUN gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
+
+RUN gem update --system
+RUN gem install bundler
+ENV BUNDLE_PATH=/srv/ontoportal/bundle
 RUN bundle install
+
 COPY . /srv/ontoportal/ontologies_api
+
 EXPOSE 9393
-CMD ["bundle","exec","rackup","-p","9393","--host","0.0.0.0"]
+CMD ["bundle", "exec", "rackup", "-p", "9393", "--host", "0.0.0.0"]
