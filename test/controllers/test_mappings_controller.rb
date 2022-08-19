@@ -448,4 +448,40 @@ class TestMappingsController < TestCase
     assert_equal 9, stats["CNO-TEST-MAP-0"]
   end
 
+  def build_mappings_hash(old_style: true)
+    # old_style is to remove when update and harmonize how we post a rest mapping
+    mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
+                      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
+                      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools"]
+    mapping_ont_a = ["BRO-TEST-MAP-0", "BRO-TEST-MAP-0", "BRO-TEST-MAP-0"]
+
+    mapping_term_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000202",
+                      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
+                      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000205"]
+    mapping_ont_b = ["CNO-TEST-MAP-0", "CNO-TEST-MAP-0", "CNO-TEST-MAP-0"]
+
+    relations = ["http://www.w3.org/2004/02/skos/core#exactMatch",
+                 "http://www.w3.org/2004/02/skos/core#closeMatch",
+                 "http://www.w3.org/2004/02/skos/core#relatedMatch"]
+
+    mappings = []
+    3.times do |i|
+
+      if old_style
+        classes = {}
+        classes[mapping_term_a[i]] = mapping_ont_a[i]
+        classes[mapping_term_b[i]] = mapping_ont_b[i]
+      else
+        classes = [mapping_term_a[i], mapping_term_b[i]]
+      end
+
+      mappings << { classes: classes,
+                    name: "name for mapping test #{i}",
+                    comment: "comment for mapping test #{i}",
+                    relation: relations[i],
+                    creator: "http://data.bioontology.org/users/tim"
+      }
+    end
+    [mappings, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations]
+  end
 end
