@@ -52,9 +52,19 @@ GIT
       redis
 
 GIT
-  remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 8196bf34b45c75f8104bb76dfcba1db0f2c048e4
+  remote: https://github.com/ncbo/sparql-client.git
+  revision: fb4a89b420f8eb6dda5190a126b6c62e32c4c0c9
   branch: master
+  specs:
+    sparql-client (1.0.1)
+      json_pure (>= 1.4)
+      net-http-persistent (= 2.9.4)
+      rdf (>= 1.0)
+
+GIT
+  remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
+  revision: 0d524c89479b253cb0962eec5aaf3989663c4acf
+  branch: pr/feature/add-rest-mapping-bulk-loader
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -70,16 +80,6 @@ GIT
       rack-test
       rsolr
       rubyzip
-
-GIT
-  remote: https://github.com/ncbo/sparql-client.git
-  revision: fb4a89b420f8eb6dda5190a126b6c62e32c4c0c9
-  branch: master
-  specs:
-    sparql-client (1.0.1)
-      json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
-      rdf (>= 1.0)
 
 GIT
   remote: https://github.com/palexander/rack-post-body-to-params.git
@@ -325,6 +325,7 @@ GEM
     webrick (1.7.0)
 
 PLATFORMS
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
