@@ -54,6 +54,63 @@ class TestMappingsController < TestCase
     mappings_statistics_for_ontology
   end
 
+  private
+
+  def commun_created_mappings_test(created, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations)
+    assert_equal 3, created.size
+    created.each_with_index do |mapping, i|
+
+      assert_equal "comment for mapping test #{i}", mapping["process"]["comment"]
+      refute_nil mapping["process"]["creator"]["users/tim"]
+      assert_equal [relations[i]], mapping["process"]["relation"]
+      refute_nil mapping["process"]["date"]
+
+      mapping["classes"].each do |cls|
+        if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]
+          assert_equal mapping_term_a[i], cls["@id"]
+        elsif cls["links"]["ontology"].split("/")[-1] == mapping_ont_b[i]
+          assert_equal mapping_term_b[i], cls["@id"]
+        else
+          assert 1 == 0, 'uncontrolled mapping response in post'
+        end
+      end
+    end
+
+    #there three mappings in BRO with processes
+    NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
+    ontology = "BRO-TEST-MAP-0"
+    get "/ontologies/#{ontology}/mappings?pagesize=1000&page=1"
+    assert last_response.ok?
+    mappings = MultiJson.load(last_response.body)
+    mappings = mappings["collection"]
+    assert_equal 21, mappings.length
+    rest_count = 0
+    mappings.each do |x|
+      if x["process"] != nil
+        rest_count += 1
+        #assert x["@id"] != nil
+      end
+    end
+    assert rest_count == 3
+
+    get "/mappings/recent/"
+    assert last_response.status == 200
+    response = MultiJson.load(last_response.body)
+    assert (response.length == 5)
+    date = nil
+    response.each do |x|
+      assert x["@id"] != nil
+      assert x["classes"].length == 2
+      assert x["process"] != nil
+      date_x = DateTime.iso8601(x["process"]["date"])
+      if date
+        assert date >= date_x
+      end
+      date = date_x
+    end
+
+  end
+
   def mappings_for_ontology
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
