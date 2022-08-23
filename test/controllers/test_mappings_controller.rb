@@ -41,6 +41,9 @@ class TestMappingsController < TestCase
   end
 
   def test_mappings_controllers_in_order
+    LinkedData::Models::RestBackupMapping.all.each do |m|
+      LinkedData::Mappings.delete_rest_mapping(m.id)
+    end
     LinkedData::Mappings.create_mapping_counts(Logger.new(TestLogFile.new))
     mappings_between_ontologies
     mappings_for_ontology
