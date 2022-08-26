@@ -101,7 +101,8 @@ class OntologySubmissionsController < ApplicationController
       submission = ont.submission(params['ontology_submission_id'].to_i)
       error 404, "There is no such submission for download" if submission.nil?
       file_path = submission.uploadFilePath
-
+      # handle edge case where uploadFilePath is not set
+      error 422, "Upload File Path is not set for this submission" if file_path.to_s.empty?
       download_format = params["download_format"].to_s.downcase
       allowed_formats = ["csv", "rdf"]
       if download_format.empty?
