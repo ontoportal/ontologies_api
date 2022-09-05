@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 84a026e7c268104406b21df1c340d82b9c3cb514
+  revision: af56663a74c3f210f725be0bd52c0239fb8e01ee
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -322,6 +322,7 @@ GEM
       macaddr (~> 1.0)
 
 PLATFORMS
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
