@@ -62,7 +62,7 @@ class TestMappingsController < TestCase
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
 
-    mappings, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations = build_mappings_hash(old_style: false)
+    mappings, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations = build_mappings_hash
     file = Tempfile.open do |file|
       file.write(mappings.to_json)
       file.rewind
@@ -93,7 +93,7 @@ class TestMappingsController < TestCase
 
       assert_equal "comment for mapping test #{i}", mapping["process"]["comment"]
       refute_nil mapping["process"]["creator"]["users/tim"]
-      assert_equal [relations[i]], mapping["process"]["relation"]
+      assert_equal [relations[i]], Array(mapping["process"]["relation"])
       refute_nil mapping["process"]["date"]
 
       mapping["classes"].each do |cls|
@@ -421,7 +421,7 @@ class TestMappingsController < TestCase
     assert_equal 9, stats["CNO-TEST-MAP-0"]
   end
 
-  def build_mappings_hash(old_style: true)
+  def build_mappings_hash
     # old_style is to remove when update and harmonize how we post a rest mapping
     mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
                       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
@@ -440,18 +440,14 @@ class TestMappingsController < TestCase
     mappings = []
     3.times do |i|
 
-      if old_style
-        classes = {}
-        classes[mapping_term_a[i]] = mapping_ont_a[i]
-        classes[mapping_term_b[i]] = mapping_ont_b[i]
-      else
-        classes = [mapping_term_a[i], mapping_term_b[i]]
-      end
+      classes = [mapping_term_a[i], mapping_term_b[i]]
 
       mappings << { classes: classes,
                     name: "name for mapping test #{i}",
                     comment: "comment for mapping test #{i}",
-                    relation: relations[i],
+                    "subject_source_id": mapping_ont_a[i],
+                    "object_source_id": mapping_ont_b[i],
+                    relation: Array(relations[i]),
                     creator: "http://data.bioontology.org/users/tim"
       }
     end
