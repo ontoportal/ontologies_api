@@ -75,19 +75,19 @@ class TestMappingsController < TestCase
     header 'Authorization', "apikey token=#{user.apikey}"
     post '/mappings/load',
          file: Rack::Test::UploadedFile.new(file.to_path, 'application/json')
-
     assert last_response.status == 201
     response = MultiJson.load(last_response.body)
+
     created = response["created"]
 
     LinkedData::Mappings.create_mapping_counts(Logger.new(TestLogFile.new))
-    commun_created_mappings_test(created, mapping_ont_a, mapping_ont_b,
-                                 mapping_term_a, mapping_term_b, relations)
+    commun_created_mappings_test(created, mapping_term_a, mapping_term_b, relations)
   end
 
   private
 
-  def commun_created_mappings_test(created, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations)
+  def commun_created_mappings_test(created, mapping_term_a, mapping_term_b, relations)
+    refute_nil created
     assert_equal 3, created.size
     created.each_with_index do |mapping, i|
 
@@ -97,13 +97,8 @@ class TestMappingsController < TestCase
       refute_nil mapping["process"]["date"]
 
       mapping["classes"].each do |cls|
-        if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]
-          assert_equal mapping_term_a[i], cls["@id"]
-        elsif cls["links"]["ontology"].split("/")[-1] == mapping_ont_b[i]
-          assert_equal mapping_term_b[i], cls["@id"]
-        else
-          assert 1 == 0, 'uncontrolled mapping response in post'
-        end
+        assert (mapping_term_b[i] == cls["@id"]) || (mapping_term_a[i] == cls["@id"]),
+               'uncontrolled mapping response in post'
       end
     end
 
@@ -294,9 +289,7 @@ class TestMappingsController < TestCase
       sleep(1.2)
     end
 
-    commun_created_mappings_test(created, mapping_ont_a,
-                                 mapping_ont_b, mapping_term_a,
-                                 mapping_term_b, relations)
+    commun_created_mappings_test(created, mapping_term_a, mapping_term_b, relations)
 
   end
 
@@ -312,52 +305,19 @@ class TestMappingsController < TestCase
       assert sol[:c].object == 0
     end
 
-    mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
-                      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
-                      "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools"]
-    mapping_ont_a = ["BRO-TEST-MAP-0", "BRO-TEST-MAP-0", "BRO-TEST-MAP-0"]
+    mappings, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations = build_mappings_hash
 
-    mapping_term_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000202",
-                      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
-                      "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000205"]
-    mapping_ont_b = ["CNO-TEST-MAP-0", "CNO-TEST-MAP-0", "CNO-TEST-MAP-0"]
-
-    relations = ["http://www.w3.org/2004/02/skos/core#exactMatch",
-                 "http://www.w3.org/2004/02/skos/core#closeMatch",
-                 "http://www.w3.org/2004/02/skos/core#relatedMatch"]
-
-    3.times do |i|
-      classes = {}
-      classes[mapping_term_a[i]] = mapping_ont_a[i]
-      classes[mapping_term_b[i]] = mapping_ont_b[i]
-
-      mapping = { classes: classes,
-                  comment: "comment for mapping test #{i}",
-                  relation: relations[i],
-                  creator: "http://data.bioontology.org/users/tim"
-      }
+    created = []
+    mappings.each do |mapping|
 
       post "/mappings/",
            MultiJson.dump(mapping),
            "CONTENT_TYPE" => "application/json"
 
-      assert last_response.status == 201
-      response = MultiJson.load(last_response.body)
-      assert response["process"]["comment"] == "comment for mapping test #{i}"
-      assert response["process"]["creator"]["users/tim"]
-      assert response["process"]["relation"] == [relations[i]]
-      assert response["process"]["date"] != nil
-      response["classes"].each do |cls|
-        if cls["links"]["ontology"].split("/")[-1] == mapping_ont_a[i]
-          assert cls["@id"] == mapping_term_a[i]
-        elsif cls["links"]["ontology"].split("/")[-1] == mapping_ont_b[i]
-          assert cls["@id"] == mapping_term_b[i]
-        else
-          assert 1 == 0, "uncontrolled mapping response in post"
-        end
-      end
+      created << MultiJson.load(last_response.body)
       sleep(1.2) # to ensure different in times in dates. Later test on recent mappings
     end
+    commun_created_mappings_test(created, mapping_term_a, mapping_term_b, relations)
 
     LinkedData::Models::RestBackupMapping.all.each do |m|
       m_id = CGI.escape(m.id.to_s)
@@ -398,7 +358,7 @@ class TestMappingsController < TestCase
             "http://data.bioontology.org/metadata/ExternalMappings"=>0
            }
 
-    assert_equal data, stats
+    assert_equal data.sort.to_h, stats.sort.to_h
   end
 
   def mappings_statistics_for_ontology
@@ -426,12 +386,18 @@ class TestMappingsController < TestCase
     mapping_term_a = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image_Algorithm",
                       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Image",
                       "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Integration_and_Interoperability_Tools"]
-    mapping_ont_a = ["BRO-TEST-MAP-0", "BRO-TEST-MAP-0", "BRO-TEST-MAP-0"]
+    mapping_ont_a = ["http://bioontology.org/ontologies/BiomedicalResources.owl",
+                     "http://bioontology.org/ontologies/BiomedicalResources.owl",
+                     "http://bioontology.org/ontologies/BiomedicalResources.owl"
+    ]
 
     mapping_term_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000202",
                       "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000203",
                       "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000205"]
-    mapping_ont_b = ["CNO-TEST-MAP-0", "CNO-TEST-MAP-0", "CNO-TEST-MAP-0"]
+
+    mapping_ont_b = ["http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl",
+                     "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl",
+                     "http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl"]
 
     relations = ["http://www.w3.org/2004/02/skos/core#exactMatch",
                  "http://www.w3.org/2004/02/skos/core#closeMatch",
