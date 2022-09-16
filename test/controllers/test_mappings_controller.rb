@@ -38,13 +38,14 @@ class TestMappingsController < TestCase
                                                                          submission_count: 1
                                                                        })
     NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
+    LinkedData::Mappings.create_mapping_counts(Logger.new(TestLogFile.new))
   end
 
   def test_mappings_controllers_in_order
     LinkedData::Models::RestBackupMapping.all.each do |m|
       LinkedData::Mappings.delete_rest_mapping(m.id)
     end
-    LinkedData::Mappings.create_mapping_counts(Logger.new(TestLogFile.new))
+
     mappings_between_ontologies
     mappings_for_ontology
     mappings_for_ontology_pages
@@ -79,8 +80,7 @@ class TestMappingsController < TestCase
     response = MultiJson.load(last_response.body)
 
     created = response["created"]
-
-    LinkedData::Mappings.create_mapping_counts(Logger.new(TestLogFile.new))
+    
     commun_created_mappings_test(created, mapping_term_a, mapping_term_b, relations)
   end
 
