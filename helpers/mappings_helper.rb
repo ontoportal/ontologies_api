@@ -93,6 +93,18 @@ module Sinatra
         end
         user_creator
       end
+
+      def request_mapping_id
+        mapping_id = nil
+        if params[:mapping] and params[:mapping].start_with?("http")
+          mapping_id = RDF::URI.new(params[:mapping])
+        else
+          mapping_id =
+            "http://data.bioontology.org/rest_backup_mappings/#{params[:mapping]}"
+          mapping_id = RDF::URI.new(mapping_id)
+        end
+        mapping_id
+      end
     end
   end
 end

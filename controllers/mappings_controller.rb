@@ -37,6 +37,8 @@ class MappingsController < ApplicationController
     reply mappings
   end
 
+
+
   namespace "/mappings" do
     # Display all mappings
     get do
@@ -119,14 +121,7 @@ class MappingsController < ApplicationController
 
     # Display a single mapping - only rest
     get '/:mapping' do
-      mapping_id = nil
-      if params[:mapping] and params[:mapping].start_with?("http")
-        mapping_id = RDF::URI.new(params[:mapping])
-      else
-        mapping_id =
-          "http://data.bioontology.org/rest_backup_mappings/#{params[:mapping]}"
-        mapping_id = RDF::URI.new(mapping_id)
-      end
+      mapping_id = request_mapping_id
       mapping = LinkedData::Mappings.get_rest_mapping(mapping_id)
       if mapping
         reply populate_mapping_classes([mapping].first)
@@ -157,6 +152,21 @@ class MappingsController < ApplicationController
         error(404, "File parsing error: #{e.message}")
       end
     end
+
+
+    patch '/:mapping' do
+      mapping = LinkedData::Mappings.get_rest_mapping(request_mapping_id)
+      process = mapping.process
+      populate_from_params(process, params)
+      if process.valid?
+        process.save
+      else
+        error 422, process.errors
+      end
+      halt 204
+    end
+
+
     # Delete a mapping
     delete '/:mapping' do
       mapping_id = RDF::URI.new(replace_url_prefix(params[:mapping]))
