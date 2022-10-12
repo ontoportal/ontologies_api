@@ -173,7 +173,7 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (~> 0.15)
-    haml (6.0.5)
+    haml (6.0.6)
       temple (>= 0.8.2)
       thor
       tilt
@@ -213,7 +213,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (7.0.1)
     netrc (0.11.0)
-    newrelic_rpm (8.10.1)
+    newrelic_rpm (8.11.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -375,4 +375,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.14
+   2.3.15
