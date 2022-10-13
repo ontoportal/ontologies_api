@@ -45,6 +45,7 @@ class ClassesController < ApplicationController
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
       sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
+
       roots = nil
 
       if sort

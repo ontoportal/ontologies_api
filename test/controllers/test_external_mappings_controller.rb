@@ -3,7 +3,7 @@ require_relative '../test_case'
 class TestExternalMappingsController < TestCase
 
   def self.before_suite
-    ["BRO-TEST-MAP-0","CNO-TEST-MAP-0","FAKE-TEST-MAP-0"].each do |acr|
+    ["BRO-TEST-MAP-0", "CNO-TEST-MAP-0", "FAKE-TEST-MAP-0"].each do |acr|
       LinkedData::Models::OntologySubmission.where(ontology: [acronym: acr]).to_a.each do |s|
         s.delete
       end
@@ -13,28 +13,28 @@ class TestExternalMappingsController < TestCase
       end
     end
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-                                                                           process_submission: true,
-                                                                           acronym: "BRO-TEST-MAP",
-                                                                           name: "BRO-TEST-MAP",
-                                                                           file_path: "./test/data/ontology_files/BRO_v3.2.owl",
-                                                                           ont_count: 1,
-                                                                           submission_count: 1
+                                                                         process_submission: true,
+                                                                         acronym: "BRO-TEST-MAP",
+                                                                         name: "BRO-TEST-MAP",
+                                                                         file_path: "./test/data/ontology_files/BRO_v3.2.owl",
+                                                                         ont_count: 1,
+                                                                         submission_count: 1
                                                                        })
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-                                                                           process_submission: true,
-                                                                           acronym: "CNO-TEST-MAP",
-                                                                           name: "CNO-TEST-MAP",
-                                                                           file_path: "./test/data/ontology_files/CNO_05.owl",
-                                                                           ont_count: 1,
-                                                                           submission_count: 1
+                                                                         process_submission: true,
+                                                                         acronym: "CNO-TEST-MAP",
+                                                                         name: "CNO-TEST-MAP",
+                                                                         file_path: "./test/data/ontology_files/CNO_05.owl",
+                                                                         ont_count: 1,
+                                                                         submission_count: 1
                                                                        })
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-                                                                           process_submission: true,
-                                                                           acronym: "FAKE-TEST-MAP",
-                                                                           name: "FAKE-TEST-MAP",
-                                                                           file_path: "./test/data/ontology_files/fake_for_mappings.owl",
-                                                                           ont_count: 1,
-                                                                           submission_count: 1
+                                                                         process_submission: true,
+                                                                         acronym: "FAKE-TEST-MAP",
+                                                                         name: "FAKE-TEST-MAP",
+                                                                         file_path: "./test/data/ontology_files/fake_for_mappings.owl",
+                                                                         ont_count: 1,
+                                                                         submission_count: 1
                                                                        })
     NcboCron::Models::QueryWarmer.new(Logger.new(TestLogFile.new)).run
   end
@@ -50,13 +50,14 @@ class TestExternalMappingsController < TestCase
 
   # Create and delete an external mapping
   def delete_external_mappings
-    classes = { "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction"=> "BRO-TEST-MAP-0",
-                "http://www.movieontology.org/2009/10/01/movieontology.owl#Love"=> "ext:http://www.movieontology.org/2010/01/movieontology.owl"
-    }
 
-    mapping = { classes: classes,
+    mapping = { classes: ['http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction',
+                          'http://www.movieontology.org/2009/10/01/movieontology.owl#Love'],
+                "subject_source_id": 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl',
+                "object_source_id": 'http://www.movieontology.org/2009/10/01/movieontology.owl',
                 comment: "testing external mappings",
                 relation: ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"],
+                name: 'test',
                 creator: "tim"
     }
 
@@ -95,17 +96,19 @@ class TestExternalMappingsController < TestCase
 
   end
 
-
   # Create and delete an interportal mapping
   def delete_interportal_mappings
     # For this test to work the test.rb config file has to include:
     # config.interportal_hash   = {"ncbo" => {"api" => "http://data.bioontology.org", "ui" => "http://bioportal.bioontology.org", "apikey" => "..."}}
 
-    classes = { "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction"=> "BRO-TEST-MAP-0",
-                "http://neurolog.unice.fr/ontoneurolog/v3.0/dolce-particular.owl#event"=> "ncbo:OntoVIP"
-    }
+    classes = ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Knowledge_Extraction",
+               "http://neurolog.unice.fr/ontoneurolog/v3.0/dolce-particular.owl#event"
+    ]
     mapping = { classes: classes,
+                "subject_source_id": 'http://bioontology.org/ontologies/BiomedicalResourceOntology.owl',
+                "object_source_id": 'http://data.bioontology.org/ontologies/OntoVIP',
                 comment: "testing external mappings",
+                name: 'test',
                 relation: ["http://www.w3.org/2004/02/skos/core#exactMatch", "http://purl.org/linguistics/gold/translation"],
                 creator: "tim"
     }

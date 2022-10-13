@@ -351,8 +351,7 @@ module Sinatra
       # If the setting is enabled, replace the URL prefix with the proper id prefix
       # EX: http://stagedata.bioontology.org/ontologies/BRO would become http://data.bioontology.org/ontologies/BRO
       def replace_url_prefix(id)
-        id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix && id.start_with?(LinkedData.settings.rest_url_prefix)
-        id
+        LinkedData::Models::Base.replace_url_prefix_to_id(id)
       end
 
       def retrieve_latest_submissions(options = {})
@@ -440,6 +439,23 @@ module Sinatra
         return class_params_include || params_include
       end
 
+
+      ##
+      # Checks to see if the request has a file attached
+      def request_has_file?
+        @params.any? {|p,v| v.instance_of?(Hash) && v.key?(:tempfile) && v[:tempfile].instance_of?(Tempfile)}
+      end
+
+      ##
+      # Looks for a file that was included as a multipart in a request
+      def file_from_request
+        @params.each do |param, value|
+          if value.instance_of?(Hash) && value.has_key?(:tempfile) && value[:tempfile].instance_of?(Tempfile)
+            return value[:filename], value[:tempfile]
+          end
+        end
+        return nil, nil
+      end
       private
 
       def naive_expiring_cache_write(key, object, timeout = 60)

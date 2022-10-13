@@ -13,7 +13,7 @@ class MappingsController < ApplicationController
     end
 
     mappings = LinkedData::Mappings.mappings_ontology(submission,
-                                                      0,0,
+                                                      0, 0,
                                                       cls.id)
     populate_mapping_classes(mappings.to_a)
     reply mappings
@@ -23,19 +23,21 @@ class MappingsController < ApplicationController
   get '/ontologies/:ontology/mappings' do
     ontology = ontology_from_acronym(@params[:ontology])
     if ontology.nil?
-        error(404, "Ontology not found")
+      error(404, "Ontology not found")
     end
     page, size = page_params
     submission = ontology.latest_submission
     if submission.nil?
-        error(404, "Submission not found for ontology " + ontology.acronym)
+      error(404, "Submission not found for ontology " + ontology.acronym)
     end
     mappings = LinkedData::Mappings.mappings_ontology(submission,
-                                                      page,size,
+                                                      page, size,
                                                       nil)
     populate_mapping_classes(mappings)
     reply mappings
   end
+
+
 
   namespace "/mappings" do
     # Display all mappings
@@ -98,8 +100,8 @@ class MappingsController < ApplicationController
           error(404, "Submission not found for ontology #{acr2}")
         end
       end
-      mappings = LinkedData::Mappings.mappings_ontologies(sub1,sub2,
-                                                          page,size)
+      mappings = LinkedData::Mappings.mappings_ontologies(sub1, sub2,
+                                                          page, size)
       populate_mapping_classes(mappings)
       reply mappings
     end
@@ -113,20 +115,13 @@ class MappingsController < ApplicationController
       else
         mappings = LinkedData::Mappings.recent_rest_mappings(size + 15)
         populate_mapping_classes(mappings)
-        reply mappings[0..size-1]
+        reply mappings[0..size - 1]
       end
     end
 
     # Display a single mapping - only rest
     get '/:mapping' do
-      mapping_id = nil
-      if params[:mapping] and params[:mapping].start_with?("http")
-        mapping_id = RDF::URI.new(params[:mapping])
-      else
-        mapping_id =
-          "http://data.bioontology.org/rest_backup_mappings/#{params[:mapping]}"
-        mapping_id = RDF::URI.new(mapping_id)
-      end
+      mapping_id = request_mapping_id
       mapping = LinkedData::Mappings.get_rest_mapping(mapping_id)
       if mapping
         reply populate_mapping_classes([mapping].first)
@@ -137,105 +132,40 @@ class MappingsController < ApplicationController
 
     # Create a new mapping
     post do
-      error(400, "Input does not contain classes") if !params[:classes]
-      if params[:classes].length > 2
-        error(400, "Input does not contain at least 2 terms")
+      begin
+        mapping = LinkedData::Mappings.create_mapping(mapping_hash: params, user_creator: find_user)
+        reply(201, mapping)
+      rescue StandardError => e
+        error(400, e.message)
       end
-      error(400, "Input does not contain mapping relation") if !params[:relation]
-      if params[:relation].kind_of?(Array)
-        error(400, "Input contains too many mapping relations (max 5)") if params[:relation].length > 5
-        params[:relation].each do |relation|
-          begin
-            URI(relation)
-          rescue URI::InvalidURIError => e
-            error(400, "#{relation} is not a valid URI for relations.")
-          end
-        end
-      end
-      error(400, "Input does not contain user creator ID") if !params[:creator]
-      classes = []
-      mapping_process_name = "REST Mapping"
-      params[:classes].each do |class_id,ontology_id|
-        interportal_prefix = ontology_id.split(":")[0]
-        if ontology_id.start_with? "ext:"
-          #TODO: check if the ontology is a well formed URI
-          # Just keep the source and the class URI if the mapping is external or interportal and change the mapping process name
-          error(400, "Impossible to map 2 classes outside of BioPortal") if mapping_process_name != "REST Mapping"
-          mapping_process_name = "External Mapping"
-          ontology_uri = ontology_id.sub("ext:", "")
-          if !uri?(ontology_uri)
-            error(400, "Ontology URI '#{ontology_uri.to_s}' is not valid")
-          end
-          if !uri?(class_id)
-            error(400, "Class URI '#{class_id.to_s}' is not valid")
-          end
-          ontology_uri = CGI.escape(ontology_uri)
-          c = {:source => "ext", :ontology => ontology_uri, :id => class_id}
-          classes << c
-        elsif LinkedData.settings.interportal_hash.has_key?(interportal_prefix)
-            #Check if the prefix is contained in the interportal hash to create a mapping to this bioportal
-            error(400, "Impossible to map 2 classes outside of BioPortal") if mapping_process_name != "REST Mapping"
-            mapping_process_name = "Interportal Mapping #{interportal_prefix}"
-            ontology_acronym = ontology_id.sub("#{interportal_prefix}:", "")
-            if validate_interportal_mapping(class_id, ontology_acronym, interportal_prefix)
-              c = {:source => interportal_prefix, :ontology => ontology_acronym, :id => class_id}
-              classes << c
-            else
-              error(400, "Interportal combination of class and ontology don't point to a valid class")
-            end
-        else
-          o = ontology_id
-          o =  o.start_with?("http://") ? ontology_id :
-              ontology_uri_from_acronym(ontology_id)
-          o = LinkedData::Models::Ontology.find(RDF::URI.new(o))
-                  .include(submissions:
-                               [:submissionId, :submissionStatus]).first
-          if o.nil?
-            error(400, "Ontology with ID `#{ontology_id}` not found")
-          end
-          submission = o.latest_submission
-          if submission.nil?
-            error(400,
-                  "Ontology with id #{ontology_id} does not have parsed valid submission")
-          end
-          submission.bring(ontology: [:acronym])
-          c = LinkedData::Models::Class.find(RDF::URI.new(class_id))
-                  .in(submission)
-                  .first
-          if c.nil?
-            error(400, "Class ID `#{class_id}` not found in `#{submission.id.to_s}`")
-          end
-          classes << c
-        end
-      end
-      user_id = params[:creator].start_with?("http://") ?
-                    params[:creator].split("/")[-1] : params[:creator]
-      user_creator = LinkedData::Models::User.find(user_id)
-                          .include(:username).first
-      if user_creator.nil?
-        error(400, "User with id `#{params[:creator]}` not found")
-      end
-      process = LinkedData::Models::MappingProcess.new(
-                    :creator => user_creator, :name => mapping_process_name)
-      relations_array = []
-      if !params[:relation].kind_of?(Array)
-        relations_array.push(RDF::URI.new(params[:relation]))
-      else
-        params[:relation].each do |relation|
-          relations_array.push(RDF::URI.new(relation))
-        end
-      end
-      error(400, "Mapping already exists") if LinkedData::Mappings.check_mapping_exist(classes, relations_array)
-      process.relation = relations_array
-      process.date = DateTime.now
-      process_fields = [:source,:source_name, :comment]
-      process_fields.each do |att|
-        process.send("#{att}=",params[att]) if params[att]
-      end
-      process.save
-      mapping = LinkedData::Mappings.create_rest_mapping(classes,process)
-      reply(201, mapping)
     end
+
+    post '/load' do
+      begin
+        mappings = parse_bulk_load_file
+        loaded_mappings, errors = LinkedData::Mappings.bulk_load_mappings(mappings, current_user, check_exist: true)
+        response = {}
+        response[:created] = loaded_mappings unless loaded_mappings.empty?
+        response[:errors] = errors unless errors.empty?
+        reply(201, response)
+      rescue ::JSON::ParserError => e
+        error(404, "File parsing error: #{e.message}")
+      end
+    end
+
+
+    patch '/:mapping' do
+      mapping = LinkedData::Mappings.get_rest_mapping(request_mapping_id)
+      process = mapping.process
+      populate_from_params(process, params)
+      if process.valid?
+        process.save
+      else
+        error 422, process.errors
+      end
+      halt 204
+    end
+
 
     # Delete a mapping
     delete '/:mapping' do
@@ -256,9 +186,9 @@ class MappingsController < ApplicationController
       persistent_counts = {}
       f = Goo::Filter.new(:pair_count) == false
       LinkedData::Models::MappingCount.where.filter(f)
-      .include(:ontologies,:count)
-      .all
-      .each do |m|
+                                      .include(:ontologies, :count)
+                                      .all
+                                      .each do |m|
         persistent_counts[m.ontologies.first] = m.count
       end
       reply persistent_counts
@@ -279,9 +209,9 @@ class MappingsController < ApplicationController
       persistent_counts = {}
       LinkedData::Models::MappingCount.where(pair_count: true)
                                       .and(ontologies: ontology.acronym)
-      .include(:ontologies,:count)
-      .all
-      .each do |m|
+                                      .include(:ontologies, :count)
+                                      .all
+                                      .each do |m|
         other = m.ontologies.first
         if other == ontology.acronym
           other = m.ontologies[1]
