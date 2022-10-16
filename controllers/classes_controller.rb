@@ -45,6 +45,10 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
+      load_attrs += [:inScheme, :isInScheme] if submission.skos?
+
+      request_display(load_attrs.join(','))
+
       sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
 
       roots = nil
@@ -112,29 +116,21 @@ class ClassesController < ApplicationController
       includes_param_check
       sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
       # We override include values other than the following, user-provided include ignored
-      display_attrs = "prefLabel,hasChildren,children,obsolete,subClassOf"
-      params["display"] = display_attrs
-      params["serialize_nested"] = true # Override safety check and cause children to serialize
-
-      # Make sure Rack gets updated
-      req = Rack::Request.new(env)
-      req.update_param("display", display_attrs)
-      req.update_param("serialize_nested", true)
-
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
-      root_tree = nil
-      roots = nil
+      display_attrs = [:prefLabel,:hasChildren,:children,:obsolete,:subClassOf]
+      display_attrs += [:inScheme, :isInScheme] if submission.skos?
+      request_display(display_attrs.join(','))
 
       if sort
         root_tree = cls.tree_sorted(concept_schemes: concept_schemes)
         #add the other roots to the response
-        roots = submission.roots_sorted(extra_include=[:hasChildren], concept_schemes: concept_schemes)
+        roots = submission.roots_sorted(extra_include=[:hasChildren, :isInScheme], concept_schemes: concept_schemes)
       else
         root_tree = cls.tree(concept_schemes: concept_schemes)
         #add the other roots to the response
-        roots = submission.roots(extra_include=[:hasChildren], concept_schemes: concept_schemes)
+        roots = submission.roots(extra_include=[:hasChildren, :isInScheme], concept_schemes: concept_schemes)
       end
 
       # if this path' root does not get returned by the submission.roots call, manually add it
@@ -195,6 +191,9 @@ class ClassesController < ApplicationController
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = ld.delete(:properties)
+      ld += [:inScheme, :isInScheme] if submission.skos?
+
+      request_display(ld.join(','))
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
       page_data_query.aggregate(*aggregates) unless aggregates.empty?
@@ -203,11 +202,13 @@ class ClassesController < ApplicationController
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
       page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
-      if ld.include?(:hasChildren)
+      if ld.include?(:hasChildren) || ld.include?(:isInScheme)
         page_data.each do |c|
-          c.load_has_children
+          c.load_has_children if ld.include?(:hasChildren)
+          c.load_is_in_scheme(concept_schemes) if ld.include?(:isInScheme)
         end
       end
+
       reply page_data
     end
 
@@ -251,7 +252,18 @@ class ClassesController < ApplicationController
     end
 
     def concept_schemes
-      params["concept_scheme"]&.split(',')
+      params["concept_scheme"]&.split(',') || []
+    end
+
+    def request_display(attrs)
+
+      params["display"] = attrs
+      params["serialize_nested"] = true # Override safety check and cause children to serialize
+
+      # Make sure Rack gets updated
+      req = Rack::Request.new(env)
+      req.update_param("display", attrs)
+      req.update_param("serialize_nested", true)
     end
   end
 end
