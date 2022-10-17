@@ -322,7 +322,7 @@ GEM
       macaddr (~> 1.0)
 
 PLATFORMS
-  x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -373,4 +373,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.20
+   2.3.23
