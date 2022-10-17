@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: 1c9709372956721db432585dcb7c79ee8a898fc2
+  revision: d09999177235029ba30a00cd59d10f7ca1a1fa93
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -173,9 +173,8 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (~> 0.15)
-    haml (6.0.6)
-      temple (>= 0.8.2)
-      thor
+    haml (5.2.2)
+      temple (>= 0.8.0)
       tilt
     http-accept (1.7.0)
     http-cookie (1.0.5)
@@ -305,7 +304,6 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.8.2)
-    thor (1.2.1)
     tilt (2.0.11)
     trailblazer-option (0.1.2)
     tzinfo (2.0.5)
@@ -337,7 +335,7 @@ DEPENDENCIES
   faraday (~> 1.9)
   ffi
   goo!
-  haml
+  haml (~> 5.2.2)
   json-schema (~> 2.0)
   minitest (~> 4.0)
   minitest-stub_any_instance
