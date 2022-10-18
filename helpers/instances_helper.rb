@@ -5,9 +5,9 @@ module Sinatra
     module InstancesHelper
 
       # TODO: generalize this to all routes (maybe in application_helper)
-      def settings_params
+      def settings_params(klass)
         page, size = page_params
-        attributes = get_attributes_to_include(includes_param)
+        attributes = get_attributes_to_include(includes_param, klass)
         order_by = get_order_by_from(@params)
         bring_unmapped = bring_unmapped?(includes_param)
         filter_by_label = label_regex_filter
@@ -31,8 +31,8 @@ module Sinatra
         {(params["sortby"] || default_sort).to_sym => params["order"] || default_order} if is_set?(@params["sortby"])
       end
 
-      def get_attributes_to_include(includes_param)
-        ld = LinkedData::Models::Instance.goo_attrs_to_load(includes_param)
+      def get_attributes_to_include(includes_param, klass)
+        ld = klass.goo_attrs_to_load(includes_param)
         ld.delete(:properties)
         ld
       end
