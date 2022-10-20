@@ -189,7 +189,7 @@ class ClassesController < ApplicationController
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = ld.delete(:properties)
-      ld += [:inScheme, :isInScheme] if submission.skos?
+      ld += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
 
       request_display(ld.join(','))
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
@@ -200,10 +200,10 @@ class ClassesController < ApplicationController
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
       page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
-      if ld.include?(:hasChildren) || ld.include?(:isInScheme)
+      if ld.include?(:hasChildren) || ld.include?(:isInActiveScheme) || ld.include?(:isInActiveCollection)
         page_data.each do |c|
-          c.load_has_children if ld.include?(:hasChildren)
-          c.load_is_in_scheme(concept_schemes) if ld.include?(:isInScheme)
+          c.load_computed_attributes(to_load: ld,
+                                     options: { schemes: concept_schemes, collections: concept_collections })
         end
       end
 
@@ -237,6 +237,7 @@ class ClassesController < ApplicationController
     end
 
     private
+
     def includes_param_check
       if includes_param
         if includes_param.include?(:all)
