@@ -29,7 +29,7 @@ class ClassesController < ApplicationController
       unmapped = load_attrs.delete(:properties)
       page, size = page_params
 
-      roots = submission.roots(load_attrs, page, size, concept_schemes: concept_schemes)
+      roots = submission.roots(load_attrs, page, size, concept_schemes: concept_schemes, concept_collections: concept_collections)
 
       if unmapped && roots.length > 0
         LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
@@ -45,18 +45,16 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
-      load_attrs += [:inScheme, :isInScheme] if submission.skos?
+      load_attrs += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
 
       request_display(load_attrs.join(','))
 
       sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
 
-      roots = nil
-
       if sort
-        roots = submission.roots_sorted(load_attrs, concept_schemes: concept_schemes)
+        roots = submission.roots_sorted(load_attrs, concept_schemes: concept_schemes, concept_collections: concept_collections)
       else
-        roots = submission.roots(load_attrs, concept_schemes: concept_schemes)
+        roots = submission.roots(load_attrs, concept_schemes: concept_schemes, concept_collections: concept_collections)
       end
 
       if unmapped && roots.length > 0
@@ -119,18 +117,18 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
-      display_attrs = [:prefLabel,:hasChildren,:children,:obsolete,:subClassOf]
-      display_attrs += [:inScheme, :isInScheme] if submission.skos?
+      display_attrs = [:prefLabel, :hasChildren, :children, :obsolete, :subClassOf]
+      display_attrs += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
       request_display(display_attrs.join(','))
-
+      extra_include = [:hasChildren, :isInActiveScheme, :isInActiveScheme]
       if sort
-        root_tree = cls.tree_sorted(concept_schemes: concept_schemes)
+        roots = submission.roots_sorted(extra_include, concept_schemes: concept_schemes, concept_collections: concept_collections)
+        root_tree = cls.tree_sorted(concept_schemes: concept_schemes, concept_collections: concept_collections, roots: roots)
         #add the other roots to the response
-        roots = submission.roots_sorted(extra_include=[:hasChildren, :isInScheme], concept_schemes: concept_schemes)
       else
-        root_tree = cls.tree(concept_schemes: concept_schemes)
+        roots = submission.roots(extra_include, concept_schemes: concept_schemes, concept_collections: concept_collections)
+        root_tree = cls.tree(concept_schemes: concept_schemes, concept_collections: concept_collections, roots: roots)
         #add the other roots to the response
-        roots = submission.roots(extra_include=[:hasChildren, :isInScheme], concept_schemes: concept_schemes)
       end
 
       # if this path' root does not get returned by the submission.roots call, manually add it
@@ -191,7 +189,7 @@ class ClassesController < ApplicationController
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = ld.delete(:properties)
-      ld += [:inScheme, :isInScheme] if submission.skos?
+      ld += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
 
       request_display(ld.join(','))
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
@@ -202,10 +200,10 @@ class ClassesController < ApplicationController
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
       page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
-      if ld.include?(:hasChildren) || ld.include?(:isInScheme)
+      if ld.include?(:hasChildren) || ld.include?(:isInActiveScheme) || ld.include?(:isInActiveCollection)
         page_data.each do |c|
-          c.load_has_children if ld.include?(:hasChildren)
-          c.load_is_in_scheme(concept_schemes) if ld.include?(:isInScheme)
+          c.load_computed_attributes(to_load: ld,
+                                     options: { schemes: concept_schemes, collections: concept_collections })
         end
       end
 
@@ -239,6 +237,7 @@ class ClassesController < ApplicationController
     end
 
     private
+
     def includes_param_check
       if includes_param
         if includes_param.include?(:all)
@@ -252,7 +251,11 @@ class ClassesController < ApplicationController
     end
 
     def concept_schemes
-      params["concept_scheme"]&.split(',') || []
+      params["concept_schemes"]&.split(',') || []
+    end
+
+    def concept_collections
+      params["concept_collections"]&.split(',') || []
     end
 
     def request_display(attrs)

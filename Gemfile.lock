@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 1791efabe6b8bfa615edaf048a1cb0d09fe581db
+  revision: 79b89dbe70d2fe0b8f066e2bd016417ab6f44500
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -208,8 +208,8 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.2.3)
     net-http-persistent (2.9.4)
-    net-scp (1.2.1)
-      net-ssh (>= 2.6.5)
+    net-scp (4.0.0)
+      net-ssh (>= 2.6.5, < 8.0.0)
     net-ssh (7.0.1)
     netrc (0.11.0)
     newrelic_rpm (8.11.0)
