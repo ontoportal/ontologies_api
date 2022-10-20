@@ -29,7 +29,7 @@ class ClassesController < ApplicationController
       unmapped = load_attrs.delete(:properties)
       page, size = page_params
 
-      roots = submission.roots(load_attrs, page, size, concept_schemes: concept_schemes)
+      roots = submission.roots(load_attrs, page, size, concept_schemes: concept_schemes, concept_collections: concept_collections)
 
       if unmapped && roots.length > 0
         LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
@@ -45,18 +45,16 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
-      load_attrs += [:inScheme, :isInScheme] if submission.skos?
+      load_attrs += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
 
       request_display(load_attrs.join(','))
 
       sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
 
-      roots = nil
-
       if sort
-        roots = submission.roots_sorted(load_attrs, concept_schemes: concept_schemes)
+        roots = submission.roots_sorted(load_attrs, concept_schemes: concept_schemes, concept_collections: concept_collections)
       else
-        roots = submission.roots(load_attrs, concept_schemes: concept_schemes)
+        roots = submission.roots(load_attrs, concept_schemes: concept_schemes, concept_collections: concept_collections)
       end
 
       if unmapped && roots.length > 0
@@ -253,6 +251,10 @@ class ClassesController < ApplicationController
 
     def concept_schemes
       params["concept_schemes"]&.split(',') || []
+    end
+
+    def concept_collections
+      params["concept_collections"]&.split(',') || []
     end
 
     def request_display(attrs)
