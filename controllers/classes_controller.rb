@@ -239,6 +239,13 @@ class ClassesController < ApplicationController
       reply cls.parents.select { |x| !x.id.to_s["owl#Thing"] }
     end
 
+    get '/:cls/skos_xl_label/:id' do
+      ont, submission = get_ontology_and_submission
+      label = LinkedData::Models::SKOS::Label.find(params[:id]).in(submission).first
+      label.bring_remaining
+      reply label
+    end
+
     private
 
     def includes_param_check
