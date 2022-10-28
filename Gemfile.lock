@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 79b89dbe70d2fe0b8f066e2bd016417ab6f44500
+  revision: 617d6136b9f4f814e765bef5d917577a383efdb0
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -212,7 +212,7 @@ GEM
       net-ssh (>= 2.6.5, < 8.0.0)
     net-ssh (7.0.1)
     netrc (0.11.0)
-    newrelic_rpm (8.11.0)
+    newrelic_rpm (8.12.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -303,7 +303,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
-    temple (0.8.2)
+    temple (0.9.1)
     tilt (2.0.11)
     trailblazer-option (0.1.2)
     tzinfo (2.0.5)
