@@ -70,7 +70,7 @@ class ClassesController < ApplicationController
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
 
       load_children = ld.delete :children
-      if !load_children
+      unless load_children
         load_children = ld.select { |x| x.instance_of?(Hash) && x.include?(:children) }
         if load_children
           ld = ld.select { |x| !(x.instance_of?(Hash) && x.include?(:children)) }
@@ -79,6 +79,9 @@ class ClassesController < ApplicationController
 
       unmapped = ld.delete(:properties) ||
           (includes_param && includes_param.include?(:all))
+
+      ld << :inCollection if includes_param.include?(:all)
+
       cls = get_class(submission, ld)
       if unmapped
         LinkedData::Models::Class.in(submission)
@@ -234,6 +237,13 @@ class ClassesController < ApplicationController
         LinkedData::Models::Class.in(submission).models(cls.parents).include(:unmapped).all
       end
       reply cls.parents.select { |x| !x.id.to_s["owl#Thing"] }
+    end
+
+    get '/:cls/skos_xl_label/:id' do
+      ont, submission = get_ontology_and_submission
+      label = LinkedData::Models::SKOS::Label.find(params[:id]).in(submission).first
+      label.bring_remaining
+      reply label
     end
 
     private
