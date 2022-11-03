@@ -20,6 +20,27 @@ class ClassesController < ApplicationController
       reply page_data
     end
 
+    get '/sorted_by_date' do
+      ont, submission = get_ontology_and_submission
+      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Class)
+
+      index = LinkedData::Models::Class.in(submission).order_by(modified: :desc, created: :desc)
+      # Add index here when, indexing fixed
+      # index_name = 'classes_sort_by_date'
+      # index = index.index_as(index_name)
+
+      page_data = index
+
+      # page_data =  page_data.with_index(index_name)
+      page_data = page_data.include(attributes).page(page,size).all
+
+
+      bring_unmapped_to page_data , sub if bring_unmapped_needed
+
+      reply page_data
+
+    end
+
     # Get root classes using a paginated mode
     get '/roots_paged' do
       includes_param_check
@@ -248,6 +269,7 @@ class ClassesController < ApplicationController
       end
       reply label
     end
+
 
     private
 
