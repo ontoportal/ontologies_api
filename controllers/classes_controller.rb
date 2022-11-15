@@ -239,15 +239,6 @@ class ClassesController < ApplicationController
       reply cls.parents.select { |x| !x.id.to_s["owl#Thing"] }
     end
 
-    get '/:cls/skos_xl_label/:id' do
-      ont, submission = get_ontology_and_submission
-      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::SKOS::Label)
-      label = LinkedData::Models::SKOS::Label.find(params[:id]).in(submission).include(attributes).first
-      if label && bring_unmapped_needed
-        LinkedData::Models::SKOS::Label.in(submission).models([label]).include(:unmapped).all
-      end
-      reply label
-    end
 
     private
 
