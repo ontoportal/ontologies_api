@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 2b4a123f2535d66cf161a67b043ec13c3588b7f3
+  revision: 204cecf98bedb30f8b4b6e6afb1984f7659175d8
   branch: develop
   specs:
     goo (0.0.2)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 60807531cb3d068e879a5a43c85d837bf200c17a
+  revision: 8628abe3c349052fd389751db203b27e6e541087
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -384,4 +384,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.15
+   2.3.14
