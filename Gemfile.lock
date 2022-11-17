@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 4c2f446f1e3ab36ff9edb3be998de3e55b7db556
+  revision: cfe334280e016d34b6c710378681f1781ba53a12
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -373,4 +373,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.14
+   2.3.15
