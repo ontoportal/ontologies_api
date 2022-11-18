@@ -43,8 +43,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # run deployment only if "Ruby Unit Tests" workflow completes sucessefully
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} 
+    # run deployment only if "Ruby Unit Tests" workflow completes sucessefully or when manually triggered
+    if: ${{ (github.event.workflow_run.conclusion == 'success') || (github.event_name == 'workflow_dispatch') }}
     env:
       BUNDLE_WITHOUT: default #install gems required primarily for the deployment in order to speed this workflow
       PRIVATE_CONFIG_REPO: ${{ format('git@github.com:{0}.git', secrets.CONFIG_REPO) }}
