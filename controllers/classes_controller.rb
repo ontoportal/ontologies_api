@@ -8,37 +8,23 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       cls_count = submission.class_count(LOGGER)
       error 403, "Unable to display classes due to missing metrics for #{submission.id.to_s}. Please contact the administrator." if cls_count < 0
+
+      attributes, page, size, filter_by_label, order_by_hash, bring_unmapped_needed  =  settings_params(LinkedData::Models::Class)
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
-      page, size = page_params
-      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties)
-      page_data = LinkedData::Models::Class.in(submission).include(ld).page(page,size).page_count_set(cls_count).all
 
-      if unmapped && page_data.length > 0
-        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+      index = LinkedData::Models::Class.in(submission)
+      if order_by_hash
+        index = index.order_by(order_by_hash)
+        cls_count = nil
+        # Add index here when, indexing fixed
+        # index_name = 'classes_sort_by_date'
+        # index = index.index_as(index_name)
+        # index = index.with_index(index_name)
       end
-      reply page_data
-    end
-
-    get '/sorted_by_date' do
-      ont, submission = get_ontology_and_submission
-      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Class)
-
-      index = LinkedData::Models::Class.in(submission).order_by(modified: :desc, created: :desc)
-      # Add index here when, indexing fixed
-      # index_name = 'classes_sort_by_date'
-      # index = index.index_as(index_name)
 
       page_data = index
-
-      # page_data =  page_data.with_index(index_name)
-      page_data = page_data.include(attributes).page(page,size).all
-
-
-      bring_unmapped_to page_data , sub if bring_unmapped_needed
-
+      page_data = page_data.include(attributes).page(page,size).page_count_set(cls_count).all
       reply page_data
-
     end
 
     # Get root classes using a paginated mode
