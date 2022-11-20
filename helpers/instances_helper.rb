@@ -41,8 +41,8 @@ module Sinatra
         (includes_param && includes_param.include?(:all))
       end
 
-      def bring_unmapped_to(page_data, sub)
-        LinkedData::Models::Instance.in(sub).models(page_data).include(:unmapped).all
+      def bring_unmapped_to(page_data, sub, klass = LinkedData::Models::Instance)
+        klass.in(sub).models(page_data).include(:unmapped).all
       end
 
     end
