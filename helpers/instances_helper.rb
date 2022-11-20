@@ -27,8 +27,15 @@ module Sinatra
         class_uri.nil? ? nil :{types: RDF::URI.new(class_uri.to_s)}
       end
 
-      def get_order_by_from(params , default_sort = :label , default_order = :asc)
-        {(params["sortby"] || default_sort).to_sym => params["order"] || default_order} if is_set?(@params["sortby"])
+      def get_order_by_from(params, default_order = :asc)
+        if is_set?(params['sortby'])
+          orders = (params["order"] || default_order.to_s).split(',')
+          out = params['sortby'].split(',').map.with_index  do |param, index|
+            sort_order_item(param, orders[index] || default_order)
+          end
+          out.to_h
+        end
+
       end
 
       def get_attributes_to_include(includes_param, klass)
@@ -41,10 +48,14 @@ module Sinatra
         (includes_param && includes_param.include?(:all))
       end
 
-      def bring_unmapped_to(page_data, sub)
-        LinkedData::Models::Instance.in(sub).models(page_data).include(:unmapped).all
+      def bring_unmapped_to(page_data, sub, klass = LinkedData::Models::Instance)
+        klass.in(sub).models(page_data).include(:unmapped).all
       end
 
+      private
+      def sort_order_item(param , order)
+        [param.to_sym, order.to_sym]
+      end
     end
   end
 end
