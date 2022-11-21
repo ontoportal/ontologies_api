@@ -87,7 +87,7 @@ class ClassesController < ApplicationController
       unmapped = ld.delete(:properties) ||
           (includes_param && includes_param.include?(:all))
 
-      ld << :inCollection if includes_param.include?(:all)
+      ld << :memberOf if includes_param.include?(:all)
 
       cls = get_class(submission, ld)
       if unmapped
