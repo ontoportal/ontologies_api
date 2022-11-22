@@ -1,4 +1,4 @@
-class CollectionsController < ApplicationController
+class SkosXlLabelController < ApplicationController
 
   namespace "/ontologies/:ontology/skos_xl_labels" do
     get  do
