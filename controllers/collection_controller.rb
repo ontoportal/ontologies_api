@@ -29,10 +29,11 @@ class CollectionsController < ApplicationController
       end
 
       get '/members' do
-        submission, attributes, bring_unmapped_needed = collections_setting_params
+        ont, submission = get_ontology_and_submission
+        attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Class)
         collection_uri = get_collection_uri(params)
-        data = LinkedData::Models::SKOS::Collection.find(collection_uri).in(submission).include(:member).first
-        reply data.member
+        data = LinkedData::Models::Class.where(memberOf: collection_uri).in(submission).include(attributes).page(page,size).all
+        reply data
       end
     end
   end
