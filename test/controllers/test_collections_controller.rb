@@ -62,12 +62,12 @@ class TestCollectionsController < TestCase
     }
 
     known_collections.each do |id, array|
-      call = "/ontologies/#{ont.acronym}/collections/#{CGI.escape(id.to_s)}/members"
+      call = "/ontologies/#{ont.acronym}/collections/#{CGI.escape(id.to_s)}/members?pagesize=1000"
       get call
       assert last_response.ok?
       instances = MultiJson.load(last_response.body)
-      assert_equal array[1], instances.size
-      assert_equal "http://www.w3.org/2004/02/skos/core#Concept", instances.first["@type"]
+      assert_equal array[1], instances['collection'].size
+      assert_equal "http://www.w3.org/2004/02/skos/core#Concept", instances['collection'].first["@type"]
     end
   end
 
