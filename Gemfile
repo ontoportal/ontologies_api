@@ -38,7 +38,7 @@ gem 'unicorn'
 gem 'unicorn-worker-killer'
 
 # Templating
-gem 'haml', '~> 5.2.2'
+gem 'haml', '~> 5.2.2' # pin see https://github.com/ncbo/ontologies_api/pull/107
 gem 'redcarpet'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
@@ -50,10 +50,13 @@ gem 'sparql-client', github: 'ontoportal-lirmm/sparql-client', branch: 'master'
 gem 'ontologies_linked_data', git: 'https://github.com/ontoportal-lirmm/ontologies_linked_data.git', branch: 'development'
 
 group :development do
+  # bcrypt_pbkdf and ed35519 is required for capistrano deployments when using ed25519 keys; see https://github.com/miloserdow/capistrano-deploy/issues/42
+  gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0', require: false
   gem 'capistrano', '~> 3', require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano-locally', require: false
   gem 'capistrano-rbenv', require: false
+  gem 'ed25519', '>= 1.2', '< 2.0', require: false
   gem 'pry'
   gem 'shotgun', github: 'palexander/shotgun', branch: 'ncbo'
 end
