@@ -8,7 +8,7 @@ class InstancesController < ApplicationController
     cls = get_class(sub)
     error 404 if cls.nil?
 
-    attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params
+    attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
 
 
 
@@ -31,7 +31,7 @@ class InstancesController < ApplicationController
       ont, sub = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
 
-      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params
+      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
 
 
       page_data = LinkedData::Models::Instance.where
@@ -51,7 +51,7 @@ class InstancesController < ApplicationController
       ont, sub = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
 
-      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params
+      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
 
       page_data = LinkedData::Models::Instance.find(@params["inst"]).include(attributes).in(sub).first
 
