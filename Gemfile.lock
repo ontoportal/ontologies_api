@@ -128,7 +128,7 @@ GEM
     concurrent-ruby (1.1.10)
     cube-ruby (0.0.3)
     dante (0.2.0)
-    date (3.3.2)
+    date (3.3.3)
     declarative (0.0.20)
     docile (1.4.0)
     domain_name (0.5.20190701)
