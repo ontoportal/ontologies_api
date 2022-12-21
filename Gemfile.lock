@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 3d5bbe1db4a6aca2ff621ccfcdb85a32dbe9704e
-  branch: development
+  revision: 92968978e5d2436c648bf7956e25aff05440b59d
+  branch: master
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -37,8 +37,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: c8e268c83c8fa9464518eccca5bcebcff848bcf2
-  branch: development
+  revision: d09999177235029ba30a00cd59d10f7ca1a1fa93
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 5422b84d390b1f3ff387ce3ed62dc6331698dd50
-  branch: development
+  revision: 9c5c56cf7b4546ccc45431a82bbce9a33184e4cc
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -338,6 +338,7 @@ GEM
       macaddr (~> 1.0)
 
 PLATFORMS
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
