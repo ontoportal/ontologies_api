@@ -37,13 +37,13 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: d09999177235029ba30a00cd59d10f7ca1a1fa93
+  revision: 3296b76c5287a4b2644f123e736c156f3a6d219d
   branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
       goo
-      google-api-client
+      google-apis-analytics_v3
       mlanett-redis-lock
       multi_json
       ncbo_annotator
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 9c5c56cf7b4546ccc45431a82bbce9a33184e4cc
+  revision: c98145605413e459d3c09a41d3c28a5acd0c49e4
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -160,22 +160,24 @@ GEM
     ffi (1.15.5)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
-    google-api-client (0.52.0)
+    google-apis-analytics_v3 (0.12.0)
+      google-apis-core (>= 0.9.1, < 2.a)
+    google-apis-core (0.9.2)
       addressable (~> 2.5, >= 2.5.1)
-      googleauth (~> 0.9)
-      httpclient (>= 2.8.1, < 3.0)
+      googleauth (>= 0.16.2, < 2.a)
+      httpclient (>= 2.8.1, < 3.a)
       mini_mime (~> 1.0)
       representable (~> 3.0)
-      retriable (>= 2.0, < 4.0)
+      retriable (>= 2.0, < 4.a)
       rexml
-      signet (~> 0.12)
-    googleauth (0.17.1)
-      faraday (>= 0.17.3, < 2.0)
+      webrick
+    googleauth (1.3.0)
+      faraday (>= 0.17.3, < 3.a)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
-      signet (~> 0.15)
+      signet (>= 0.16, < 2.a)
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
@@ -189,7 +191,7 @@ GEM
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.6.3)
-    jwt (2.5.0)
+    jwt (2.6.0)
     kgio (2.11.4)
     libxml-ruby (3.2.4)
     logger (1.5.3)
@@ -213,7 +215,7 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.2.3)
     net-http-persistent (2.9.4)
-    net-imap (0.3.2)
+    net-imap (0.3.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -292,7 +294,7 @@ GEM
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
-    simplecov (0.21.2)
+    simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
@@ -336,6 +338,7 @@ GEM
       unicorn (>= 4, < 7)
     uuid (2.3.9)
       macaddr (~> 1.0)
+    webrick (1.7.0)
 
 PLATFORMS
   x86_64-linux
