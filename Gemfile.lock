@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: c98145605413e459d3c09a41d3c28a5acd0c49e4
+  revision: b1d8504f434d3821b967fa07cbe17f7f3d286b41
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -193,7 +193,7 @@ GEM
     json_pure (2.6.3)
     jwt (2.6.0)
     kgio (2.11.4)
-    libxml-ruby (3.2.4)
+    libxml-ruby (4.0.0)
     logger (1.5.3)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
