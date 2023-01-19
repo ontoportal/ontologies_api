@@ -7,8 +7,8 @@ class InstancesController < ApplicationController
     check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
     cls = get_class(sub)
     error 404 if cls.nil?
-
-    attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
+    filter_by_label = label_regex_filter
+    attributes, page, size, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
 
 
 
@@ -20,7 +20,7 @@ class InstancesController < ApplicationController
     page_data.order_by(order_by) unless order_by.nil?
     page_data = page_data.page(page,size).all
 
-    bring_unmapped_to page_data , sub if bring_unmapped_needed
+    bring_unmapped_to page_data , sub, LinkedData::Models::Instance if bring_unmapped_needed
 
     reply page_data
   end
@@ -30,8 +30,8 @@ class InstancesController < ApplicationController
     get do
       ont, sub = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
-
-      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
+      filter_by_label = label_regex_filter
+      attributes, page, size, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
 
 
       page_data = LinkedData::Models::Instance.where
@@ -42,7 +42,7 @@ class InstancesController < ApplicationController
       page_data.order_by(order_by) unless order_by.nil?
       page_data = page_data.page(page,size).all
 
-      bring_unmapped_to page_data , sub if bring_unmapped_needed
+      bring_unmapped_to page_data , sub, LinkedData::Models::Instance if bring_unmapped_needed
 
       reply page_data
     end
@@ -51,11 +51,11 @@ class InstancesController < ApplicationController
       ont, sub = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Instance, [ont.acronym])
 
-      attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
+      attributes, page, size, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::Instance)
 
       page_data = LinkedData::Models::Instance.find(@params["inst"]).include(attributes).in(sub).first
 
-      bring_unmapped_to [page_data] , sub if bring_unmapped_needed
+      bring_unmapped_to [page_data] , sub, LinkedData::Models::Instance if bring_unmapped_needed
 
       reply page_data
     end
