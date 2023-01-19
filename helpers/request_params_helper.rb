@@ -8,7 +8,7 @@ module Sinatra
         page, size = page_params
         attributes = get_attributes_to_include(includes_param, klass)
         order_by = get_order_by_from(@params)
-        bring_unmapped = bring_unmapped?(includes_param, klass)
+        bring_unmapped = bring_unmapped?(includes_param)
 
         [attributes, page, size, order_by, bring_unmapped]
       end
