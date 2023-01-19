@@ -17,14 +17,18 @@ module Sinatra
         !param.nil? && param != ""
       end
 
+      def filter?
+        is_set?(@params["filter_by"])
+      end
 
-
-
+      def filter
+        build_filter
+      end
 
       def get_order_by_from(params, default_order = :asc)
         if is_set?(params['sortby'])
           orders = (params["order"] || default_order.to_s).split(',')
-          out = params['sortby'].split(',').map.with_index  do |param, index|
+          out = params['sortby'].split(',').map.with_index do |param, index|
             sort_order_item(param, orders[index] || default_order)
           end
           out.to_h
@@ -46,8 +50,13 @@ module Sinatra
       end
 
       private
-      def sort_order_item(param , order)
+
+      def sort_order_item(param, order)
         [param.to_sym, order.to_sym]
+      end
+
+      def build_filter(value = @params["filter_value"])
+        Goo::Filter.new(@params["filter_by"].to_sym).regex(value)
       end
     end
   end
