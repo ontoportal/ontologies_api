@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 92968978e5d2436c648bf7956e25aff05440b59d
-  branch: master
+  revision: cda6aff2338e2a2831e4e7bf716abdf8fa8483d2
+  branch: development
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: b1d8504f434d3821b967fa07cbe17f7f3d286b41
-  branch: master
+  revision: 679c6468b87f85b3993583c111108e183e37c3e5
+  branch: development
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -134,7 +134,7 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     ed25519 (1.3.0)
-    faraday (1.10.2)
+    faraday (1.10.3)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -162,7 +162,7 @@ GEM
       ffi (~> 1.0)
     google-apis-analytics_v3 (0.12.0)
       google-apis-core (>= 0.9.1, < 2.a)
-    google-apis-core (0.9.4)
+    google-apis-core (0.9.5)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.16.2, < 2.a)
       httpclient (>= 2.8.1, < 3.a)
@@ -197,7 +197,7 @@ GEM
     logger (1.5.3)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
-    mail (2.8.0)
+    mail (2.8.0.1)
       mini_mime (>= 0.1.1)
       net-imap
       net-pop
@@ -394,4 +394,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.14
+   2.3.15
