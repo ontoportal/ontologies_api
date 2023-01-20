@@ -9,7 +9,7 @@ class ClassesController < ApplicationController
       cls_count = submission.class_count(LOGGER)
       error 403, "Unable to display classes due to missing metrics for #{submission.id.to_s}. Please contact the administrator." if cls_count < 0
 
-      attributes, page, size, filter_by_label, order_by_hash, bring_unmapped_needed  =  settings_params(LinkedData::Models::Class)
+      attributes, page, size, order_by_hash, bring_unmapped_needed  =  settings_params(LinkedData::Models::Class)
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
 
       index = LinkedData::Models::Class.in(submission)
