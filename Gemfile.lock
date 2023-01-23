@@ -37,7 +37,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: 3296b76c5287a4b2644f123e736c156f3a6d219d
+  revision: 8db3481116c57d2a21dc8f32bcd1695d95442280
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 679c6468b87f85b3993583c111108e183e37c3e5
+  revision: f4395ea6b32df8cee25b3ccf8515c9c75d18b19a
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
