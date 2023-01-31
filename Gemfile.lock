@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 75d1a8f302c8af4060bf62fc619f230084da521e
+  revision: 0d5a4d823d9c9df11ba98292f06971bb9a127235
   branch: develop
   specs:
     ncbo_annotator (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 4ce8fe8a8ea330b5cdd246287016f71032a4bf7a
+  revision: e8101626cad72dd7c8038b7a4058bfeb359f60c5
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: d7425e581d35b265a0263faba7c32c0fdb51cbba
+  revision: e6372f193488a69ef0c2015017ace8a48274a326
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
