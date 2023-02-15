@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: fa8fc96c7f55b1a37f2677bde3d2d16fa93712be
+  revision: 964f0680799421ab24eddc974d9f2995c6c88734
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 6db9916caf99cb839fc5996eabae4e48a5ac13f2
+  revision: c09d76eeb131caf422c18ba49580db1b47df86dc
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: b22237dc0753ac3824ad60780ce386162142ebcd
+  revision: 546b3a45a6f359c09f0cc95d954f03e979b4847a
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -162,7 +162,7 @@ GEM
       ffi (~> 1.0)
     google-apis-analytics_v3 (0.12.0)
       google-apis-core (>= 0.9.1, < 2.a)
-    google-apis-core (0.10.0)
+    google-apis-core (0.11.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.16.2, < 2.a)
       httpclient (>= 2.8.1, < 3.a)
@@ -191,13 +191,13 @@ GEM
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.6.3)
-    jwt (2.6.0)
+    jwt (2.7.0)
     kgio (2.11.4)
     libxml-ruby (4.0.0)
     logger (1.5.3)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
-    mail (2.8.0.1)
+    mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
       net-pop
@@ -228,7 +228,7 @@ GEM
       net-protocol
     net-ssh (7.0.1)
     netrc (0.11.0)
-    newrelic_rpm (8.15.0)
+    newrelic_rpm (8.16.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -261,7 +261,7 @@ GEM
     rdf (1.0.8)
       addressable (>= 2.2)
     redcarpet (3.6.0)
-    redis (4.8.0)
+    redis (4.8.1)
     redis-activesupport (5.3.0)
       activesupport (>= 3, < 8)
       redis-store (>= 1.3, < 2)
@@ -396,4 +396,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.15
+   2.3.26
