@@ -5,7 +5,7 @@ module Sinatra
     module SchemesHelper
       def schemes_setting_params
         ont, submission = get_ontology_and_submission
-        attributes, page, size, filter_by_label, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::SKOS::Scheme)
+        attributes, page, size, order_by, bring_unmapped_needed  =  settings_params(LinkedData::Models::SKOS::Scheme)
         [submission, attributes, bring_unmapped_needed]
       end
 
