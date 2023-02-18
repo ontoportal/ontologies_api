@@ -4,7 +4,7 @@ x-app: &app
     args:
       RUBY_VERSION: '2.7'
   # Increase the version number in the image tag every time Dockerfile or its arguments is changed
-  image: ontologies_api:0.0.1
+  image: ontologies_api:0.0.4
   environment: &env
     BUNDLE_PATH: /srv/ontoportal/bundle
     # default bundle config resolves to /usr/local/bundle/config inside of the container
@@ -19,7 +19,7 @@ x-app: &app
     SOLR_TERM_SEARCH_URL: http://solr-ut:8983/solr/term_search_core1
     SOLR_PROP_SEARCH_URL: http://solr-ut:8983/solr/prop_search_core1
     MGREP_HOST: mgrep-ut
-    MGREP_PORT: 55555
+    MGREP_PORT: 55556
   stdin_open: true
   tty: true
   command: "bundle exec rackup -o 0.0.0.0 --port 9393"
@@ -103,16 +103,16 @@ services:
       retries: 5
 
   mgrep-ut:
-    image: ontoportal/mgrep-ncbo:0.1
+    image: ontoportal/mgrep:0.0.2
     healthcheck:
-      test: ["CMD", "nc", "-z", "-v", "localhost", "55555"]
+      test: ["CMD", "nc", "-z", "-v", "localhost", "55556"]
       start_period: 3s
       interval: 10s
       timeout: 5s
       retries: 5
 
   agraph-ut:
-    image: franzinc/agraph:v7.3.0
+    image: franzinc/agraph:v7.3.1
     environment:
       - AGRAPH_SUPER_USER=test
       - AGRAPH_SUPER_PASSWORD=xyzzy
