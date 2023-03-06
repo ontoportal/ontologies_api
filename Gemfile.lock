@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: cda6aff2338e2a2831e4e7bf716abdf8fa8483d2
+  revision: b769c165906163e30a026dba511ae1069c4eed3d
   branch: development
   specs:
     goo (0.0.2)
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: f4395ea6b32df8cee25b3ccf8515c9c75d18b19a
-  branch: development
+  revision: f8c8f569cc282ec31ad181cdbe355f7899983b3f
+  branch: feature/support-multilingual-read-one-language-from-request-parameter
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -112,7 +112,7 @@ GEM
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
-    capistrano (3.17.1)
+    capistrano (3.17.2)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -125,7 +125,8 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.3)
-    concurrent-ruby (1.2.0)
+    concurrent-ruby (1.2.2)
+    connection_pool (2.3.0)
     cube-ruby (0.0.3)
     dante (0.2.0)
     date (3.3.3)
@@ -160,8 +161,8 @@ GEM
     ffi (1.15.5)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
-    google-apis-analytics_v3 (0.12.0)
-      google-apis-core (>= 0.9.1, < 2.a)
+    google-apis-analytics_v3 (0.13.0)
+      google-apis-core (>= 0.11.0, < 2.a)
     google-apis-core (0.11.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.16.2, < 2.a)
@@ -206,7 +207,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2022.0105)
+    mime-types-data (3.2023.0218.1)
     mini_mime (1.1.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.3)
@@ -228,7 +229,7 @@ GEM
       net-protocol
     net-ssh (7.0.1)
     netrc (0.11.0)
-    newrelic_rpm (8.16.0)
+    newrelic_rpm (9.0.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -256,24 +257,29 @@ GEM
     rack-test (2.0.2)
       rack (>= 1.3)
     rack-timeout (0.6.3)
-    raindrops (0.20.0)
+    raindrops (0.20.1)
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
     redcarpet (3.6.0)
-    redis (4.8.1)
+    redis (5.0.6)
+      redis-client (>= 0.9.0)
     redis-activesupport (5.3.0)
       activesupport (>= 3, < 8)
       redis-store (>= 1.3, < 2)
+    redis-client (0.13.0)
+      connection_pool
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
       redis-store (>= 1.6, < 2)
-    redis-store (1.9.1)
-      redis (>= 4, < 5)
+    redis-store (1.9.2)
+      redis (>= 4, < 6)
     representable (3.2.0)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
+    request_store (1.5.1)
+      rack (>= 1.4)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -316,12 +322,12 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.21.3)
+    sshkit (1.21.4)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.10.0)
-    tilt (2.0.11)
+    tilt (2.1.0)
     timeout (0.3.2)
     trailblazer-option (0.1.2)
     tzinfo (2.0.6)
@@ -384,6 +390,7 @@ DEPENDENCIES
   redis
   redis-activesupport
   redis-rack-cache (~> 2.0)
+  request_store
   shotgun!
   simplecov
   simplecov-cobertura
