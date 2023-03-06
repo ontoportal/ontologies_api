@@ -387,7 +387,7 @@ DEPENDENCIES
   rack-timeout
   rake (~> 10.0)
   redcarpet
-  redis
+  redis (~> 4.8.1)
   redis-activesupport
   redis-rack-cache (~> 2.0)
   request_store
