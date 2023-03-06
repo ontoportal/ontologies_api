@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 077c674a6e277a51dca4ca681e49e3e3a55b918a
+  revision: 919c20dec58375eb8a4dd1aed47864e2ad7bacfa
   branch: master
   specs:
     goo (0.0.2)
@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 71d41e3afb35dafe29abfb6d9becaadc725bad36
+  revision: 964f0680799421ab24eddc974d9f2995c6c88734
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: a1a4babc0b5e36325b5af667a6a50b7af1f5f891
+  revision: c09d76eeb131caf422c18ba49580db1b47df86dc
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 6010ff60b99dc1282822b8a1fb59bd59f453755f
+  revision: d0ac992c88bd417f2f2137ba62934c3c41b6db7c
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 4f9139d870c3b1771af1127afa17b679bd0f60dc
+  revision: 546b3a45a6f359c09f0cc95d954f03e979b4847a
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -112,7 +112,7 @@ GEM
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
-    capistrano (3.17.1)
+    capistrano (3.17.2)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -125,15 +125,16 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.3)
     coderay (1.1.3)
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.2)
     cube-ruby (0.0.3)
     dante (0.2.0)
+    date (3.3.3)
     declarative (0.0.20)
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     ed25519 (1.3.0)
-    faraday (1.10.2)
+    faraday (1.10.3)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -159,9 +160,9 @@ GEM
     ffi (1.15.5)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
-    google-apis-analytics_v3 (0.12.0)
-      google-apis-core (>= 0.9.1, < 2.a)
-    google-apis-core (0.9.1)
+    google-apis-analytics_v3 (0.13.0)
+      google-apis-core (>= 0.11.0, < 2.a)
+    google-apis-core (0.11.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.16.2, < 2.a)
       httpclient (>= 2.8.1, < 3.a)
@@ -186,36 +187,48 @@ GEM
     httpclient (2.8.3)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    json (2.6.2)
+    json (2.6.3)
     json-schema (2.8.1)
       addressable (>= 2.4)
-    json_pure (2.6.2)
-    jwt (2.5.0)
+    json_pure (2.6.3)
+    jwt (2.7.0)
     kgio (2.11.4)
-    libxml-ruby (3.2.4)
-    logger (1.5.1)
+    libxml-ruby (4.0.0)
+    logger (1.5.3)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
-    mail (2.7.1)
+    mail (2.8.1)
       mini_mime (>= 0.1.1)
+      net-imap
+      net-pop
+      net-smtp
     memoist (0.16.2)
     method_source (1.0.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2022.0105)
+    mime-types-data (3.2023.0218.1)
     mini_mime (1.1.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.3)
     mlanett-redis-lock (0.2.7)
       redis
     multi_json (1.15.0)
-    multipart-post (2.2.3)
+    multipart-post (2.3.0)
     net-http-persistent (2.9.4)
+    net-imap (0.3.4)
+      date
+      net-protocol
+    net-pop (0.1.2)
+      net-protocol
+    net-protocol (0.2.1)
+      timeout
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
+    net-smtp (0.3.3)
+      net-protocol
     net-ssh (7.0.1)
     netrc (0.11.0)
-    newrelic_rpm (8.13.1)
+    newrelic_rpm (9.0.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -223,10 +236,10 @@ GEM
     parseconfig (1.1.2)
     pony (1.13.1)
       mail (>= 2.0)
-    pry (0.14.1)
+    pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (5.0.0)
+    public_suffix (5.0.1)
     rack (1.6.13)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -243,20 +256,20 @@ GEM
     rack-test (2.0.2)
       rack (>= 1.3)
     rack-timeout (0.6.3)
-    raindrops (0.20.0)
+    raindrops (0.20.1)
     rake (10.5.0)
     rdf (1.0.8)
       addressable (>= 2.2)
-    redcarpet (3.5.1)
-    redis (4.8.0)
+    redcarpet (3.6.0)
+    redis (4.8.1)
     redis-activesupport (5.3.0)
       activesupport (>= 3, < 8)
       redis-store (>= 1.3, < 2)
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
       redis-store (>= 1.6, < 2)
-    redis-store (1.9.1)
-      redis (>= 4, < 5)
+    redis-store (1.9.2)
+      redis (>= 4, < 6)
     representable (3.2.0)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -281,7 +294,7 @@ GEM
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
-    simplecov (0.21.2)
+    simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
@@ -303,14 +316,15 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.21.3)
+    sshkit (1.21.4)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
-    temple (0.9.1)
-    tilt (2.0.11)
+    temple (0.10.0)
+    tilt (2.1.0)
+    timeout (0.3.2)
     trailblazer-option (0.1.2)
-    tzinfo (2.0.5)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     unf (0.1.4)
@@ -324,7 +338,7 @@ GEM
       unicorn (>= 4, < 7)
     uuid (2.3.9)
       macaddr (~> 1.0)
-    webrick (1.7.0)
+    webrick (1.8.1)
 
 PLATFORMS
   x86_64-darwin-21
@@ -367,7 +381,7 @@ DEPENDENCIES
   rack-timeout
   rake (~> 10.0)
   redcarpet
-  redis
+  redis (~> 4.8.1)
   redis-activesupport
   redis-rack-cache (~> 2.0)
   shotgun!
