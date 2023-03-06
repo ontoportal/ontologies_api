@@ -13,6 +13,7 @@ gem 'rake', '~> 10.0'
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-advanced-routes'
 gem 'sinatra-contrib', '~> 1.0'
+gem 'request_store'
 
 # Rack middleware
 gem 'ffi'
@@ -26,7 +27,7 @@ gem 'rack-timeout'
 gem 'redis-rack-cache', '~> 2.0'
 
 # Data access (caching)
-gem 'redis'
+gem 'redis', '~> 4.8.1'
 gem 'redis-activesupport'
 
 # Monitoring
