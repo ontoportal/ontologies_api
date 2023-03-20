@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 18c1daaf0fdcdfced75a062a70fe9796034d40d9
+  revision: 8da57befa2e7f4953ab74e74ebf87da1352ab06a
   branch: feature/migrate-attrbiutes-metadata-to-scheme-file
   specs:
     ontologies_linked_data (0.0.1)
@@ -343,7 +343,6 @@ GEM
     webrick (1.8.1)
 
 PLATFORMS
-  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
