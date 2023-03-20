@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 8da57befa2e7f4953ab74e74ebf87da1352ab06a
+  revision: f2271662e6429d7878c66296ed855042251b0f01
   branch: feature/migrate-attrbiutes-metadata-to-scheme-file
   specs:
     ontologies_linked_data (0.0.1)
