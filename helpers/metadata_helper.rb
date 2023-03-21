@@ -64,13 +64,21 @@ module Sinatra
 
           # Get display from the metadata
           if klass.attribute_settings(attr)[:display].nil?
-            attr_settings[:display] = "no"
+            attr_settings[:category] = "no"
           else
-            attr_settings[:display] = klass.attribute_settings(attr)[:display]
+            attr_settings[:category] = klass.attribute_settings(attr)[:display]
           end
 
-          if !klass.attribute_settings(attr)[:helpText].nil?
+          unless klass.attribute_settings(attr)[:helpText].nil?
             attr_settings[:helpText] = klass.attribute_settings(attr)[:helpText]
+          end
+
+          unless klass.attribute_settings(attr)[:description].nil?
+            attr_settings[:description] = klass.attribute_settings(attr)[:description]
+          end
+
+          unless klass.attribute_settings(attr)[:example].nil?
+            attr_settings[:example] = klass.attribute_settings(attr)[:example]
           end
 
           attr_settings[:@context] =  {
