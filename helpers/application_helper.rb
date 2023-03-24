@@ -370,15 +370,14 @@ module Sinatra
         end
 
         submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
+        submissions_query = submissions_query.filter(filter) if filter?
         # When asking to display all metadata, we are using bring_remaining on each submission. Slower but best way to retrieve all attrs
         if includes_param.first == :all
-          including = [:submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl,
+          includes = [:submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl,
                                        :group, :hasDomain, :views, :viewOf, :flat], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
-          submissions = submissions_query.include(including).to_a
-        else
-          submissions = submissions_query.include(includes).to_a
         end
-
+        submissions = submissions_query.include(includes).to_a
+        
         # Figure out latest parsed submissions using all submissions
         latest_submissions = {}
         submissions.each do |sub|
@@ -391,7 +390,7 @@ module Sinatra
           latest_submissions[sub.ontology.acronym] ||= sub
           latest_submissions[sub.ontology.acronym] = sub if sub.submissionId.to_i > latest_submissions[sub.ontology.acronym].submissionId.to_i
         end
-        return latest_submissions
+        latest_submissions
       end
 
       def get_ontology_and_submission
