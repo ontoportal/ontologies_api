@@ -13,6 +13,10 @@ module Sinatra
         [attributes, page, size, order_by, bring_unmapped]
       end
 
+      def page?
+        !params[:page].nil?
+      end
+
       def is_set?(param)
         !param.nil? && param != ""
       end
@@ -23,6 +27,53 @@ module Sinatra
 
       def filter
         build_filter
+      end
+
+      def apply_filters(query)
+
+        filters = {
+          naturalLanguage: params[:naturalLanguage]&.split(',') , #%w[http://lexvo.org/id/iso639-3/fra http://lexvo.org/id/iso639-3/eng],
+          hasOntologyLanguage_acronym: params[:hasOntologyLanguage]&.split(',') , #%w[OWL SKOS],
+          ontology_hasDomain_acronym:  params[:hasDomain]&.split(',') , #%w[Crop Vue_francais],
+          ontology_group_acronym: params[:group]&.split(','), #%w[RICE CROP],
+          ontology_name: Array(params[:name]) + Array(params[:name]&.capitalize),
+          isOfType: params[:isOfType]&.split(','), #["http://omv.ontoware.org/2005/05/ontology#Vocabulary"],
+          viewingRestriction: params[:viewingRestriction]&.split(','), #["private"]
+        }
+        inverse_filters = {
+          status: params[:status], #"retired",
+          submissionStatus: params[:submissionStatus] #"RDF",
+        }
+
+        filters.each do |key , values|
+          attr = extract_attr(key)
+          next if Array(values).empty?
+
+          filter = Goo::Filter.new(attr).regex(values.first)
+          values.drop(1).each do |v|
+            filter = filter.or(Goo::Filter.new(attr).regex(v))
+          end
+          query = query.filter(filter)
+        end
+
+        inverse_filters.each do |key ,value|
+          attr = extract_attr(key)
+          next unless value
+
+          filter = Goo::Filter.new(attr).regex("^(?:(?!#{value}).)*$")
+          query = query.filter(filter)
+        end
+        query
+      end
+
+      def extract_attr(key)
+        attr, sub_attr, sub_sub_attr = key.to_s.split('_')
+
+        return attr.to_sym unless sub_attr
+
+        return {attr.to_sym => [sub_attr.to_sym]} unless  sub_sub_attr
+
+        {attr.to_sym => [sub_attr.to_sym => sub_sub_attr.to_sym]}
       end
 
       def get_order_by_from(params, default_order = :asc)

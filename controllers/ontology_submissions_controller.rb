@@ -1,9 +1,13 @@
 class OntologySubmissionsController < ApplicationController
   get "/submissions" do
     check_last_modified_collection(LinkedData::Models::OntologySubmission)
-    #using appplication_helper method
-    options = {also_include_views: params["also_include_views"], status: (params["include_status"] || "ANY")}
-    reply retrieve_latest_submissions(options).values
+    options = {
+               also_include_views: params["also_include_views"],
+               status: (params["include_status"] || "ANY")
+    }
+    subs = retrieve_latest_submissions(options)
+    subs = subs.values unless page?
+    reply subs
   end
 
   ##
