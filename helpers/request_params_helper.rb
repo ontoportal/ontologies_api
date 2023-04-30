@@ -38,7 +38,7 @@ module Sinatra
           ontology_group_acronym: params[:group]&.split(','), #%w[RICE CROP],
           ontology_name: Array(params[:name]) + Array(params[:name]&.capitalize),
           isOfType: params[:isOfType]&.split(','), #["http://omv.ontoware.org/2005/05/ontology#Vocabulary"],
-          viewingRestriction: params[:viewingRestriction]&.split(','), #["private"]
+          ontology_viewingRestriction: params[:viewingRestriction]&.split(','), #["private"]
         }
         inverse_filters = {
           status: params[:status], #"retired",
