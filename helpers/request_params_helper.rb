@@ -46,36 +46,11 @@ module Sinatra
           submissionStatus: params[:submissionStatus] #"RDF",
         }
 
-        filters.each do |key , values|
-          attr = extract_attr(key)
-          next if Array(values).empty?
+        query = add_direct_filters(filters, query)
 
-          filter = Goo::Filter.new(attr).regex(values.first)
-          values.drop(1).each do |v|
-            filter = filter.or(Goo::Filter.new(attr).regex(v))
-          end
-          query = query.filter(filter)
-        end
-
-        inverse_filters.each do |key ,value|
-          attr = extract_attr(key)
-          next unless value
-
-          filter = Goo::Filter.new(attr).regex("^(?:(?!#{value}).)*$")
-          query = query.filter(filter)
-        end
-        query
+        query = add_inverse_filters(inverse_filters, query)
       end
 
-      def extract_attr(key)
-        attr, sub_attr, sub_sub_attr = key.to_s.split('_')
-
-        return attr.to_sym unless sub_attr
-
-        return {attr.to_sym => [sub_attr.to_sym]} unless  sub_sub_attr
-
-        {attr.to_sym => [sub_attr.to_sym => sub_sub_attr.to_sym]}
-      end
 
       def get_order_by_from(params, default_order = :asc)
         if is_set?(params['sortby'])
@@ -102,6 +77,54 @@ module Sinatra
       end
 
       private
+      def extract_attr(key)
+        attr, sub_attr, sub_sub_attr = key.to_s.split('_')
+
+        return attr.to_sym unless sub_attr
+
+        return {attr.to_sym => [sub_attr.to_sym]} unless  sub_sub_attr
+
+        {attr.to_sym => [sub_attr.to_sym => sub_sub_attr.to_sym]}
+      end
+
+      def add_direct_filters(filters, query)
+        filters.each do |key, values|
+          attr = extract_attr(key)
+          next if Array(values).empty?
+
+          filter = Goo::Filter.new(attr).regex(values.first)
+          values.drop(1).each do |v|
+            filter = filter.or(Goo::Filter.new(attr).regex(v))
+          end
+          query = query.filter(filter)
+        end
+        query
+      end
+
+      def add_inverse_filters(inverse_filters, query)
+        inverse_filters.each do |key, value|
+          attr = extract_attr(key)
+          next unless value
+
+          filter = Goo::Filter.new(attr).regex("^(?:(?!#{value}).)*$")
+          query = query.filter(filter)
+        end
+        query
+      end
+
+      def add_acronym_name_filters(query)
+        if params[:acronym]
+          filter = Goo::Filter.new(extract_attr(:ontology_acronym)).regex(params[:acronym])
+          if params[:name]
+            filter.or(Goo::Filter.new(extract_attr(:ontology_name)).regex(params[:name]))
+          end
+          query = query.filter(filter)
+        elsif params[:name]
+          filter = Goo::Filter.new(extract_attr(:ontology_name)).regex(params[:name])
+          query = query.filter(filter)
+        end
+        query
+      end
 
       def sort_order_item(param, order)
         [param.to_sym, order.to_sym]
