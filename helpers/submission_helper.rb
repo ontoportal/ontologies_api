@@ -26,10 +26,15 @@ module Sinatra
 
         # When asking to display all metadata, we are using bring_remaining on each submission. Slower but best way to retrieve all attrs
         if includes_param.first == :all
-          includes = [:submissionId, {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl,
-                                                                             :group, :hasDomain, :views, :viewOf, :flat], :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
+          includes = [:submissionId, {:contact=>[:name, :email],
+                                      :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl,
+                                                                             :group, :hasDomain, :views, :viewOf, :flat, :notes, :reviews, :projects],
+                                      :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym], :metrics =>[:classes, :individuals, :properties]},
+                      :submissionStatus]
         elsif includes.find{|v| v.is_a?(Hash) && v.keys.first.eql?(:ontology)}
-          includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain]}
+          includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects]}
+        elsif includes.find{|v| v.is_a?(Hash) && v.keys.first.eql?(:contact)}
+          includes << {:contact=>[:name, :email]}
         end
 
         submissions = submissions_query.include(includes)

@@ -7,6 +7,8 @@ class OntologySubmissionsController < ApplicationController
     }
     subs = retrieve_latest_submissions(options)
     subs = subs.values unless page?
+    # Force to show ontology reviews, notes and projects by default only for this request
+    LinkedData::Models::Ontology.serialize_default(*(LinkedData::Models::Ontology.hypermedia_settings[:serialize_default] + [:reviews, :notes, :projects]))
     reply subs
   end
 
@@ -30,7 +32,7 @@ class OntologySubmissionsController < ApplicationController
         # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
         ont.bring(submissions: [:released, :creationDate, :status, :submissionId,
                                 {:contact=>[:name, :email], :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl, :group, :hasDomain, :views, :viewOf, :flat],
-                                 :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus])
+                                 :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus], :metrics =>[:classes, :individuals, :properties])
 
         ont.submissions.each do |sub|
           sub.bring_remaining
