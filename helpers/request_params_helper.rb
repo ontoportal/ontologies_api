@@ -49,6 +49,8 @@ module Sinatra
         query = add_direct_filters(filters, query)
 
         query = add_inverse_filters(inverse_filters, query)
+
+        query = add_acronym_name_filters(query)
       end
 
 
