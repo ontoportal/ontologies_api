@@ -7,6 +7,8 @@ class OntologySubmissionsController < ApplicationController
     }
     subs = retrieve_latest_submissions(options)
     subs = subs.values unless page?
+    # Force to show ontology reviews, notes and projects by default only for this request
+    LinkedData::Models::Ontology.serialize_default(*(LinkedData::Models::Ontology.hypermedia_settings[:serialize_default] + [:reviews, :notes, :projects]))
     reply subs
   end
 
