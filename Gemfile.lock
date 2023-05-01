@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 1484ad56e39810208ee08a14d1319b6bc112f647
+  revision: c3456c45c12ed92d4a3ae43cac7c1d4cdbf290b6
   branch: development
   specs:
     goo (0.0.2)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: f2168c8ad9ec447338da914d10a352df558494b5
+  revision: 4ac9873f3d016259196a17cfc9c6ab8149468ec9
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -193,7 +193,7 @@ GEM
     json_pure (2.6.3)
     jwt (2.7.0)
     kgio (2.11.4)
-    libxml-ruby (4.0.0)
+    libxml-ruby (4.1.0)
     logger (1.5.3)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
@@ -228,7 +228,7 @@ GEM
       net-protocol
     net-ssh (7.1.0)
     netrc (0.11.0)
-    newrelic_rpm (9.2.0)
+    newrelic_rpm (9.2.1)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -344,7 +344,6 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
-  x86_64-linux
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -398,4 +397,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.14
+   2.3.23

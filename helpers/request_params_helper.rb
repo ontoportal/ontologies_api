@@ -51,6 +51,8 @@ module Sinatra
         query = add_inverse_filters(inverse_filters, query)
 
         query = add_acronym_name_filters(query)
+
+        add_order_by_patterns(query)
       end
 
 
@@ -124,6 +126,19 @@ module Sinatra
         elsif params[:name]
           filter = Goo::Filter.new(extract_attr(:ontology_name)).regex(params[:name])
           query = query.filter(filter)
+        end
+        query
+      end
+
+      def add_order_by_patterns(query)
+        if params[:order_by]
+          attr, sub_attr = params[:order_by].to_s.split('_')
+          if sub_attr
+            order_pattern = { attr.to_sym => { sub_attr.to_sym => (sub_attr.eql?("name") ? :asc : :desc) } }
+          else
+            order_pattern = { attr.to_sym => :desc }
+          end
+          query = query.order_by(order_pattern)
         end
         query
       end
