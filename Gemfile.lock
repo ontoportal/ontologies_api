@@ -343,9 +343,7 @@ GEM
     webrick (1.8.1)
 
 PLATFORMS
-  x86_64-darwin-21
   x86_64-linux
-
 
 DEPENDENCIES
   activesupport (~> 3.0)
@@ -399,4 +397,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.23
+   2.3.14
