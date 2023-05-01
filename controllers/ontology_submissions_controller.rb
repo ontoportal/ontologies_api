@@ -25,9 +25,10 @@ class OntologySubmissionsController < ApplicationController
     ##
     # Display all submissions of an ontology
     get do
-      ont = Ontology.find(params["acronym"]).include(:acronym).first
+      ont = Ontology.find(params["acronym"]).include(:acronym, :administeredBy, :acl, :viewingRestriction).first
       error 422, "Ontology #{params["acronym"]} does not exist" unless ont
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
+      check_access(ont)
       if includes_param.first == :all
         # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
         ont.bring(submissions: [:released, :creationDate, :status, :submissionId,
