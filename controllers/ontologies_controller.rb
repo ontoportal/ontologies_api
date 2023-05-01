@@ -47,7 +47,7 @@ class OntologiesController < ApplicationController
           latest.bring({:contact=>[:name, :email],
                       :ontology=>[:acronym, :name, :administeredBy, :group, :viewingRestriction, :doNotUpdate, :flat,
                                   :hasDomain, :summaryOnly, :acl, :viewOf, :ontologyType],
-                      :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]})
+                      :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym], :metrics =>[:classes, :individuals, :properties]})
         else
           latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
         end

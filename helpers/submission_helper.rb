@@ -29,7 +29,8 @@ module Sinatra
           includes = [:submissionId, {:contact=>[:name, :email],
                                       :ontology=>[:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl,
                                                                              :group, :hasDomain, :views, :viewOf, :flat, :notes, :reviews, :projects],
-                                      :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]}, :submissionStatus]
+                                      :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym], :metrics =>[:classes, :individuals, :properties]},
+                      :submissionStatus]
         elsif includes.find{|v| v.is_a?(Hash) && v.keys.first.eql?(:ontology)}
           includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects]}
         end
