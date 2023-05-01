@@ -31,12 +31,16 @@ module Sinatra
                                                                              :group, :hasDomain, :views, :viewOf, :flat, :notes, :reviews, :projects],
                                       :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym], :metrics =>[:classes, :individuals, :properties]},
                       :submissionStatus]
-        elsif includes.find{|v| v.is_a?(Hash) && v.keys.first.eql?(:ontology)}
-          includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects]}
-        elsif includes.find{|v| v.is_a?(Hash) && v.keys.first.eql?(:contact)}
-          includes << {:contact=>[:name, :email]}
-        end
+        else
+          if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:ontology)}
+           includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects]}
+          end
 
+          if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:contact)}
+            includes << {:contact=>[:name, :email]}
+          end
+        end
+        
         submissions = submissions_query.include(includes)
         if page?
           submissions.page(page, size).all
