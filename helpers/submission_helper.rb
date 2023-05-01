@@ -33,6 +33,8 @@ module Sinatra
                       :submissionStatus]
         elsif includes.find{|v| v.is_a?(Hash) && v.keys.first.eql?(:ontology)}
           includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects]}
+        elsif includes.find{|v| v.is_a?(Hash) && v.keys.first.eql?(:contact)}
+          includes << {:contact=>[:name, :email]}
         end
 
         submissions = submissions_query.include(includes)
