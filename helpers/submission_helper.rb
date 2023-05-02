@@ -33,7 +33,7 @@ module Sinatra
                       :submissionStatus]
         else
           if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:ontology)}
-           includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects,:acl]}
+           includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects,:acl, :viewOf]}
           end
 
           if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:contact)}
