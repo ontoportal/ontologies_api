@@ -28,6 +28,7 @@ gem 'redis-rack-cache', '~> 2.0'
 # Data access (caching)
 gem 'redis'
 gem 'redis-activesupport'
+gem 'redis-store', '1.9.1' # remove after https://github.com/redis-store/redis-store/issues/358 is resolved
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
