@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: c3456c45c12ed92d4a3ae43cac7c1d4cdbf290b6
+  revision: 39b7f2f2e9c398b981fb03feaa1eebc270877341
   branch: development
   specs:
     goo (0.0.2)
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 4ac9873f3d016259196a17cfc9c6ab8149468ec9
-  branch: development
+  revision: 6f72110402537fffe295c4bfd6c1fd458f343942
+  branch: feature/add-persons-and-organization-models
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -112,7 +112,7 @@ GEM
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
-    capistrano (3.17.2)
+    capistrano (3.17.3)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -191,9 +191,9 @@ GEM
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.6.3)
-    jwt (2.7.0)
+    jwt (2.7.1)
     kgio (2.11.4)
-    libxml-ruby (4.1.0)
+    libxml-ruby (4.1.1)
     logger (1.5.3)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
@@ -215,7 +215,7 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.3.0)
     net-http-persistent (2.9.4)
-    net-imap (0.3.4)
+    net-imap (0.3.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -322,8 +322,8 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
-    temple (0.10.0)
-    tilt (2.1.0)
+    temple (0.10.2)
+    tilt (2.2.0)
     timeout (0.3.2)
     trailblazer-option (0.1.2)
     tzinfo (2.0.6)
@@ -343,6 +343,7 @@ GEM
     webrick (1.8.1)
 
 PLATFORMS
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
