@@ -11,7 +11,14 @@ class AgentsController < ApplicationController
       check_last_modified_collection(LinkedData::Models::Agent)
       query = LinkedData::Models::Agent.where
       query = apply_filters(LinkedData::Models::Agent, query)
-      reply query.include(LinkedData::Models::Agent.goo_attrs_to_load(includes_param)).to_a
+      query = query.include(LinkedData::Models::Agent.goo_attrs_to_load(includes_param))
+      if page?
+        page, size = page_params
+        agents = query.page(page, size).all
+      else
+        agents = query.to_a
+      end
+      reply agents
     end
 
     # Display a single agent
