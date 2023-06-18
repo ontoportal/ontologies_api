@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 6f72110402537fffe295c4bfd6c1fd458f343942
+  revision: f1edac81ea06d10ac91e98877b0283286fdc6535
   branch: feature/add-persons-and-organization-models
   specs:
     ontologies_linked_data (0.0.1)
