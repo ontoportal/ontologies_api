@@ -28,12 +28,12 @@ class AgentsController < ApplicationController
 
       # Create a agent with the given acronym
       post do
-        create_agent
+        reply 201, create_new_agent
       end
 
       # Create a agent with the given acronym
       put '/:acronym' do
-        create_agent
+        reply 201, create_new_agent
       end
 
       # Update an existing submission of a agent
@@ -44,18 +44,9 @@ class AgentsController < ApplicationController
         if agent.nil?
           error 400, "Agent does not exist, please create using HTTP PUT before modifying"
         else
-          identifiers = params.delete "identifiers"
-          affiliations = params.delete "affiliations"
-          params.delete "id"
-          populate_from_params(agent, params)
-          agent.identifiers = update_identifiers(identifiers)
-          agent.affiliations = update_affiliations(affiliations)
+          agent = update_agent(agent, params)
 
-          if agent.valid?
-            agent.save
-          else
-            error 400, agent.errors
-          end
+          error 400, agent.errors unless agent.errors.empty?
         end
         halt 204
       end
@@ -71,69 +62,65 @@ class AgentsController < ApplicationController
 
       def update_identifiers(identifiers)
         Array(identifiers).map do |i|
-          identifier = LinkedData::Models::AgentIdentifier.find(i["notation"]).first
+          id = i["notation"] || (i["id"] || "").split('/').last
+          identifier = LinkedData::Models::AgentIdentifier.find(id).first
+          identifier = LinkedData::Models::AgentIdentifier.new unless identifier
 
-          if identifier
-            i.delete "id"
-            populate_from_params(identifier, i)
-          else
-            identifier = LinkedData::Models::AgentIdentifier.new(i)
-          end
+          i.delete "id"
+          populate_from_params(identifier, i)
 
           if identifier.valid?
             identifier.save
           else
             error 400, identifier.errors
           end
-
           identifier
         end
       end
 
       def update_affiliations(affiliations)
         Array(affiliations).map do |aff|
-          affiliations = LinkedData::Models::Agent.find(aff["id"])
+          affiliation =  aff["id"] ? LinkedData::Models::Agent.find(RDF::URI.new(aff["id"])).first : nil
 
-          if affiliations
-            aff.delete "id"
-            populate_from_params(affiliations, aff)
+          if affiliation
+            affiliation.bring_remaining
+            affiliation = update_agent(affiliation, aff)
           else
-            affiliations = LinkedData::Models::Agent.new(aff)
+            affiliation = create_new_agent(aff["id"], aff)
           end
 
-          if affiliations.valid?
-            affiliations.save
-          else
-            error 400, affiliations.errors
-          end
+          error 400, affiliation.errors unless affiliation.errors.empty?
 
-          affiliations
+          affiliation
         end
       end
 
-      def create_agent
-        params ||= @params
-        acronym = params["id"]
+      def create_new_agent (id = @params['id'], params = @params)
         agent = nil
-        agent = LinkedData::Models::Agent.find(acronym).include(LinkedData::Models::Agent.goo_attrs_to_load(includes_param)).first if acronym
+        agent = LinkedData::Models::Agent.find(id).include(LinkedData::Models::Agent.goo_attrs_to_load(includes_param)).first if id
 
         if agent.nil?
-          identifiers = params.delete "identifiers"
-          affiliations = params.delete "affiliations"
-          params.delete "id"
-          agent = instance_from_params(LinkedData::Models::Agent, params)
-          agent.identifiers = update_identifiers(identifiers)
-          agent.affiliations = update_affiliations(affiliations)
+          agent = update_agent(LinkedData::Models::Agent.new, params)
+          error 400, agent.errors unless agent.errors.empty?
+
+          return agent
         else
           error 400, "Agent exists, please use HTTP PATCH to update"
         end
+      end
 
-        if agent.valid?
-          agent.save
-        else
-          error 400, agent.errors
-        end
-        reply 201, agent
+      def update_agent(agent, params)
+        return agent unless agent
+
+        identifiers = params.delete "identifiers"
+        affiliations = params.delete "affiliations"
+        params.delete "id"
+        populate_from_params(agent, params)
+        agent.identifiers = update_identifiers(identifiers)
+        agent.affiliations = update_affiliations(affiliations)
+
+        agent.save if agent.valid?
+        return agent
       end
 
     end
