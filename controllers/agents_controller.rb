@@ -67,6 +67,9 @@ class AgentsController < ApplicationController
           identifier = LinkedData::Models::AgentIdentifier.new unless identifier
 
           i.delete "id"
+
+          next identifier if i.keys.size.zero?
+
           populate_from_params(identifier, i)
 
           if identifier.valid?
@@ -82,8 +85,11 @@ class AgentsController < ApplicationController
         Array(affiliations).map do |aff|
           affiliation =  aff["id"] ? LinkedData::Models::Agent.find(RDF::URI.new(aff["id"])).first : nil
 
+          affiliation.bring_remaining if affiliation
+
+          next affiliation if aff.keys.size.eql?(1) && aff["id"]
+
           if affiliation
-            affiliation.bring_remaining
             affiliation = update_agent(affiliation, aff)
           else
             affiliation = create_new_agent(aff["id"], aff)
