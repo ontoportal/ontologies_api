@@ -62,9 +62,16 @@ class AgentsController < ApplicationController
 
       def update_identifiers(identifiers)
         Array(identifiers).map do |i|
-          id = i["notation"] || (i["id"] || "").split('/').last
-          identifier = LinkedData::Models::AgentIdentifier.find(id).first
-          identifier = LinkedData::Models::AgentIdentifier.new unless identifier
+          next nil if i.empty?
+
+          id =  i["id"] || LinkedData::Models::AgentIdentifier.generate_identifier(i['notation'], i['schemaAgency'])
+          identifier = LinkedData::Models::AgentIdentifier.find(RDF::URI.new(id)).first
+
+          if identifier
+            identifier.bring_remaining
+          else
+            identifier = LinkedData::Models::AgentIdentifier.new
+          end
 
           i.delete "id"
 
@@ -78,14 +85,17 @@ class AgentsController < ApplicationController
             error 400, identifier.errors
           end
           identifier
-        end
+        end.compact
       end
 
       def update_affiliations(affiliations)
         Array(affiliations).map do |aff|
           affiliation =  aff["id"] ? LinkedData::Models::Agent.find(RDF::URI.new(aff["id"])).first : nil
 
-          affiliation.bring_remaining if affiliation
+          if affiliation
+            affiliation.bring_remaining
+            affiliation.identifiers.each{|i| i.bring_remaining}
+          end
 
           next affiliation if aff.keys.size.eql?(1) && aff["id"]
 
