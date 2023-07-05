@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 39b7f2f2e9c398b981fb03feaa1eebc270877341
+  revision: 6c1790433c6897dd398dce89ff724646e1c7e6af
   branch: development
   specs:
     goo (0.0.2)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: f1edac81ea06d10ac91e98877b0283286fdc6535
+  revision: 596dc903e437e2b6af0893e8d68b9e4b4e640106
   branch: feature/add-persons-and-organization-models
   specs:
     ontologies_linked_data (0.0.1)
@@ -108,7 +108,7 @@ GEM
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.24.1)
-    bcrypt (3.1.18)
+    bcrypt (3.1.19)
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
@@ -171,7 +171,7 @@ GEM
       retriable (>= 2.0, < 4.a)
       rexml
       webrick
-    googleauth (1.5.2)
+    googleauth (1.6.0)
       faraday (>= 0.17.3, < 3.a)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
@@ -228,7 +228,7 @@ GEM
       net-protocol
     net-ssh (7.1.0)
     netrc (0.11.0)
-    newrelic_rpm (9.2.2)
+    newrelic_rpm (9.3.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -324,7 +324,7 @@ GEM
     systemu (2.6.5)
     temple (0.10.2)
     tilt (2.2.0)
-    timeout (0.3.2)
+    timeout (0.4.0)
     trailblazer-option (0.1.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)

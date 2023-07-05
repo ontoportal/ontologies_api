@@ -93,7 +93,8 @@ class TestAgentsController < TestCase
     agents_tmp = [ _agent_data(type: 'organization'), _agent_data(type: 'person'), _agent_data(type: 'person')]
     agent = agents_tmp.last
     agent[:affiliations] = [agents_tmp[0].stringify_keys, agents_tmp[1].stringify_keys]
-    _test_agent_creation(agent)
+    post "/agents", MultiJson.dump(agent), "CONTENT_TYPE" => "application/json"
+    assert last_response.status == 400
   end
 
   def test_update_patch_agent
@@ -180,7 +181,7 @@ class TestAgentsController < TestCase
       name: "name #{i}",
       homepage: "home page #{i}",
       acronym: "acronym #{i}",
-      email: "email #{i}",
+      email: "email_#{i}@test.com",
       identifiers: test_identifiers.sample(2).map { |x| x.merge({ creator: user }) },
       affiliations: [],
       creator: user
