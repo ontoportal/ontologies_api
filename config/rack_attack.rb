@@ -3,15 +3,14 @@
 puts "(API) >> Throttling enabled at #{LinkedData::OntologiesAPI.settings.req_per_second_per_ip} req/sec"
 
 require 'rack/attack'
-require 'redis-activesupport'
 use Rack::Attack
 
 attack_redis_host_port = {
   host: LinkedData::OntologiesAPI.settings.http_redis_host,
-  port: LinkedData::OntologiesAPI.settings.http_redis_port
+  port: LinkedData::OntologiesAPI.settings.http_redis_port,
+  db: 1
 }
-attack_store = ActiveSupport::Cache::RedisStore.new(attack_redis_host_port)
-Rack::Attack.cache.store = attack_store
+Rack::Attack.cache.store = Redis.new(attack_redis_host_port)
 
 safe_ips = LinkedData::OntologiesAPI.settings.safe_ips ||= Set.new
 safe_ips.each do |safe_ip|
