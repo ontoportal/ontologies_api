@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 3.1'
+gem 'activesupport', '~> 3.2'
 # see https://github.com/ncbo/ontologies_api/issues/69
 gem 'bigdecimal', '1.4.2'
 gem 'faraday', '~> 2.0'
@@ -27,6 +27,8 @@ gem 'redis-rack-cache', '~> 2.0'
 
 # Data access (caching)
 gem 'redis'
+# remove forked redis-store after https://github.com/ncbo/ontologies_api/issues/119 gets resolved
+gem 'redis-store', git: 'https://github.com/PikachuEXE/redis-store', branch: 'fix/redis-client-compatibility'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
