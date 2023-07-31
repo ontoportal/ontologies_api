@@ -51,6 +51,10 @@ module Sinatra
             value = is_arr ? value : [value]
             new_value = []
             value.each do |cls|
+              if uri_as_needed(cls["ontology"]).nil?
+                new_value << cls
+                next
+              end
               sub = LinkedData::Models::Ontology.find(uri_as_needed(cls["ontology"])).first.latest_submission
               new_value << LinkedData::Models::Class.find(cls["class"]).in(sub).first
             end
