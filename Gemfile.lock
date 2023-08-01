@@ -357,7 +357,6 @@ DEPENDENCIES
   capistrano-rbenv
   cube-ruby
   ed25519 (>= 1.2, < 2.0)
-  faraday (~> 2.0)
   ffi
   goo!
   haml (~> 5.2.2)

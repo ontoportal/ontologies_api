@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 gem 'activesupport', '~> 3.1'
 # see https://github.com/ncbo/ontologies_api/issues/69
 gem 'bigdecimal', '1.4.2'
-gem 'faraday', '~> 2.0'
 gem 'json-schema', '~> 2.0'
 gem 'multi_json', '~> 1.0'
 gem 'oj', '~> 3.0'
