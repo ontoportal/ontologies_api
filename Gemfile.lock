@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: fb203b0396d03c1df61abfcdbc4070787010f052
+  revision: 8e80a4f842331e874055aec6a507ca5e3be4e3a4
   branch: develop
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 8c8ddb6c7f9f1d2584a5fb3220f1d2aa37b66cb2
+  revision: 1f81bdba54351e990047cbd6d1294c96ff0a8c6c
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 13bb138aa40ca72bfafc91a1a7416c162ba8d325
+  revision: df675c44c81332a0f894b86338561b51c7f721b7
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -223,7 +223,7 @@ GEM
       redis
     multi_json (1.15.0)
     net-http-persistent (2.9.4)
-    net-imap (0.3.6)
+    net-imap (0.3.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -234,10 +234,10 @@ GEM
       net-ssh (>= 2.6.5, < 8.0.0)
     net-smtp (0.3.3)
       net-protocol
-    net-ssh (7.1.0)
+    net-ssh (7.2.0)
     netrc (0.11.0)
     newrelic_rpm (9.3.1)
-    oj (3.15.0)
+    oj (3.15.1)
     omni_logger (0.1.4)
       logger
     os (1.1.4)
@@ -283,7 +283,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.2.5)
+    rexml (3.2.6)
     rsolr (2.5.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
