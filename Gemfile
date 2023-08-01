@@ -49,7 +49,7 @@ gem 'ncbo_annotator', git: 'https://github.com/ontoportal-lirmm/ncbo_annotator.g
 gem 'ncbo_cron', git: 'https://github.com/ontoportal-lirmm/ncbo_cron.git', branch: 'master'
 gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'master'
 gem 'sparql-client', github: 'ontoportal-lirmm/sparql-client', branch: 'master'
-gem 'ontologies_linked_data', git: 'https://github.com/ontoportal-lirmm/ontologies_linked_data.git', branch: 'feature/add-persons-and-organization-models'
+gem 'ontologies_linked_data', git: 'https://github.com/ontoportal-lirmm/ontologies_linked_data.git', branch: 'development'
 
 group :development do
   # bcrypt_pbkdf and ed35519 is required for capistrano deployments when using ed25519 keys; see https://github.com/miloserdow/capistrano-deploy/issues/42

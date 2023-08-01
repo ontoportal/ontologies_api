@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 04dc11434af0d3eae9861e378f84be9bec4a0d9e
-  branch: feature/add-persons-and-organization-models
+  revision: ec1e02def3ad2480e08322f65c564ffb731bda6a
+  branch: development
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -226,7 +226,7 @@ GEM
       net-ssh (>= 2.6.5, < 8.0.0)
     net-smtp (0.3.3)
       net-protocol
-    net-ssh (7.1.0)
+    net-ssh (7.2.0)
     netrc (0.11.0)
     newrelic_rpm (9.3.1)
     oj (2.18.5)
