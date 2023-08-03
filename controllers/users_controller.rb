@@ -101,14 +101,7 @@ class UsersController < ApplicationController
       error 409, "User with username `#{params["username"]}` already exists" unless user.nil?
       user = instance_from_params(User, params)
       if user.valid?
-        user.save
-        # Send an email to the administrator to warn him about the newly created user
-        begin
-          if !LinkedData.settings.admin_emails.nil? && !LinkedData.settings.admin_emails.empty?
-            LinkedData::Utils::Notifications.new_user(user)
-          end
-        rescue Exception => e
-        end
+        user.save(send_notifications: false)
       else
         error 422, user.errors
       end
