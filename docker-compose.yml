@@ -75,10 +75,14 @@ services:
 
   redis-ut:
     image: redis
+    ports:
+      - 6379:6379
 
   4store-ut:
     image: bde2020/4store
     #volume: fourstore:/var/lib/4store
+    ports:
+      - 9000:9000
     command: >
       bash -c "4s-backend-setup --segments 4 ontoportal_kb
       && 4s-backend ontoportal_kb
@@ -88,10 +92,20 @@ services:
 
 
   solr-ut:
-    image: ontoportal/solr-ut:0.1
+    image: solr:8
+    volumes:
+      - ./test/solr/configsets:/configsets:ro
+    ports:
+      - "8983:8983"
+    command: >
+      bash -c "precreate-core term_search_core1 /configsets/term_search
+      && precreate-core prop_search_core1 /configsets/property_search
+      && solr-foreground"
 
   mgrep-ut:
     image: ontoportal/mgrep-ncbo:0.1
+    ports:
+      - "55556:55555"
 
   agraph-ut:
     image: franzinc/agraph:v7.3.0
