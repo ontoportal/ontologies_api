@@ -17,6 +17,37 @@ module Sinatra
 
         obj
       end
+
+      def send_reset_token(email, username)
+        user = LinkedData::Models::User.where(email: email, username: username).include(LinkedData::Models::User.attributes).first
+        error 404, "User not found" unless user
+        reset_token = token(36)
+        user.resetToken = reset_token
+
+        return user if user.valid?
+
+        user.save(override_security: true)
+        LinkedData::Utils::Notifications.reset_password(user, reset_token)
+        user
+      end
+      
+      def token(len)
+        chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
+        token = ""
+        1.upto(len) { |i| token << chars[rand(chars.size-1)] }
+        token
+      end
+
+      def reset_password(email, username, token)
+        user = LinkedData::Models::User.where(email: email, username: username).include(User.goo_attrs_to_load(includes_param)).first
+
+        error 404, "User not found" unless user
+
+        user.show_apikey = true
+
+        [user, token.eql?(user.resetToken)]
+      end
+
     end
   end
 end

@@ -20,17 +20,13 @@ class UsersController < ApplicationController
     post "/create_reset_password_token" do
       email    = params["email"]
       username = params["username"]
-      user = LinkedData::Models::User.where(email: email, username: username).include(LinkedData::Models::User.attributes).first
-      error 404, "User not found" unless user
-      reset_token = token(36)
-      user.resetToken = reset_token
+      user = send_reset_token(email, username)
+
       if user.valid?
-        user.save(override_security: true)
-        LinkedData::Utils::Notifications.reset_password(user, reset_token)
+        halt 204
       else
         error 422, user.errors
       end
-      halt 204
     end
 
     ##
@@ -42,11 +38,11 @@ class UsersController < ApplicationController
       email             = params["email"] || ""
       username          = params["username"] || ""
       token             = params["token"] || ""
+
       params["display"] = User.attributes.join(",") # used to serialize everything via the serializer
-      user = LinkedData::Models::User.where(email: email, username: username).include(User.goo_attrs_to_load(includes_param)).first
-      error 404, "User not found" unless user
-      if token.eql?(user.resetToken)
-        user.show_apikey = true
+
+      user, token_accepted = reset_password(email, username, token)
+      if token_accepted
         reply user
       else
         error 403, "Password reset not authorized with this token"
@@ -98,12 +94,6 @@ class UsersController < ApplicationController
 
     private
 
-    def token(len)
-      chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
-      token = ""
-      1.upto(len) { |i| token << chars[rand(chars.size-1)] }
-      token
-    end
 
     def create_user
       params ||= @params
