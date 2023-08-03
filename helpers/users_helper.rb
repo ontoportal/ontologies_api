@@ -48,6 +48,24 @@ module Sinatra
         [user, token.eql?(user.resetToken)]
       end
 
+      def oauth_authenticate(params)
+        access_token  = params["access_token"]
+        provider  = params["token_provider"]
+        user = LinkedData::Models::User.oauth_authenticate(access_token, provider)
+        error 401, "Access token invalid" unless user.nil?
+        user
+      end
+
+      def login_password_authenticate(params)
+        user_id       = params["user"]
+        user_password = params["password"]
+        user = User.find(user_id).include(User.goo_attrs_to_load(includes_param) + [:passwordHash]).first
+        authenticated = false
+        authenticated = user.authenticate(user_password) unless user.nil?
+        error 401, "Username/password combination invalid" unless authenticated
+
+        user
+      end
     end
   end
 end
