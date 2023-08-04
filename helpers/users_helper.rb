@@ -52,7 +52,7 @@ module Sinatra
         access_token  = params["access_token"]
         provider  = params["token_provider"]
         user = LinkedData::Models::User.oauth_authenticate(access_token, provider)
-        error 401, "Access token invalid" unless user.nil?
+        error 401, "Access token invalid"if user.nil?
         user
       end
 
