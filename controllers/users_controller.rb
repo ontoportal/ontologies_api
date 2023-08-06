@@ -7,10 +7,10 @@ class UsersController < ApplicationController
 
       if params["access_token"]
         user = oauth_authenticate(params)
+        user.bring(*User.goo_attrs_to_load(includes_param))
       else
         user = login_password_authenticate(params)
       end
-      user.bring_remaining
       user.show_apikey = true unless user.nil?
       reply user
     end
