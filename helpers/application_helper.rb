@@ -261,7 +261,7 @@ module Sinatra
         if params["month"]
           month = params["month"].strip
           if %r{(?<month>^(0[1-9]|[1-9]|1[0-2])$)}x === month
-            return month
+            return month.to_i.to_s
           end
         end
         nil
@@ -273,7 +273,7 @@ module Sinatra
         if params["year"]
           year = params["year"].strip
           if %r{(?<year>^([1-2]\d{3})$)}x === year
-            return year
+            return year.to_i.to_s
           end
         end
         nil
