@@ -261,9 +261,10 @@ module Sinatra
         if params["month"]
           month = params["month"].strip
           if %r{(?<month>^(0[1-9]|[1-9]|1[0-2])$)}x === month
-            month.to_i
+            return month
           end
         end
+        nil
       end
 
       # validates year for starting with 1 or 2 and containing 4 digits
@@ -272,9 +273,10 @@ module Sinatra
         if params["year"]
           year = params["year"].strip
           if %r{(?<year>^([1-2]\d{3})$)}x === year
-            year.to_i
+            return year
           end
         end
+        nil
       end
 
       ##
