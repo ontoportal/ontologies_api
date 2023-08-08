@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 8e80a4f842331e874055aec6a507ca5e3be4e3a4
+  revision: 20801d66769854e254ec85ef5c14b5d87833e210
   branch: develop
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 1f81bdba54351e990047cbd6d1294c96ff0a8c6c
+  revision: 9a57e5373be9b147cd36e370f5356e6efb10e077
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: df675c44c81332a0f894b86338561b51c7f721b7
+  revision: 98bb4f71a0714a31c13de99646145bb6af5d898c
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -103,7 +103,7 @@ GEM
     activesupport (3.2.22.5)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
-    addressable (2.8.4)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
@@ -170,8 +170,8 @@ GEM
       google-protobuf (~> 3.14)
       googleapis-common-protos-types (~> 1.2)
       grpc (~> 1.27)
-    googleapis-common-protos-types (1.7.0)
-      google-protobuf (~> 3.14)
+    googleapis-common-protos-types (1.8.0)
+      google-protobuf (~> 3.18)
     googleauth (1.7.0)
       faraday (>= 0.17.3, < 3.a)
       jwt (>= 1.4, < 3.0)
@@ -213,9 +213,9 @@ GEM
       net-smtp
     memoist (0.16.2)
     method_source (1.0.0)
-    mime-types (3.4.1)
+    mime-types (3.5.0)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2023.0218.1)
+    mime-types-data (3.2023.0808)
     mini_mime (1.1.2)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.3)
@@ -257,7 +257,7 @@ GEM
       rack (>= 0.4)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
-    rack-mini-profiler (3.1.0)
+    rack-mini-profiler (3.1.1)
       rack (>= 1.2.0)
     rack-protection (1.5.5)
       rack
@@ -348,7 +348,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  activesupport (~> 3.1)
+  activesupport (~> 3.0)
   bcrypt_pbkdf (>= 1.0, < 2.0)
   bigdecimal (= 1.4.2)
   capistrano (~> 3)
