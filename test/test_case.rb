@@ -21,7 +21,9 @@ ENV['RACK_ENV'] = 'test'
 require_relative 'test_log_file'
 require_relative '../app'
 require 'minitest/unit'
+require 'webmock/minitest'
 MiniTest::Unit.autorun
+WebMock.allow_net_connect!
 require 'rack/test'
 require 'multi_json'
 require 'oj'

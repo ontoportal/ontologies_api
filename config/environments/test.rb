@@ -55,6 +55,24 @@ LinkedData.config do |config|
       "apikey" => "1cfae05f-9e67-486f-820b-b393dec5764b"
     }
   }
+  config.oauth_providers = {
+    github: {
+      check: :access_token,
+      link: 'https://api.github.com/user'
+    },
+    keycloak: {
+      check: :jwt_token,
+      cert: 'KEYCLOAK_SECRET_KEY'
+    },
+    orcid: {
+      check: :access_token,
+      link: 'https://pub.orcid.org/v3.0/me'
+    },
+    google: {
+      check: :access_token,
+      link: 'https://www.googleapis.com/oauth2/v3/userinfo'
+    }
+  }
 end
 
 Annotator.config do |config|
