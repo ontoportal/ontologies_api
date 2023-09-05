@@ -29,7 +29,13 @@ module Sinatra
         build_filter
       end
 
-      def apply_filters(query)
+      def apply_filters(object, query)
+        attributes_to_filter = object.attributes(:all).select{|x| params.keys.include?(x.to_s)}
+        filters = attributes_to_filter.map {|key| [key, params[key]&.split(',')]}.to_h
+        add_direct_filters(filters, query)
+      end
+
+      def apply_submission_filters(query)
 
         filters = {
           naturalLanguage: params[:naturalLanguage]&.split(',') , #%w[http://lexvo.org/id/iso639-3/fra http://lexvo.org/id/iso639-3/eng],

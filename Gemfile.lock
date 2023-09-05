@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: e4b3a6d9bf575c1420924d4dbe1490248040aff7
-  branch: feature/add-multi-provider-authentification
+  revision: 4c89c8346766d23e09b24c8e29750bf3a91e6b53
+  branch: development
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -105,7 +105,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
-    airbrussh (1.4.1)
+    airbrussh (1.4.2)
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.24.1)
     bcrypt (3.1.19)
@@ -207,10 +207,10 @@ GEM
       net-smtp
     memoist (0.16.2)
     method_source (1.0.0)
-    mime-types (3.4.1)
+    mime-types (3.5.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2023.0218.1)
-    mini_mime (1.1.2)
+    mime-types-data (3.2023.0808)
+    mini_mime (1.1.5)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.3)
     mlanett-redis-lock (0.2.7)
@@ -231,7 +231,7 @@ GEM
       net-protocol
     net-ssh (7.2.0)
     netrc (0.11.0)
-    newrelic_rpm (9.3.1)
+    newrelic_rpm (9.4.2)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -271,8 +271,8 @@ GEM
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
       redis-store (>= 1.6, < 2)
-    redis-store (1.9.2)
-      redis (>= 4, < 6)
+    redis-store (1.9.1)
+      redis (>= 4, < 5)
     representable (3.2.0)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -343,7 +343,7 @@ GEM
       unicorn (>= 4, < 7)
     uuid (2.3.9)
       macaddr (~> 1.0)
-    webmock (3.18.1)
+    webmock (3.19.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -354,7 +354,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  activesupport (~> 3.0)
+  activesupport (~> 3.1)
   bcrypt_pbkdf (>= 1.0, < 2.0)
   bigdecimal (= 1.4.2)
   capistrano (~> 3)
@@ -382,7 +382,7 @@ DEPENDENCIES
   rack
   rack-accept (~> 0.4)
   rack-attack (~> 6.6.1)
-  rack-cache (~> 1.0)
+  rack-cache (~> 1.13.0)
   rack-cors
   rack-mini-profiler
   rack-post-body-to-params!
@@ -393,6 +393,7 @@ DEPENDENCIES
   redis (~> 4.8.1)
   redis-activesupport
   redis-rack-cache (~> 2.0)
+  redis-store (= 1.9.1)
   request_store
   shotgun!
   simplecov
@@ -406,4 +407,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.3.14
+   2.3.23
