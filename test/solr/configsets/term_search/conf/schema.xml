@@ -128,11 +128,20 @@
     <field name="resource_id"           type="string"             indexed="true"  stored="true"  multiValued="false" required="true" />
 
     <!-- searchable fields -->
-    <field name="prefLabel"             type="text_general"       indexed="true"  stored="true"  multiValued="false" />
-    <field name="prefLabelExact"        type="string_ci"          indexed="true"  stored="true"  multiValued="false" />
-    <field name="prefLabelSuggest"      type="text_suggest"       indexed="true"  stored="true"  omitNorms="true" />
-    <field name="prefLabelSuggestEdge"  type="text_suggest_edge"  indexed="true"  stored="true" />
-    <field name="prefLabelSuggestNgram" type="text_suggest_ngram" indexed="true"  stored="true"  omitNorms="true" />
+    <!-- all languages fields -->
+    <field name="prefLabel"             type="text_general"       indexed="true"  stored="true"  multiValued="true" />
+    <field name="prefLabelExact"        type="string_ci"          indexed="true"  stored="true"  multiValued="true" />
+    <field name="prefLabelSuggest"      type="text_suggest"       indexed="true"  stored="true"  multiValued="true"  omitNorms="true" />
+    <field name="prefLabelSuggestEdge"  type="text_suggest_edge"  indexed="true"  stored="true"  multiValued="true"  />
+    <field name="prefLabelSuggestNgram" type="text_suggest_ngram" indexed="true"  stored="true"  multiValued="true"  omitNorms="true" />
+
+    <!--  language specific fields  (e.g prefLabel_en or prefLabel_fr) -->
+    <dynamicField name="prefLabel_*" type="text_general" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="prefLabelExact_*" type="string_ci" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="prefLabelSuggest_*" type="text_suggest" indexed="true" stored="true" omitNorms="true" multiValued="true" />
+    <dynamicField name="prefLabelSuggestEdge_*" type="text_suggest_edge" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="prefLabelSuggestNgram_*" type="text_suggest_ngram" indexed="true" stored="true" omitNorms="true" multiValued="true" />
+
 
     <field name="synonym"               type="text_general"       indexed="true"  stored="true"  multiValued="true" />
     <field name="synonymExact"          type="string_ci"          indexed="true"  stored="true"  multiValued="true" />
@@ -140,9 +149,18 @@
     <field name="synonymSuggestEdge"    type="text_suggest_edge"  indexed="true"  stored="true"  multiValued="true" />
     <field name="synonymSuggestNgram"   type="text_suggest_ngram" indexed="true"  stored="true"  omitNorms="true" multiValued="true" />
 
+    <dynamicField name="synonym_*" type="text_general" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="synonymExact_*" type="string_ci" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="synonymSuggest_*" type="text_suggest" indexed="true" stored="true" omitNorms="true" multiValued="true" />
+    <dynamicField name="synonymSuggestEdge_*" type="text_suggest_edge" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="synonymSuggestNgram_*" type="text_suggest_ngram" indexed="true" stored="true" omitNorms="true" multiValued="true" />
+
+
     <field name="notation"              type="text_general"       indexed="true"  stored="true"  multiValued="false" />
 
-    <field name="definition"            type="string"             indexed="true"  stored="true"  multiValued="true" />
+    <field name="definition" type="string" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="definition_*" type="string" indexed="true" stored="true" multiValued="true" />
+
     <field name="submissionAcronym"     type="string"             indexed="true"  stored="true"  multiValued="false" />
     <field name="parents"               type="string"             indexed="true"  stored="true"  multiValued="true" />
     <field name="ontologyType"          type="ontologyType"       indexed="true"  stored="true"  multiValued="false" />
@@ -250,6 +268,17 @@
     <copyField source="synonym" dest="synonymSuggest" />
     <copyField source="synonym" dest="synonymSuggestEdge" />
     <copyField source="synonym" dest="synonymSuggestNgram" />
+
+    <copyField source="prefLabel_*" dest="prefLabelExact_*" />
+    <copyField source="prefLabel_*" dest="prefLabelSuggest_*" />
+    <copyField source="prefLabel_*" dest="prefLabelSuggestEdge_*" />
+    <copyField source="prefLabel_*" dest="prefLabelSuggestNgram_*" />
+
+
+    <copyField source="synonym_*" dest="synonymExact_*" />
+    <copyField source="synonym_*" dest="synonymSuggest_*" />
+    <copyField source="synonym_*" dest="synonymSuggestEdge_*" />
+    <copyField source="synonym_*" dest="synonymSuggestNgram_*" />
 
     <copyField source="notation" dest="_text_"/>
 

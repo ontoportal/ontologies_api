@@ -100,4 +100,40 @@ class TestUsersController < TestCase
     assert user["username"].eql?(@@usernames.first)
   end
 
+  def test_oauth_authentication
+    fake_responses = {
+      github: {
+        id: 123456789,
+        login: 'github_user',
+        email: 'github_user@example.com',
+        name: 'GitHub User',
+        avatar_url: 'https://avatars.githubusercontent.com/u/123456789'
+      },
+      google: {
+        sub: 'google_user_id',
+        email: 'google_user@example.com',
+        name: 'Google User',
+        given_name: 'Google',
+        family_name: 'User',
+        picture: 'https://lh3.googleusercontent.com/a-/user-profile-image-url'
+      },
+      orcid: {
+        orcid: '0000-0002-1825-0097',
+        email: 'orcid_user@example.com',
+        name: {
+          "family-name": 'ORCID',
+          "given-names": 'User'
+        }
+      }
+    }
+
+    fake_responses.each do |provider, data|
+      WebMock.stub_request(:get, LinkedData::Models::User.oauth_providers[provider][:link])
+             .to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
+      post "/users/authenticate", {access_token:'jkooko', token_provider: provider.to_s}
+      assert last_response.ok?
+      user = MultiJson.load(last_response.body)
+      assert data[:email], user["email"]
+    end
+  end
 end

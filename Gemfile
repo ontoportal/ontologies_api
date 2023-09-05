@@ -73,4 +73,5 @@ group :test do
   gem 'rack-test'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura' # for codecov.io
+  gem 'webmock'
 end

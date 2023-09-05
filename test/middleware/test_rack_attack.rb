@@ -18,14 +18,14 @@ class TestRackAttack < TestCase
     LinkedData::OntologiesAPI.settings.req_per_second_per_ip = 1
     LinkedData::OntologiesAPI.settings.safe_ips = Set.new(["1.2.3.4", "1.2.3.5"])
 
-    @@user = LinkedData::Models::User.new({username: "user", password: "test_password", email: "test_email@example.org"})
+    @@user = LinkedData::Models::User.new({username: "user", password: "test_password", email: "test_email1@example.org"})
     @@user.save
 
-    @@bp_user = LinkedData::Models::User.new({username: "ncbobioportal", password: "test_password", email: "test_email@example.org"})
+    @@bp_user = LinkedData::Models::User.new({username: "ncbobioportal", password: "test_password", email: "test_email2@example.org"})
     @@bp_user.save
 
     admin_role = LinkedData::Models::Users::Role.find("ADMINISTRATOR").first
-    @@admin = LinkedData::Models::User.new({username: "admin", password: "test_password", email: "test_email@example.org", role: [admin_role]})
+    @@admin = LinkedData::Models::User.new({username: "admin", password: "test_password", email: "test_email3@example.org", role: [admin_role]})
     @@admin.save
 
     # Redirect output or we get a bunch of noise from Rack (gets reset in the after_suite method).

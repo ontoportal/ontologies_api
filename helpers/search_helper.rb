@@ -345,6 +345,7 @@ module Sinatra
           doc[:submission] = old_class.submission
           doc[:properties] = MultiJson.load(doc.delete(:propertyRaw)) if include_param_contains?(:properties)
           instance = LinkedData::Models::Class.read_only(doc)
+          instance.prefLabel =  instance.prefLabel.first if instance.prefLabel.is_a?(Array)
           classes_hash[ont_uri_class_uri] = instance
         end
 
