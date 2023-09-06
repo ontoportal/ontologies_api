@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 3ae6bfb56dc59a670b5bc1a513ff4929f8cf3756
+  revision: 9fd2649b66d3bd6ef7666729d9f91087aa406266
   branch: develop
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 656b3ac6ae66c5bc60cb9d97d5ed0009b1b703e0
+  revision: 9a57e5373be9b147cd36e370f5356e6efb10e077
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 818be7ee0d6b21f52a13dc1d6068505e6e17e0c5
+  revision: 42c7a5b242ec9e4d5d784895a27ebf377400b7b0
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 69b6e60312adf125638ab3d1dd31c9ace0712eff
+  revision: e33a0e451f8a8226d98291168e45b46d7065e670
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -317,7 +317,7 @@ GEM
     rubyzip (2.3.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    signet (0.17.0)
+    signet (0.18.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
