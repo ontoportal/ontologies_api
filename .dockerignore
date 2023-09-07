@@ -1,6 +1,8 @@
 # Git
 .git
 .gitignore
+.github
+create_permissions.log
 # Logs
 log/*
 # Temp files
@@ -8,3 +10,8 @@ tmp/*
 # Editor temp files
 *.swp
 *.swo
+coverage
+# Ignore generated test data
+test/data/uploaded_ontologies/**/*
+test/data/ontology_files/repo/**/*
+test/log
