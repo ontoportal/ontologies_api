@@ -17,17 +17,20 @@ class SlicesController < ApplicationController
     ##
     # Create a new slice
     post do
+      error 403, "Access denied" unless current_user && current_user.admin?
       create_slice
     end
 
     # Delete a slice
     delete '/:slice' do
+      error 403, "Access denied" unless current_user && current_user.admin?
       LinkedData::Models::Slice.find(params[:slice]).first.delete
       halt 204
     end
 
     # Update an existing slice
     patch '/:slice' do
+      error 403, "Access denied" unless current_user && current_user.admin?
       slice = LinkedData::Models::Slice.find(params[:slice]).include(LinkedData::Models::Slice.attributes(:all)).first
       populate_from_params(slice, params)
       if slice.valid?
