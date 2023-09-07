@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 9fd2649b66d3bd6ef7666729d9f91087aa406266
+  revision: 3ae6bfb56dc59a670b5bc1a513ff4929f8cf3756
   branch: develop
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 9a57e5373be9b147cd36e370f5356e6efb10e077
+  revision: 656b3ac6ae66c5bc60cb9d97d5ed0009b1b703e0
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 42c7a5b242ec9e4d5d784895a27ebf377400b7b0
+  revision: 818be7ee0d6b21f52a13dc1d6068505e6e17e0c5
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -164,9 +164,9 @@ GEM
     google-cloud-env (1.6.0)
       faraday (>= 0.17.3, < 3.0)
     google-cloud-errors (1.3.1)
-    google-protobuf (3.24.2-aarch64-linux)
-    google-protobuf (3.24.2-x86_64-darwin)
-    google-protobuf (3.24.2-x86_64-linux)
+    google-protobuf (3.24.3-aarch64-linux)
+    google-protobuf (3.24.3-x86_64-darwin)
+    google-protobuf (3.24.3-x86_64-linux)
     googleapis-common-protos (1.4.0)
       google-protobuf (~> 3.14)
       googleapis-common-protos-types (~> 1.2)
