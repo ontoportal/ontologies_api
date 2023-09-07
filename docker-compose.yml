@@ -31,7 +31,7 @@ x-app: &app
     # api code
     - .:/srv/ontoportal/ontologies_api
     # mount directory containing development version of the gems if you need to use 'bundle config local'
-    - /Users/mdorf/dev/ncbo:/Users/mdorf/dev/ncbo
+    #- /Users/alexskr/ontoportal:/Users/alexskr/ontoportal
   depends_on: &depends_on
     solr-ut:
       condition: service_healthy
