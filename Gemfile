@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 3.0'
+gem 'activesupport', '~> 3.2'
 # see https://github.com/ncbo/ontologies_api/issues/69
 gem 'bigdecimal', '1.4.2'
 gem 'json-schema', '~> 2.0'
@@ -26,8 +26,7 @@ gem 'redis-rack-cache', '~> 2.0'
 
 # Data access (caching)
 gem 'redis'
-gem 'redis-activesupport'
-gem 'redis-store', '1.9.1' # remove after https://github.com/redis-store/redis-store/issues/358 is resolved
+gem 'redis-store', '~>1.10'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
