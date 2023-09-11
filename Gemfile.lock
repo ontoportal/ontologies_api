@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: e33a0e451f8a8226d98291168e45b46d7065e670
+  revision: 711ebf27722355a25a0e53a8204b4ae472902bd0
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -173,20 +173,19 @@ GEM
       grpc (~> 1.27)
     googleapis-common-protos-types (1.8.0)
       google-protobuf (~> 3.18)
-    googleauth (1.7.0)
+    googleauth (1.8.0)
       faraday (>= 0.17.3, < 3.a)
       jwt (>= 1.4, < 3.0)
-      memoist (~> 0.16)
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    grpc (1.57.0)
+    grpc (1.58.0)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.57.0-x86_64-darwin)
+    grpc (1.58.0-x86_64-darwin)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.57.0-x86_64-linux)
+    grpc (1.58.0-x86_64-linux)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
     haml (5.2.2)
@@ -213,7 +212,6 @@ GEM
       net-imap
       net-pop
       net-smtp
-    memoist (0.16.2)
     method_source (1.0.0)
     mime-types (3.5.1)
       mime-types-data (~> 3.2015)
@@ -367,7 +365,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  x86_64-darwin-18
   x86_64-darwin-21
   x86_64-linux
 
@@ -422,4 +419,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.15
+   2.4.17
