@@ -27,8 +27,7 @@ gem 'redis-rack-cache', '~> 2.0'
 
 # Data access (caching)
 gem 'redis'
-# remove forked redis-store after https://github.com/ncbo/ontologies_api/issues/119 gets resolved
-gem 'redis-store', git: 'https://github.com/PikachuEXE/redis-store', branch: 'fix/redis-client-compatibility'
+gem 'redis-store', '~>1.10'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'

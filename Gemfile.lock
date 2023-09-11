@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/PikachuEXE/redis-store
-  revision: c395440c3a846657697999ef0c9345037991e7aa
-  branch: fix/redis-client-compatibility
-  specs:
-    redis-store (1.9.2)
-      redis (>= 4, < 6)
-
-GIT
   remote: https://github.com/ncbo/goo.git
   revision: fb203b0396d03c1df61abfcdbc4070787010f052
   branch: develop
@@ -285,6 +277,8 @@ GEM
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
       redis-store (>= 1.6, < 2)
+    redis-store (1.10.0)
+      redis (>= 4, < 6)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -393,7 +387,7 @@ DEPENDENCIES
   redcarpet
   redis
   redis-rack-cache (~> 2.0)
-  redis-store!
+  redis-store (~> 1.10)
   shotgun!
   simplecov
   simplecov-cobertura
