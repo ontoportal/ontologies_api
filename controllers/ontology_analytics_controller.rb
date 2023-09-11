@@ -28,7 +28,11 @@ class OntologyAnalyticsController < ApplicationController
       expires 86400, :public
       ont = Ontology.find(params["acronym"]).first
       error 404, "No ontology exists with the acronym: #{params["acronym"]}" if ont.nil?
-      analytics = ont.analytics
+      year = year_param(params)
+      error 400, "The year you supplied is invalid. Valid years start with 2 and contain 4 digits." if params["year"] && !year
+      month = month_param(params)
+      error 400, "The month you supplied is invalid. Valid months are 1-12." if params["month"] && !month
+      analytics = ont.analytics(year, month)
 
       if params["format"].to_s.downcase.eql?("csv")
         tf = Tempfile.new("analytics-#{params['acronym']}")
@@ -39,7 +43,7 @@ class OntologyAnalyticsController < ApplicationController
         years.each do |year|
           months = analytics[params["acronym"]][year].keys.sort
           months.each do |month|
-            next if now.year == year && now.month <= month || (year == 2013 && month < 10) # we don't have good data going back past Oct 2013
+            next if year && month && (now.year == year.to_i && now.month <= month.to_i || year.to_i == 2013 && month.to_i < 10) # we don't have good data going back past Oct 2013
             visits = analytics[params["acronym"]][year][month]
             month = DateTime.parse("#{year}/#{month}").strftime("%b %Y")
             csv << [month, visits]
