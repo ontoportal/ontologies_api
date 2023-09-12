@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: cd477a1c71d8c2b2c26c3ea92c9457643a9cc70a
+  revision: daea7822af9e5ca1961d6873a758735133a1b2db
   branch: master
   specs:
     goo (0.0.2)
@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: ac11b22596b87a6eecbcd70787b2370c18ff4770
+  revision: 04226ac5840a328e6f906f15c769ee6ee5723102
   branch: master
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: e1e0bf7018cc3a501680c0ab36392bf465ffe130
+  revision: 55ac1cad6a14dd7cb5264d4f53801a05537d9cb8
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 06eba3c71f07072f33c7a922e64d2114a6e53648
+  revision: f440ae855a217807fead1d20629a0f187997b973
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 89474face62004ab70430ef718556fe50720e038
+  revision: a7ad210e846a390f203457be2459719214d142fe
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -128,6 +128,7 @@ GEM
       sshkit (~> 1.3)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
+    connection_pool (2.4.1)
     cube-ruby (0.0.3)
     dante (0.2.0)
     date (3.3.3)
@@ -135,7 +136,8 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     ed25519 (1.3.0)
-    faraday (2.7.10)
+    faraday (2.7.11)
+      base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
@@ -155,8 +157,8 @@ GEM
     google-analytics-data (0.4.0)
       google-analytics-data-v1beta (>= 0.7, < 2.a)
       google-cloud-core (~> 1.6)
-    google-analytics-data-v1beta (0.8.1)
-      gapic-common (>= 0.19.1, < 2.a)
+    google-analytics-data-v1beta (0.9.0)
+      gapic-common (>= 0.20.0, < 2.a)
       google-cloud-errors (~> 1.0)
     google-cloud-core (1.6.0)
       google-cloud-env (~> 1.0)
@@ -165,6 +167,7 @@ GEM
       faraday (>= 0.17.3, < 3.0)
     google-cloud-errors (1.3.1)
     google-protobuf (3.24.3-aarch64-linux)
+    google-protobuf (3.24.3-arm64-darwin)
     google-protobuf (3.24.3-x86_64-darwin)
     google-protobuf (3.24.3-x86_64-linux)
     googleapis-common-protos (1.4.0)
@@ -173,20 +176,19 @@ GEM
       grpc (~> 1.27)
     googleapis-common-protos-types (1.8.0)
       google-protobuf (~> 3.18)
-    googleauth (1.7.0)
+    googleauth (1.8.0)
       faraday (>= 0.17.3, < 3.a)
       jwt (>= 1.4, < 3.0)
-      memoist (~> 0.16)
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    grpc (1.57.0)
+    grpc (1.58.0)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.57.0-x86_64-darwin)
+    grpc (1.58.0-x86_64-darwin)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.57.0-x86_64-linux)
+    grpc (1.58.0-x86_64-linux)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
     haml (5.2.2)
@@ -213,7 +215,6 @@ GEM
       net-imap
       net-pop
       net-smtp
-    memoist (0.16.2)
     method_source (1.0.0)
     mime-types (3.5.1)
       mime-types-data (~> 3.2015)
@@ -238,7 +239,7 @@ GEM
       net-protocol
     net-ssh (7.2.0)
     netrc (0.11.0)
-    newrelic_rpm (9.4.2)
+    newrelic_rpm (9.5.0)
     oj (3.16.1)
     omni_logger (0.1.4)
       logger
@@ -277,15 +278,15 @@ GEM
     rdf (1.0.8)
       addressable (>= 2.2)
     redcarpet (3.6.0)
-    redis (4.8.1)
-    redis-activesupport (5.3.0)
-      activesupport (>= 3, < 8)
-      redis-store (>= 1.3, < 2)
+    redis (5.0.7)
+      redis-client (>= 0.9.0)
+    redis-client (0.17.0)
+      connection_pool
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
       redis-store (>= 1.6, < 2)
-    redis-store (1.9.1)
-      redis (>= 4, < 5)
+    redis-store (1.10.0)
+      redis (>= 4, < 6)
     regexp_parser (2.8.1)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
@@ -296,7 +297,7 @@ GEM
     rsolr (2.5.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
-    rubocop (1.56.2)
+    rubocop (1.56.3)
       base64 (~> 0.1.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -367,12 +368,12 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  x86_64-darwin-18
+  arm64-darwin-22
   x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
-  activesupport (~> 3.0)
+  activesupport (~> 3.2)
   bcrypt_pbkdf (>= 1.0, < 2.0)
   bigdecimal (= 1.4.2)
   capistrano (~> 3)
@@ -407,9 +408,8 @@ DEPENDENCIES
   rake (~> 10.0)
   redcarpet
   redis
-  redis-activesupport
   redis-rack-cache (~> 2.0)
-  redis-store (= 1.9.1)
+  redis-store (~> 1.10)
   rubocop
   shotgun!
   simplecov
@@ -422,4 +422,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.15
+   2.4.17
