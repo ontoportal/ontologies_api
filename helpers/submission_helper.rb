@@ -3,6 +3,18 @@ require 'sinatra/base'
 module Sinatra
   module Helpers
     module SubmissionHelper
+      def submission_include_params
+        # When asking to display all metadata, we are using bring_remaining on each submission. Slower but best way to retrieve all attrs
+        includes = OntologySubmission.goo_attrs_to_load(includes_param)
+        if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:ontology)}
+          includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects,:acl, :viewOf]}
+        end
+
+        if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:contact)}
+          includes << {:contact=>[:name, :email]}
+        end
+        includes
+      end
 
       def retrieve_submissions(options)
         status = (options[:status] || "RDF").to_s.upcase

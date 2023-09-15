@@ -60,7 +60,7 @@ class OntologySubmissionsController < ApplicationController
       ont.bring(:submissions)
       ont_submission = ont.submission(params["ontology_submission_id"])
       error 404, "`submissionId` not found" if ont_submission.nil?
-      ont_submission.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+      ont_submission.bring(*submission_include_params)
       reply ont_submission
     end
 
