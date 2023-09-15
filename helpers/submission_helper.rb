@@ -16,28 +16,34 @@ module Sinatra
         includes
       end
 
+      def submission_attributes_all
+        out = [LinkedData::Models::OntologySubmission.embed_values_hash]
+        out << {:contact=>[:name, :email]}
+        out << {:ontology=>[:acronym, :name, :administeredBy, :group, :viewingRestriction, :doNotUpdate, :flat,
+                            :hasDomain, :summaryOnly, :acl, :viewOf, :ontologyType]}
+
+        out
+      end
+
       def retrieve_submissions(options)
         status = (options[:status] || "RDF").to_s.upcase
         status = "RDF" if status.eql?("READY")
         ontology_acronym = options[:ontology]
         any = status.eql?("ANY")
         include_views = options[:also_include_views] || false
-        includes, page, size, order_by, _  =  settings_params(LinkedData::Models::OntologySubmission)
+        includes, page, size, order_by, _ = settings_params(LinkedData::Models::OntologySubmission)
         includes << :submissionStatus unless includes.include?(:submissionStatus)
 
-
         submissions_query = LinkedData::Models::OntologySubmission
+        submissions_query = submissions_query.where(ontology: [acronym: ontology_acronym]) if ontology_acronym
+
         if any
-          submissions_query = submissions_query.where
+          submissions_query = submissions_query.where unless ontology_acronym
         else
-          submissions_query = submissions_query.where({submissionStatus: [ code: status]})
+          submissions_query = submissions_query.where({ submissionStatus: [code: status] })
         end
 
-
-        submissions_query.where(ontology: [acronym: ontology_acronym]) if ontology_acronym
-
-
-        submissions_query = apply_filters(submissions_query)
+        submissions_query = apply_submission_filters(submissions_query)
         submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
         submissions_query = submissions_query.filter(filter) if filter?
 

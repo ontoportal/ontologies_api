@@ -31,7 +31,8 @@ class OntologySubmissionsController < ApplicationController
       check_access(ont)
       options = {
         also_include_views: params["also_include_views"],
-        status: (params["include_status"] || "ANY")
+        status: (params["include_status"] || "ANY"),
+        ontology: params["acronym"]
       }
       subs = retrieve_submissions(options)
 
