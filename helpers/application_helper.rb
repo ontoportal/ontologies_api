@@ -363,8 +363,6 @@ module Sinatra
 
         latest_submissions = page? ? submissions : {} # latest_submission doest not work with pagination
         submissions.each do |sub|
-          # To retrieve all metadata, but slow when a lot of ontologies
-          sub.bring_remaining   if includes_param.first == :all
           unless page?
             next if include_ready?(options) && !sub.ready?
             next if sub.ontology.nil?

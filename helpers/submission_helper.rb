@@ -3,6 +3,18 @@ require 'sinatra/base'
 module Sinatra
   module Helpers
     module SubmissionHelper
+      def submission_include_params
+        # When asking to display all metadata, we are using bring_remaining on each submission. Slower but best way to retrieve all attrs
+        includes = OntologySubmission.goo_attrs_to_load(includes_param)
+        if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:ontology)}
+          includes << {:ontology=>[:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain,:notes, :reviews, :projects,:acl, :viewOf]}
+        end
+
+        if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:contact)}
+          includes << {:contact=>[:name, :email]}
+        end
+        includes
+      end
 
       def submission_attributes_all
         out = [LinkedData::Models::OntologySubmission.embed_values_hash]
@@ -16,14 +28,17 @@ module Sinatra
       def retrieve_submissions(options)
         status = (options[:status] || "RDF").to_s.upcase
         status = "RDF" if status.eql?("READY")
+        ontology_acronym = options[:ontology]
         any = status.eql?("ANY")
         include_views = options[:also_include_views] || false
         includes, page, size, order_by, _ = settings_params(LinkedData::Models::OntologySubmission)
         includes << :submissionStatus unless includes.include?(:submissionStatus)
 
         submissions_query = LinkedData::Models::OntologySubmission
+        submissions_query = submissions_query.where(ontology: [acronym: ontology_acronym]) if ontology_acronym
+
         if any
-          submissions_query = submissions_query.where
+          submissions_query = submissions_query.where unless ontology_acronym
         else
           submissions_query = submissions_query.where({ submissionStatus: [code: status] })
         end
@@ -32,24 +47,8 @@ module Sinatra
         submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
         submissions_query = submissions_query.filter(filter) if filter?
 
-        # When asking to display all metadata, we are using bring_remaining on each submission. Slower but best way to retrieve all attrs
-        if includes_param.first == :all
-          includes = [:submissionId, { :contact => [:name, :email],
-                                       :ontology => [:administeredBy, :acronym, :name, :summaryOnly, :ontologyType, :viewingRestriction, :acl,
-                                                     :group, :hasDomain, :views, :viewOf, :flat, :notes, :reviews, :projects],
-                                       :submissionStatus => [:code], :hasOntologyLanguage => [:acronym], :metrics => [:classes, :individuals, :properties] },
-                      :submissionStatus]
-        else
-          if includes.find { |v| v.is_a?(Hash) && v.keys.include?(:ontology) }
-            includes << { :ontology => [:administeredBy, :acronym, :name, :viewingRestriction, :group, :hasDomain, :notes, :reviews, :projects, :acl, :viewOf] }
-          end
 
-          if includes.find { |v| v.is_a?(Hash) && v.keys.include?(:contact) }
-            includes << { :contact => [:name, :email] }
-          end
-        end
-
-        submissions = submissions_query.include(includes)
+        submissions = submissions_query.include(submission_include_params)
         if page?
           submissions.page(page, size).all
         else
