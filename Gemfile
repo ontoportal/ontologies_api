@@ -1,12 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 3.0'
+gem 'activesupport', '~> 3.2'
 # see https://github.com/ncbo/ontologies_api/issues/69
 gem 'bigdecimal', '1.4.2'
-gem 'faraday', '~> 1.9'
 gem 'json-schema', '~> 2.0'
 gem 'multi_json', '~> 1.0'
-gem 'oj', '~> 2.0'
+gem 'oj', '~> 3.0'
 gem 'parseconfig'
 gem 'rack'
 gem 'rake', '~> 10.0'
@@ -18,7 +17,7 @@ gem 'sinatra-contrib', '~> 1.0'
 gem 'ffi'
 gem 'rack-accept', '~> 0.4'
 gem 'rack-attack', '~> 6.6.1', require: 'rack/attack'
-gem 'rack-cache', '~> 1.0'
+gem 'rack-cache', '~> 1.13.0' # see https://github.com/ncbo/ontologies_api/issues/118
 gem 'rack-cors', require: 'rack/cors'
 # GitHub dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
 gem 'rack-post-body-to-params', github: 'palexander/rack-post-body-to-params', branch: 'multipart_support'
@@ -27,11 +26,11 @@ gem 'redis-rack-cache', '~> 2.0'
 
 # Data access (caching)
 gem 'redis'
-gem 'redis-activesupport'
+gem 'redis-store', '~>1.10'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', group: [:default, :deployment]
 
 # HTTP server
 gem 'unicorn'
@@ -51,14 +50,18 @@ gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
 
 group :development do
   # bcrypt_pbkdf and ed35519 is required for capistrano deployments when using ed25519 keys; see https://github.com/miloserdow/capistrano-deploy/issues/42
+  gem 'shotgun', github: 'palexander/shotgun', branch: 'ncbo'
+  gem 'rubocop'
+end
+
+group :deployment do
+  # bcrypt_pbkdf and ed35519 is required for capistrano deployments when using ed25519 keys; see https://github.com/miloserdow/capistrano-deploy/issues/42
   gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0', require: false
   gem 'capistrano', '~> 3', require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano-locally', require: false
   gem 'capistrano-rbenv', require: false
   gem 'ed25519', '>= 1.2', '< 2.0', require: false
-  gem 'pry'
-  gem 'shotgun', github: 'palexander/shotgun', branch: 'ncbo'
 end
 
 group :profiling do
