@@ -217,6 +217,139 @@ class TestOntologySubmissionsController < TestCase
     assert_equal 1, submissions["collection"].length
   end
 
+  def test_submissions_pagination_filter
+    num_onts_created, created_ont_acronyms, ontologies = create_ontologies_and_submissions(ont_count: 10, submission_count: 1)
+    group1 = LinkedData::Models::Group.new(acronym: 'group-1', name: "Test Group 1").save
+    group2 = LinkedData::Models::Group.new(acronym: 'group-2', name: "Test Group 2").save
+    category1 = LinkedData::Models::Category.new(acronym: 'category-1', name: "Test Category 1").save
+    category2 = LinkedData::Models::Category.new(acronym: 'category-2', name: "Test Category 2").save
+
+    ontologies1 = ontologies[0..5].each do |o|
+      o.bring_remaining
+      o.group = [group1]
+      o.hasDomain = [category1]
+      o.save
+    end
+
+    ontologies2 = ontologies[6..8].each do |o|
+      o.bring_remaining
+      o.group = [group2]
+      o.hasDomain = [category2]
+      o.save
+    end
+
+
+
+    # test filter by group and category
+    get "/submissions?page=1&pagesize=100&group=#{group1.acronym}"
+    assert last_response.ok?
+    assert_equal ontologies1.size, MultiJson.load(last_response.body)["collection"].length
+    get "/submissions?page=1&pagesize=100&group=#{group2.acronym}"
+    assert last_response.ok?
+    assert_equal ontologies2.size, MultiJson.load(last_response.body)["collection"].length
+    get "/submissions?page=1&pagesize=100&hasDomain=#{category1.acronym}"
+    assert last_response.ok?
+    assert_equal ontologies1.size, MultiJson.load(last_response.body)["collection"].length
+    get "/submissions?page=1&pagesize=100&hasDomain=#{category2.acronym}"
+    assert last_response.ok?
+    assert_equal ontologies2.size, MultiJson.load(last_response.body)["collection"].length
+    get "/submissions?page=1&pagesize=100&hasDomain=#{category2.acronym}&group=#{group1.acronym}"
+    assert last_response.ok?
+    assert_equal 0, MultiJson.load(last_response.body)["collection"].length
+    get "/submissions?page=1&pagesize=100&hasDomain=#{category2.acronym}&group=#{group2.acronym}"
+    assert last_response.ok?
+    assert_equal ontologies2.size, MultiJson.load(last_response.body)["collection"].length
+
+    ontologies3 = ontologies[9]
+    ontologies3.bring_remaining
+    ontologies3.group = [group1, group2]
+    ontologies3.hasDomain = [category1, category2]
+    ontologies3.name = "name search test"
+    ontologies3.save
+
+    # test search with acronym
+    [
+      [ 1, ontologies.first.acronym],
+      [ 1, ontologies.last.acronym],
+      [ontologies.size, 'TEST-ONT']
+    ].each do |count, acronym_search|
+      get "/submissions?page=1&pagesize=100&acronym=#{acronym_search}"
+      assert last_response.ok?
+      submissions = MultiJson.load(last_response.body)
+      assert_equal count, submissions["collection"].length
+    end
+
+
+    # test search with name
+    [
+      [ 1, ontologies.first.name],
+      [ 1, ontologies.last.name],
+      [ontologies.size - 1, 'TEST-ONT']
+    ].each do |count, name_search|
+      get "/submissions?page=1&pagesize=100&name=#{name_search}"
+      assert last_response.ok?
+      submissions = MultiJson.load(last_response.body)
+      binding.pry unless submissions["collection"].length.eql?(count)
+      assert_equal count, submissions["collection"].length
+    end
+
+    # test search with name and acronym
+    # search by name
+    get "/submissions?page=1&pagesize=100&name=search&acronym=search"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal 1, submissions["collection"].length
+    # search by acronym
+    get "/submissions?page=1&pagesize=100&name=9&acronym=9"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal 1, submissions["collection"].length
+    # search by acronym or name
+    get "/submissions?page=1&pagesize=100&name=search&acronym=8"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal 2, submissions["collection"].length
+
+    ontologies.first.name = "sort by test"
+    ontologies.first.save
+    sub = ontologies.first.latest_submission(status: :any).bring_remaining
+    sub.creationDate = DateTime.yesterday.to_datetime
+    sub.hasOntologyLanguage = LinkedData::Models::OntologyFormat.find('SKOS').first
+    sub.save
+
+    #test search with sort
+    get "/submissions?page=1&pagesize=100&acronym=tes&name=tes&order_by=ontology_name"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    refute_empty submissions["collection"]
+    assert_equal ontologies.map{|x| x.name}.sort, submissions["collection"].map{|x| x["ontology"]["name"]}
+
+    get "/submissions?page=1&pagesize=100&acronym=tes&name=tes&order_by=creationDate"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    refute_empty submissions["collection"]
+    assert_equal ontologies.map{|x| x.latest_submission(status: :any).bring(:creationDate).creationDate}.sort.map(&:to_s), submissions["collection"].map{|x| x["creationDate"]}.reverse
+
+    # test search with format
+    get "/submissions?page=1&pagesize=100&acronym=tes&name=tes&hasOntologyLanguage=SKOS"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    refute_empty submissions["collection"]
+    assert_equal 1, submissions["collection"].size
+
+    get "/submissions?page=1&pagesize=100&acronym=tes&name=tes&hasOntologyLanguage=OWL"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    refute_empty submissions["collection"]
+    assert_equal ontologies.size-1 , submissions["collection"].size
+
+    # test ontology filter with submission filter attributes
+    get "/submissions?page=1&pagesize=100&acronym=tes&name=tes&group=group-2&category=category-2&hasOntologyLanguage=OWL"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    refute_empty submissions["collection"]
+    assert_equal ontologies2.size + 1 , submissions["collection"].size
+  end
 
   def test_submissions_default_includes
     ontology_count = 5
