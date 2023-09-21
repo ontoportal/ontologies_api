@@ -42,7 +42,6 @@ module Sinatra
           hasOntologyLanguage_acronym: params[:hasOntologyLanguage]&.split(',') , #%w[OWL SKOS],
           ontology_hasDomain_acronym:  params[:hasDomain]&.split(',') , #%w[Crop Vue_francais],
           ontology_group_acronym: params[:group]&.split(','), #%w[RICE CROP],
-          ontology_name: Array(params[:name]) + Array(params[:name]&.capitalize),
           isOfType: params[:isOfType]&.split(','), #["http://omv.ontoware.org/2005/05/ontology#Vocabulary"],
           hasFormalityLevel: params[:hasFormalityLevel]&.split(','), #["http://w3id.org/nkos/nkostype#thesaurus"],
           ontology_viewingRestriction: params[:viewingRestriction]&.split(','), #["private"]
