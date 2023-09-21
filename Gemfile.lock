@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 0c0dba92e28fd8c8261db1b3183946e0cf183b53
+  revision: 0019b4b7b6e18be15fe068084510c03b674d23d8
   branch: development
   specs:
     goo (0.0.2)
@@ -110,6 +110,7 @@ GEM
     backports (3.24.1)
     bcrypt (3.1.19)
     bcrypt_pbkdf (1.1.0)
+    benchmark-ips (2.12.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
     capistrano (3.17.3)
@@ -173,7 +174,7 @@ GEM
       retriable (>= 2.0, < 4.a)
       rexml
       webrick
-    googleauth (1.8.0)
+    googleauth (1.8.1)
       faraday (>= 0.17.3, < 3.a)
       jwt (>= 1.4, < 3.0)
       multi_json (~> 1.11)
@@ -225,7 +226,7 @@ GEM
       timeout
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
-    net-smtp (0.3.3)
+    net-smtp (0.4.0)
       net-protocol
     net-ssh (7.2.0)
     netrc (0.11.0)
@@ -354,6 +355,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport (~> 3.1)
   bcrypt_pbkdf (>= 1.0, < 2.0)
+  benchmark-ips (~> 2.12)
   bigdecimal (= 1.4.2)
   capistrano (~> 3)
   capistrano-bundler
@@ -405,4 +407,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.3.23
+   2.4.12
