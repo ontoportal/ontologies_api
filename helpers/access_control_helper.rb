@@ -6,15 +6,12 @@ module Sinatra
 
       ##
       # For a given object, check the access control settings. If they are restricted, handle appropriately.
-      # For a list, this will filter out results. For single objects, if will throw an error if access is denied.
+      # For a list, this will filter out results.
+      # For single objects, if will throw an error if access is denied.
       def check_access(obj)
         return obj unless LinkedData.settings.enable_security
         if obj.is_a?(Enumerable)
-          if obj.first.is_a?(LinkedData::Models::Base) && obj.first.access_based_on?
-            check_access(obj.first)
-          else
             filter_access(obj)
-          end
         else
           if obj.respond_to?(:read_restricted?) && obj.read_restricted?
             readable = obj.readable?(env["REMOTE_USER"])
