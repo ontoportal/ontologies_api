@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: daea7822af9e5ca1961d6873a758735133a1b2db
-  branch: master
+  revision: 83425ba6c05d051d86c6f5775540727ce4238443
+  branch: develop
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -15,8 +15,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 04226ac5840a328e6f906f15c769ee6ee5723102
-  branch: master
+  revision: 067104ae94c0e9d058cfbf419364fbf03f34de43
+  branch: develop
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 55ac1cad6a14dd7cb5264d4f53801a05537d9cb8
-  branch: master
+  revision: ac798aaf30ccac41860edf0df45e9caedaabbdcb
+  branch: develop
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,8 +42,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f440ae855a217807fead1d20629a0f187997b973
-  branch: master
+  revision: e6d4449d8b854f17bb54af6de142bc64bff22ab3
+  branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: a7ad210e846a390f203457be2459719214d142fe
-  branch: master
+  revision: 711ebf27722355a25a0e53a8204b4ae472902bd0
+  branch: develop
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -73,8 +73,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: d418d56a6c9ff5692f925b45739a2a1c66bca851
-  branch: master
+  revision: 55e7dbf858eb571c767bc67868f9af61663859cb
+  branch: develop
   specs:
     sparql-client (1.0.1)
       json_pure (>= 1.4)
@@ -174,9 +174,9 @@ GEM
       google-protobuf (~> 3.14)
       googleapis-common-protos-types (~> 1.2)
       grpc (~> 1.27)
-    googleapis-common-protos-types (1.8.0)
+    googleapis-common-protos-types (1.9.0)
       google-protobuf (~> 3.18)
-    googleauth (1.8.0)
+    googleauth (1.8.1)
       faraday (>= 0.17.3, < 3.a)
       jwt (>= 1.4, < 3.0)
       multi_json (~> 1.11)
@@ -235,7 +235,7 @@ GEM
       timeout
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
-    net-smtp (0.3.3)
+    net-smtp (0.4.0)
       net-protocol
     net-ssh (7.2.0)
     netrc (0.11.0)
@@ -349,7 +349,7 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.10.2)
-    tilt (2.2.0)
+    tilt (2.3.0)
     timeout (0.4.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
