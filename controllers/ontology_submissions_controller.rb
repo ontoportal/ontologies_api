@@ -30,7 +30,7 @@ class OntologySubmissionsController < ApplicationController
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       check_access(ont)
       options = {
-        also_include_views: params["also_include_views"],
+        also_include_views: true,
         status: (params["include_status"] || "ANY"),
         ontology: params["acronym"]
       }
