@@ -31,6 +31,7 @@ module Sinatra
           # Deal with empty strings for String and URI
           empty_string = value.is_a?(String) && value.empty?
           old_string_value_exists = obj.respond_to?(attribute) && (obj.send(attribute).is_a?(String) || obj.send(attribute).is_a?(RDF::URI))
+          old_string_value_exists = old_string_value_exists || (obj.respond_to?(attribute) && obj.send(attribute).is_a?(LinkedData::Models::Base))
           if old_string_value_exists && empty_string
             value = nil
           elsif empty_string
@@ -59,7 +60,7 @@ module Sinatra
             # Replace the initial value with the object, handling Arrays as appropriate
             if value.is_a?(Array)
               value = value.map {|e| attr_cls.find(uri_as_needed(e)).include(attr_cls.attributes).first}
-            else
+            elsif !value.nil?
               value = attr_cls.find(uri_as_needed(value)).include(attr_cls.attributes).first
             end
           elsif attr_cls
