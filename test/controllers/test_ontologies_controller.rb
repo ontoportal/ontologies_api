@@ -254,6 +254,32 @@ class TestOntologiesController < TestCase
   end
 
 
+  def test_detach_a_view
+    view = Ontology.find(@@view_acronym).include(:viewOf).first
+    ont =  view.viewOf
+    refute_nil view
+    refute_nil ont
+
+    remove_view_of = {viewOf: ''}
+    patch "/ontologies/#{@@view_acronym}", MultiJson.dump(remove_view_of), "CONTENT_TYPE" => "application/json"
+
+    assert last_response.status == 204
+
+    get "/ontologies/#{@@view_acronym}"
+    onto = MultiJson.load(last_response.body)
+    assert_nil onto["viewOf"]
+
+
+    add_view_of = {viewOf: @@acronym}
+    patch "/ontologies/#{@@view_acronym}", MultiJson.dump(add_view_of), "CONTENT_TYPE" => "application/json"
+
+    assert last_response.status == 204
+
+    get "/ontologies/#{@@view_acronym}"
+    onto = MultiJson.load(last_response.body)
+    assert_equal onto["viewOf"], ont.id.to_s
+  end
+
   private
 
   def check400(response)

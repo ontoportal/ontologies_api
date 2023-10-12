@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 0019b4b7b6e18be15fe068084510c03b674d23d8
+  revision: 69466682c1e9cb2c338539195013dbec9714ca7d
   branch: development
   specs:
     goo (0.0.2)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 1204ede68ed0a5af5e3fb355172496d5e0134544
+  revision: 087c28b92527a1df1665d25c38277456e9acf06e
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -105,12 +105,11 @@ GEM
       multi_json (~> 1.0)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
-    airbrussh (1.4.2)
+    airbrussh (1.5.0)
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.24.1)
     bcrypt (3.1.19)
     bcrypt_pbkdf (1.1.0)
-    benchmark-ips (2.12.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
     capistrano (3.17.3)
@@ -160,7 +159,7 @@ GEM
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
-    ffi (1.15.5)
+    ffi (1.16.3)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
     google-apis-analytics_v3 (0.13.0)
@@ -208,7 +207,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.5.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2023.0808)
+    mime-types-data (3.2023.1003)
     mini_mime (1.1.5)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.3)
@@ -217,7 +216,7 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.3.0)
     net-http-persistent (2.9.4)
-    net-imap (0.3.7)
+    net-imap (0.4.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -324,7 +323,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
-    temple (0.10.2)
+    temple (0.10.3)
     tilt (2.3.0)
     timeout (0.4.0)
     trailblazer-option (0.1.2)
@@ -355,7 +354,6 @@ PLATFORMS
 DEPENDENCIES
   activesupport (~> 3.1)
   bcrypt_pbkdf (>= 1.0, < 2.0)
-  benchmark-ips (~> 2.12)
   bigdecimal (= 1.4.2)
   capistrano (~> 3)
   capistrano-bundler
