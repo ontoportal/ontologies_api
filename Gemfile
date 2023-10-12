@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 3.0'
+gem 'activesupport', '~> 3.1'
 # see https://github.com/ncbo/ontologies_api/issues/69
 gem 'bigdecimal', '1.4.2'
 gem 'faraday', '~> 1.9'
@@ -18,7 +18,7 @@ gem 'sinatra-contrib', '~> 1.0'
 gem 'ffi'
 gem 'rack-accept', '~> 0.4'
 gem 'rack-attack', '~> 6.6.1', require: 'rack/attack'
-gem 'rack-cache', '~> 1.0'
+gem 'rack-cache', '~> 1.13.0'
 gem 'rack-cors', require: 'rack/cors'
 # GitHub dependency can be removed when https://github.com/niko/rack-post-body-to-params/pull/6 is merged and released
 gem 'rack-post-body-to-params', github: 'palexander/rack-post-body-to-params', branch: 'multipart_support'
@@ -26,8 +26,9 @@ gem 'rack-timeout'
 gem 'redis-rack-cache', '~> 2.0'
 
 # Data access (caching)
-gem 'redis'
+gem 'redis', '~> 4.8.1'
 gem 'redis-activesupport'
+gem 'redis-store', '1.9.1'
 
 # Monitoring
 gem 'cube-ruby', require: 'cube'
@@ -71,4 +72,5 @@ group :test do
   gem 'rack-test'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura' # for codecov.io
+  gem 'webmock'
 end
