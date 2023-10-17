@@ -61,4 +61,21 @@ class TestSchemesController < TestCase
     assert_equal 404, last_response.status
   end
 
+
+  def test_class_tree
+    ont = Ontology.find('INRAETHES-0').include(:acronym).first
+    sub = ont.latest_submission
+    sub.bring_remaining
+    sub.uri = RDF::URI.new('http://opendata.inrae.fr/thesaurusINRAE/domainesINRAE')
+    sub.hasOntologyLanguage =  LinkedData::Models::OntologyFormat.find('SKOS').first
+    sub.save
+
+    cls = 'http://opendata.inrae.fr/thesaurusINRAE/d_6'
+    get "ontologies/INRAETHES-0/classes/#{CGI.escape(cls)}/tree"
+
+    classes = MultiJson.load(last_response.body)
+
+    refute_nil classes.select{|x| x['@id'].eql?(cls)}.first['isInActiveScheme']
+    refute_nil classes.select{|x| x['@id'].eql?(cls)}.first['isInActiveCollection']
+  end
 end
