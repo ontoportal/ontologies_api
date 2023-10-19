@@ -38,21 +38,12 @@ class OntologiesController < ApplicationController
       else
         latest = ont.latest_submission(status: :any)
       end
-      check_last_modified(latest) if latest
-      # When asking to display all metadata, we are using bring_remaining which is more performant than including all metadata (remove this when the query to get metadata will be fixed)
+
       if latest
-        if includes_param.first == :all
-          # Bring what we need to display all attr of the submission
-          latest.bring_remaining
-          latest.bring({:contact=>[:name, :email],
-                      :ontology=>[:acronym, :name, :administeredBy, :group, :viewingRestriction, :doNotUpdate, :flat,
-                                  :hasDomain, :summaryOnly, :acl, :viewOf, :ontologyType],
-                      :submissionStatus=>[:code], :hasOntologyLanguage=>[:acronym]})
-        else
-          latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
-        end
+        check_last_modified(latest)
+        latest.bring(*submission_include_params)
       end
-      #remove the whole previous if block and replace by it: latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
+
       reply(latest || {})
     end
 
@@ -62,7 +53,7 @@ class OntologiesController < ApplicationController
     patch '/:acronym/latest_submission' do
       ont = Ontology.find(params["acronym"]).first
       error 422, "You must provide an existing `acronym` to patch" if ont.nil?
-      
+
       submission = ont.latest_submission(status: :any)
 
       submission.bring(*OntologySubmission.attributes)

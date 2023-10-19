@@ -217,13 +217,13 @@ class TestOntologiesController < TestCase
     begin
       allowed_user = User.new({
         username: "allowed",
-        email: "test@example.org",
+        email: "test1@example.org",
         password: "12345"
       })
       allowed_user.save
       blocked_user = User.new({
         username: "blocked",
-        email: "test@example.org",
+        email: "test2@example.org",
         password: "12345"
       })
       blocked_user.save

@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 0d6632bb39c1d24a930fe088bc464c3a51d68c9b
+  revision: f44f7baa96eb3ee10dfab4a8aca154161ba7dd89
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -112,7 +112,7 @@ GEM
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
-    capistrano (3.17.3)
+    capistrano (3.18.0)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)

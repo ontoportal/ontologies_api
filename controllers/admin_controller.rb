@@ -68,7 +68,7 @@ class AdminController < ApplicationController
       latest = ont.latest_submission(status: :any)
       error 404, "Ontology #{params["acronym"]} contains no submissions" if latest.nil?
       check_last_modified(latest)
-      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+      latest.bring(*submission_include_params)
       NcboCron::Models::OntologySubmissionParser.new.queue_submission(latest, actions)
       halt 204
     end
@@ -84,7 +84,7 @@ class AdminController < ApplicationController
         latest = ont.latest_submission(status: :any)
       end
       check_last_modified(latest) if latest
-      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param)) if latest
+      latest.bring(*submission_include_params) if latest
       reply(latest || {})
     end
 
