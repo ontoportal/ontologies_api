@@ -20,11 +20,13 @@ class TestSlicesController < TestCase
 
   def self.after_suite
     LinkedData::Models::Slice.all.each(&:delete)
+    @@user.delete
+    reset_security
   end
 
   def setup
-    reset_security
-    rest_to_not_admin(@@user)
+    self.class.reset_security
+    self.class.rest_to_not_admin(@@user)
     LinkedData::Models::Slice.find(@@new_slice_data[:acronym]).first&.delete
   end
 
@@ -78,7 +80,7 @@ class TestSlicesController < TestCase
     LinkedData.settings.enable_security = true
   end
 
-  def reset_security
+  def self.reset_security
     LinkedData.settings.enable_security = @@old_security_setting
   end
 
@@ -88,7 +90,7 @@ class TestSlicesController < TestCase
     user.save
   end
 
-  def rest_to_not_admin(user)
+  def self.rest_to_not_admin(user)
     user.bring_remaining
     user.role = [LinkedData::Models::Users::Role.find(LinkedData::Models::Users::Role::DEFAULT).first]
     user.save
