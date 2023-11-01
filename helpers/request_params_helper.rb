@@ -45,9 +45,9 @@ module Sinatra
           isOfType: params[:isOfType]&.split(','), #["http://omv.ontoware.org/2005/05/ontology#Vocabulary"],
           hasFormalityLevel: params[:hasFormalityLevel]&.split(','), #["http://w3id.org/nkos/nkostype#thesaurus"],
           ontology_viewingRestriction: params[:viewingRestriction]&.split(','), #["private"]
+          status: params[:status]&.split(','), #"retired",
         }
         inverse_filters = {
-          status: params[:status], #"retired",
           submissionStatus: params[:submissionStatus] #"RDF",
         }
 

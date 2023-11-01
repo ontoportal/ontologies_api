@@ -313,6 +313,7 @@ class TestOntologySubmissionsController < TestCase
     ontologies.first.name = "sort by test"
     ontologies.first.save
     sub = ontologies.first.latest_submission(status: :any).bring_remaining
+    sub.status = 'retired'
     sub.creationDate = DateTime.yesterday.to_datetime
     sub.hasOntologyLanguage = LinkedData::Models::OntologyFormat.find('SKOS').first
     sub.save
@@ -349,6 +350,19 @@ class TestOntologySubmissionsController < TestCase
     submissions = MultiJson.load(last_response.body)
     refute_empty submissions["collection"]
     assert_equal ontologies2.size + 1 , submissions["collection"].size
+
+    # test ontology filter with status
+    get "/submissions?page=1&pagesize=100&status=retired"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    refute_empty submissions["collection"]
+    assert_equal 1 , submissions["collection"].size
+
+    get "/submissions?page=1&pagesize=100&status=alpha,beta,production"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    refute_empty submissions["collection"]
+    assert_equal ontologies.size - 1 , submissions["collection"].size
   end
 
   def test_submissions_default_includes
