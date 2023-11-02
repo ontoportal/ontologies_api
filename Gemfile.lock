@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: ebbb7a3c28ecde49c261290bec34ab082490a271
+  revision: 067104ae94c0e9d058cfbf419364fbf03f34de43
   branch: develop
   specs:
     ncbo_annotator (0.0.1)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 7429289a0cf9d48c43191ed3bcaa9ce82a20f6d4
+  revision: 2861ee893268e731562ae55108193d9f7b6159fa
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 003b65c5e5ce8b0736085d6825ee1b8e9548826e
+  revision: e6d4449d8b854f17bb54af6de142bc64bff22ab3
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -226,7 +226,7 @@ GEM
       redis
     multi_json (1.15.0)
     net-http-persistent (2.9.4)
-    net-imap (0.3.7)
+    net-imap (0.4.3)
       date
       net-protocol
     net-pop (0.1.2)
