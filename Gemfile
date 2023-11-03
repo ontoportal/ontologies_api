@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 3.1'
+gem 'activesupport', '~> 3.2'
 # see https://github.com/ncbo/ontologies_api/issues/69
 gem 'bigdecimal', '1.4.2'
 gem 'faraday', '~> 1.9'

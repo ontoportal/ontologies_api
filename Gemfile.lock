@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f440ae855a217807fead1d20629a0f187997b973
+  revision: 013abea4af3b10910ec661dbb358a4b6cae198a4
   branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 69466682c1e9cb2c338539195013dbec9714ca7d
+  revision: 5979402d5138850fb9bdb34edfa350e9af1b5d22
   branch: development
   specs:
     goo (0.0.2)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 087c28b92527a1df1665d25c38277456e9acf06e
+  revision: b49ad10781e83360a5dd1968972c4048592eefda
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -108,11 +108,12 @@ GEM
     airbrussh (1.5.0)
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.24.1)
+    base64 (0.1.1)
     bcrypt (3.1.19)
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
-    capistrano (3.17.3)
+    capistrano (3.18.0)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -164,7 +165,7 @@ GEM
       ffi (~> 1.0)
     google-apis-analytics_v3 (0.13.0)
       google-apis-core (>= 0.11.0, < 2.a)
-    google-apis-core (0.11.1)
+    google-apis-core (0.11.2)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.16.2, < 2.a)
       httpclient (>= 2.8.1, < 3.a)
@@ -216,7 +217,7 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.3.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.1)
+    net-imap (0.4.3)
       date
       net-protocol
     net-pop (0.1.2)
@@ -229,7 +230,8 @@ GEM
       net-protocol
     net-ssh (7.2.0)
     netrc (0.11.0)
-    newrelic_rpm (9.5.0)
+    newrelic_rpm (9.6.0)
+      base64
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
@@ -349,10 +351,11 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
-  activesupport (~> 3.1)
+  activesupport (~> 3.2)
   bcrypt_pbkdf (>= 1.0, < 2.0)
   bigdecimal (= 1.4.2)
   capistrano (~> 3)
@@ -405,4 +408,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.4.12
+   2.3.26
