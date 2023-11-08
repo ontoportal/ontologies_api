@@ -14,6 +14,11 @@ class AgentsController < ApplicationController
         else
           agents = query.to_a
         end
+
+        if includes_param.include?(:all) || includes_param.include?(:usages)
+          LinkedData::Models::Agent.load_agents_usages(agents)
+        end
+
         reply agents
       end
 
