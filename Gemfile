@@ -63,6 +63,7 @@ group :development do
   gem 'shotgun', github: 'palexander/shotgun', branch: 'ncbo'
 end
 
+
 group :profiling do
   gem 'rack-mini-profiler'
 end

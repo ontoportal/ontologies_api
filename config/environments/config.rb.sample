@@ -3,120 +3,106 @@
 #   development.rb
 #   test.rb
 
+GOO_BACKEND_NAME = ENV.include?("GOO_BACKEND_NAME") ? ENV["GOO_BACKEND_NAME"] : "4store"
+GOO_HOST         = ENV.include?("GOO_HOST")         ? ENV["GOO_HOST"]         : "localhost"
+GOO_PATH_DATA    = ENV.include?("GOO_PATH_DATA")    ? ENV["GOO_PATH_DATA"]    : "/data/"
+GOO_PATH_QUERY   = ENV.include?("GOO_PATH_QUERY")   ? ENV["GOO_PATH_QUERY"]   : "/sparql/"
+GOO_PATH_UPDATE  = ENV.include?("GOO_PATH_UPDATE")  ? ENV["GOO_PATH_UPDATE"]  : "/update/"
+GOO_PORT         = ENV.include?("GOO_PORT")         ? ENV["GOO_PORT"]         : 9000
+MGREP_HOST       = ENV.include?("MGREP_HOST")       ? ENV["MGREP_HOST"]       : "localhost"
+MGREP_PORT       = ENV.include?("MGREP_PORT")       ? ENV["MGREP_PORT"]       : 55555
+MGREP_DICTIONARY_FILE = ENV.include?("MGREP_DICTIONARY_FILE") ? ENV["MGREP_DICTIONARY_FILE"] : "./test/data/dictionary.txt"
+REDIS_GOO_CACHE_HOST  = ENV.include?("REDIS_GOO_CACHE_HOST")  ? ENV["REDIS_GOO_CACHE_HOST"]  : "localhost"
+REDIS_HTTP_CACHE_HOST = ENV.include?("REDIS_HTTP_CACHE_HOST") ? ENV["REDIS_HTTP_CACHE_HOST"] : "localhost"
+REDIS_PERSISTENT_HOST = ENV.include?("REDIS_PERSISTENT_HOST") ? ENV["REDIS_PERSISTENT_HOST"] : "localhost"
+REDIS_PORT            = ENV.include?("REDIS_PORT")            ? ENV["REDIS_PORT"]            : 6379
+REPORT_PATH           = ENV.include?("REPORT_PATH")           ? ENV["REPORT_PATH"]           : "./test/ontologies_report.json"
+REPOSITORY_FOLDER     = ENV.include?("REPOSITORY_FOLDER")     ? ENV["REPOSITORY_FOLDER"]     : "./test/data/ontology_files/repo"
+REST_URL_PREFIX       = ENV.include?("REST_URL_PREFIX")       ? ENV["REST_URL_PREFIX"]       : "http://localhost:9393"
+SOLR_PROP_SEARCH_URL  = ENV.include?("SOLR_PROP_SEARCH_URL")  ? ENV["SOLR_PROP_SEARCH_URL"]  : "http://localhost:8983/solr/prop_search_core1"
+SOLR_TERM_SEARCH_URL  = ENV.include?("SOLR_TERM_SEARCH_URL")  ? ENV["SOLR_TERM_SEARCH_URL"]  : "http://localhost:8983/solr/term_search_core1"
+
 begin
-  LinkedData.config do |config|
-    config.repository_folder     = "/srv/ncbo/repository"
-    config.goo_host              = "localhost"
-    config.goo_port              = 9000
-    config.search_server_url     = "http://localhost:8082/solr/term_search_core1"
-    config.property_search_server_url = "http://localhost:8082/solr/prop_search_core1"
-    config.rest_url_prefix       = "http://#{$SITE_URL}:8080/"
-    config.replace_url_prefix    = true
-    config.enable_security       = true
-
-    config.apikey                = "24e0e77e-54e0-11e0-9d7b-005056aa3316"
-    config.ui_host               = "http://#{$SITE_URL}"
-    config.enable_monitoring     = false
-    config.cube_host             = "localhost"
-    config.enable_resource_index = false
-
-    # Used to define other BioPortal to which this appliance can be mapped to
-    # Example to map to the NCBO BioPortal : {"ncbo" => {"api" => "http://data.bioontology.org", "ui" => "http://bioportal.bioontology.org", "apikey" => ""}}
-    # Then create the mapping using the following class in JSON : "http://purl.bioontology.org/ontology/MESH/C585345": "ncbo:MESH"
-    # Where "ncbo" is the key in the interportal_hash. Use only lowercase letters for this key.
-    # And do not use "ext" as a key, it is reserved for clases outside of any BioPortal
-    config.interportal_hash   = {}
-
-    # Caches
-    config.http_redis_host    = "localhost"
-    config.http_redis_port    = 6380
-    config.enable_http_cache  = true
-    config.goo_redis_host     = "localhost"
-    config.goo_redis_port     = 6382
-
-    Goo.use_cache             = true
-
-    # Email notifications
-    config.enable_notifications   = false
-    config.email_sender           = "admin@example.org" # Default sender for emails
-    config.email_override         = "override@example.org" # all email gets sent here. Disable with email_override_disable.
-    config.email_disable_override = true
-    config.smtp_host              = "localhost"
-    config.smtp_port              = 25
-    config.smtp_auth_type         = :none # :none, :plain, :login, :cram_md5
-    config.smtp_domain            = "example.org"
-    # Emails of the instance administrators to get mail notifications when new user or new ontology
-    config.admin_emails           = ["admin@example.org"]
-
-    # PURL server config parameters
-    config.enable_purl            = false
-    config.purl_host              = "purl.example.org"
-    config.purl_port              = 80
-    config.purl_username          = "admin"
-    config.purl_password          = "password"
-    config.purl_maintainers       = "admin"
-    config.purl_target_url_prefix = "http://example.org"
-
-    # Ontology Google Analytics Redis
-    # disabled
-    config.ontology_analytics_redis_host = "localhost"
-    config.enable_ontology_analytics = false
-    config.ontology_analytics_redis_port = 6379
-  end
-rescue NameError
-  puts "(CNFG) >> LinkedData not available, cannot load config"
+  # For prefLabel extract main_lang first, or anything if no main found.
+  # For other properties only properties with a lang that is included in main_lang are used
+  Goo.main_languages = ["en", "fr"]
+  Goo.use_cache = false
+rescue NoMethodError
+  puts "(CNFG) >> Goo.main_lang not available"
 end
 
-begin
-  Annotator.config do |config|
-    config.mgrep_dictionary_file   = "/srv/mgrep/dictionary/dictionary.txt"
-    config.stop_words_default_file = "./config/default_stop_words.txt"
-    config.mgrep_host              = "localhost"
-    config.mgrep_port              = 55555
-    config.mgrep_alt_host          = "localhost"
-    config.mgrep_alt_port          = 55555
-    config.annotator_redis_host    = "localhost"
-    config.annotator_redis_port    = 6379
-  end
-rescue NameError
-  puts "(CNFG) >> Annotator not available, cannot load config"
+LinkedData.config do |config|
+  config.goo_backend_name              = GOO_BACKEND_NAME.to_s
+  config.goo_host                      = GOO_HOST.to_s
+  config.goo_port                      = GOO_PORT.to_i
+  config.goo_path_query                = GOO_PATH_QUERY.to_s
+  config.goo_path_data                 = GOO_PATH_DATA.to_s
+  config.goo_path_update               = GOO_PATH_UPDATE.to_s
+  config.goo_redis_host                = REDIS_GOO_CACHE_HOST.to_s
+  config.goo_redis_port                = REDIS_PORT.to_i
+  config.http_redis_host               = REDIS_HTTP_CACHE_HOST.to_s
+  config.http_redis_port               = REDIS_PORT.to_i
+  config.ontology_analytics_redis_host = REDIS_PERSISTENT_HOST.to_s
+  config.ontology_analytics_redis_port = REDIS_PORT.to_i
+  config.search_server_url             = SOLR_TERM_SEARCH_URL.to_s
+  config.property_search_server_url    = SOLR_PROP_SEARCH_URL.to_s
+  config.replace_url_prefix            = true
+  config.rest_url_prefix               = REST_URL_PREFIX.to_s
+#  config.enable_notifications          = false
+
+    config.interportal_hash = {
+      "agroportal" => {
+        "api" => "http://data.agroportal.lirmm.fr",
+        "ui" => "http://agroportal.lirmm.fr",
+        "apikey" => "1cfae05f-9e67-486f-820b-b393dec5764b"
+      },
+      "ncbo" => {
+        "api" => "http://data.bioontology.org",
+        "apikey" => "4a5011ea-75fa-4be6-8e89-f45c8c84844e",
+        "ui" => "http://bioportal.bioontology.org",
+      },
+      "sifr" => {
+        "api" => "http://data.bioportal.lirmm.fr",
+        "ui" => "http://bioportal.lirmm.fr",
+        "apikey" => "1cfae05f-9e67-486f-820b-b393dec5764b"
+      }
+    }
+    config.oauth_providers = {
+      github: {
+        check: :access_token,
+        link: 'https://api.github.com/user'
+      },
+      keycloak: {
+        check: :jwt_token,
+        cert: 'KEYCLOAK_SECRET_KEY'
+      },
+      orcid: {
+        check: :access_token,
+        link: 'https://pub.orcid.org/v3.0/me'
+      },
+      google: {
+        check: :access_token,
+        link: 'https://www.googleapis.com/oauth2/v3/userinfo'
+      }
+    }
+end
+
+Annotator.config do |config|
+  config.annotator_redis_host  = REDIS_PERSISTENT_HOST.to_s
+  config.annotator_redis_port  = REDIS_PORT.to_i
+  config.mgrep_host            = MGREP_HOST.to_s
+  config.mgrep_port            = MGREP_PORT.to_i
+  config.mgrep_dictionary_file = MGREP_DICTIONARY_FILE.to_s
 end
 
 LinkedData::OntologiesAPI.config do |config|
-  config.restrict_download = ["ACR0", "ACR1", "ACR2"]
+  config.http_redis_host = REDIS_HTTP_CACHE_HOST.to_s
+  config.http_redis_port = REDIS_PORT.to_i
+#  config.restrict_download = ["ACR0", "ACR1", "ACR2"]
 end
 
-begin
-  LinkedData::OntologiesAPI.config do |config|
-    config.enable_unicorn_workerkiller = true
-    config.enable_throttling           = false
-    config.enable_monitoring           = false
-    config.cube_host                   = "localhost"
-    config.http_redis_host             = "localhost"
-    config.http_redis_port             = 6380
-    config.ontology_rank               = ""
-    config.resolver_redis_host = "localhost"
-    config.resolver_redis_port = 6379
-    config.restrict_download = ["ACR0", "ACR1", "ACR2"]
-  end
-rescue NameError
-  puts "(CNFG) >> OntologiesAPI not available, cannot load config"
-end
-
-begin
-  NcboCron.config do |config|
-    config.redis_host                = Annotator.settings.annotator_redis_host
-    config.redis_port                = Annotator.settings.annotator_redis_port
-    config.enable_ontology_analytics = false
-    config.enable_ontologies_report  = false
-    # Schedulues
-    config.cron_schedule             = "30 */4 * * *"
-    # Pull schedule
-    config.pull_schedule             = "00 18 * * *"
-    # Pull long schedule for ontology that are pulled less frequently: run weekly on monday at 11 a.m. (23:00)
-    config.pull_schedule_long                       = "00 23 * * 1"
-    config.pull_long_ontologies                     = ["BIOREFINERY", "TRANSMAT", "GO"]
-  end
-rescue NameError
-  puts "(CNFG) >> NcboCron not available, cannot load config"
+NcboCron.config do |config|
+  config.redis_host = REDIS_PERSISTENT_HOST.to_s
+  config.redis_port = REDIS_PORT.to_i
+  config.ontology_report_path = REPORT_PATH
 end
