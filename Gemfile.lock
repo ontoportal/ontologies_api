@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 7d16b7b1ecc4da8bfd93db2a106737b06d84d6ff
+  revision: 4c7dfa80a8bb4a7d8cfb7ad1fc8a1a88e420e59e
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -109,7 +109,7 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     backports (3.24.1)
     base64 (0.2.0)
-    bcrypt (3.1.19)
+    bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
@@ -134,8 +134,7 @@ GEM
     date (3.3.4)
     declarative (0.0.20)
     docile (1.4.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
+    domain_name (0.6.20231109)
     ed25519 (1.3.0)
     faraday (1.10.3)
       faraday-em_http (~> 1.0)
@@ -217,7 +216,7 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.3.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.4)
+    net-imap (0.4.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -242,7 +241,7 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (5.0.3)
+    public_suffix (5.0.4)
     rack (1.6.13)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -321,7 +320,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.21.5)
+    sshkit (1.21.6)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
@@ -332,9 +331,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.8.2)
     unicorn (6.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)

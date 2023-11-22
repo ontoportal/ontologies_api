@@ -1,10 +1,5 @@
 x-app: &app
-    build:
-      context: .
-      args:
-        RUBY_VERSION: '2.7'
-    # Increase the version number in the image tag every time Dockerfile or its arguments is changed
-    image: ontologies_api:0.0.1
+    image: agroportal/ontologies_api:development
     environment: &env
       BUNDLE_PATH: /srv/ontoportal/bundle
       # default bundle config resolves to /usr/local/bundle/config inside of the container
@@ -39,6 +34,8 @@ x-app: &app
 services:
   api:
     <<: *app
+    env_file:
+      .env
     environment:
       <<: *env
       GOO_BACKEND_NAME: 4store
