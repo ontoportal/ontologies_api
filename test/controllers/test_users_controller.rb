@@ -6,7 +6,7 @@ class TestUsersController < TestCase
     @@usernames = %w(fred goerge henry ben mark matt charlie)
 
     # Create them again
-    @@usernames.each do |username|
+    @@users = @@usernames.map do |username|
       User.new(username: username, email: "#{username}@example.org", password: "pass_word").save
     end
 
@@ -19,6 +19,17 @@ class TestUsersController < TestCase
       user = User.find(username).first
       user.delete unless user.nil?
     end
+  end
+
+  def test_admin_creation
+    existent_user = @@users.first #no admin
+    refute _create_admin_user(apikey: existent_user.apikey), "A no admin user can't create an admin user or update it to an admin"
+    delete "/users/#{@@username}"
+
+    existent_user = self.class.make_admin(existent_user)
+    assert _create_admin_user(apikey: existent_user.apikey), "Admin can create an admin user or update it to be an admin"
+    delete "/users/#{@@username}"
+    self.class.reset_to_not_admin(existent_user)
   end
 
   def test_all_users
@@ -100,4 +111,31 @@ class TestUsersController < TestCase
     assert user["username"].eql?(@@usernames.first)
   end
 
+
+  private
+  def _create_admin_user(apikey: nil)
+    user = {email: "#{@@username}@example.org", password: "pass_the_word", role: ['ADMINISTRATOR']}
+
+    put "/users/#{@@username}", MultiJson.dump(user), "CONTENT_TYPE" => "application/json", "Authorization" => "apikey token=#{apikey}"
+    assert last_response.status == 201
+    created_user = MultiJson.load(last_response.body)
+    assert created_user["username"].eql?(@@username)
+
+    get "/users/#{@@username}?apikey=#{apikey}"
+    assert last_response.ok?
+    user = MultiJson.load(last_response.body)
+    assert user["username"].eql?(@@username)
+
+    return true if user["role"].eql?(['ADMINISTRATOR'])
+
+    patch "/users/#{@@username}", MultiJson.dump(role: ['ADMINISTRATOR']), "CONTENT_TYPE" => "application/json", "Authorization" => "apikey token=#{apikey}"
+    assert last_response.status == 204
+
+    get "/users/#{@@username}?apikey=#{apikey}"
+    assert last_response.ok?
+    user = MultiJson.load(last_response.body)
+    assert user["username"].eql?(@@username)
+
+    true if user["role"].eql?(['ADMINISTRATOR'])
+  end
 end
