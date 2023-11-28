@@ -193,6 +193,7 @@ class TestCase < MiniTest::Unit::TestCase
   end
 
   def self.enable_security
+    @@old_security_setting = LinkedData.settings.enable_security
     LinkedData.settings.enable_security = true
   end
 

@@ -29,7 +29,7 @@ class TestUsersController < TestCase
     existent_user = self.class.make_admin(existent_user)
     assert _create_admin_user(apikey: existent_user.apikey), "Admin can create an admin user or update it to be an admin"
     self.class.reset_to_not_admin(existent_user)
-    delete "/users/#{@@username}"
+    _delete_user(@@username)
   end
 
   def test_all_users
@@ -59,7 +59,8 @@ class TestUsersController < TestCase
     assert last_response.ok?
     assert MultiJson.load(last_response.body)["username"].eql?(@@username)
 
-    delete created_user["@id"]
+    _delete_user(created_user["username"])
+
     post "/users", MultiJson.dump(user.merge(username: @@username)), "CONTENT_TYPE" => "application/json"
     assert last_response.status == 201
     assert MultiJson.load(last_response.body)["username"].eql?(@@username)
@@ -90,13 +91,21 @@ class TestUsersController < TestCase
   end
 
   def test_delete_user
-    delete "/users/ben"
-    assert last_response.status == 204
+    self.class.enable_security
+
+    delete "/users/ben?apikey=#{@@users.first.apikey}"
+    assert_equal 403,  last_response.status
+
+    self.class.make_admin(@@users.first)
+    delete "/users/ben?apikey=#{@@users.first.apikey}"
+    assert_equal 204,  last_response.status
 
     @@usernames.delete("ben")
+    self.class.reset_security
+    self.class.reset_to_not_admin(@@users.first)
 
     get "/users/ben"
-    assert last_response.status == 404
+    assert_equal 404, last_response.status
   end
 
   def test_user_not_found
@@ -113,9 +122,13 @@ class TestUsersController < TestCase
 
 
   private
+
+  def _delete_user(username)
+    LinkedData::Models::User.find(@@username).first&.delete
+  end
   def _create_admin_user(apikey: nil)
     user = {email: "#{@@username}@example.org", password: "pass_the_word", role: ['ADMINISTRATOR']}
-    LinkedData::Models::User.find(@@username).first&.delete
+    _delete_user(@@username)
 
     put "/users/#{@@username}", MultiJson.dump(user), "CONTENT_TYPE" => "application/json", "Authorization" => "apikey token=#{apikey}"
     assert last_response.status == 201

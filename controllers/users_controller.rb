@@ -93,6 +93,7 @@ class UsersController < ApplicationController
 
     # Delete a user
     delete '/:username' do
+      error 403, "Access denied" unless current_user.admin?
       User.find(params[:username]).first.delete
       halt 204
     end

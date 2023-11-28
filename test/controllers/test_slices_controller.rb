@@ -15,17 +15,17 @@ class TestSlicesController < TestCase
                         password: "12345"
                       }).save
     @@new_slice_data = { acronym: 'tst-c', name: "Test Slice C", ontologies: ont_acronyms}
-    @@old_security_setting = LinkedData.settings.enable_security
+    enable_security
   end
 
   def self.after_suite
     LinkedData::Models::Slice.all.each(&:delete)
     @@user.delete
-    reset_security(@@old_security_setting)
+    reset_security
   end
 
   def setup
-    self.class.reset_security(@@old_security_setting)
+    self.class.reset_security
     self.class.reset_to_not_admin(@@user)
     LinkedData::Models::Slice.find(@@new_slice_data[:acronym]).first&.delete
   end
