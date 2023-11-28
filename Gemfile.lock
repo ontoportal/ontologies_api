@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 657149d6b33813253fa7440252f69c04e0631190
-  branch: master
+  revision: 6db93bb3d5095a5fe0d017e572c5a04caa34ebc6
+  branch: develop
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -15,8 +15,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 4f4361e2c181143bba3876326ecda407a587207e
-  branch: master
+  revision: 067104ae94c0e9d058cfbf419364fbf03f34de43
+  branch: develop
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: a20827249fe225af6f18e9efea5e1097ab28d86b
-  branch: master
+  revision: 6317dc4976d2ab8e17104887bab0abf5f412b2ef
+  branch: develop
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,8 +42,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 013abea4af3b10910ec661dbb358a4b6cae198a4
-  branch: master
+  revision: e6d4449d8b854f17bb54af6de142bc64bff22ab3
+  branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 7783784f9d2ceada9be706cf6c084d272ae653e8
-  branch: master
+  revision: 9487c7f73e68abab097af523d42c1d2e106e614b
+  branch: develop
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -73,8 +73,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: d418d56a6c9ff5692f925b45739a2a1c66bca851
-  branch: master
+  revision: 55e7dbf858eb571c767bc67868f9af61663859cb
+  branch: develop
   specs:
     sparql-client (1.0.1)
       json_pure (>= 1.4)
@@ -110,7 +110,7 @@ GEM
     ast (2.4.2)
     backports (3.24.1)
     base64 (0.2.0)
-    bcrypt (3.1.19)
+    bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
@@ -133,10 +133,9 @@ GEM
     dante (0.2.0)
     date (3.3.4)
     docile (1.4.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
+    domain_name (0.6.20231109)
     ed25519 (1.3.0)
-    faraday (2.7.11)
+    faraday (2.7.12)
       base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
@@ -166,10 +165,10 @@ GEM
     google-cloud-env (1.6.0)
       faraday (>= 0.17.3, < 3.0)
     google-cloud-errors (1.3.1)
-    google-protobuf (3.25.0-aarch64-linux)
-    google-protobuf (3.25.0-arm64-darwin)
-    google-protobuf (3.25.0-x86_64-darwin)
-    google-protobuf (3.25.0-x86_64-linux)
+    google-protobuf (3.25.1-aarch64-linux)
+    google-protobuf (3.25.1-arm64-darwin)
+    google-protobuf (3.25.1-x86_64-darwin)
+    google-protobuf (3.25.1-x86_64-linux)
     googleapis-common-protos (1.4.0)
       google-protobuf (~> 3.14)
       googleapis-common-protos-types (~> 1.2)
@@ -226,7 +225,7 @@ GEM
       redis
     multi_json (1.15.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.4)
+    net-imap (0.4.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -255,7 +254,7 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (5.0.3)
+    public_suffix (5.0.4)
     racc (1.7.3)
     rack (1.6.13)
     rack-accept (0.4.5)
@@ -344,7 +343,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.21.5)
+    sshkit (1.21.6)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
@@ -353,9 +352,6 @@ GEM
     timeout (0.4.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.8.2)
     unicode-display_width (2.5.0)
     unicorn (6.1.0)
       kgio (~> 2.6)
@@ -371,6 +367,7 @@ PLATFORMS
   arm64-darwin-22
   x86_64-darwin-18
   x86_64-darwin-21
+  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
@@ -423,4 +420,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   2.3.15
+   2.4.21

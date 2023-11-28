@@ -23,13 +23,13 @@ class TestUsersController < TestCase
 
   def test_admin_creation
     existent_user = @@users.first #no admin
+
     refute _create_admin_user(apikey: existent_user.apikey), "A no admin user can't create an admin user or update it to an admin"
-    delete "/users/#{@@username}"
 
     existent_user = self.class.make_admin(existent_user)
     assert _create_admin_user(apikey: existent_user.apikey), "Admin can create an admin user or update it to be an admin"
-    delete "/users/#{@@username}"
     self.class.reset_to_not_admin(existent_user)
+    delete "/users/#{@@username}"
   end
 
   def test_all_users
@@ -115,6 +115,7 @@ class TestUsersController < TestCase
   private
   def _create_admin_user(apikey: nil)
     user = {email: "#{@@username}@example.org", password: "pass_the_word", role: ['ADMINISTRATOR']}
+    LinkedData::Models::User.find(@@username).first&.delete
 
     put "/users/#{@@username}", MultiJson.dump(user), "CONTENT_TYPE" => "application/json", "Authorization" => "apikey token=#{apikey}"
     assert last_response.status == 201
