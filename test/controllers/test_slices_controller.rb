@@ -21,12 +21,12 @@ class TestSlicesController < TestCase
   def self.after_suite
     LinkedData::Models::Slice.all.each(&:delete)
     @@user.delete
-    reset_security
+    reset_security(@@old_security_setting)
   end
 
   def setup
-    self.class.reset_security
-    self.class.rest_to_not_admin(@@user)
+    self.class.reset_security(@@old_security_setting)
+    self.class.reset_to_not_admin(@@user)
     LinkedData::Models::Slice.find(@@new_slice_data[:acronym]).first&.delete
   end
 
@@ -38,12 +38,12 @@ class TestSlicesController < TestCase
   end
 
   def test_create_slices
-    enable_security
+    self.class.enable_security
 
     post "/slices?apikey=#{@@user.apikey}", MultiJson.dump(@@new_slice_data), "CONTENT_TYPE" => "application/json"
     assert_equal 403, last_response.status
 
-    make_admin(@@user)
+    self.class.make_admin(@@user)
 
     post "/slices?apikey=#{@@user.apikey}", MultiJson.dump(@@new_slice_data), "CONTENT_TYPE" => "application/json"
 
@@ -51,7 +51,7 @@ class TestSlicesController < TestCase
   end
 
   def test_delete_slices
-    enable_security
+    self.class.enable_security
     LinkedData.settings.enable_security = @@old_security_setting
     self.class._create_slice(@@new_slice_data[:acronym],  @@new_slice_data[:name], @@onts)
 
@@ -59,7 +59,7 @@ class TestSlicesController < TestCase
     delete "/slices/#{@@new_slice_data[:acronym]}?apikey=#{@@user.apikey}"
     assert_equal 403, last_response.status
 
-    make_admin(@@user)
+    self.class.make_admin(@@user)
 
     delete "/slices/#{@@new_slice_data[:acronym]}?apikey=#{@@user.apikey}"
     assert 201, last_response.status
@@ -76,23 +76,4 @@ class TestSlicesController < TestCase
     slice.save
   end
 
-  def enable_security
-    LinkedData.settings.enable_security = true
-  end
-
-  def self.reset_security
-    LinkedData.settings.enable_security = @@old_security_setting
-  end
-
-  def make_admin(user)
-    user.bring_remaining
-    user.role = [LinkedData::Models::Users::Role.find(LinkedData::Models::Users::Role::ADMIN).first]
-    user.save
-  end
-
-  def self.rest_to_not_admin(user)
-    user.bring_remaining
-    user.role = [LinkedData::Models::Users::Role.find(LinkedData::Models::Users::Role::DEFAULT).first]
-    user.save
-  end
 end
