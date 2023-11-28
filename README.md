@@ -31,10 +31,7 @@ Goals:
 
 
 ```
-### Configuration
-```
-cp .env.sample .env 
-```
+
 
 ### Run dev
 ```bash 

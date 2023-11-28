@@ -2,34 +2,61 @@
 
 # Function to display script usage information
 show_help() {
-  echo "Usage: $0 {dev|test|run|help} [--reset-cache] [--api-url API_URL] [--api-key API_KEY]"
-  echo "  dev            : Start the Ontoportal API development server."
-  echo "                  Example: $0 dev --api-url http://localhost:9393"
-  echo "                  Use --reset-cache to remove volumes: $0 dev --reset-cache"
-  echo "  test           : Run tests."
-  echo "  run            : Run a command in the Ontoportal API Docker container."
-  echo "  help           : Show this help message."
-  echo
-  echo "Description:"
-  echo "  This script provides convenient commands for managing an Ontoportal API"
-  echo "  application using Docker Compose. It includes options for starting the development server,"
-  echo "  running tests, and executing commands within the Ontoportal API Docker container."
-  echo
-  echo "Goals:"
-  echo "  - Simplify common tasks related to Ontoportal API development using Docker."
-  echo "  - Provide a consistent and easy-to-use interface for common actions."
+  cat << EOL
+Usage: $0 {dev|test|run|help} [--reset-cache] [--api-url API_URL] [--api-key API_KEY] [--old-path OLD_PATH] [--goo-path GOO_PATH] [--sparql-client-path SPARQL_CLIENT_PATH]
+  dev            : Start the Ontoportal API development server.
+                  Example: $0 dev --api-url http://localhost:9393
+                  Use --reset-cache to remove volumes: $0 dev --reset-cache
+  test           : Run tests. Specify either a test file or use 'all'.
+                  Example: $0 test test/controllers/test_users_controller.rb -v --name=name_of_the_test
+                  Example (run all tests): $0 test all -v
+  run            : Run a command in the Ontoportal API Docker container.
+  help           : Show this help message.
+
+Description:
+  This script provides convenient commands for managing an Ontoportal API
+  application using Docker Compose. It includes options for starting the development server,
+  running tests, and executing commands within the Ontoportal API Docker container.
+
+Options:
+  --reset-cache             : Remove Docker volumes (used with 'dev').
+  --api-url API_URL         : Specify the API URL.
+  --api-key API_KEY         : Specify the API key.
+  --old-path OLD_PATH       : Specify the path for ontologies_linked_data.
+  --goo-path GOO_PATH       : Specify the path for goo.
+  --sparql-client-path      : Specify the path for sparql-client.
+  test_file | all            : Specify either a test file or  all the tests will be run.
+  -v                        : Enable verbosity.
+  --name=name_of_the_test   : Specify the name of the test.
+
+Goals:
+  - Simplify common tasks related to Ontoportal API development using Docker.
+  - Provide a consistent and easy-to-use interface for common actions.
+EOL
 }
+
+
 # Function to update or create the .env file with API_URL and API_KEY
 update_env_file() {
+  # Update the .env file with the provided values
   local api_url="$1"
+  local old_path="$2"
+  local goo_path="$3"
+  local sparql_client_path="$4"
 
   # Update  the .env file with the provided values
   file_content=$(<.env)
 
   # Make changes to the variable
   while IFS= read -r line; do
-        if [[ "$line" == "API_URL="* ]]; then
+        if [[ "$line" == "API_URL="* && -n "$api_url" ]]; then
           echo "API_URL=$api_url"
+        elif [[ "$line" == "ONTOLOGIES_LINKED_DATA_PATH="* ]]; then
+          echo "ONTOLOGIES_LINKED_DATA_PATH=$old_path"
+        elif [[ "$line" == "GOO_PATH="* ]]; then
+          echo "GOO_PATH=$goo_path"
+        elif [[ "$line" == "SPARQL_CLIENT_PATH="* ]]; then
+          echo "SPARQL_CLIENT_PATH=$sparql_client_path"
         else
           echo "$line"
         fi
@@ -38,26 +65,52 @@ update_env_file() {
 
 # Function to create configuration files if they don't exist
 create_config_files() {
-  if [ ! -f ".env" ]; then
-      echo "Creating .env file from env.sample"
-      cp .env.sample .env
-  fi
-
-  if [ ! -f "config/environments/development.rb" ]; then
-    echo "Creating config/environments/development.rb file from config/environments/config.rb.sample"
-    cp config/bioportal_config_env.rb.sample config/bioportal_config_development.rb
-  fi
+  [ -f ".env" ] || cp .env.sample .env
+  [ -f "config/environments/development.rb" ] || cp config/environments/config.rb.sample config/environments/development.rb
 }
 
-# Function to handle the "dev" option
-dev() {
-  echo "Starting Ontoportal API development server..."
-  
-  create_config_files
+# Function to build Docker run command with conditionally added bind mounts
+build_docker_run_cmd() {
+  local custom_command="$1"
+  local old_path="$2"
+  local goo_path="$3"
+  local sparql_client_path="$4"
+
+  local docker_run_cmd="docker compose run --rm -it"
+  local bash_cmd=""
+
+  # Conditionally add bind mounts only if the paths are not empty
+  for path_var in "old_path:ontologies_linked_data" "goo_path:goo" "sparql_client_path:sparql-client"; do
+    IFS=':' read -r path value <<< "$path_var"
+
+    if [ -n "${!path}" ]; then
+      host_path="$(realpath "$(dirname "${!path}")")/$value"
+      echo "Run: bundle config local.$value ${!path}"
+      container_path="/srv/ontoportal/$value"
+      docker_run_cmd+=" -v $host_path:$container_path"
+      bash_cmd+="(git config --global --add safe.directory $container_path && bundle config local.$value $container_path) &&"
+    else
+      bash_cmd+=" (bundle config unset local.$value) &&"
+    fi
+  done
+
+  bash_cmd+=" (bundle check || bundle install || bundle update) && $custom_command"
+  docker_run_cmd+=" --service-ports api bash -c \"$bash_cmd\""
+
+  eval "$docker_run_cmd"
+}
+
+# Function to handle the "dev" and "test" options
+run_command() {
+  local custom_command="$1"
+
   local reset_cache=false
   local api_url=""
+  local old_path=""
+  local goo_path=""
+  local sparql_client_path=""
 
-
+  shift
   # Check for command line arguments
   while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -69,6 +122,18 @@ dev() {
         api_url="$2"
         shift 2
         ;;
+      --old-path)
+        old_path="$2"
+        shift 2
+        ;;
+      --goo-path)
+        goo_path="$2"
+        shift 2
+        ;;
+      --sparql-client-path)
+        sparql_client_path="$2"
+        shift 2
+        ;;
       *)
         echo "Unknown option: $1"
         show_help
@@ -77,48 +142,58 @@ dev() {
     esac
   done
 
- 
-
-  # Check if arguments are provided
-  if [ -n "$api_url" ] ; then
-    # If arguments are provided, update the .env file
-    update_env_file "$api_url"
-  else
-    # If no arguments, fetch values from the .env file
-    source .env
-    api_url="$API_URL"
-  fi
-
-  if [ -z "$api_url" ] ; then
-    echo "Error: Missing required arguments. Please provide both --api-url or update them in your .env"
-    exit 1
-  fi
-
   # Check if --reset-cache is present and execute docker compose down --volumes
   if [ "$reset_cache" = true ]; then
     echo "Resetting cache. Running: docker compose down --volumes"
     docker compose down --volumes
   fi
 
-  echo "Run: bundle exec api s -b 0.0.0.0 -p 3000"
-  docker compose run --rm -it --service-ports api bash -c "(bundle check || bundle install) && bundle exec rackup -o 0.0.0.0 --port 9393"
+  # Check if arguments are provided
+  update_env_file "$api_url" "$old_path" "$goo_path" "$sparql_client_path"
+
+
+
+  # If no arguments, fetch values from the .env file
+  source .env
+  api_url="$API_URL"
+  old_path="$ONTOLOGIES_LINKED_DATA_PATH"
+  goo_path="$GOO_PATH"
+  sparql_client_path="$SPARQL_CLIENT_PATH"
+
+
+  if [ -z "$api_url" ] ; then
+    echo "Error: Missing required arguments. Please provide both --api-url or update them in your .env"
+    exit 1
+  fi
+
+
+
+  # Build the Docker run command
+  echo "Run: $custom_command"
+  build_docker_run_cmd "$custom_command" "$old_path" "$goo_path" "$sparql_client_path"
+}
+
+# Function to handle the "dev" option
+dev() {
+  echo "Starting OntoPortal API development server..."
+
+  local custom_command="bundle exec shotgun --host 0.0.0.0  --env=development"
+  run_command "$custom_command" "$@"
 }
 
 # Function to handle the "test" option
 test() {
-
-
-  local api_url=""
+  echo "Running tests..."
   local test_path=""
   local test_options=""
-
+  local all_arguments=()
   # Check for command line arguments
   while [ "$#" -gt 0 ]; do
      case "$1" in
-       --api-url)
-         shift
-         api_url="$1"
-         ;;
+         --api-url | --reset-cache | --old-path | --goo-path | --sparql-client-path)
+          all_arguments+=("$1" "$2")
+          shift 2
+          ;;
        *)
          if [ -z "$test_path" ]; then
            test_path="$1"
@@ -130,13 +205,9 @@ test() {
      shift
   done
 
-
-
-  script="API_URL=$api_url bundle exec rake test TEST=\"$test_path\" TESTOPTS=\"$test_options\""
-  echo "Running tests..."
-  echo "Run: $script"
-
-  docker compose run --rm -it api bash -c "(bundle check || bundle install) && $script"
+  local custom_command="bundle exec rake test TEST='$test_path' TESTOPTS='$test_options'"
+  echo "run :  $custom_command"
+  run_command "$custom_command" "${all_arguments[@]}"
 }
 
 # Function to handle the "run" option
@@ -144,6 +215,8 @@ run() {
   echo "Run: $*"
   docker compose run --rm -it api bash -c "$*"
 }
+
+create_config_files
 
 # Main script logic
 case "$1" in
