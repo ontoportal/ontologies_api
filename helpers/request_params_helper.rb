@@ -122,17 +122,24 @@ module Sinatra
       end
 
       def add_acronym_name_filters(query)
-        if params[:acronym]
-          filter = Goo::Filter.new(extract_attr(:ontology_acronym)).regex(params[:acronym])
-          if params[:name]
-            filter.or(Goo::Filter.new(extract_attr(:ontology_name)).regex(params[:name]))
-          end
-          query = query.filter(filter)
-        elsif params[:name]
-          filter = Goo::Filter.new(extract_attr(:ontology_name)).regex(params[:name])
-          query = query.filter(filter)
+        filters = {
+          acronym: :ontology_acronym,
+          name: :ontology_name,
+          description: :description
+        }.map do |key, attr|
+          (params[key].nil? || params[key].empty?) ?  nil : [extract_attr(attr), params[key]]
+        end.compact
+
+        return  query if filters.empty?
+
+        key, val = filters.first
+        filter = Goo::Filter.new(key).regex(val)
+
+        filters.drop(1).each do |k, v|
+          filter = filter.or(Goo::Filter.new(k).regex(v))
         end
-        query
+        
+        query.filter(filter)
       end
 
       def add_order_by_patterns(query)
