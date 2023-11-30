@@ -81,6 +81,7 @@ class UsersController < ApplicationController
     # Update an existing submission of an user
     patch '/:username' do
       user = User.find(params[:username]).include(User.attributes).first
+      params.delete("role") unless current_user.admin?
       populate_from_params(user, params)
       if user.valid?
         user.save
@@ -92,6 +93,7 @@ class UsersController < ApplicationController
 
     # Delete a user
     delete '/:username' do
+      error 403, "Access denied" unless current_user.admin?
       User.find(params[:username]).first.delete
       halt 204
     end
@@ -109,6 +111,7 @@ class UsersController < ApplicationController
       params ||= @params
       user = User.find(params["username"]).first
       error 409, "User with username `#{params["username"]}` already exists" unless user.nil?
+      params.delete("role") unless current_user.admin?
       user = instance_from_params(User, params)
       if user.valid?
         user.save
