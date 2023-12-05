@@ -262,13 +262,7 @@ class ClassesController < ApplicationController
       end
     end
 
-    def concept_schemes
-      params["concept_schemes"]&.split(',') || []
-    end
 
-    def concept_collections
-      params["concept_collections"]&.split(',') || []
-    end
 
     def request_display(attrs)
 
