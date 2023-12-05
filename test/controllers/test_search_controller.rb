@@ -213,4 +213,48 @@ class TestSearchController < TestCase
     assert_equal @@test_pc_child.label, provisional[0]["prefLabel"].first
   end
 
+  def test_multilingual_search
+    get "/search?q=Activity&ontologies=BROSEARCHTEST-0"
+    res =  MultiJson.load(last_response.body)
+    refute_equal 0, res["totalCount"]
+
+    doc = res["collection"].select{|doc| doc["@id"].to_s.eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+    refute_nil doc
+
+    #res = LinkedData::Models::Class.search("prefLabel_none:Activity", {:fq => "submissionAcronym:BROSEARCHTEST-0", :start => 0, :rows => 80}, :main)
+    #refute_equal 0, res["response"]["numFound"]
+    #refute_nil res["response"]["docs"].select{|doc| doc["resource_id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+    get "/search?q=Activit%C3%A9&ontologies=BROSEARCHTEST-0&lang=fr"
+    res =  MultiJson.load(last_response.body)
+    refute_equal 0, res["totalCount"]
+    refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=en"
+    res =  MultiJson.load(last_response.body)
+    refute_equal 0, res["totalCount"]
+    refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=fr&require_exact_match=true"
+    res =  MultiJson.load(last_response.body)
+    assert_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=en&require_exact_match=true"
+    res =  MultiJson.load(last_response.body)
+    refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+    get "/search?q=Activity&ontologies=BROSEARCHTEST-0&lang=en&require_exact_match=true"
+    res =  MultiJson.load(last_response.body)
+    assert_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+    get "/search?q=Activit%C3%A9&ontologies=BROSEARCHTEST-0&lang=fr&require_exact_match=true"
+    res =  MultiJson.load(last_response.body)
+    refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+
+  end
+
 end

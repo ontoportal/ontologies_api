@@ -201,6 +201,21 @@ class TestOntologySubmissionsController < TestCase
     end
   end
 
+  def test_submissions_pagination
+    num_onts_created, created_ont_acronyms = create_ontologies_and_submissions(ont_count: 2, submission_count: 2)
+
+    get "/submissions"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+
+    assert_equal 2, submissions.length
+
+
+    get "/submissions?page=1&pagesize=1"
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal 1, submissions["collection"].length
+  end
 
 
   def test_submissions_default_includes
