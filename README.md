@@ -2,7 +2,50 @@
 
 ontologies_api provides a RESTful interface for accessing [BioPortal](https://bioportal.bioontology.org/) (an open repository of biomedical ontologies). Supported services include downloads, search, access to terms and concepts, text annotation, and much more.
 
-## Prerequisites
+# Run ontologies_api
+
+## Using OntoPortal api utilities script 
+### See help
+
+```bash 
+bin/ontoportal help
+```
+
+```
+Usage: bin/ontoportal {dev|test|run|help} [--reset-cache] [--api-url API_URL] [--api-key API_KEY]
+  dev            : Start the Ontoportal API development server.
+                  Example: bin/ontoportal dev --api-url http://localhost:9393
+                  Use --reset-cache to remove volumes: bin/ontoportal dev --reset-cache
+  test           : Run tests.
+  run            : Run a command in the Ontoportal API Docker container.
+  help           : Show this help message.
+
+Description:
+  This script provides convenient commands for managing an Ontoportal API
+  application using Docker Compose. It includes options for starting the development server,
+  running tests, and executing commands within the Ontoportal API Docker container.
+
+Goals:
+  - Simplify common tasks related to Ontoportal API development using Docker.
+  - Provide a consistent and easy-to-use interface for common actions.
+
+
+```
+
+
+### Run dev
+```bash 
+bin/ontoportal dev 
+```
+
+### Run test with a local OntoPortal API
+```bash 
+bin/ontoportal test 
+```
+
+
+## Manually 
+### Prerequisites
 
 - [Ruby 2.x](http://www.ruby-lang.org/en/downloads/) (most recent patch level)
 - [rbenv](https://github.com/sstephenson/rbenv) and [ruby-build](https://github.com/sstephenson/ruby-build) (optional)
@@ -19,7 +62,7 @@ ontologies_api provides a RESTful interface for accessing [BioPortal](https://bi
 - [Solr](http://lucene.apache.org/solr/)
     - BioPortal indexes ontology class and property content using Solr (a Lucene-based server)
 
-## Configuring Solr
+### Configuring Solr
 
 To configure Solr for ontologies_api usage, modify the example project included with Solr by doing the following:
 
@@ -46,22 +89,22 @@ To configure Solr for ontologies_api usage, modify the example project included 
     # Edit the ontologieS_api/config/environments/{env}.rb file to point to your running instance:
     # http://localhost:8983/solr/NCBO1
 
-## Installing
+### Installing
 
-### Clone the repository
+#### Clone the repository
 
 ```
 $ git clone git@github.com:ncbo/ontologies_api.git
 $ cd ontologies_api
 ```
 
-### Install the dependencies
+#### Install the dependencies
 
 ```
 $ bundle install
 ```
 
-### Create an environment configuration file
+#### Create an environment configuration file
 
 ```
 $ cp config/environments/config.rb.sample config/environments/development.rb
@@ -73,7 +116,7 @@ production.rb<br />
 development.rb<br />
 test.rb
 
-### Run the unit tests (optional)
+#### Run the unit tests (optional)
 
 Requires a configuration file for the test environment:
 
@@ -87,7 +130,7 @@ Execute the suite of tests from the command line:
 $ bundle exec rake test 
 ```
 
-### Run the application
+#### Run the application
 
 ```
 $ bundle exec rackup --port 9393 

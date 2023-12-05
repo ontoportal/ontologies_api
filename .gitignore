@@ -71,3 +71,5 @@ test/data/ontology_files/catalog-v001.xml
 create_permissions.log
 
 ontologies_api.iml
+
+.env

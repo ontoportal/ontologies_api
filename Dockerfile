@@ -21,6 +21,7 @@ ENV BUNDLE_PATH=/srv/ontoportal/bundle
 RUN bundle install
 
 COPY . /srv/ontoportal/ontologies_api
+RUN cp /srv/ontoportal/ontologies_api/config/environments/config.rb.sample /srv/ontoportal/ontologies_api/config/environments/development.rb
 
 EXPOSE 9393
 CMD ["bundle", "exec", "rackup", "-p", "9393", "--host", "0.0.0.0"]

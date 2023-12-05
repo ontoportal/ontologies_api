@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 74ea47defc7f6260b045a6c6997bbe6a59c7bf62
-  branch: master
+  revision: 5979402d5138850fb9bdb34edfa350e9af1b5d22
+  branch: development
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 80a331d053ea04397a903452288c2186822c340c
-  branch: master
+  revision: a199eff007f5d7f18205d61194f3823445aa6460
+  branch: development
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -216,7 +216,7 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.3.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.7)
+    net-imap (0.4.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -247,7 +247,7 @@ GEM
       rack (>= 0.4)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
-    rack-cache (1.14.0)
+    rack-cache (1.13.0)
       rack (>= 0.4)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
@@ -270,8 +270,8 @@ GEM
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
       redis-store (>= 1.6, < 2)
-    redis-store (1.9.2)
-      redis (>= 4, < 6)
+    redis-store (1.9.1)
+      redis (>= 4, < 5)
     representable (3.2.0)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -346,12 +346,11 @@ GEM
     webrick (1.8.1)
 
 PLATFORMS
-  x86_64-darwin-21
   x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
-  activesupport (~> 3.1)
+  activesupport (~> 3.2)
   bcrypt_pbkdf (>= 1.0, < 2.0)
   bigdecimal (= 1.4.2)
   capistrano (~> 3)

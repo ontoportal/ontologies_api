@@ -28,14 +28,14 @@ class TestAgentsController < TestCase
   end
 
   def test_all_agents
-    get '/agents'
+    get '/agents?display=all&page=1'
     assert last_response.ok?
 
     created_agents = MultiJson.load(last_response.body)
-
     @agents.each do |agent|
-      created_agent = created_agents.select{|x| x["name"].eql?(agent[:name])}.first
+      created_agent = created_agents["collection"].select{|x| x["name"].eql?(agent[:name])}.first
       refute_nil created_agent
+      refute_nil created_agent["usages"]
       assert_equal agent[:name], created_agent["name"]
       assert_equal agent[:identifiers].size, created_agent["identifiers"].size
       assert_equal agent[:identifiers].map{|x| x[:notation]}.sort, created_agent["identifiers"].map{|x| x['notation']}.sort

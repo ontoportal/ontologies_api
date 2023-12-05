@@ -13,6 +13,14 @@ module Sinatra
         if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:contact)}
           includes << {:contact=>[:name, :email]}
         end
+
+        if includes.find{|v| v.is_a?(Hash) && v.keys.include?(:metrics)}
+          includes << { metrics: [:maxChildCount, :properties, :classesWithMoreThan25Children,
+                                  :classesWithOneChild, :individuals, :maxDepth, :classes,
+                                  :classesWithNoDefinition, :averageChildCount, :numberOfAxioms,
+                                  :entities]}
+        end
+
         includes
       end
 
