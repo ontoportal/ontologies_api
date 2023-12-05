@@ -245,7 +245,7 @@ class TestMappingsController < TestCase
     get "/ontologies/#{ontology}/mappings?pagesize=#{pagesize}&page=#{page}&display=prefLabel"
     assert last_response.ok?
     mappings = MultiJson.load(last_response.body)
-    assert mappings["collection"].all? { |m| m["classes"].all? { |c| c["prefLabel"].is_a?(String) && c["prefLabel"].length > 0 } }
+    assert mappings["collection"].all? { |m| m["classes"].all? { |c| c["prefLabel"].first.is_a?(String) && c["prefLabel"].first.length > 0 } }
 
     def_count = 0
     next_page = 1
