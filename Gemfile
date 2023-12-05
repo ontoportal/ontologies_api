@@ -13,6 +13,7 @@ gem 'rake', '~> 10.0'
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-advanced-routes'
 gem 'sinatra-contrib', '~> 1.0'
+gem 'request_store'
 
 # Rack middleware
 gem 'ffi'

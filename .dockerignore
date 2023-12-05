@@ -9,3 +9,4 @@ tmp/*
 # Editor temp files
 *.swp
 *.swo
+test/solr
