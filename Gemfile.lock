@@ -349,7 +349,6 @@ GEM
     webrick (1.8.1)
 
 PLATFORMS
-  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
@@ -406,4 +405,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.4.21
+   2.3.23
