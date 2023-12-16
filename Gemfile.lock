@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 9aa0ccacc9d76bff096218e6d48edc5b0bffd54f
-  branch: development
+  revision: 03da25b671d2ffa515b5dce51c6bd35980ae60c7
+  branch: master
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 1cfaf4482b7bf8c9001f0ff309f2a0ff06f683b5
-  branch: development
+  revision: 2878f43e71cfb83b86dbd54a86587a1a635bafb8
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -173,11 +173,11 @@ GEM
       retriable (>= 2.0, < 4.a)
       rexml
       webrick
-    google-cloud-env (2.0.1)
+    google-cloud-env (2.1.0)
       faraday (>= 1.0, < 3.a)
-    googleauth (1.9.0)
+    googleauth (1.9.1)
       faraday (>= 1.0, < 3.a)
-      google-cloud-env (~> 2.0, >= 2.0.1)
+      google-cloud-env (~> 2.1)
       jwt (>= 1.4, < 3.0)
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
@@ -185,7 +185,7 @@ GEM
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
-    hashdiff (1.0.1)
+    hashdiff (1.1.0)
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
@@ -349,6 +349,7 @@ GEM
     webrick (1.8.1)
 
 PLATFORMS
+  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
@@ -405,4 +406,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.3.23
+   2.4.21
