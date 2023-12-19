@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 6db93bb3d5095a5fe0d017e572c5a04caa34ebc6
+  revision: 18062f07fdd83ad752e97adadd5d9811719d5b6b
   branch: develop
   specs:
     goo (0.0.2)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 003b65c5e5ce8b0736085d6825ee1b8e9548826e
+  revision: e6d4449d8b854f17bb54af6de142bc64bff22ab3
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 9487c7f73e68abab097af523d42c1d2e106e614b
+  revision: 809c54f56b1a4d30d8c2d49e9c005f07c2d6c596
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -229,7 +229,7 @@ GEM
       redis
     multi_json (1.15.0)
     net-http-persistent (2.9.4)
-    net-imap (0.3.7)
+    net-imap (0.4.8)
       date
       net-protocol
     net-pop (0.1.2)
@@ -240,7 +240,7 @@ GEM
       net-ssh (>= 2.6.5, < 8.0.0)
     net-smtp (0.4.0)
       net-protocol
-    net-ssh (7.2.0)
+    net-ssh (7.2.1)
     netrc (0.11.0)
     newrelic_rpm (9.6.0)
       base64
