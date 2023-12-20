@@ -37,7 +37,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: d424a0335ac1e7334cf97e5aa5b7f5b94414c9d8
+  revision: 155db7a33794f03858893d2367cb119f27726a31
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 2878f43e71cfb83b86dbd54a86587a1a635bafb8
+  revision: e98b884999e5ce917a8be5fdc37f7b4797a1559e
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -230,7 +230,7 @@ GEM
       net-ssh (>= 2.6.5, < 8.0.0)
     net-smtp (0.4.0)
       net-protocol
-    net-ssh (7.2.0)
+    net-ssh (7.2.1)
     netrc (0.11.0)
     newrelic_rpm (9.6.0)
       base64
