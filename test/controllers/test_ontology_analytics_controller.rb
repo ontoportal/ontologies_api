@@ -203,7 +203,9 @@ class TestOntologyAnalyticsController < TestCase
       puts "   This test cannot be run because there #{db_size} redis entries (max #{MAX_TEST_REDIS_SIZE}). You are probably pointing to the wrong redis backend. "
       return
     end
-    @@redis.set(LinkedData::Models::Ontology::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(ANALYTICS_DATA))
+
+    stringy_keys = ANALYTICS_DATA.transform_values{|year| year.map{|k,v| [k.to_s , v.stringify_keys]}.to_h}
+    @@redis.set(LinkedData::Models::Ontology::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(stringy_keys))
     @@onts = {
         "NCIT" => "NCIT Ontology",
         "ONTOMA" => "ONTOMA Ontology",

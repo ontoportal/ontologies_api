@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: a199eff007f5d7f18205d61194f3823445aa6460
+  revision: d5af89ba5563cbd9bfc06c51a8330015dd737614
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -216,7 +216,7 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.3.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.6)
+    net-imap (0.4.9)
       date
       net-protocol
     net-pop (0.1.2)
