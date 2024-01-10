@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 18062f07fdd83ad752e97adadd5d9811719d5b6b
+  revision: 6db93bb3d5095a5fe0d017e572c5a04caa34ebc6
   branch: develop
   specs:
     goo (0.0.2)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: e6d4449d8b854f17bb54af6de142bc64bff22ab3
+  revision: 003b65c5e5ce8b0736085d6825ee1b8e9548826e
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 809c54f56b1a4d30d8c2d49e9c005f07c2d6c596
+  revision: 9487c7f73e68abab097af523d42c1d2e106e614b
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -105,7 +105,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
-    airbrussh (1.5.0)
+    airbrussh (1.5.1)
       sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.2)
     backports (3.24.1)
@@ -133,9 +133,9 @@ GEM
     dante (0.2.0)
     date (3.3.4)
     docile (1.4.0)
-    domain_name (0.6.20231109)
+    domain_name (0.6.20240107)
     ed25519 (1.3.0)
-    faraday (2.7.12)
+    faraday (2.8.1)
       base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
@@ -165,10 +165,10 @@ GEM
     google-cloud-env (2.1.0)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.3.1)
-    google-protobuf (3.25.1-aarch64-linux)
-    google-protobuf (3.25.1-arm64-darwin)
-    google-protobuf (3.25.1-x86_64-darwin)
-    google-protobuf (3.25.1-x86_64-linux)
+    google-protobuf (3.25.2-aarch64-linux)
+    google-protobuf (3.25.2-arm64-darwin)
+    google-protobuf (3.25.2-x86_64-darwin)
+    google-protobuf (3.25.2-x86_64-linux)
     googleapis-common-protos (1.4.0)
       google-protobuf (~> 3.14)
       googleapis-common-protos-types (~> 1.2)
@@ -209,7 +209,7 @@ GEM
     jwt (2.7.1)
     kgio (2.11.4)
     language_server-protocol (3.17.0.3)
-    libxml-ruby (4.1.2)
+    libxml-ruby (5.0.2)
     logger (1.6.0)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
@@ -219,7 +219,7 @@ GEM
       net-pop
       net-smtp
     method_source (1.0.0)
-    mime-types (3.5.1)
+    mime-types (3.5.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2023.1205)
     mini_mime (1.1.5)
@@ -228,8 +228,9 @@ GEM
     mlanett-redis-lock (0.2.7)
       redis
     multi_json (1.15.0)
+    mutex_m (0.2.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.8)
+    net-imap (0.3.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -238,7 +239,9 @@ GEM
       timeout
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
-    net-smtp (0.4.0)
+    net-sftp (4.0.0)
+      net-ssh (>= 5.0.0, < 8.0.0)
+    net-smtp (0.4.0.1)
       net-protocol
     net-ssh (7.2.1)
     netrc (0.11.0)
@@ -250,7 +253,7 @@ GEM
     os (1.1.4)
     parallel (1.24.0)
     parseconfig (1.1.2)
-    parser (3.2.2.4)
+    parser (3.3.0.2)
       ast (~> 2.4.1)
       racc
     pony (1.13.1)
@@ -284,14 +287,14 @@ GEM
     redcarpet (3.6.0)
     redis (5.0.8)
       redis-client (>= 0.17.0)
-    redis-client (0.19.0)
+    redis-client (0.19.1)
       connection_pool
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
       redis-store (>= 1.6, < 2)
     redis-store (1.10.0)
       redis (>= 4, < 6)
-    regexp_parser (2.8.3)
+    regexp_parser (2.9.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -347,8 +350,10 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.21.6)
+    sshkit (1.22.0)
+      mutex_m
       net-scp (>= 1.1.2)
+      net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.10.3)
