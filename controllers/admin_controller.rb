@@ -127,23 +127,6 @@ class AdminController < ApplicationController
       halt 204
     end
 
-    # on demand ontology pull
-    post "/ontologies/:acronym/pull" do
-      LOGGER.info "Forcing the pull and processing of ontology #{params['acronym']}"
-      actions = NcboCron::Models::OntologySubmissionParser::ACTIONS.dup
-      actions[:remote_pull] = true
-      ont = Ontology.find(params["acronym"]).first
-      error 404, "You must provide a valid `acronym` to retrieve an ontology" if ont.nil?
-      ont.bring(:acronym, :submissions)
-      latest = ont.latest_submission(status: :any)
-      error 404, "Ontology #{params["acronym"]} contains no submissions" if latest.nil?
-      check_last_modified(latest)
-      latest.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
-      NcboCron::Models::OntologySubmissionParser.new.queue_submission(latest, actions)
-      LOGGER.info "Ontology #{params['acronym']} has been queued for pull and processing"
-      halt 204
-    end
-
     private
 
     def process_long_operation(timeout, args)
