@@ -265,7 +265,7 @@ class TestOntologiesController < TestCase
     assert_equal(nil, sub.pullLocation, msg="Pull location should be nil at this point in the test")
 
     allowed_user = ont.administeredBy.first
-    allowed_user.bring(:apikey)
+    allowed_user.bring(:apikey) if allowed_user.bring?(:apikey)
 
     post "/ontologies/#{acronym}/pull?apikey=#{allowed_user.apikey}"
     assert_equal(404, last_response.status, msg="This ontology is is NOT configured to be remotely pulled at this point in the test. It should return status 404")
@@ -276,7 +276,7 @@ class TestOntologiesController < TestCase
       sub.save
       LinkedData.settings.enable_security = true
       post "/ontologies/#{acronym}/pull?apikey=#{allowed_user.apikey}"
-      assert_equal(204, last_response.status, msg="The ontology owner was unable to execute the on-demand pull")
+      assert_equal(204, last_response.status, msg="The ontology admin was unable to execute the on-demand pull")
 
       blocked_user = User.new({
         username: "blocked",
@@ -285,7 +285,7 @@ class TestOntologiesController < TestCase
       })
       blocked_user.save
       post "/ontologies/#{acronym}/pull?apikey=#{blocked_user.apikey}"
-      assert_equal(403, last_response.status, msg="A non-authorized user was able to execute the on-demand pull")
+      assert_equal(403, last_response.status, msg="An unauthorized user was able to execute the on-demand pull")
     ensure
       stop_server
       LinkedData.settings.enable_security = false
