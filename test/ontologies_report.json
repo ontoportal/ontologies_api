@@ -1,0 +1,473 @@
+{
+  "ontologies": {
+    "PDRO": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "09/25/2017, 06:38 PM",
+      "administeredBy": [
+        "vendetti"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "08/27/2020, 08:43 AM",
+      "errErrorStatus": [
+        "ERROR_ANNOTATOR",
+        "ERROR_INDEXED",
+        "ERROR_INDEXED_PROPERTIES"
+      ],
+      "errMissingStatus": [
+        "INDEXED_PROPERTIES",
+        "ANNOTATOR",
+        "INDEXED"
+      ],
+      "errRunningReport": "Error while running report on component good_classes(): Goo::Base::AttributeNotLoaded: Attribute `classes` is not loaded for http://data.bioontology.org/ontologies/PDRO/submissions/8/metrics. Loaded attributes: #<Set: {}>."
+    },
+    "STY": {
+      "problem": false,
+      "format": "UMLS",
+      "date_created": "06/28/2021, 07:01 PM",
+      "administeredBy": [
+        "admin"
+      ],
+      "logFilePath": "STY/1/parsing.log",
+      "report_date_updated": "06/28/2021, 04:36 PM"
+    },
+    "ENVTHES": {
+      "problem": true,
+      "format": "SKOS",
+      "date_created": "01/02/2022, 01:54 PM",
+      "administeredBy": [
+        "mabablue"
+      ],
+      "logFilePath": "ENVTHES/21/parsing.log",
+      "report_date_updated": "12/02/2022, 10:18 AM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ]
+    },
+    "BSPO": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "07/30/2008, 08:32 PM",
+      "administeredBy": [
+        "balhoff",
+        "obo-anatomy@lists.sourceforge.net"
+      ],
+      "logFilePath": "BSPO/31/parsing.log",
+      "report_date_updated": "02/02/2023, 01:24 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ]
+    },
+    "AFO": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "04/08/2019, 06:51 PM",
+      "administeredBy": [
+        "DG_Allotrope_AFO"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:09 PM",
+      "errMissingStatus": [
+        "INDEXED_PROPERTIES",
+        "METRICS",
+        "ANNOTATOR",
+        "INDEXED"
+      ]
+    },
+    "CL": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "05/29/2008, 04:32 PM",
+      "administeredBy": [
+        "adiehl@informatics.jax.org"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:10 PM",
+      "errMissingStatus": [
+        "ANNOTATOR"
+      ]
+    },
+    "DDPHENO": {
+      "problem": false,
+      "format": "OBO",
+      "date_created": "09/20/2017, 02:34 PM",
+      "administeredBy": [
+        "Pfey"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:14 PM"
+    },
+    "DOID": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "03/26/2008, 05:15 PM",
+      "administeredBy": [
+        "allenbaron",
+        "lynn.schriml@gmail.com"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:25 PM",
+      "errMissingStatus": [
+        "ANNOTATOR"
+      ]
+    },
+    "ECOCORE": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "09/04/2019, 01:02 PM",
+      "administeredBy": [
+        "vendetti"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:25 PM"
+    },
+    "ECTO": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "05/13/2020, 09:38 AM",
+      "administeredBy": [
+        "vendetti"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:25 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ],
+      "errMissingStatus": [
+        "ANNOTATOR"
+      ],
+      "errNoAnnotator": "Annotator - FEW results for: mesotrione | diazaalkane | <span class='missing_term'>concentration of organic molecular entity in soil</span> | olive fat or oil refined food product | fluazifop | iloperidone | food stabiliser | lipoteichoic acid | L-dopa | antifolate"
+    },
+    "EFO": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "11/20/2008, 07:39 PM",
+      "administeredBy": [
+        "zmp",
+        "paolaroncaglia",
+        "simonjupp"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:27 PM"
+    },
+    "FLU": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "01/12/2010, 10:30 PM",
+      "administeredBy": [
+        "burkesquires@gmail.com"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:28 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ]
+    },
+    "FPLX": {
+      "problem": false,
+      "format": "OBO",
+      "date_created": "03/26/2018, 05:57 PM",
+      "administeredBy": [
+        "bengyori"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:30 PM"
+    },
+    "GLYCORDF": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "08/04/2015, 10:10 PM",
+      "administeredBy": [
+        "Rene Ranzinger",
+        "issaku"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:32 PM"
+    },
+    "GO": {
+      "problem": false,
+      "format": "OBO",
+      "date_created": "06/26/2008, 02:06 AM",
+      "administeredBy": [
+        "rama",
+        "go@geneontology.org"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:33 PM"
+    },
+    "GO-PLUS": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "08/28/2015, 05:42 AM",
+      "administeredBy": [
+        "davidos"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:34 PM"
+    },
+    "GSSO": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "09/11/2019, 09:31 PM",
+      "administeredBy": [
+        "superraptor2"
+      ],
+      "logFilePath": "GSSO/75/parsing.log",
+      "report_date_updated": "05/03/2023, 04:24 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ]
+    },
+    "HO": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "07/05/2017, 04:42 PM",
+      "administeredBy": [
+        "claxima"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:38 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ]
+    },
+    "ICEO": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "04/14/2019, 04:25 PM",
+      "administeredBy": [
+        "MiaLIU"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:38 PM"
+    },
+    "ISO19115MI": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "07/16/2017, 06:38 PM",
+      "administeredBy": [
+        "kdurante"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:39 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ]
+    },
+    "MA": {
+      "problem": true,
+      "format": "OBO",
+      "date_created": "07/30/2008, 08:31 PM",
+      "administeredBy": [
+        "anatomy@informatics.jax.org"
+      ],
+      "logFilePath": "MA/128/parsing.log",
+      "report_date_updated": "12/12/2023, 04:06 PM",
+      "errMissingStatus": [
+        "ANNOTATOR",
+        "METRICS",
+        "INDEXED_PROPERTIES",
+        "INDEXED"
+      ]
+    },
+    "MADS-RDF": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "10/15/2017, 03:47 PM",
+      "administeredBy": [
+        "nlorimer"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:40 PM"
+    },
+    "MARC-LANGUAGES": {
+      "problem": true,
+      "format": "SKOS",
+      "date_created": "05/07/2018, 12:59 PM",
+      "administeredBy": [
+        "nlorimer"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:40 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ]
+    },
+    "MF": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "01/29/2012, 08:19 AM",
+      "administeredBy": [
+        "Janna Hastings"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:40 PM"
+    },
+    "MS": {
+      "problem": true,
+      "format": "OBO",
+      "date_created": "09/04/2009, 02:42 AM",
+      "administeredBy": [
+        "mayerg97"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:40 PM",
+      "errMissingStatus": [
+        "ANNOTATOR"
+      ]
+    },
+    "NBO": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "05/05/2011, 12:23 PM",
+      "administeredBy": [
+        "gkoutos",
+        "aridag"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:40 PM"
+    },
+    "QUDT": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "04/05/2012, 01:43 AM",
+      "administeredBy": [
+        "egonw"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:40 PM",
+      "errMissingStatus": [
+        "ANNOTATOR"
+      ]
+    },
+    "ROCKNROLLTEST": {
+      "problem": true,
+      "format": "SKOS",
+      "date_created": "03/18/2021, 11:27 AM",
+      "administeredBy": [
+        "niva"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:41 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ],
+      "errMissingStatus": [
+        "OBSOLETE",
+        "INDEXED_PROPERTIES",
+        "METRICS",
+        "INDEXED"
+      ]
+    },
+    "SKOSPLAY-EX4": {
+      "problem": true,
+      "format": "SKOS",
+      "date_created": "10/18/2020, 05:26 PM",
+      "administeredBy": [
+        "graybeal"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:41 PM",
+      "errErrorStatus": [
+        "ERROR_DIFF"
+      ],
+      "errMissingStatus": [
+        "OBSOLETE",
+        "INDEXED_PROPERTIES",
+        "METRICS",
+        "INDEXED"
+      ]
+    },
+    "SKOSTEST": {
+      "problem": true,
+      "format": "SKOS",
+      "date_created": "11/02/2018, 03:20 PM",
+      "administeredBy": [
+        "graybeal"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 12:41 PM",
+      "errMissingStatus": [
+        "OBSOLETE",
+        "INDEXED_PROPERTIES",
+        "METRICS",
+        "INDEXED"
+      ]
+    },
+    "FOODON": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "03/29/2017, 12:46 PM",
+      "administeredBy": [
+        "damion"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 01:01 PM",
+      "errMissingStatus": [
+        "ANNOTATOR"
+      ],
+      "errNoSearch": "Search - NO results for: <span class='missing_term'>noodle (japanese-style)</span> | <span class='missing_term'>Carcharhinus</span> | <span class='missing_term'>09340 - preserved tomatoes not concentrated (efsa foodex2)</span> | <span class='missing_term'>obsolete: habanero pepper plant</span> | <span class='missing_term'>concentration of quercetin 3-O-β-D-glucosyl-(1→2)-β-D-glucoside in material entity</span> | <span class='missing_term'>20970 - rabbit, other slaughtering products (efsa foodex2)</span> | <span class='missing_term'>concentration of cis-caffeic acid in material entity</span> | <span class='missing_term'>concentration of Isobetanin in material entity</span> | <span class='missing_term'>soda water (artifically sweetened)</span> | <span class='missing_term'>obsolete: giant gourami</span>"
+    },
+    "VFB_DRIVERS": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "10/13/2021, 05:31 AM",
+      "administeredBy": [
+        "clare.pilgrim"
+      ],
+      "logFilePath": "",
+      "report_date_updated": "04/04/2023, 01:07 PM",
+      "errMissingStatus": [
+        "ANNOTATOR"
+      ],
+      "errNoSearch": "Search - NO results for: <span class='missing_term'>P{GawB}62y</span> | <span class='missing_term'>P{VT046771-GAL4}</span> | <span class='missing_term'>P{R66B12-GAL4.DBD} ∩ P{R93A02-p65.AD} expression pattern</span> | <span class='missing_term'>P{GMR94A10-GAL4}</span> | <span class='missing_term'>P{lacZ.w[+]}R122</span> | <span class='missing_term'>P{GMR76A06-GAL4}</span> | <span class='missing_term'>P{GMR23G03-GAL4}</span> | <span class='missing_term'>P{GMR47C11-GAL4}</span> | <span class='missing_term'>P{GawB}RpS11[NP0211]</span> | <span class='missing_term'>P{sal-lacZ.BO}</span>"
+    },
+    "MONDO": {
+      "problem": true,
+      "format": "OBO",
+      "date_created": "09/25/2017, 05:43 PM",
+      "administeredBy": [
+        "vendetti"
+      ],
+      "logFilePath": "MONDO/53/parsing.log",
+      "report_date_updated": "05/17/2023, 08:45 AM",
+      "errErrorStatus": [
+        "ERROR_RDF_LABELS"
+      ],
+      "errMissingStatus": [
+        "INDEXED_PROPERTIES",
+        "METRICS",
+        "ANNOTATOR",
+        "INDEXED"
+      ],
+      "errRunningReport": "Error while running report on component good_classes: ArgumentError: Not supported case for embed"
+    },
+    "TEST-ONT-1": {
+      "problem": true,
+      "format": "OWL",
+      "date_created": "12/16/2023, 03:14 PM",
+      "administeredBy": [
+        "tim"
+      ],
+      "logFilePath": "TEST-ONT-1/2/parsing.log",
+      "report_date_updated": "12/16/2023, 03:14 PM",
+      "errMissingStatus": [
+        "METRICS",
+        "INDEXED_PROPERTIES",
+        "INDEXED"
+      ],
+      "errNoSearch": "Search - NO results for: <span class='missing_term'>Experimental Protocol</span> | <span class='missing_term'>Code Profiler</span> | <span class='missing_term'>Gene Therapy Facility</span> | <span class='missing_term'>Monoclonal Antibody Facility</span> | <span class='missing_term'>Technical Support</span> | <span class='missing_term'>Dissemination Vehicle</span> | <span class='missing_term'>Image Algorithm</span> | <span class='missing_term'>Molecular Visualization</span> | <span class='missing_term'>Calendar Schedule and Resource Management</span> | <span class='missing_term'>Statistical Algorithm</span>"
+    },
+    "TEST-ONT-0": {
+      "problem": false,
+      "format": "OWL",
+      "date_created": "12/16/2023, 05:34 PM",
+      "administeredBy": [
+        "tim"
+      ],
+      "logFilePath": "TEST-ONT-0/2/parsing.log",
+      "report_date_updated": "12/16/2023, 05:35 PM"
+    }
+  },
+  "report_date_generated": "08/27/2020, 08:36 AM"
+}
