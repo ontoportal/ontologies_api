@@ -268,7 +268,7 @@ class TestOntologiesController < TestCase
     allowed_user.bring(:apikey) if allowed_user.bring?(:apikey)
 
     post "/ontologies/#{acronym}/pull?apikey=#{allowed_user.apikey}"
-    assert_equal(404, last_response.status, msg="This ontology is is NOT configured to be remotely pulled at this point in the test. It should return status 404")
+    assert_equal(404, last_response.status, msg="This ontology is NOT configured to be remotely pulled at this point in the test. It should return status 404")
 
     begin
       start_server
