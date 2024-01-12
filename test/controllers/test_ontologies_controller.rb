@@ -1,3 +1,4 @@
+require 'webrick'
 require_relative '../test_case'
 
 class TestOntologiesController < TestCase
@@ -29,6 +30,8 @@ class TestOntologiesController < TestCase
         hasOntologyLanguage: "OWL",
         administeredBy: ["tom"]
     }
+    @@server_thread = nil
+    @@server_url = nil
   end
 
   def self._create_user
@@ -253,8 +256,67 @@ class TestOntologiesController < TestCase
     end
   end
 
+  def test_on_demand_ontology_pull
+    ont = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)[2].first
+    ont.bring_remaining
+    acronym = ont.acronym
+    sub = ont.submissions.first
+    sub.bring(:pullLocation) if sub.bring?(:pullLocation)
+    assert_equal(nil, sub.pullLocation, msg="Pull location should be nil at this point in the test")
+
+    allowed_user = ont.administeredBy.first
+    allowed_user.bring(:apikey) if allowed_user.bring?(:apikey)
+
+    post "/ontologies/#{acronym}/pull?apikey=#{allowed_user.apikey}"
+    assert_equal(404, last_response.status, msg="This ontology is NOT configured to be remotely pulled at this point in the test. It should return status 404")
+
+    begin
+      start_server
+      sub.pullLocation = RDF::IRI.new(@@server_url)
+      sub.save
+      LinkedData.settings.enable_security = true
+      post "/ontologies/#{acronym}/pull?apikey=#{allowed_user.apikey}"
+      assert_equal(204, last_response.status, msg="The ontology admin was unable to execute the on-demand pull")
+
+      blocked_user = User.new({
+        username: "blocked",
+        email: "test@example.org",
+        password: "12345"
+      })
+      blocked_user.save
+      post "/ontologies/#{acronym}/pull?apikey=#{blocked_user.apikey}"
+      assert_equal(403, last_response.status, msg="An unauthorized user was able to execute the on-demand pull")
+    ensure
+      stop_server
+      LinkedData.settings.enable_security = false
+    end
+  end
 
   private
+
+  def start_server
+    ont_path = File.expand_path("../../data/ontology_files/BRO_v3.2.owl", __FILE__)
+    file = File.new(ont_path)
+    port = Random.rand(55000..65535) # http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Dynamic.2C_private_or_ephemeral_ports
+    @@server_url = "http://localhost:#{port}/"
+    @@server_thread = Thread.new do
+      server = WEBrick::HTTPServer.new(Port: port)
+      server.mount_proc '/' do |req, res|
+        contents = file.read
+        file.rewind
+        res.body = contents
+      end
+      begin
+        server.start
+      ensure
+        server.shutdown
+      end
+    end
+  end
+
+  def stop_server
+    Thread.kill(@@server_thread) if @@server_thread
+  end
 
   def check400(response)
     assert response.status >= 400

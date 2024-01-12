@@ -1,14 +1,27 @@
 # conig file for unit tests
 
+# GOO_BACKEND_NAME = ENV.include?("GOO_BACKEND_NAME") ? ENV["GOO_BACKEND_NAME"] : "AG"
+# GOO_HOST         = ENV.include?("GOO_HOST")         ? ENV["GOO_HOST"]         : "localhost"
+# GOO_PATH_QUERY   = ENV.include?("GOO_PATH_QUERY")   ? ENV["GOO_PATH_QUERY"]   : "/repositories/bioportal"
+# GOO_PATH_DATA    = ENV.include?("GOO_PATH_DATA")    ? ENV["GOO_PATH_DATA"]    : "/repositories/bioportal/statements"
+# GOO_PATH_UPDATE  = ENV.include?("GOO_PATH_UPDATE")  ? ENV["GOO_PATH_UPDATE"]  : "/repositories/bioportal/statements"
+# GOO_PORT         = ENV.include?("GOO_PORT")         ? ENV["GOO_PORT"]         : 10035
+
 GOO_BACKEND_NAME = ENV.include?("GOO_BACKEND_NAME") ? ENV["GOO_BACKEND_NAME"] : "4store"
 GOO_HOST         = ENV.include?("GOO_HOST")         ? ENV["GOO_HOST"]         : "localhost"
 GOO_PATH_DATA    = ENV.include?("GOO_PATH_DATA")    ? ENV["GOO_PATH_DATA"]    : "/data/"
 GOO_PATH_QUERY   = ENV.include?("GOO_PATH_QUERY")   ? ENV["GOO_PATH_QUERY"]   : "/sparql/"
 GOO_PATH_UPDATE  = ENV.include?("GOO_PATH_UPDATE")  ? ENV["GOO_PATH_UPDATE"]  : "/update/"
 GOO_PORT         = ENV.include?("GOO_PORT")         ? ENV["GOO_PORT"]         : 8080
+
 MGREP_DICTIONARY_FILE = ENV.include?("MGREP_DICTIONARY_FILE") ? ENV["MGREP_DICTIONARY_FILE"] : "./test/data/dictionary.txt"
 MGREP_HOST       = ENV.include?("MGREP_HOST")       ? ENV["MGREP_HOST"]       : "localhost"
+
+
+# MGREP_PORT       = ENV.include?("MGREP_PORT")       ? ENV["MGREP_PORT"]       : 55556
 MGREP_PORT       = ENV.include?("MGREP_PORT")       ? ENV["MGREP_PORT"]       : 55555
+
+
 REDIS_GOO_CACHE_HOST  = ENV.include?("REDIS_GOO_CACHE_HOST")  ? ENV["REDIS_GOO_CACHE_HOST"]  : "localhost"
 REDIS_HTTP_CACHE_HOST = ENV.include?("REDIS_HTTP_CACHE_HOST") ? ENV["REDIS_HTTP_CACHE_HOST"] : "localhost"
 REDIS_PERSISTENT_HOST = ENV.include?("REDIS_PERSISTENT_HOST") ? ENV["REDIS_PERSISTENT_HOST"] : "localhost"

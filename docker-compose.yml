@@ -114,8 +114,7 @@ services:
       retries: 5
 
   agraph-ut:
-    #image: franzinc/agraph:v7.3.1
-    image: ontoportal/agraph:v7.3.1-patch1
+    image: franzinc/agraph:v8.0.0
     platform: linux/amd64
     environment:
       - AGRAPH_SUPER_USER=test
