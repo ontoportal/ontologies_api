@@ -23,9 +23,7 @@ module Sinatra
         error 404, "User not found" unless user
         reset_token = token(36)
         user.resetToken = reset_token
-
-        return user if user.valid?
-
+        
         user.save(override_security: true)
         LinkedData::Utils::Notifications.reset_password(user, reset_token)
         user
