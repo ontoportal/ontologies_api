@@ -60,10 +60,10 @@ jobs:
         USER_INPUT_ENVIRONMENT=${{ inputs.environment }}
         echo "TARGET=${USER_INPUT_ENVIRONMENT:-staging}" >> $GITHUB_ENV
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.6 # Not needed with a .ruby-version file
+        ruby-version: 2.7.8 # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: get-deployment-config
       uses: actions/checkout@v3
