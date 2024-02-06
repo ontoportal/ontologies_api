@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     end
 
     ##
-    # This endpoint will create a token and store it on the user
+    # This endpoint will create a token and store it on the use-
     # An email is generated with this token, which allows the user
     # to click and login to the UI. The token can then be provided to
     # the /reset_password endpoint to actually reset the password.
@@ -24,6 +24,7 @@ class UsersController < ApplicationController
       error 404, "User not found" unless user
       reset_token = token(36)
       user.resetToken = reset_token
+      user.resetTokenExpireTime = Time.now.to_i + 1.hours.to_i
       if user.valid?
         user.save(override_security: true)
         LinkedData::Utils::Notifications.reset_password(user, reset_token)
@@ -46,10 +47,15 @@ class UsersController < ApplicationController
       user = LinkedData::Models::User.where(email: email, username: username).include(User.goo_attrs_to_load(includes_param)).first
       error 404, "User not found" unless user
       if token.eql?(user.resetToken)
+        error 401, "Invalid password reset token" if user.resetTokenExpireTime.nil?
+        error 401, "The password reset token expired" if user.resetTokenExpireTime < Time.now.to_i
+        user.resetToken = nil
+        user.resetTokenExpireTime = nil
+        user.save(override_security: true) if user.valid?
         user.show_apikey = true
         reply user
       else
-        error 403, "Password reset not authorized with this token"
+        error 401, "Password reset not authorized with this token"
       end
     end
 
