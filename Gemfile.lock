@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 7a897a8e9c01d3a412d9011df8e26d770d58cd7d
-  branch: develop
+  revision: 75436fe8e387febc53e34ee31ff0e6dd837a9d3f
+  branch: master
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -15,8 +15,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: f60341e8426adcad447a6fc3adb5b80207c5987a
-  branch: develop
+  revision: 63c986880aa88c9384043e6611a682434a14aba7
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -26,8 +26,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: c69a330746ae0ef3d9228cf10b4da5013dd51367
-  branch: develop
+  revision: 46bd8e7eb7cfde6d173bdf55808a8e28d6700f1e
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -42,8 +42,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 41e61ddccdde09a45961b0f2bf7ad0ddb18b382e
-  branch: develop
+  revision: 013abea4af3b10910ec661dbb358a4b6cae198a4
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -53,8 +53,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 1e8bd29cad5b3b54d4eae4141465723ba80b1df5
-  branch: develop
+  revision: 0423a4559b9cf6f176a521a7c78471938c8f754e
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -73,8 +73,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 55e7dbf858eb571c767bc67868f9af61663859cb
-  branch: develop
+  revision: d418d56a6c9ff5692f925b45739a2a1c66bca851
+  branch: master
   specs:
     sparql-client (1.0.1)
       json_pure (>= 1.4)
@@ -175,7 +175,7 @@ GEM
       grpc (~> 1.27)
     googleapis-common-protos-types (1.11.0)
       google-protobuf (~> 3.18)
-    googleauth (1.9.2)
+    googleauth (1.10.0)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.1)
       jwt (>= 1.4, < 3.0)
@@ -284,7 +284,7 @@ GEM
     rdf (1.0.8)
       addressable (>= 2.2)
     redcarpet (3.6.0)
-    redis (5.0.8)
+    redis (5.1.0)
       redis-client (>= 0.17.0)
     redis-client (0.19.1)
       connection_pool
@@ -374,7 +374,6 @@ PLATFORMS
   aarch64-linux
   arm64-darwin-22
   arm64-darwin-23
-  x86_64-darwin-18
   x86_64-darwin-23
   x86_64-linux
 
