@@ -346,7 +346,8 @@ module Sinatra
       # If the setting is enabled, replace the URL prefix with the proper id prefix
       # EX: http://stagedata.bioontology.org/ontologies/BRO would become http://data.bioontology.org/ontologies/BRO
       def replace_url_prefix(id)
-        LinkedData::Models::Base.replace_url_prefix_to_id(id)
+        id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix && id.start_with?(LinkedData.settings.rest_url_prefix)
+        id
       end
 
       def retrieve_latest_submissions(options = {})
