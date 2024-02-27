@@ -289,6 +289,8 @@ class TestOntologiesController < TestCase
     ensure
       stop_server
       LinkedData.settings.enable_security = false
+      del = User.find("blocked").first
+      del.delete if del
     end
   end
 

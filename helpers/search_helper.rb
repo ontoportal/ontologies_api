@@ -46,8 +46,8 @@ module Sinatra
           "labelSuggestNgram" => MATCH_TYPE_LABEL,
           MATCH_TYPE_LABELGENERATED => MATCH_TYPE_LABELGENERATED,
           "labelGeneratedExact" => MATCH_TYPE_LABELGENERATED,
-          "labellabelGeneratedSuggestEdge" => MATCH_TYPE_LABELGENERATED,
-          "labellabelGeneratedSuggestNgram" => MATCH_TYPE_LABELGENERATED,
+          "labelGeneratedSuggestEdge" => MATCH_TYPE_LABELGENERATED,
+          "labelGeneratedSuggestNgram" => MATCH_TYPE_LABELGENERATED,
           "notation" => "notation",
           "cui" => "cui",
           "semanticType" => "semanticType"
@@ -57,6 +57,7 @@ module Sinatra
       QUERYLESS_FIELDS_PARAMS = {
           "ontologies" => nil,
           "notation" => "notation",
+          "oboId" => "oboId",
           "cui" => "cui",
           "semantic_types" => "semanticType",
           ONTOLOGY_TYPES_PARAM => "ontologyType",
@@ -113,9 +114,9 @@ module Sinatra
           else
             query = solr_escape(text)
           end
-
           params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR}"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
+          params["bq"] = "idAcronymMatch:true^80"
           params["hl.fl"] = "resource_id prefLabelExact prefLabel synonymExact synonym #{QUERYLESS_FIELDS_STR}"
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
