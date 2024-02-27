@@ -21,9 +21,10 @@ module Sinatra
 
         # Make sure everything is loaded
         if obj.is_a?(LinkedData::Models::Base)
-          obj.bring_remaining unless !obj.exist?
+          obj.bring_remaining if obj.exist?
+          no_writable_attributes = obj.class.attributes(:all) - obj.class.attributes
+          params = params.reject  {|k,v| no_writable_attributes.include? k.to_sym}
         end
-
         params.each do |attribute, value|
           next if value.nil?
 
@@ -346,8 +347,7 @@ module Sinatra
       # If the setting is enabled, replace the URL prefix with the proper id prefix
       # EX: http://stagedata.bioontology.org/ontologies/BRO would become http://data.bioontology.org/ontologies/BRO
       def replace_url_prefix(id)
-        id = id.sub(LinkedData.settings.rest_url_prefix, LinkedData.settings.id_url_prefix) if LinkedData.settings.replace_url_prefix && id.start_with?(LinkedData.settings.rest_url_prefix)
-        id
+        LinkedData::Models::Base.replace_url_prefix_to_id(id)
       end
 
       def retrieve_latest_submissions(options = {})

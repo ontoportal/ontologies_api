@@ -287,6 +287,8 @@ class TestOntologiesController < TestCase
       post "/ontologies/#{acronym}/pull?apikey=#{blocked_user.apikey}"
       assert_equal(403, last_response.status, msg="An unauthorized user was able to execute the on-demand pull")
     ensure
+      del = User.find("blocked").first
+      del.delete if del
       stop_server
       LinkedData.settings.enable_security = false
       del = User.find("blocked").first
