@@ -276,7 +276,7 @@ class TestSearchController < TestCase
 
   def test_search_short_id
     vario_acronym = 'VARIO'
-    _, _, onts_vario = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+    _, _, _ = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
       process_submission: true,
       acronym: vario_acronym,
       acronym_suffix: "",
