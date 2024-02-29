@@ -56,8 +56,12 @@ module Sinatra
       # list of fields that allow empty query text
       QUERYLESS_FIELDS_PARAMS = {
           "ontologies" => nil,
-          "notation" => "notation",
-          "oboId" => "oboId",
+
+
+          # "notation" => "notation",
+          # "oboId" => "oboId",
+
+
           "cui" => "cui",
           "semantic_types" => "semanticType",
           ONTOLOGY_TYPES_PARAM => "ontologyType",
@@ -114,10 +118,24 @@ module Sinatra
           else
             query = solr_escape(text)
           end
-          params["qf"] = "resource_id^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR}"
+
+
+
+
+          params["qf"] = "resource_id^100 oboId^100 notation^90 prefLabelExact^80 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR}"
+
+
+
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
           params["bq"] = "idAcronymMatch:true^80"
-          params["hl.fl"] = "resource_id prefLabelExact prefLabel synonymExact synonym #{QUERYLESS_FIELDS_STR}"
+
+
+
+
+          params["hl.fl"] = "resource_id oboId notation prefLabelExact prefLabel synonymExact synonym #{QUERYLESS_FIELDS_STR}"
+
+
+
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
