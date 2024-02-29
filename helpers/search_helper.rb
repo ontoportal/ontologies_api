@@ -103,8 +103,8 @@ module Sinatra
 
         if params[EXACT_MATCH_PARAM] == "true"
           query = "\"#{solr_escape(text)}\""
-          params["qf"] = "resource_id^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR}"
-          params["hl.fl"] = "resource_id prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
+          params["qf"] = "resource_id^20 oboId^20 notation^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR}"
+          params["hl.fl"] = "resource_id oboId notation prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
         elsif params[SUGGEST_PARAM] == "true" || text[-1] == '*'
           text.gsub!(/\*+$/, '')
           query = "\"#{solr_escape(text)}\""
