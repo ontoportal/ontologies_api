@@ -206,103 +206,129 @@ class TestSearchController < TestCase
     ncit_acronym = 'NCIT'
     ogms_acronym = 'OGMS'
     cno_acronym = 'CNO'
-    _, _, _ = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-      process_submission: true,
-      acronym: ncit_acronym,
-      acronym_suffix: '',
-      name: "NCIT Search Test",
-      pref_label_property: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P108",
-      synonym_property: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90",
-      definition_property: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97",
-      file_path: "./test/data/ontology_files/ncit_test.owl",
-      ontology_format: 'OWL',
-      ont_count: 1,
-      submission_count: 1
-    })
-    _, _, _ = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-      process_submission: true,
-      acronym: ogms_acronym,
-      acronym_suffix: '',
-      name: "OGMS Search Test",
-      file_path: "./test/data/ontology_files/ogms_test.owl",
-      ontology_format: 'OWL',
-      ont_count: 1,
-      submission_count: 1
-    })
-    _, _, _ = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-      process_submission: true,
-      acronym: cno_acronym,
-      acronym_suffix: '',
-      name: "CNO Search Test",
-      file_path: "./test/data/ontology_files/CNO_05.owl",
-      ontology_format: 'OWL',
-      ont_count: 1,
-      submission_count: 1
-    })
-    get "/search?q=OGMS:0000071"
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    docs = results["collection"]
-    assert_equal 3, docs.size
-    assert_equal ogms_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
 
-    get "/search?q=CNO:0000002"
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    docs = results["collection"]
-    assert_equal 3, docs.size
-    assert_equal cno_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
+    begin
+      LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+        process_submission: true,
+        acronym: ncit_acronym,
+        acronym_suffix: '',
+        name: "NCIT Search Test",
+        pref_label_property: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P108",
+        synonym_property: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90",
+        definition_property: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97",
+        file_path: "./test/data/ontology_files/ncit_test.owl",
+        ontology_format: 'OWL',
+        ont_count: 1,
+        submission_count: 1
+      })
+      LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+        process_submission: true,
+        acronym: ogms_acronym,
+        acronym_suffix: '',
+        name: "OGMS Search Test",
+        file_path: "./test/data/ontology_files/ogms_test.owl",
+        ontology_format: 'OWL',
+        ont_count: 1,
+        submission_count: 1
+      })
+      LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+        process_submission: true,
+        acronym: cno_acronym,
+        acronym_suffix: '',
+        name: "CNO Search Test",
+        file_path: "./test/data/ontology_files/CNO_05.owl",
+        ontology_format: 'OWL',
+        ont_count: 1,
+        submission_count: 1
+      })
+      get "/search?q=OGMS:0000071"
+      assert last_response.ok?
+      results = MultiJson.load(last_response.body)
+      docs = results["collection"]
+      assert_equal 3, docs.size
+      assert_equal ogms_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
 
-    get "/search?q=Thesaurus:C20480"
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    docs = results["collection"]
-    assert_equal 1, docs.size
-    assert_equal 'Cellular Process', docs[0]["prefLabel"]
+      get "/search?q=CNO:0000002"
+      assert last_response.ok?
+      results = MultiJson.load(last_response.body)
+      docs = results["collection"]
+      assert_equal 3, docs.size
+      assert_equal cno_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
 
-    get "/search?q=NCIT:C20480"
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    docs = results["collection"]
-    assert_equal 1, docs.size
-    assert_equal 'Cellular Process', docs[0]["prefLabel"]
+      get "/search?q=Thesaurus:C20480"
+      assert last_response.ok?
+      results = MultiJson.load(last_response.body)
+      docs = results["collection"]
+      assert_equal 1, docs.size
+      assert_equal 'Cellular Process', docs[0]["prefLabel"]
 
-    get "/search?q=Leukocyte Apoptotic Process&ontologies=#{ncit_acronym}"
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    docs = results["collection"]
-    assert_equal 'Leukocyte Apoptotic Process', docs[0]["prefLabel"]
+      get "/search?q=NCIT:C20480"
+      assert last_response.ok?
+      results = MultiJson.load(last_response.body)
+      docs = results["collection"]
+      assert_equal 1, docs.size
+      assert_equal 'Cellular Process', docs[0]["prefLabel"]
+
+      get "/search?q=Leukocyte Apoptotic Process&ontologies=#{ncit_acronym}"
+      assert last_response.ok?
+      results = MultiJson.load(last_response.body)
+      docs = results["collection"]
+      assert_equal 'Leukocyte Apoptotic Process', docs[0]["prefLabel"]
+    ensure
+      ont = LinkedData::Models::Ontology.find(ncit_acronym).first
+      ont.delete if ont
+      ont = LinkedData::Models::Ontology.find(ncit_acronym).first
+      assert ont.nil?
+
+      ont = LinkedData::Models::Ontology.find(ogms_acronym).first
+      ont.delete if ont
+      ont = LinkedData::Models::Ontology.find(ogms_acronym).first
+      assert ont.nil?
+
+      ont = LinkedData::Models::Ontology.find(cno_acronym).first
+      ont.delete if ont
+      ont = LinkedData::Models::Ontology.find(cno_acronym).first
+      assert ont.nil?
+    end
   end
 
   def test_search_short_id
     vario_acronym = 'VARIO'
-    _, _, _ = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-      process_submission: true,
-      acronym: vario_acronym,
-      acronym_suffix: "",
-      name: "VARIO OBO Search Test",
-      file_path: "./test/data/ontology_files/vario_test.obo",
-      ontology_format: 'OBO',
-      ont_count: 1,
-      submission_count: 1
-    })
-    get "/search?q=VariO:0012&ontologies=#{vario_acronym}"
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    docs = results["collection"]
-    assert_equal 1, docs.size
 
-    get "/search?q=Blah:0012&ontologies=#{vario_acronym}"
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    docs = results["collection"]
-    assert_equal 0, docs.size
+    begin
+      LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
+        process_submission: true,
+        acronym: vario_acronym,
+        acronym_suffix: "",
+        name: "VARIO OBO Search Test",
+        file_path: "./test/data/ontology_files/vario_test.obo",
+        ontology_format: 'OBO',
+        ont_count: 1,
+        submission_count: 1
+      })
+      get "/search?q=VariO:0012&ontologies=#{vario_acronym}"
+      assert last_response.ok?
+      results = MultiJson.load(last_response.body)
+      docs = results["collection"]
+      assert_equal 1, docs.size
 
-    get "/search?q=Vario:12345&ontologies=#{vario_acronym}"
-    assert last_response.ok?
-    results = MultiJson.load(last_response.body)
-    docs = results["collection"]
-    assert_equal 0, docs.size
+      get "/search?q=Blah:0012&ontologies=#{vario_acronym}"
+      assert last_response.ok?
+      results = MultiJson.load(last_response.body)
+      docs = results["collection"]
+      assert_equal 0, docs.size
+
+      get "/search?q=Vario:12345&ontologies=#{vario_acronym}"
+      assert last_response.ok?
+      results = MultiJson.load(last_response.body)
+      docs = results["collection"]
+      assert_equal 0, docs.size
+    ensure
+      ont = LinkedData::Models::Ontology.find(vario_acronym).first
+      ont.delete if ont
+      ont = LinkedData::Models::Ontology.find(vario_acronym).first
+      assert ont.nil?
+    end
   end
 
 end
