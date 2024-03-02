@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 4ad4db41216ab9a0e328d4c08cd4a27c82e9b917
+  revision: 4ea0e70a4361fc694700e11f1012129452278c7d
   branch: develop
   specs:
     goo (0.0.2)
@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: e4495072f3fd6214db1a571ca3f1eefc358ea62a
+  revision: 52c43bdd8592dcdca4edd28d0fdba406f0ca87f7
   branch: develop
   specs:
     ncbo_cron (0.0.1)
