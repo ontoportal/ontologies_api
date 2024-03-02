@@ -4075,6 +4075,42 @@ Sagar Jain</obo:IAO_0000117>
     
 
 
+    <!-- http://purl.obolibrary.org/obo/ogms.owl#Leukocyte_Test_Class -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/ogms.owl#Leukocyte_Test_Class">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/OGMS_0000070"/>
+        <rdfs:label>Leukocyte Test Class</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/ogms.owl#cno_test_value -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/ogms.owl#cno_test_value">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/OGMS_0000067"/>
+        <rdfs:label>cno test value</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/ogms.owl#ncit_test_value -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/ogms.owl#ncit_test_value">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/OGMS_0000067"/>
+        <rdfs:label>ncit test value</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/ogms.owl#thesaurus_test_value -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/ogms.owl#thesaurus_test_value">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/OGMS_0000067"/>
+        <rdfs:label>thesaurus test value</rdfs:label>
+    </owl:Class>
+    
+
+
     <!-- http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000002 -->
 
     <owl:Class rdf:about="http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_0000002">

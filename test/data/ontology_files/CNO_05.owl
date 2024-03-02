@@ -2675,11 +2675,43 @@ The model can be enriched with particular spatial embedding.</rdfs:comment>
     
 
 
+    <!-- http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_test_value -->
+
+    <owl:Class rdf:about="http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#cno_test_value">
+        <rdfs:label>cno test value</rdfs:label>
+    </owl:Class>
+    
+
+
     <!-- http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#fakething -->
 
     <owl:Class rdf:about="http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#fakething">
         <umls:cui>0123456789</umls:cui>
         <rdfs:label>Federal Funding Resource</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#ncit_test_value -->
+
+    <owl:Class rdf:about="http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#ncit_test_value">
+        <rdfs:label>ncit test value</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#ogms_test_value -->
+
+    <owl:Class rdf:about="http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#ogms_test_value">
+        <rdfs:label>ogms test value</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#thesaurus_test_value -->
+
+    <owl:Class rdf:about="http://purl.org/incf/ontology/Computational_Neurosciences/cno_alpha.owl#thesaurus_test_value">
+        <rdfs:label>thesaurus test value</rdfs:label>
     </owl:Class>
     
 

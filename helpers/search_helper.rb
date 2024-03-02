@@ -56,12 +56,8 @@ module Sinatra
       # list of fields that allow empty query text
       QUERYLESS_FIELDS_PARAMS = {
           "ontologies" => nil,
-
-
-          # "notation" => "notation",
-          # "oboId" => "oboId",
-
-
+          "notation" => "notation",
+          "oboId" => "oboId",
           "cui" => "cui",
           "semantic_types" => "semanticType",
           ONTOLOGY_TYPES_PARAM => "ontologyType",
@@ -70,6 +66,7 @@ module Sinatra
       }
 
       QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.compact.join(" ")
+      QUERYLESS_FIELDS_STR_NO_IDS = QUERYLESS_FIELDS_STR.gsub(/(notation|oboId)\s/, '')
 
       def get_term_search_query(text, params={})
         validate_params_solr_population(ALLOWED_INCLUDES_PARAMS)
@@ -103,8 +100,8 @@ module Sinatra
 
         if params[EXACT_MATCH_PARAM] == "true"
           query = "\"#{solr_escape(text)}\""
-          params["qf"] = "resource_id^20 oboId^20 notation^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR}"
-          params["hl.fl"] = "resource_id oboId notation prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
+          params["qf"] = "resource_id^20 notation^20 oboId^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR_NO_IDS}"
+          params["hl.fl"] = "resource_id prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
         elsif params[SUGGEST_PARAM] == "true" || text[-1] == '*'
           text.gsub!(/\*+$/, '')
           query = "\"#{solr_escape(text)}\""
@@ -118,24 +115,10 @@ module Sinatra
           else
             query = solr_escape(text)
           end
-
-
-
-
-          params["qf"] = "resource_id^100 oboId^100 notation^90 prefLabelExact^80 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR}"
-
-
-
+          params["qf"] = "resource_id^100 notation^100 oboId^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR_NO_IDS}"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
           params["bq"] = "idAcronymMatch:true^80"
-
-
-
-
-          params["hl.fl"] = "resource_id oboId notation prefLabelExact prefLabel synonymExact synonym #{QUERYLESS_FIELDS_STR}"
-
-
-
+          params["hl.fl"] = "resource_id prefLabelExact prefLabel synonymExact synonym #{QUERYLESS_FIELDS_STR}"
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 

@@ -241,20 +241,44 @@ class TestSearchController < TestCase
         ont_count: 1,
         submission_count: 1
       })
+
+      # mdorf, 3/2/2024, when the : is followed by a LETTER, as in NCIT:C20480,
+      # then Solr does not split the query on the tokens,
+      # but when the : is followed by a number, as in OGMS:0000071,
+      # then Solr does split this on tokens and shows the other resuluts
       get "/search?q=OGMS:0000071"
       assert last_response.ok?
       results = MultiJson.load(last_response.body)
       docs = results["collection"]
-      assert_equal 3, docs.size
+      assert_equal 6, docs.size
       assert_equal ogms_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
+      assert_equal cno_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[1]["links"]["ontology"])
+      assert_equal ncit_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[2]["links"]["ontology"])
+      assert_equal 'realization', docs[1]["prefLabel"]
+      assert_equal 'realization', docs[2]["prefLabel"]
+      assert docs[3]["prefLabel"].upcase.include?('OGMS ')
+      assert docs[4]["prefLabel"].upcase.include?('OGMS ')
+      assert docs[5]["prefLabel"].upcase.include?('OGMS ')
 
       get "/search?q=CNO:0000002"
       assert last_response.ok?
       results = MultiJson.load(last_response.body)
       docs = results["collection"]
-      assert_equal 3, docs.size
+      assert_equal 7, docs.size
       assert_equal cno_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
+      acr_1 = LinkedData::Utils::Triples.last_iri_fragment(docs[1]["links"]["ontology"])
+      assert acr_1 === ncit_acronym || acr_1 === ogms_acronym
+      acr_2= LinkedData::Utils::Triples.last_iri_fragment(docs[2]["links"]["ontology"])
+      assert acr_2 === ncit_acronym || acr_2 === ogms_acronym
+      assert docs[3]["prefLabel"].upcase.include?('CNO ')
+      assert docs[4]["prefLabel"].upcase.include?('CNO ')
+      assert docs[5]["prefLabel"].upcase.include?('CNO ')
+      assert docs[6]["prefLabel"].upcase.include?('CNO ')
 
+      # mdorf, 3/2/2024, when the : is followed by a LETTER, as in NCIT:C20480,
+      # then Solr does not split the query on the tokens,
+      # but when the : is followed by a number, as in OGMS:0000071,
+      # then Solr does split this on tokens and shows the other resuluts
       get "/search?q=Thesaurus:C20480"
       assert last_response.ok?
       results = MultiJson.load(last_response.body)
@@ -274,6 +298,8 @@ class TestSearchController < TestCase
       results = MultiJson.load(last_response.body)
       docs = results["collection"]
       assert_equal 'Leukocyte Apoptotic Process', docs[0]["prefLabel"]
+      assert_equal 'Leukocyte Apoptotic Test Class', docs[1]["prefLabel"]
+      assert_equal 'Lymphocyte Apoptotic Process', docs[2]["prefLabel"]
     ensure
       ont = LinkedData::Models::Ontology.find(ncit_acronym).first
       ont.delete if ont

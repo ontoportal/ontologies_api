@@ -23048,6 +23048,96 @@
     
 
 
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#CNO_Test_Class -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#CNO_Test_Class">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41510"/>
+        <rdfs:label>CNO Test Class</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#CNO_test_value -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#CNO_test_value">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C21124"/>
+        <rdfs:label>CNO test value</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Leukocyte_Apoptotic_Test_Class -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Leukocyte_Apoptotic_Test_Class">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C18839"/>
+        <rdfs:label>Leukocyte Apoptotic Test Class</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Leukocyte_Test_Class -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Leukocyte_Test_Class">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C19143"/>
+        <rdfs:label>Leukocyte Test Class</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#NCIT_Test_Value -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#NCIT_Test_Value">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41480"/>
+        <rdfs:label>NCIT Test Value</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#New_Thesaurus_of_Cells -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#New_Thesaurus_of_Cells">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C20480"/>
+        <rdfs:label>New Thesaurus of Cells</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#OGMS_Test_Class -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#OGMS_Test_Class">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C36764"/>
+        <rdfs:label>OGMS Test Class</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Test_class_for_NCIT -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Test_class_for_NCIT">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41492"/>
+        <rdfs:label>Test Class for NCIT</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Thesaurus_Test_Value -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Thesaurus_Test_Value">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C30085"/>
+        <rdfs:label>Thesaurus Test Value</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#test_ogms_value -->
+
+    <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#test_ogms_value">
+        <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C21124"/>
+        <rdfs:label>test OGMS value</rdfs:label>
+    </owl:Class>
+    
+
+
     <!-- http://purl.obolibrary.org/obo/OGMS_0000071 -->
 
     <owl:Class rdf:about="http://purl.obolibrary.org/obo/OGMS_0000071">
