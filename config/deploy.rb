@@ -38,6 +38,8 @@ set :rbenv_type, :system
 set :rbenv_ruby, File.read('.ruby-version').strip
 # set :rbenv_ruby, '2.2.5'
 # set :rbenv_roles, :all # default value
+set :bundle_without, 'development:test'
+set :bundle_config, { deployment: true }
 
 # do not use sudo
 set :use_sudo, false
