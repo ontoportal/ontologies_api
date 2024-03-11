@@ -34,7 +34,8 @@ set :deploy_to, "#{APP_PATH}/#{fetch(:application)}"
 set :linked_dirs, %w{log vendor/bundle tmp/pids tmp/sockets public/system}
 
 # rbenv
-# set :rbenv_type, :system #or :user
+set :rbenv_type, :system
+set :rbenv_ruby, File.read('.ruby-version').strip
 # set :rbenv_ruby, '2.2.5'
 # set :rbenv_roles, :all # default value
 
