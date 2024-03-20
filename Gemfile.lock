@@ -100,9 +100,11 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.22.5)
-      i18n (~> 0.6, >= 0.6.4)
-      multi_json (~> 1.0)
+    activesupport (5.2.8.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     airbrussh (1.5.1)
@@ -112,7 +114,7 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.0)
-    bigdecimal (1.4.2)
+    bigdecimal (3.1.6)
     builder (3.2.4)
     capistrano (3.18.1)
       airbrussh (>= 1.0.0)
@@ -128,7 +130,8 @@ GEM
       sshkit (~> 1.3)
     coderay (1.1.3)
     concurrent-ruby (1.2.3)
-    connection_pool (2.4.1)
+    crack (0.4.5)
+      rexml
     cube-ruby (0.0.3)
     dante (0.2.0)
     date (3.3.4)
@@ -168,7 +171,6 @@ GEM
     google-protobuf (3.25.3-aarch64-linux)
     google-protobuf (3.25.3-arm64-darwin)
     google-protobuf (3.25.3-x86_64-darwin)
-    google-protobuf (3.25.3-x86_64-linux)
     googleapis-common-protos (1.5.0)
       google-protobuf (~> 3.18)
       googleapis-common-protos-types (~> 1.7)
@@ -191,16 +193,14 @@ GEM
     grpc (1.62.0-x86_64-darwin)
       google-protobuf (~> 3.25)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.62.0-x86_64-linux)
-      google-protobuf (~> 3.25)
-      googleapis-common-protos-types (~> 1.0)
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    i18n (0.9.5)
+    httpclient (2.8.3)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     json (2.7.1)
     json-schema (2.8.1)
@@ -224,7 +224,9 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2024.0305)
     mini_mime (1.1.5)
-    minitest (4.7.5)
+    minitest (5.22.2)
+    minitest-hooks (1.5.1)
+      minitest (> 5.3)
     minitest-stub_any_instance (1.0.3)
     mlanett-redis-lock (0.2.7)
       redis
@@ -247,7 +249,8 @@ GEM
     net-ssh (7.2.1)
     netrc (0.11.0)
     newrelic_rpm (9.7.1)
-    oj (3.16.1)
+    oj (3.16.3)
+      bigdecimal (>= 3.0)
     omni_logger (0.1.4)
       logger
     os (1.1.4)
@@ -357,11 +360,13 @@ GEM
       net-ssh (>= 2.8.0)
     systemu (2.6.5)
     temple (0.10.3)
+    thread_safe (0.3.6)
     tilt (2.3.0)
     timeout (0.4.1)
-    tzinfo (2.0.6)
-      concurrent-ruby (~> 1.0)
-    unicode-display_width (2.5.0)
+    trailblazer-option (0.1.2)
+    tzinfo (1.2.11)
+      thread_safe (~> 0.1)
+    uber (0.1.0)
     unicorn (6.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
@@ -377,30 +382,31 @@ PLATFORMS
   arm64-darwin-23
   x86_64-darwin-18
   x86_64-darwin-23
-  x86_64-linux
 
 DEPENDENCIES
-  activesupport (~> 3.2)
+  activesupport (~> 5)
   bcrypt_pbkdf (>= 1.0, < 2.0)
-  bigdecimal (= 1.4.2)
+  bigdecimal
   capistrano (~> 3)
   capistrano-bundler
   capistrano-locally
   capistrano-rbenv
+  crack (= 0.4.5)
   cube-ruby
   ed25519 (>= 1.2, < 2.0)
   ffi
   goo!
   haml (~> 5.2.2)
   json-schema (~> 2.0)
-  minitest (~> 4.0)
+  minitest (~> 5.0)
+  minitest-hooks (~> 1.5)
   minitest-stub_any_instance
-  multi_json (~> 1.0)
+  multi_json
   ncbo_annotator!
   ncbo_cron!
   ncbo_ontology_recommender!
   newrelic_rpm
-  oj (~> 3.0)
+  oj
   ontologies_linked_data!
   parseconfig
   rack
