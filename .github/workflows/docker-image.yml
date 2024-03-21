@@ -3,6 +3,7 @@ name: Docker branch Images build
 on:
   push:
     branches:
+      - master
       - development
       - stage
       - test
