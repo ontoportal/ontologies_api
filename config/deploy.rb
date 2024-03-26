@@ -38,16 +38,13 @@ set :rbenv_type, :system
 set :rbenv_ruby, File.read('.ruby-version').strip
 # set :rbenv_ruby, '2.2.5'
 # set :rbenv_roles, :all # default value
-set :bundle_without, 'development:test'
-set :bundle_config, { deployment: true }
 
 # do not use sudo
 set :use_sudo, false
 # required for restarting unicorn with sudo
 set :pty, true
 # Default value for default_env is {}
-set :default_env, {
-}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 # Default value for keep_releases is 5
 set :keep_releases, 5
