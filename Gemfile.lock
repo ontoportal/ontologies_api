@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 5d911f587f22059581ae3e713e5fe9bde9de82e7
+  revision: 33583fd1c1d72b449cd6bb91815e3422b8448983
   branch: develop
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 36125bdaafd36f394263b9495af96d21a81b1217
+  revision: f9a1be204e81d72f408927b8f60c0be208611929
   branch: develop
   specs:
     ncbo_annotator (0.0.1)
@@ -27,11 +27,13 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: ec8f5367b090e851ff199e869432efd89f3d14bc
+  revision: 26638bfdbec1e6b01f5eb6a8b655bfd70adac8ac
   branch: develop
   specs:
     ncbo_cron (0.0.1)
       dante
+      faraday (~> 2)
+      faraday-follow_redirects (~> 0)
       goo
       google-analytics-data
       mlanett-redis-lock
@@ -43,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 522af616b2285c451364028eef8c1045857eddbb
+  revision: 4770596c52861d743314218532461876a694fa08
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -54,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: cf8100e47090be1bfb79e7ea642eb6a528013efa
+  revision: da1642ed8f9f04db2e427e35d88f235a55138d03
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -140,6 +142,8 @@ GEM
       base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
+    faraday-follow_redirects (0.3.0)
+      faraday (>= 1, < 3)
     faraday-net_http (3.0.2)
     faraday-retry (2.2.1)
       faraday (~> 2.0)
@@ -258,7 +262,7 @@ GEM
     os (1.1.4)
     parallel (1.24.0)
     parseconfig (1.1.2)
-    parser (3.3.0.5)
+    parser (3.3.1.0)
       ast (~> 2.4.1)
       racc
     pony (1.13.1)
@@ -311,7 +315,7 @@ GEM
     rsolr (2.6.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
-    rubocop (1.63.3)
+    rubocop (1.63.4)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -322,8 +326,8 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.31.2)
-      parser (>= 3.3.0.4)
+    rubocop-ast (1.31.3)
+      parser (>= 3.3.1.0)
     ruby-progressbar (1.13.0)
     ruby-xxHash (0.4.0.2)
     ruby2_keywords (0.0.5)
@@ -357,7 +361,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.22.1)
+    sshkit (1.22.2)
       base64
       mutex_m
       net-scp (>= 1.1.2)
