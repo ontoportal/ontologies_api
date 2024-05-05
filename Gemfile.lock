@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 75436fe8e387febc53e34ee31ff0e6dd837a9d3f
+  revision: f01386fe55ffba39cbf5e0bf95c8e2dc18767711
   branch: master
   specs:
     goo (0.0.2)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: b6df920d03af15ee35a3a7c31078c6ea263ba41d
+  revision: 4dc3b1123e871b53ba9eb51983ff69c5d2c75c18
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -173,7 +173,7 @@ GEM
       google-protobuf (~> 3.18)
       googleapis-common-protos-types (~> 1.7)
       grpc (~> 1.41)
-    googleapis-common-protos-types (1.13.0)
+    googleapis-common-protos-types (1.14.0)
       google-protobuf (~> 3.18)
     googleauth (1.11.0)
       faraday (>= 1.0, < 3.a)
@@ -242,11 +242,11 @@ GEM
       net-ssh (>= 2.6.5, < 8.0.0)
     net-sftp (4.0.0)
       net-ssh (>= 5.0.0, < 8.0.0)
-    net-smtp (0.4.0.1)
+    net-smtp (0.5.0)
       net-protocol
     net-ssh (7.2.1)
     netrc (0.11.0)
-    newrelic_rpm (9.7.1)
+    newrelic_rpm (9.8.0)
     oj (3.16.1)
     omni_logger (0.1.4)
       logger
@@ -287,7 +287,7 @@ GEM
     redcarpet (3.6.0)
     redis (5.1.0)
       redis-client (>= 0.17.0)
-    redis-client (0.21.0)
+    redis-client (0.21.1)
       connection_pool
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
@@ -301,7 +301,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.6)
-    rsolr (2.5.0)
+    rsolr (2.6.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
     rubocop (1.62.1)
@@ -376,6 +376,7 @@ PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
   x86_64-darwin-18
+  x86_64-darwin-21
   x86_64-darwin-23
   x86_64-linux
 
