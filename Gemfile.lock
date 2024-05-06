@@ -1,4 +1,31 @@
 GIT
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: 63c986880aa88c9384043e6611a682434a14aba7
+  branch: master
+  specs:
+    ncbo_annotator (0.0.1)
+      goo
+      ontologies_linked_data
+      redis
+      ruby-xxHash
+
+GIT
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: f239b34230131cd7cfb9eec5b34068ba990b698b
+  branch: master
+  specs:
+    ncbo_cron (0.0.1)
+      dante
+      goo
+      google-analytics-data
+      mlanett-redis-lock
+      multi_json
+      ncbo_annotator
+      ontologies_linked_data
+      redis
+      rufus-scheduler (~> 2.0.24)
+
+GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
   revision: 013abea4af3b10910ec661dbb358a4b6cae198a4
   branch: master
@@ -36,36 +63,8 @@ GIT
       uuid
 
 GIT
-  remote: https://github.com/ontoportal-lirmm/ncbo_annotator.git
-  revision: 1eb751b65d10ae23d45c74e0516c78754a8419f0
-  branch: development
-  specs:
-    ncbo_annotator (0.0.1)
-      goo
-      ontologies_linked_data
-      redis
-      ruby-xxHash
-
-GIT
-  remote: https://github.com/ontoportal-lirmm/ncbo_cron.git
-  revision: 9ec0147203007cc368a5119ffe1a019fa8701c14
-  branch: master
-  specs:
-    ncbo_cron (0.0.1)
-      dante
-      goo
-      google-analytics-data
-      google-apis-analytics_v3
-      mlanett-redis-lock
-      multi_json
-      ncbo_annotator
-      ontologies_linked_data
-      redis
-      rufus-scheduler (~> 2.0.24)
-
-GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: f70abe981c6fb3533b7785d58b7234855bcd5cf2
+  revision: fc48343ad7a3f1867821c173be900cf16506b4b7
   branch: pr/sync-agroportal-ncbo
   specs:
     ontologies_linked_data (0.0.1)
@@ -137,7 +136,6 @@ GEM
     cube-ruby (0.0.3)
     dante (0.2.0)
     date (3.3.4)
-    declarative (0.0.20)
     docile (1.4.0)
     domain_name (0.6.20240107)
     ed25519 (1.3.0)
@@ -165,16 +163,6 @@ GEM
     google-analytics-data-v1beta (0.12.0)
       gapic-common (>= 0.21.1, < 2.a)
       google-cloud-errors (~> 1.0)
-    google-apis-analytics_v3 (0.15.0)
-      google-apis-core (>= 0.14.0, < 2.a)
-    google-apis-core (0.14.1)
-      addressable (~> 2.5, >= 2.5.1)
-      googleauth (~> 1.9)
-      httpclient (>= 2.8.1, < 3.a)
-      mini_mime (~> 1.0)
-      representable (~> 3.0)
-      retriable (>= 2.0, < 4.a)
-      rexml
     google-cloud-core (1.7.0)
       google-cloud-env (>= 1.0, < 3.a)
       google-cloud-errors (~> 1.0)
@@ -213,12 +201,9 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
-    httpclient (2.8.3)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     json (2.7.2)
-    json-ld (1.1.1)
-      rdf (>= 1.0.8)
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.7.2)
@@ -311,10 +296,6 @@ GEM
     redis-store (1.10.0)
       redis (>= 4, < 6)
     regexp_parser (2.9.0)
-    representable (3.2.0)
-      declarative (< 0.1.0)
-      trailblazer-option (>= 0.1.1, < 0.2.0)
-      uber (< 0.2.0)
     request_store (1.7.0)
       rack (>= 1.4)
     rest-client (2.1.0)
@@ -322,7 +303,6 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    retriable (3.1.2)
     rexml (3.2.6)
     rsolr (2.6.0)
       builder (>= 2.1.2)
@@ -383,10 +363,8 @@ GEM
     temple (0.10.3)
     tilt (2.3.0)
     timeout (0.4.1)
-    trailblazer-option (0.1.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uber (0.1.0)
     unicode-display_width (2.5.0)
     unicorn (6.1.0)
       kgio (~> 2.6)
@@ -403,6 +381,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  arm64-darwin-23
   x86_64-darwin-18
   x86_64-darwin-23
   x86_64-linux
@@ -420,7 +399,6 @@ DEPENDENCIES
   ffi
   goo!
   haml (~> 5.2.2)
-  json-ld
   json-schema (~> 2.0)
   minitest (~> 4.0)
   minitest-stub_any_instance
@@ -431,7 +409,6 @@ DEPENDENCIES
   newrelic_rpm
   oj (~> 3.0)
   ontologies_linked_data!
-  parallel
   parseconfig
   rack
   rack-accept (~> 0.4)

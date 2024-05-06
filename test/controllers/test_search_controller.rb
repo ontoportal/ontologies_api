@@ -265,11 +265,13 @@ class TestSearchController < TestCase
       assert_equal ogms_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
       assert_equal cno_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[1]["links"]["ontology"])
       assert_equal ncit_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[2]["links"]["ontology"])
+
       assert_equal 'realization', docs[1]["prefLabel"].first
       assert_equal 'realization', docs[2]["prefLabel"].first
       assert docs[3]["prefLabel"].first.upcase.include?('OGMS ')
       assert docs[4]["prefLabel"].first.upcase.include?('OGMS ')
       assert docs[5]["prefLabel"].first.upcase.include?('OGMS ')
+
 
       get "/search?q=CNO:0000002"
       assert last_response.ok?
@@ -278,13 +280,15 @@ class TestSearchController < TestCase
       assert_equal 7, docs.size
       assert_equal cno_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
       acr_1 = LinkedData::Utils::Triples.last_iri_fragment(docs[1]["links"]["ontology"])
-      assert acr_1 === ncit_acronym || acr_1 === ogms_acronym
+      assert_includes [ncit_acronym, ogms_acronym], acr_1
       acr_2= LinkedData::Utils::Triples.last_iri_fragment(docs[2]["links"]["ontology"])
+
       assert acr_2 === ncit_acronym || acr_2 === ogms_acronym
       assert docs[3]["prefLabel"].first.upcase.include?('CNO ')
       assert docs[4]["prefLabel"].first.upcase.include?('CNO ')
       assert docs[5]["prefLabel"].first.upcase.include?('CNO ')
       assert docs[6]["prefLabel"].first.upcase.include?('CNO ')
+
 
       # mdorf, 3/2/2024, when the : is followed by a LETTER, as in NCIT:C20480,
       # then Solr does not split the query on the tokens,
@@ -315,17 +319,17 @@ class TestSearchController < TestCase
       ont = LinkedData::Models::Ontology.find(ncit_acronym).first
       ont.delete if ont
       ont = LinkedData::Models::Ontology.find(ncit_acronym).first
-      assert ont.nil?
+      assert_nil ont
 
       ont = LinkedData::Models::Ontology.find(ogms_acronym).first
       ont.delete if ont
       ont = LinkedData::Models::Ontology.find(ogms_acronym).first
-      assert ont.nil?
+      assert_nil ont
 
       ont = LinkedData::Models::Ontology.find(cno_acronym).first
       ont.delete if ont
       ont = LinkedData::Models::Ontology.find(cno_acronym).first
-      assert ont.nil?
+      assert_nil ont
     end
   end
 
