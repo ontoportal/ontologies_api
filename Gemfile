@@ -12,6 +12,7 @@ gem 'rake', '~> 10.0'
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-advanced-routes'
 gem 'sinatra-contrib', '~> 1.0'
+gem 'request_store'
 
 # Rack middleware
 gem 'ffi'
@@ -40,13 +41,13 @@ gem 'unicorn-worker-killer'
 gem 'haml', '~> 5.2.2' # pin see https://github.com/ncbo/ontologies_api/pull/107
 gem 'redcarpet'
 
-# NCBO
-gem 'goo', github: 'ncbo/goo', branch: 'master'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
-gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'master'
-gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'master'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'master'
+# NCBO gems (can be from a local dev path or from rubygems/git)
+gem 'ncbo_annotator', git: 'https://github.com/ontoportal-lirmm/ncbo_annotator.git', branch: 'development'
+gem 'ncbo_cron', git: 'https://github.com/ontoportal-lirmm/ncbo_cron.git', branch: 'master'
+gem 'ncbo_ontology_recommender', git: 'https://github.com/ncbo/ncbo_ontology_recommender.git', branch: 'master'
+gem 'goo', github: 'ontoportal-lirmm/goo', branch: 'pr/sync-agroportal-bioportal'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
+gem 'ontologies_linked_data', github: 'ontoportal-lirmm/ontologies_linked_data', branch: 'pr/sync-agroportal-ncbo'
 
 group :development do
   # bcrypt_pbkdf and ed35519 is required for capistrano deployments when using ed25519 keys; see https://github.com/miloserdow/capistrano-deploy/issues/42
@@ -74,4 +75,5 @@ group :test do
   gem 'rack-test'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura' # for codecov.io
+  gem 'webmock', '~> 3.19.1'
 end
