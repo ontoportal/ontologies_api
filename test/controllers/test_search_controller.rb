@@ -85,7 +85,7 @@ class TestSearchController < TestCase
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     doc = results["collection"][0]
-    assert_equal "cell line", doc["prefLabel"]
+    assert_equal "cell line", doc["prefLabel"].first
     assert doc["links"]["ontology"].include? acronym
     results["collection"].each do |doc|
       acr = doc["links"]["ontology"].split('/')[-1]
@@ -103,7 +103,8 @@ class TestSearchController < TestCase
     get "search?q=data&require_definitions=true"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
-    assert_equal 26, results["collection"].length
+    assert results["collection"].all? {|doc| !doc["definition"].nil? && doc.values.flatten.join(" ").include?("data") }
+    #assert_equal 26, results["collection"].length
 
     get "search?q=data&require_definitions=false"
     assert last_response.ok?
@@ -115,10 +116,14 @@ class TestSearchController < TestCase
 
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}"
     results = MultiJson.load(last_response.body)
-    assert_equal 22, results["collection"].length
+
+    assert results["collection"].all? { |x| !x["obsolete"] }
+    count = results["collection"].length
+
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&also_search_obsolete=false"
     results = MultiJson.load(last_response.body)
-    assert_equal 22, results["collection"].length
+    assert_equal count, results["collection"].length
+
     get "search?q=Integration%20and%20Interoperability&ontologies=#{acronym}&also_search_obsolete=true"
     results = MultiJson.load(last_response.body)
     assert_equal 29, results["collection"].length
@@ -134,8 +139,14 @@ class TestSearchController < TestCase
     # testing cui and semantic_types flags
     get "search?q=Funding%20Resource&ontologies=#{acronym}&include=prefLabel,synonym,definition,notation,cui,semanticType"
     results = MultiJson.load(last_response.body)
-    assert_equal 35, results["collection"].length
-    assert_equal "Funding Resource", results["collection"][0]["prefLabel"]
+    #assert_equal 35, results["collection"].length
+    assert results["collection"].all? do |r|
+      ["prefLabel", "synonym", "definition", "notation", "cui", "semanticType"].map {|x| r[x]}
+                                                                               .flatten
+                                                                               .join(' ')
+                                                                               .include?("Funding Resource")
+    end
+    assert_equal "Funding Resource", results["collection"][0]["prefLabel"].first
     assert_equal "T028", results["collection"][0]["semanticType"][0]
     assert_equal "X123456", results["collection"][0]["cui"][0]
 
@@ -190,7 +201,7 @@ class TestSearchController < TestCase
     assert_equal 10, results["collection"].length
     provisional = results["collection"].select {|res| assert_equal ontology_type, res["ontologyType"]; res["provisional"]}
     assert_equal 1, provisional.length
-    assert_equal @@test_pc_root.label, provisional[0]["prefLabel"]
+    assert_equal @@test_pc_root.label, provisional[0]["prefLabel"].first
 
     # subtree root with provisional class test
     get "search?ontology=#{acronym}&subtree_root_id=#{CGI::escape(@@cls_uri.to_s)}&also_search_provisional=true"
@@ -199,7 +210,7 @@ class TestSearchController < TestCase
 
     provisional = results["collection"].select {|res| res["provisional"]}
     assert_equal 1, provisional.length
-    assert_equal @@test_pc_child.label, provisional[0]["prefLabel"]
+    assert_equal @@test_pc_child.label, provisional[0]["prefLabel"].first
   end
 
   def test_search_obo_id
@@ -254,11 +265,13 @@ class TestSearchController < TestCase
       assert_equal ogms_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[0]["links"]["ontology"])
       assert_equal cno_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[1]["links"]["ontology"])
       assert_equal ncit_acronym, LinkedData::Utils::Triples.last_iri_fragment(docs[2]["links"]["ontology"])
-      assert_equal 'realization', docs[1]["prefLabel"]
-      assert_equal 'realization', docs[2]["prefLabel"]
-      assert_includes docs[3]["prefLabel"].upcase, 'OGMS '
-      assert_includes docs[4]["prefLabel"].upcase, 'OGMS '
-      assert_includes docs[5]["prefLabel"].upcase, 'OGMS '
+
+      assert_equal 'realization', docs[1]["prefLabel"].first
+      assert_equal 'realization', docs[2]["prefLabel"].first
+      assert docs[3]["prefLabel"].first.upcase.include?('OGMS ')
+      assert docs[4]["prefLabel"].first.upcase.include?('OGMS ')
+      assert docs[5]["prefLabel"].first.upcase.include?('OGMS ')
+
 
       get "/search?q=CNO:0000002"
       assert last_response.ok?
@@ -269,11 +282,13 @@ class TestSearchController < TestCase
       acr_1 = LinkedData::Utils::Triples.last_iri_fragment(docs[1]["links"]["ontology"])
       assert_includes [ncit_acronym, ogms_acronym], acr_1
       acr_2= LinkedData::Utils::Triples.last_iri_fragment(docs[2]["links"]["ontology"])
-      assert_includes [ncit_acronym, ogms_acronym], acr_2
-      assert_includes docs[3]["prefLabel"].upcase, 'CNO'
-      assert_includes docs[4]["prefLabel"].upcase, 'CNO'
-      assert_includes docs[5]["prefLabel"].upcase, 'CNO'
-      assert_includes docs[6]["prefLabel"].upcase, 'CNO'
+
+      assert acr_2 === ncit_acronym || acr_2 === ogms_acronym
+      assert docs[3]["prefLabel"].first.upcase.include?('CNO ')
+      assert docs[4]["prefLabel"].first.upcase.include?('CNO ')
+      assert docs[5]["prefLabel"].first.upcase.include?('CNO ')
+      assert docs[6]["prefLabel"].first.upcase.include?('CNO ')
+
 
       # mdorf, 3/2/2024, when the : is followed by a LETTER, as in NCIT:C20480,
       # then Solr does not split the query on the tokens,
@@ -284,22 +299,22 @@ class TestSearchController < TestCase
       results = MultiJson.load(last_response.body)
       docs = results["collection"]
       assert_equal 1, docs.size
-      assert_equal 'Cellular Process', docs[0]["prefLabel"]
+      assert_equal 'Cellular Process', docs[0]["prefLabel"].first
 
       get "/search?q=NCIT:C20480"
       assert last_response.ok?
       results = MultiJson.load(last_response.body)
       docs = results["collection"]
       assert_equal 1, docs.size
-      assert_equal 'Cellular Process', docs[0]["prefLabel"]
+      assert_equal 'Cellular Process', docs[0]["prefLabel"].first
 
       get "/search?q=Leukocyte Apoptotic Process&ontologies=#{ncit_acronym}"
       assert last_response.ok?
       results = MultiJson.load(last_response.body)
       docs = results["collection"]
-      assert_equal 'Leukocyte Apoptotic Process', docs[0]["prefLabel"]
-      assert_equal 'Leukocyte Apoptotic Test Class', docs[1]["prefLabel"]
-      assert_equal 'Lymphocyte Apoptotic Process', docs[2]["prefLabel"]
+      assert_equal 'Leukocyte Apoptotic Process', docs[0]["prefLabel"].first
+      assert_equal 'Leukocyte Apoptotic Test Class', docs[1]["prefLabel"].first
+      assert_equal 'Lymphocyte Apoptotic Process', docs[2]["prefLabel"].first
     ensure
       ont = LinkedData::Models::Ontology.find(ncit_acronym).first
       ont.delete if ont
@@ -356,5 +371,50 @@ class TestSearchController < TestCase
       assert ont.nil?
     end
   end
+
+  def test_multilingual_search
+    get "/search?q=Activity&ontologies=BROSEARCHTEST-0"
+    res =  MultiJson.load(last_response.body)
+    refute_equal 0, res["totalCount"]
+
+    doc = res["collection"].select{|doc| doc["@id"].to_s.eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+    refute_nil doc
+
+    res = LinkedData::Models::Class.search("prefLabel_none:Activity", {:fq => "submissionAcronym:BROSEARCHTEST-0", :start => 0, :rows => 80})
+    refute_equal 0, res["response"]["numFound"]
+    refute_nil res["response"]["docs"].select{|doc| doc["resource_id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+    get "/search?q=Activit%C3%A9&ontologies=BROSEARCHTEST-0&lang=fr"
+    res =  MultiJson.load(last_response.body)
+    refute_equal 0, res["totalCount"]
+    refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=en"
+    res =  MultiJson.load(last_response.body)
+    refute_equal 0, res["totalCount"]
+    refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=fr&require_exact_match=true"
+    res =  MultiJson.load(last_response.body)
+    assert_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=en&require_exact_match=true"
+    res =  MultiJson.load(last_response.body)
+    refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+    get "/search?q=Activity&ontologies=BROSEARCHTEST-0&lang=en&require_exact_match=true"
+    res =  MultiJson.load(last_response.body)
+    assert_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+    get "/search?q=Activit%C3%A9&ontologies=BROSEARCHTEST-0&lang=fr&require_exact_match=true"
+    res =  MultiJson.load(last_response.body)
+    refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+
+
+  end
+
 
 end

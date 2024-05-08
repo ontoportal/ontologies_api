@@ -84,6 +84,9 @@ module Sinatra
           end
         end
 
+        lang = params["lang"] || params["language"]
+        lang_suffix  = lang && !lang.eql?("all") ? "_#{lang}" : ""
+
         query = ""
         params["defType"] = "edismax"
         params["stopwords"] = "true"
@@ -100,25 +103,25 @@ module Sinatra
 
         if params[EXACT_MATCH_PARAM] == "true"
           query = "\"#{solr_escape(text)}\""
-          params["qf"] = "resource_id^20 notation^20 oboId^20 prefLabelExact^10 synonymExact #{QUERYLESS_FIELDS_STR_NO_IDS}"
-          params["hl.fl"] = "resource_id prefLabelExact synonymExact #{QUERYLESS_FIELDS_STR}"
+          params["qf"] = "resource_id^20 notation^20 oboId^20 prefLabelExact#{lang_suffix}^10 synonymExact#{lang_suffix} #{QUERYLESS_FIELDS_STR_NO_IDS}"
+          params["hl.fl"] = "resource_id prefLabelExact#{lang_suffix} synonymExact#{lang_suffix} #{QUERYLESS_FIELDS_STR}"
         elsif params[SUGGEST_PARAM] == "true" || text[-1] == '*'
           text.gsub!(/\*+$/, '')
           query = "\"#{solr_escape(text)}\""
           params["qt"] = "/suggest_ncbo"
-          params["qf"] = "prefLabelExact^100 prefLabelSuggestEdge^50 synonymSuggestEdge^10 prefLabelSuggestNgram synonymSuggestNgram resource_id #{QUERYLESS_FIELDS_STR}"
+          params["qf"] = " prefLabelExact#{lang_suffix}^100 prefLabelSuggestEdge#{lang_suffix}^50 synonymSuggestEdge#{lang_suffix}^10 prefLabelSuggestNgram#{lang_suffix} synonymSuggestNgram#{lang_suffix} resource_id #{QUERYLESS_FIELDS_STR}"
           params["pf"] = "prefLabelSuggest^50"
-          params["hl.fl"] = "prefLabelExact prefLabelSuggestEdge synonymSuggestEdge prefLabelSuggestNgram synonymSuggestNgram resource_id #{QUERYLESS_FIELDS_STR}"
+          params["hl.fl"] = "prefLabelExact#{lang_suffix} prefLabelSuggestEdge#{lang_suffix} synonymSuggestEdge#{lang_suffix} prefLabelSuggestNgram#{lang_suffix} synonymSuggestNgram#{lang_suffix} resource_id #{QUERYLESS_FIELDS_STR}"
         else
           if text.strip.empty?
             query = '*'
           else
             query = solr_escape(text)
           end
-          params["qf"] = "resource_id^100 notation^100 oboId^100 prefLabelExact^90 prefLabel^70 synonymExact^50 synonym^10 #{QUERYLESS_FIELDS_STR_NO_IDS}"
+          params["qf"] = "resource_id^100 notation^100 oboId^100 prefLabelExact#{lang_suffix}^90 prefLabel#{lang_suffix}^70 synonymExact#{lang_suffix}^50 synonym^10 #{QUERYLESS_FIELDS_STR_NO_IDS}"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
           params["bq"] = "idAcronymMatch:true^80"
-          params["hl.fl"] = "resource_id prefLabelExact prefLabel synonymExact synonym #{QUERYLESS_FIELDS_STR}"
+          params["hl.fl"] = "resource_id prefLabelExact#{lang_suffix} prefLabel#{lang_suffix} synonymExact#{lang_suffix} synonym#{lang_suffix} #{QUERYLESS_FIELDS_STR}"
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
@@ -347,6 +350,7 @@ module Sinatra
           doc[:submission] = old_class.submission
           doc[:properties] = MultiJson.load(doc.delete(:propertyRaw)) if include_param_contains?(:properties)
           instance = LinkedData::Models::Class.read_only(doc)
+          instance.prefLabel =  instance.prefLabel.first if instance.prefLabel.is_a?(Array)
           classes_hash[ont_uri_class_uri] = instance
         end
 

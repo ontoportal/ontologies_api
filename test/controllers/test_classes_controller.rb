@@ -7,7 +7,9 @@ class TestClassesController < TestCase
                submission_count: 3,
                submissions_to_process: [1, 2],
                process_submission: true,
-               random_submission_count: false}
+               random_submission_count: false,
+               process_options: {process_rdf: true, extract_metadata: false}
+    }
     return LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
   end
 
