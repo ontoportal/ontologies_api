@@ -1,55 +1,7 @@
 GIT
-  remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 63c986880aa88c9384043e6611a682434a14aba7
-  branch: master
-  specs:
-    ncbo_annotator (0.0.1)
-      goo
-      ontologies_linked_data
-      redis
-      ruby-xxHash
-
-GIT
-  remote: https://github.com/ncbo/ncbo_cron.git
-  revision: f239b34230131cd7cfb9eec5b34068ba990b698b
-  branch: master
-  specs:
-    ncbo_cron (0.0.1)
-      dante
-      goo
-      google-analytics-data
-      mlanett-redis-lock
-      multi_json
-      ncbo_annotator
-      ontologies_linked_data
-      redis
-      rufus-scheduler (~> 2.0.24)
-
-GIT
-  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 013abea4af3b10910ec661dbb358a4b6cae198a4
-  branch: master
-  specs:
-    ncbo_ontology_recommender (0.0.1)
-      goo
-      ncbo_annotator
-      ontologies_linked_data
-      redis
-
-GIT
-  remote: https://github.com/ncbo/sparql-client.git
-  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
-  branch: master
-  specs:
-    sparql-client (1.0.1)
-      json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
-      rdf (>= 1.0)
-
-GIT
-  remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: f2751fe9324e48a0a5c2a8b15580ab879fc53a2b
-  branch: pr/sync-agroportal-bioportal
+  remote: https://github.com/ncbo/goo.git
+  revision: a55ef42e92bc02129992c77890278831f8ca5387
+  branch: develop
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -63,9 +15,49 @@ GIT
       uuid
 
 GIT
-  remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: fc48343ad7a3f1867821c173be900cf16506b4b7
-  branch: pr/sync-agroportal-ncbo
+  remote: https://github.com/ncbo/ncbo_annotator.git
+  revision: 7531e10ad55ac66e925c099d7fc05a5a3ceae67e
+  branch: develop
+  specs:
+    ncbo_annotator (0.0.1)
+      goo
+      ontologies_linked_data
+      redis
+      ruby-xxHash
+
+GIT
+  remote: https://github.com/ncbo/ncbo_cron.git
+  revision: 98dc1a9bb8aba4ef41a1687251ca1245edd5de57
+  branch: develop
+  specs:
+    ncbo_cron (0.0.1)
+      dante
+      faraday (~> 2)
+      faraday-follow_redirects (~> 0)
+      goo
+      google-analytics-data
+      mlanett-redis-lock
+      multi_json
+      ncbo_annotator
+      ontologies_linked_data
+      redis
+      rufus-scheduler (~> 2.0.24)
+
+GIT
+  remote: https://github.com/ncbo/ncbo_ontology_recommender.git
+  revision: f92a42f660635522eb8709e618ff2e641aef0d17
+  branch: develop
+  specs:
+    ncbo_ontology_recommender (0.0.1)
+      goo
+      ncbo_annotator
+      ontologies_linked_data
+      redis
+
+GIT
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: ea7b31b70ea9cbc9a08821a89bd8d28761dd4b32
+  branch: feature/multilingual-support-add-search-and-languages-serialization
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -81,6 +73,16 @@ GIT
       rack-test
       rsolr
       rubyzip
+
+GIT
+  remote: https://github.com/ncbo/sparql-client.git
+  revision: 1657f0dd69fd4b522d3549a6848670175f5e98cc
+  branch: develop
+  specs:
+    sparql-client (1.0.1)
+      json_pure (>= 1.4)
+      net-http-persistent (= 2.9.4)
+      rdf (>= 1.0)
 
 GIT
   remote: https://github.com/palexander/rack-post-body-to-params.git
@@ -143,6 +145,8 @@ GEM
       base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
+    faraday-follow_redirects (0.3.0)
+      faraday (>= 1, < 3)
     faraday-net_http (3.0.2)
     faraday-retry (2.2.1)
       faraday (~> 2.0)
@@ -169,6 +173,7 @@ GEM
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.4.0)
+    google-protobuf (3.25.3-aarch64-linux)
     google-protobuf (3.25.3-arm64-darwin)
     google-protobuf (3.25.3-x86_64-darwin)
     google-protobuf (3.25.3-x86_64-linux)
@@ -185,6 +190,9 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
+    grpc (1.63.0-aarch64-linux)
+      google-protobuf (~> 3.25)
+      googleapis-common-protos-types (~> 1.0)
     grpc (1.63.0-arm64-darwin)
       google-protobuf (~> 3.25)
       googleapis-common-protos-types (~> 1.0)
@@ -223,7 +231,7 @@ GEM
     method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0305)
+    mime-types-data (3.2024.0507)
     mini_mime (1.1.5)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.3)
@@ -232,7 +240,7 @@ GEM
     multi_json (1.15.0)
     mutex_m (0.2.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.10)
+    net-imap (0.4.11)
       date
       net-protocol
     net-pop (0.1.2)
@@ -380,6 +388,7 @@ GEM
       hashdiff (>= 0.4.0, < 2.0.0)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-22
   arm64-darwin-23
   x86_64-darwin-18
@@ -424,7 +433,6 @@ DEPENDENCIES
   redis
   redis-rack-cache (~> 2.0)
   redis-store (~> 1.10)
-  request_store
   rubocop
   shotgun!
   simplecov
