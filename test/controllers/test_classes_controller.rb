@@ -8,7 +8,8 @@ class TestClassesController < TestCase
                submissions_to_process: [1, 2],
                process_submission: true,
                random_submission_count: false,
-               process_options: {process_rdf: true, extract_metadata: false}
+               process_options: {process_rdf: true, extract_metadata: false},
+               file_path: "./test/data/ontology_files/BRO_v3.2.owl",
     }
     return LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
   end
@@ -531,4 +532,27 @@ class TestClassesController < TestCase
     assert page_response["collection"].length == 0
   end
 
+  def test_default_multilingual
+    ont = Ontology.find("TEST-ONT-0").include(:acronym).first
+    sub = ont.latest_submission
+    sub.bring_remaining
+
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Biospecimen_Management')}"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+
+    # does not contain a value in english show the generated one
+    assert_equal 'Biospecimen_Management', page_response["prefLabel"]
+
+
+    sub.naturalLanguage = ['fr']
+    sub.save
+
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Biospecimen_Management')}"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+
+    # show french value as specified in submission naturalLanguage
+    assert_equal 'Biospecimen Management', page_response["prefLabel"]
+  end
 end

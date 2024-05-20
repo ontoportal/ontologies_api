@@ -1,4 +1,20 @@
 GIT
+  remote: https://github.com/ncbo/goo.git
+  revision: 70007faf43d0d96292809f89f15a27a757ccaa25
+  branch: develop
+  specs:
+    goo (0.0.2)
+      addressable (~> 2.8)
+      pry
+      rdf (= 1.0.8)
+      redis
+      request_store
+      rest-client
+      rsolr
+      sparql-client
+      uuid
+
+GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
   revision: 63c986880aa88c9384043e6611a682434a14aba7
   branch: master
@@ -11,11 +27,13 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: f239b34230131cd7cfb9eec5b34068ba990b698b
+  revision: 67810ddd2e14876d789c63c427b08af6919f661e
   branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
+      faraday (~> 2)
+      faraday-follow_redirects (~> 0)
       goo
       google-analytics-data
       mlanett-redis-lock
@@ -47,24 +65,8 @@ GIT
       rdf (>= 1.0)
 
 GIT
-  remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: f2751fe9324e48a0a5c2a8b15580ab879fc53a2b
-  branch: pr/sync-agroportal-bioportal
-  specs:
-    goo (0.0.2)
-      addressable (~> 2.8)
-      pry
-      rdf (= 1.0.8)
-      redis
-      request_store
-      rest-client
-      rsolr
-      sparql-client
-      uuid
-
-GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: fc48343ad7a3f1867821c173be900cf16506b4b7
+  revision: 7c5184fc7d3b25b5c9dd54c25f5ea2b1c4951318
   branch: pr/sync-agroportal-ncbo
   specs:
     ontologies_linked_data (0.0.1)
@@ -143,6 +145,8 @@ GEM
       base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
+    faraday-follow_redirects (0.3.0)
+      faraday (>= 1, < 3)
     faraday-net_http (3.0.2)
     faraday-retry (2.2.1)
       faraday (~> 2.0)
@@ -223,7 +227,7 @@ GEM
     method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0305)
+    mime-types-data (3.2024.0507)
     mini_mime (1.1.5)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.3)
@@ -232,7 +236,7 @@ GEM
     multi_json (1.15.0)
     mutex_m (0.2.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.10)
+    net-imap (0.4.11)
       date
       net-protocol
     net-pop (0.1.2)
@@ -295,7 +299,7 @@ GEM
       redis-store (>= 1.6, < 2)
     redis-store (1.10.0)
       redis (>= 4, < 6)
-    regexp_parser (2.9.0)
+    regexp_parser (2.9.2)
     request_store (1.7.0)
       rack (>= 1.4)
     rest-client (2.1.0)
@@ -303,11 +307,12 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.2.6)
+    rexml (3.2.8)
+      strscan (>= 3.0.9)
     rsolr (2.6.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
-    rubocop (1.63.4)
+    rubocop (1.63.5)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -359,6 +364,7 @@ GEM
       net-scp (>= 1.1.2)
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
+    strscan (3.1.0)
     systemu (2.6.5)
     temple (0.10.3)
     tilt (2.3.0)
