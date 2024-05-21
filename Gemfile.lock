@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: a55ef42e92bc02129992c77890278831f8ca5387
+  revision: 70007faf43d0d96292809f89f15a27a757ccaa25
   branch: develop
   specs:
     goo (0.0.2)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 7531e10ad55ac66e925c099d7fc05a5a3ceae67e
-  branch: develop
+  revision: 63c986880aa88c9384043e6611a682434a14aba7
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 98dc1a9bb8aba4ef41a1687251ca1245edd5de57
-  branch: develop
+  revision: 67810ddd2e14876d789c63c427b08af6919f661e
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f92a42f660635522eb8709e618ff2e641aef0d17
-  branch: develop
+  revision: 013abea4af3b10910ec661dbb358a4b6cae198a4
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -55,9 +55,19 @@ GIT
       redis
 
 GIT
-  remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 0227d37c6431f52a7fd85bdb597cc3d32e975098
-  branch: feature/multilingual-support-add-search-and-languages-serialization
+  remote: https://github.com/ncbo/sparql-client.git
+  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
+  branch: master
+  specs:
+    sparql-client (1.0.1)
+      json_pure (>= 1.4)
+      net-http-persistent (= 2.9.4)
+      rdf (>= 1.0)
+
+GIT
+  remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
+  revision: 67f9e10c03880431590b15ea5b27d2f1fe1354c4
+  branch: pr/sync-agroportal-ncbo
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -73,16 +83,6 @@ GIT
       rack-test
       rsolr
       rubyzip
-
-GIT
-  remote: https://github.com/ncbo/sparql-client.git
-  revision: 1657f0dd69fd4b522d3549a6848670175f5e98cc
-  branch: develop
-  specs:
-    sparql-client (1.0.1)
-      json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
-      rdf (>= 1.0)
 
 GIT
   remote: https://github.com/palexander/rack-post-body-to-params.git
@@ -114,7 +114,9 @@ GEM
     backports (3.25.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
-    bcrypt_pbkdf (1.1.0)
+    bcrypt_pbkdf (1.1.1)
+    bcrypt_pbkdf (1.1.1-arm64-darwin)
+    bcrypt_pbkdf (1.1.1-x86_64-darwin)
     bigdecimal (1.4.2)
     builder (3.2.4)
     capistrano (3.18.1)
@@ -271,7 +273,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (5.0.5)
-    racc (1.7.3)
+    racc (1.8.0)
     rack (1.6.13)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -287,7 +289,7 @@ GEM
       rack
     rack-test (2.1.0)
       rack (>= 1.3)
-    rack-timeout (0.6.3)
+    rack-timeout (0.7.0)
     rainbow (3.1.1)
     raindrops (0.20.1)
     rake (10.5.0)
@@ -303,7 +305,7 @@ GEM
       redis-store (>= 1.6, < 2)
     redis-store (1.10.0)
       redis (>= 4, < 6)
-    regexp_parser (2.9.0)
+    regexp_parser (2.9.2)
     request_store (1.7.0)
       rack (>= 1.4)
     rest-client (2.1.0)
@@ -311,7 +313,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.2.6)
+    rexml (3.2.8)
+      strscan (>= 3.0.9)
     rsolr (2.6.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
@@ -367,6 +370,7 @@ GEM
       net-scp (>= 1.1.2)
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
+    strscan (3.1.0)
     systemu (2.6.5)
     temple (0.10.3)
     tilt (2.3.0)
