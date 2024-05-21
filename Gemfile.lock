@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 63c986880aa88c9384043e6611a682434a14aba7
-  branch: master
+  revision: 7531e10ad55ac66e925c099d7fc05a5a3ceae67e
+  branch: develop
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 67810ddd2e14876d789c63c427b08af6919f661e
-  branch: master
+  revision: 98dc1a9bb8aba4ef41a1687251ca1245edd5de57
+  branch: develop
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 013abea4af3b10910ec661dbb358a4b6cae198a4
-  branch: master
+  revision: f92a42f660635522eb8709e618ff2e641aef0d17
+  branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -55,19 +55,9 @@ GIT
       redis
 
 GIT
-  remote: https://github.com/ncbo/sparql-client.git
-  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
-  branch: master
-  specs:
-    sparql-client (1.0.1)
-      json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
-      rdf (>= 1.0)
-
-GIT
-  remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 67f9e10c03880431590b15ea5b27d2f1fe1354c4
-  branch: pr/sync-agroportal-ncbo
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: 112e39b0b75901c3e32ccd83e2e5f9e83ab73d42
+  branch: feature/multilingual-support-add-search-and-languages-serialization
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -83,6 +73,16 @@ GIT
       rack-test
       rsolr
       rubyzip
+
+GIT
+  remote: https://github.com/ncbo/sparql-client.git
+  revision: 1657f0dd69fd4b522d3549a6848670175f5e98cc
+  branch: develop
+  specs:
+    sparql-client (1.0.1)
+      json_pure (>= 1.4)
+      net-http-persistent (= 2.9.4)
+      rdf (>= 1.0)
 
 GIT
   remote: https://github.com/palexander/rack-post-body-to-params.git
