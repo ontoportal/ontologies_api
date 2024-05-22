@@ -12,8 +12,10 @@ class TestExternalMappingsController < TestCase
         ont.delete
       end
     end
+    # indexing term is needed
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
                                                                          process_submission: true,
+                                                                         process_options: {process_rdf: true, extract_metadata: false, index_search: true},
                                                                          acronym: "BRO-TEST-MAP",
                                                                          name: "BRO-TEST-MAP",
                                                                          file_path: "./test/data/ontology_files/BRO_v3.2.owl",
@@ -22,6 +24,7 @@ class TestExternalMappingsController < TestCase
                                                                        })
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
                                                                          process_submission: true,
+                                                                         process_options: {process_rdf: true, extract_metadata: false},
                                                                          acronym: "CNO-TEST-MAP",
                                                                          name: "CNO-TEST-MAP",
                                                                          file_path: "./test/data/ontology_files/CNO_05.owl",
@@ -30,6 +33,7 @@ class TestExternalMappingsController < TestCase
                                                                        })
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
                                                                          process_submission: true,
+                                                                         process_options: {process_rdf: true, extract_metadata: false},
                                                                          acronym: "FAKE-TEST-MAP",
                                                                          name: "FAKE-TEST-MAP",
                                                                          file_path: "./test/data/ontology_files/fake_for_mappings.owl",

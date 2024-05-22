@@ -5,6 +5,7 @@ class TestInstancesController < TestCase
   def self.before_suite
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
       process_submission: true,
+      process_options: { process_rdf: true, extract_metadata: false, generate_missing_labels: false},
       acronym: 'XCT-TEST-INST',
       name: 'XCT-TEST-INST',
       file_path: './test/data/ontology_files/XCTontologyvtemp2.owl',
@@ -13,9 +14,6 @@ class TestInstancesController < TestCase
     })
   end
 
-  def self.after_suite
-    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
-  end
 
   def test_first_default_page
     ont = Ontology.find('XCT-TEST-INST-0').include(:acronym).first
@@ -52,6 +50,7 @@ class TestInstancesController < TestCase
       assert last_response.ok?
       instance_count = instance_count + response['collection'].size
     end while response['nextPage']
+
     assert_equal 714, instance_count
 
     # Next page should have no results.

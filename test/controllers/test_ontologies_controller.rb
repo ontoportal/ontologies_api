@@ -185,7 +185,9 @@ class TestOntologiesController < TestCase
   end
 
   def test_download_ontology_csv
-    num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+    num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1,
+                                                                                     process_submission: true,
+                                                                                     process_options:{process_rdf: true, extract_metadata: true, index_search: true})
     ont = onts.first
     acronym = created_ont_acronyms.first
 

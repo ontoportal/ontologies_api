@@ -70,6 +70,31 @@ class TestSlicesHelper < TestCaseHelpers
     assert results.all? {|r| group_ids.include?(r["links"]["ontology"])}
   end
 
+  def test_mappings_slices
+    LinkedData::Mappings.create_mapping_counts(Logger.new(TestLogFile.new))
+
+    get "/mappings/statistics/ontologies/"
+    
+    expected_result_without_slice = ["PARSED-0",
+      "PARSED-1",
+      "http://data.bioontology.org/metadata/ExternalMappings",
+      "http://data.bioontology.org/metadata/InterportalMappings/agroportal",
+      "http://data.bioontology.org/metadata/InterportalMappings/ncbo",
+      "http://data.bioontology.org/metadata/InterportalMappings/sifr"]
+
+    assert_equal expected_result_without_slice, MultiJson.load(last_response.body).keys.sort
+
+    get "http://#{@@group_acronym}/mappings/statistics/ontologies/"
+
+    expected_result_with_slice = ["PARSED-0",
+      "http://data.bioontology.org/metadata/ExternalMappings",
+      "http://data.bioontology.org/metadata/InterportalMappings/agroportal",
+      "http://data.bioontology.org/metadata/InterportalMappings/ncbo",
+      "http://data.bioontology.org/metadata/InterportalMappings/sifr"]
+
+    assert_equal expected_result_with_slice, MultiJson.load(last_response.body).keys.sort
+  end
+
   private
 
   def self._create_group

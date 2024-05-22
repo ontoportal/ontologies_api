@@ -4,7 +4,6 @@ class TestHTTPCacheHelper < TestCaseHelpers
 
   def self.before_suite
     raise Exception, "Redis is unavailable, caching will not function" if LinkedData::HTTPCache.redis.ping.nil?
-    self.new("before_suite").delete_ontologies_and_submissions
     ontologies = self.new("before_suite")._ontologies
     @@ontology = ontologies.shift
     @@ontology_alt = ontologies.shift

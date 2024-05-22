@@ -76,7 +76,7 @@ build_docker_run_cmd() {
   local goo_path="$3"
   local sparql_client_path="$4"
 
-  local docker_run_cmd="docker compose run --rm -it"
+  local docker_run_cmd="docker compose -p ontoportal_docker run --rm -it --name api-service"
   local bash_cmd=""
 
   # Conditionally add bind mounts only if the paths are not empty
@@ -99,6 +99,7 @@ build_docker_run_cmd() {
 
   eval "$docker_run_cmd"
 }
+
 
 # Function to handle the "dev" and "test" options
 run_command() {
@@ -177,7 +178,7 @@ run_command() {
 dev() {
   echo "Starting OntoPortal API development server..."
 
-  local custom_command="bundle exec shotgun --host 0.0.0.0  --env=development"
+  local custom_command="bundle exec shotgun --host 0.0.0.0  --env=development --port 9393"
   run_command "$custom_command" "$@"
 }
 

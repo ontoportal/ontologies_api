@@ -32,8 +32,8 @@ class TestRackAttack < TestCase
     $stdout = File.open("/dev/null", "w")
     $stderr = File.open("/dev/null", "w")
 
-    # http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Dynamic.2C_private_or_ephemeral_ports
-    @@port1 = Random.rand(55000..65535)
+
+    @@port1 = self.new('').unused_port
 
     # Fork the process to create two servers. This isolates the Rack::Attack configuration, which makes other tests fail if included.
     @@pid1 = fork do
@@ -45,7 +45,7 @@ class TestRackAttack < TestCase
       Signal.trap("HUP") { Process.exit! }
     end
 
-    @@port2 = Random.rand(55000..65535) # http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Dynamic.2C_private_or_ephemeral_ports
+    @@port2 =  self.new('').unused_port
     @@pid2 = fork do
       require_relative '../../config/rack_attack'
       Rack::Server.start(
@@ -150,7 +150,7 @@ class TestRackAttack < TestCase
     # Sometimes a single request can get through without failing depending
     # on the order of the request as it coincides with the threaded requests.
     (LinkedData::OntologiesAPI.settings.req_per_second_per_ip * 2).times do
-      open("http://127.0.0.1:#{port}/ontologies", headers)
+      open("http://localhost:#{port}/ontologies", headers)
     end
   end
 

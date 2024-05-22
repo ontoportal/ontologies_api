@@ -11,13 +11,16 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/goo.git
-  revision: 8ddd2d719617ad082c6964a9efdac153cdd2b48e
-  branch: master
+  revision: b2a635fb1e8206e6e3010be4dbe033b47eb58481
+  branch: development
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
       pry
-      rdf (= 1.0.8)
+      rdf (= 3.2.11)
+      rdf-raptor
+      rdf-rdfxml
+      rdf-vocab
       redis
       rest-client
       rsolr
@@ -26,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ncbo_annotator.git
-  revision: 57204d8e54432ba660af4c49806e2a3019a23fa2
-  branch: master
+  revision: 1eb751b65d10ae23d45c74e0516c78754a8419f0
+  branch: development
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -54,8 +57,8 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 95e77989e4e8ea2fde86cf4f048f7d6cd7a6829f
-  branch: master
+  revision: 1278507e6ae8224edca746c7c150775ec2210195
+  branch: development
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -74,13 +77,12 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/sparql-client.git
-  revision: aed51baf4106fd0f3d0e3f9238f0aad9406aa3f0
-  branch: master
+  revision: 82302db1bfaec6593f3ea26917d7f2bb2dd485ce
+  branch: development
   specs:
-    sparql-client (1.0.1)
-      json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
-      rdf (>= 1.0)
+    sparql-client (3.2.2)
+      net-http-persistent (~> 4.0, >= 4.0.2)
+      rdf (~> 3.2, >= 3.2.11)
 
 GIT
   remote: https://github.com/palexander/rack-post-body-to-params.git
@@ -106,15 +108,15 @@ GEM
       multi_json (~> 1.0)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
-    airbrussh (1.5.1)
+    airbrussh (1.5.2)
       sshkit (>= 1.6.1, != 1.7.0)
-    backports (3.24.1)
+    backports (3.25.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.0)
     bigdecimal (1.4.2)
     builder (3.2.4)
-    capistrano (3.18.0)
+    capistrano (3.18.1)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -128,6 +130,7 @@ GEM
       sshkit (~> 1.3)
     coderay (1.1.3)
     concurrent-ruby (1.2.3)
+    connection_pool (2.4.1)
     crack (1.0.0)
       bigdecimal
       rexml
@@ -172,15 +175,15 @@ GEM
       grpc (~> 1.59)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
-    google-analytics-data (0.5.0)
+    google-analytics-data (0.6.0)
       google-analytics-data-v1beta (>= 0.11, < 2.a)
       google-cloud-core (~> 1.6)
-    google-analytics-data-v1beta (0.11.2)
+    google-analytics-data-v1beta (0.12.0)
       gapic-common (>= 0.21.1, < 2.a)
       google-cloud-errors (~> 1.0)
-    google-apis-analytics_v3 (0.14.0)
-      google-apis-core (>= 0.12.0, < 2.a)
-    google-apis-core (0.13.0)
+    google-apis-analytics_v3 (0.15.0)
+      google-apis-core (>= 0.14.0, < 2.a)
+    google-apis-core (0.14.1)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 1.9)
       httpclient (>= 2.8.1, < 3.a)
@@ -188,18 +191,19 @@ GEM
       representable (~> 3.0)
       retriable (>= 2.0, < 4.a)
       rexml
-    google-cloud-core (1.6.1)
+    google-cloud-core (1.7.0)
       google-cloud-env (>= 1.0, < 3.a)
       google-cloud-errors (~> 1.0)
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
-    google-cloud-errors (1.3.1)
+    google-cloud-errors (1.4.0)
+    google-protobuf (3.25.3-x86_64-darwin)
     google-protobuf (3.25.3-x86_64-linux)
-    googleapis-common-protos (1.4.0)
-      google-protobuf (~> 3.14)
-      googleapis-common-protos-types (~> 1.2)
-      grpc (~> 1.27)
-    googleapis-common-protos-types (1.12.0)
+    googleapis-common-protos (1.5.0)
+      google-protobuf (~> 3.18)
+      googleapis-common-protos-types (~> 1.7)
+      grpc (~> 1.41)
+    googleapis-common-protos-types (1.14.0)
       google-protobuf (~> 3.18)
     googleauth (1.11.0)
       faraday (>= 1.0, < 3.a)
@@ -208,27 +212,34 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    grpc (1.61.0-x86_64-linux)
+    grpc (1.62.0-x86_64-darwin)
+      google-protobuf (~> 3.25)
+      googleapis-common-protos-types (~> 1.0)
+    grpc (1.62.0-x86_64-linux)
       google-protobuf (~> 3.25)
       googleapis-common-protos-types (~> 1.0)
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
     hashdiff (1.1.0)
+    htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
     httpclient (2.8.3)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    json (2.7.1)
+    json (2.7.2)
+    json-ld (3.0.2)
+      multi_json (~> 1.12)
+      rdf (>= 2.2.8, < 4.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
-    json_pure (2.7.1)
-    jwt (2.8.0)
+    jwt (2.8.1)
       base64
     kgio (2.11.4)
-    libxml-ruby (5.0.2)
+    libxml-ruby (5.0.3)
+    link_header (0.0.8)
     logger (1.6.0)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
@@ -237,10 +248,10 @@ GEM
       net-imap
       net-pop
       net-smtp
-    method_source (1.0.0)
+    method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0206)
+    mime-types-data (3.2024.0305)
     mini_mime (1.1.5)
     minitest (4.7.5)
     minitest-stub_any_instance (1.0.3)
@@ -249,7 +260,8 @@ GEM
     multi_json (1.15.0)
     multipart-post (2.4.0)
     mutex_m (0.2.0)
-    net-http-persistent (2.9.4)
+    net-http-persistent (4.0.2)
+      connection_pool (~> 2.2)
     net-imap (0.4.10)
       date
       net-protocol
@@ -261,22 +273,23 @@ GEM
       net-ssh (>= 2.6.5, < 8.0.0)
     net-sftp (4.0.0)
       net-ssh (>= 5.0.0, < 8.0.0)
-    net-smtp (0.4.0.1)
+    net-smtp (0.5.0)
       net-protocol
-    net-ssh (7.2.1)
+    net-ssh (7.2.3)
     netrc (0.11.0)
-    newrelic_rpm (9.7.1)
+    newrelic_rpm (9.9.0)
     oj (2.18.5)
     omni_logger (0.1.4)
       logger
     os (1.1.4)
+    parallel (1.24.0)
     parseconfig (1.1.2)
     pony (1.13.1)
       mail (>= 2.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (5.0.4)
+    public_suffix (5.0.5)
     rack (1.6.13)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -295,18 +308,31 @@ GEM
     rack-timeout (0.6.3)
     raindrops (0.20.1)
     rake (10.5.0)
-    rdf (1.0.8)
-      addressable (>= 2.2)
+    rdf (3.2.11)
+      link_header (~> 0.0, >= 0.0.8)
+    rdf-raptor (3.2.0)
+      ffi (~> 1.15)
+      rdf (~> 3.2)
+    rdf-rdfxml (3.2.2)
+      builder (~> 3.2)
+      htmlentities (~> 4.3)
+      rdf (~> 3.2)
+      rdf-xsd (~> 3.2)
+    rdf-vocab (3.2.7)
+      rdf (~> 3.2, >= 3.2.4)
+    rdf-xsd (3.2.1)
+      rdf (~> 3.2)
+      rexml (~> 3.2)
     redcarpet (3.6.0)
-    redis (4.8.1)
-    redis-activesupport (5.3.0)
-      activesupport (>= 3, < 8)
-      redis-store (>= 1.3, < 2)
+    redis (5.2.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.22.1)
+      connection_pool
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
       redis-store (>= 1.6, < 2)
-    redis-store (1.9.1)
-      redis (>= 4, < 5)
+    redis-store (1.10.0)
+      redis (>= 4, < 6)
     representable (3.2.0)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -320,7 +346,7 @@ GEM
       netrc (~> 0.8)
     retriable (3.1.2)
     rexml (3.2.6)
-    rsolr (2.5.0)
+    rsolr (2.6.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
     ruby-xxHash (0.4.0.2)
@@ -355,7 +381,8 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    sshkit (1.22.0)
+    sshkit (1.22.2)
+      base64
       mutex_m
       net-scp (>= 1.1.2)
       net-sftp (>= 2.1.2)
@@ -376,12 +403,13 @@ GEM
       unicorn (>= 4, < 7)
     uuid (2.3.9)
       macaddr (~> 1.0)
-    webmock (3.22.0)
+    webmock (3.19.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
 
 PLATFORMS
+  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
@@ -398,6 +426,7 @@ DEPENDENCIES
   ffi
   goo!
   haml (~> 5.2.2)
+  json-ld
   json-schema (~> 2.0)
   minitest (~> 4.0)
   minitest-stub_any_instance
@@ -408,6 +437,7 @@ DEPENDENCIES
   newrelic_rpm
   oj (~> 2.0)
   ontologies_linked_data!
+  parallel
   parseconfig
   pry
   rack
@@ -421,10 +451,9 @@ DEPENDENCIES
   rack-timeout
   rake (~> 10.0)
   redcarpet
-  redis (~> 4.8.1)
-  redis-activesupport
+  redis
   redis-rack-cache (~> 2.0)
-  redis-store (= 1.9.1)
+  redis-store (~> 1.10)
   request_store
   shotgun!
   simplecov
@@ -435,7 +464,7 @@ DEPENDENCIES
   sparql-client!
   unicorn
   unicorn-worker-killer
-  webmock
+  webmock (~> 3.19.1)
 
 BUNDLED WITH
-   2.3.23
+   2.4.22

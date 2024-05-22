@@ -8,16 +8,18 @@ GOO_PORT = ENV.include?("GOO_PORT") ? ENV["GOO_PORT"] : 9000
 GOO_HOST = ENV.include?("GOO_HOST") ? ENV["GOO_HOST"] : "localhost"
 REDIS_HOST = ENV.include?("REDIS_HOST") ? ENV["REDIS_HOST"] : "localhost"
 REDIS_PORT = ENV.include?("REDIS_PORT") ? ENV["REDIS_PORT"] : 6379
-SOLR_TERM_SEARCH_URL = ENV.include?("SOLR_TERM_SEARCH_URL") ? ENV["SOLR_TERM_SEARCH_URL"] : "http://localhost:8983/solr/term_search_core1"
-SOLR_PROP_SEARCH_URL = ENV.include?("SOLR_PROP_SEARCH_URL") ? ENV["SOLR_PROP_SEARCH_URL"] : "http://localhost:8983/solr/prop_search_core1"
+SOLR_TERM_SEARCH_URL = ENV.include?("SOLR_TERM_SEARCH_URL") ? ENV["SOLR_TERM_SEARCH_URL"] : "http://localhost:8983/solr"
+SOLR_PROP_SEARCH_URL = ENV.include?("SOLR_PROP_SEARCH_URL") ? ENV["SOLR_PROP_SEARCH_URL"] : "http://localhost:8983/solr"
 MGREP_HOST = ENV.include?("MGREP_HOST") ? ENV["MGREP_HOST"] : "localhost"
-MGREP_PORT = ENV.include?("MGREP_PORT") ? ENV["MGREP_PORT"] : 55555
+MGREP_PORT = ENV.include?("MGREP_PORT") ? ENV["MGREP_PORT"] : 55556
+GOO_SLICES = ENV["GOO_SLICES"] || 500
 
 begin
   # For prefLabel extract main_lang first, or anything if no main found.
   # For other properties only properties with a lang that is included in main_lang are used
   Goo.main_languages = ['en']
   Goo.use_cache = false
+  Goo.slice_loading_size = GOO_SLICES.to_i
 rescue NoMethodError
   puts "(CNFG) >> Goo.main_lang not available"
 end
@@ -37,6 +39,7 @@ LinkedData.config do |config|
   config.ontology_analytics_redis_port = REDIS_PORT.to_i
   config.search_server_url = SOLR_TERM_SEARCH_URL.to_s
   config.property_search_server_url = SOLR_PROP_SEARCH_URL.to_s
+  config.sparql_endpoint_url = "http://sparql.bioontology.org"
   #  config.enable_notifications          = false
   config.interportal_hash = {
     "agroportal" => {

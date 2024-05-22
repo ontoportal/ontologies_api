@@ -48,6 +48,7 @@ LinkedData.config do |config|
   config.property_search_server_url    = SOLR_PROP_SEARCH_URL.to_s
   config.replace_url_prefix            = true
   config.rest_url_prefix               = REST_URL_PREFIX.to_s
+  config.sparql_endpoint_url = "http://sparql.bioontology.org"
 #  config.enable_notifications          = false
 
     config.interportal_hash = {

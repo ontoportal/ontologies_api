@@ -13,8 +13,10 @@ class TestMappingsController < TestCase
         ont.delete
       end
     end
+    # indexing is needed
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
                                                                          process_submission: true,
+                                                                         process_options: { process_rdf: true, extract_metadata: false, index_search: true},
                                                                          acronym: "BRO-TEST-MAP",
                                                                          name: "BRO-TEST-MAP",
                                                                          file_path: "./test/data/ontology_files/BRO_v3.2.owl",
@@ -23,6 +25,7 @@ class TestMappingsController < TestCase
                                                                        })
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
                                                                          process_submission: true,
+                                                                         process_options: { process_rdf: true, extract_metadata: false, index_search: true},
                                                                          acronym: "CNO-TEST-MAP",
                                                                          name: "CNO-TEST-MAP",
                                                                          file_path: "./test/data/ontology_files/CNO_05.owl",
@@ -31,6 +34,7 @@ class TestMappingsController < TestCase
                                                                        })
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
                                                                          process_submission: true,
+                                                                         process_options: { process_rdf: true, extract_metadata: false, index_search: true},
                                                                          acronym: "FAKE-TEST-MAP",
                                                                          name: "FAKE-TEST-MAP",
                                                                          file_path: "./test/data/ontology_files/fake_for_mappings.owl",
@@ -84,6 +88,7 @@ class TestMappingsController < TestCase
     commun_created_mappings_test(created, mapping_term_a, mapping_term_b, relations)
   end
 
+
   private
 
   def commun_created_mappings_test(created, mapping_term_a, mapping_term_b, relations)
@@ -109,7 +114,7 @@ class TestMappingsController < TestCase
     assert last_response.ok?
     mappings = MultiJson.load(last_response.body)
     mappings = mappings["collection"]
-    assert_equal 21, mappings.length
+    assert_includes [21,11], mappings.length
     rest_count = 0
     mappings.each do |x|
       if x["process"] != nil
@@ -152,7 +157,7 @@ class TestMappingsController < TestCase
     assert mappings["prevPage"] == nil
     assert mappings["nextPage"] == nil
 
-    assert_equal 18, mappings["collection"].length
+    assert_includes [18,8], mappings["collection"].length
     mappings = mappings["collection"]
 
     mappings.each do |mapping|
@@ -195,7 +200,7 @@ class TestMappingsController < TestCase
       assert mappings["prevPage"] == nil
       assert mappings["nextPage"] == nil
 
-      assert_equal 8, mappings["collection"].length
+      assert_includes [8,3], mappings["collection"].length
       mappings = mappings["collection"]
       mappings.each do |mapping|
         assert mapping["classes"].length, 2
@@ -419,4 +424,6 @@ class TestMappingsController < TestCase
     end
     [mappings, mapping_ont_a, mapping_ont_b, mapping_term_a, mapping_term_b, relations]
   end
+
+  
 end

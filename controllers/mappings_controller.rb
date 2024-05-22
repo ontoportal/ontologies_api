@@ -191,6 +191,8 @@ class MappingsController < ApplicationController
                                       .each do |m|
         persistent_counts[m.ontologies.first] = m.count
       end
+      ont_acronyms = restricted_ontologies_to_acronyms(params)
+      persistent_counts = persistent_counts.select { |key, _| ont_acronyms.include?(key) || key.start_with?("http://") }
       reply persistent_counts
     end
 
