@@ -396,18 +396,9 @@ module Sinatra
         else
           submission = ont.latest_submission(status: [:RDF])
         end
-        if submission.nil?
-          error 404,  "Ontology #{@params["ontology"]} submission not found."
-        end
+        error 404, "Ontology #{@params["ontology"]} submission not found." if submission.nil?
         if !submission.ready?(status: [:RDF])
-          error(404,
-                "Ontology #{@params["ontology"]} submission i"+
-                "#{submission.submissionId} has not been parsed.")
-        end
-        if submission.nil?
-          if submission.nil?
-            error 404, "Ontology #{@params["acronym"]} does not have any submissions"
-          end
+          error 404, "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
         end
 
         save_submission_language(submission)
