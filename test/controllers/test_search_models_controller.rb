@@ -8,6 +8,7 @@ class TestSearchModelsController < TestCase
     LinkedData::Models::Agent.indexClear
     LinkedData::Models::Class.indexClear
     LinkedData::Models::OntologyProperty.indexClear
+    Goo.init_search_connection(:ontology_data)
   end
 
   def setup
