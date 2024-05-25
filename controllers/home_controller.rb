@@ -121,7 +121,7 @@ class HomeController < ApplicationController
               unique: cls.unique?(attribute) || "&nbsp;",
               required: cls.required?(attribute) || "&nbsp;",
               list: cls.list?(attribute) || "&nbsp;",
-              cardinality: cls.cardinality(attribute) || "&nbsp;"
+              cardinality: (cls.cardinality(attribute) rescue nil) || "&nbsp;"
             }
           else
             attributes_info[attribute] = {
