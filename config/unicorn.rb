@@ -1,23 +1,45 @@
 application  = 'ontologies_api'
 app_path = "/srv/ontoportal/#{application}"
-working_directory "#{app_path}/current/"
+current_version_path = "#{app_path}/current"
+pid_file_path = 'tmp/pids/unicorn.pid'
 
+if Dir.exists?(current_version_path)
+  app_socket_path = app_path + '/shared/tmp/sockets/unicorn.sock'
+  app_gemfile_path = "#{current_version_path}/Gemfile"
+  user = 'ontoportal'
+else
+  current_version_path = app_path
+  app_gemfile_path = "#{app_path}/Gemfile"
+  app_socket_path = app_path + '/tmp/sockets/unicorn.sock'
+  user = 'root'
+end
+
+working_directory current_version_path
 worker_processes 8
 timeout 300
 preload_app true
-user 'ontoportal', 'ontoportal'
+user user, user
 
 stderr_path 'log/unicorn.stderr.log'
 stdout_path 'log/unicorn.stdout.log'
-pid 'tmp/pids/unicorn.pid'
 
+
+require 'fileutils'
+[pid_file_path, app_socket_path].each do |file_path|
+  directory_path = File.dirname(file_path)
+  FileUtils.mkdir_p(directory_path) unless Dir.exist?(File.dirname(file_path))
+end
+
+
+
+pid  pid_file_path
 # Listen on both fast-failing unix data socket (for nginx) & a backloggable TCP connection
-listen app_path + '/shared/tmp/sockets/unicorn.sock', :backlog => 1024
+listen app_socket_path, :backlog => 1024
 #listen 8087, :backlog => 256
 
 # Make sure unicorn is using current gems after rolling restarts
 before_exec do |server|
-  ENV['BUNDLE_GEMFILE'] = "#{app_path}/current/Gemfile"
+  ENV['BUNDLE_GEMFILE'] =  app_gemfile_path
 end
 
 before_fork do |server, worker|
