@@ -242,7 +242,7 @@ GEM
     multi_json (1.15.0)
     mutex_m (0.2.0)
     net-http-persistent (2.9.4)
-    net-imap (0.4.12)
+    net-imap (0.4.13)
       date
       net-protocol
     net-pop (0.1.2)
@@ -272,7 +272,7 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (5.0.5)
+    public_suffix (5.1.1)
     racc (1.8.0)
     rack (1.6.13)
     rack-accept (0.4.5)
