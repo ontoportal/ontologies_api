@@ -19,6 +19,7 @@ module Sinatra
       VALUESET_ROOTS_ONLY_PARAM = "valueset_roots_only"
       VALUESET_EXCLUDE_ROOTS_PARAM = "valueset_exclude_roots"
       ONTOLOGY_TYPES_PARAM = "ontology_types"
+      LANGUAGES_PARAM = "lang"
 
       ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
       MATCH_HTML_PRE = "<em>"
@@ -28,6 +29,7 @@ module Sinatra
       MATCH_TYPE_PROPERTY = "property"
       MATCH_TYPE_LABEL = "label"
       MATCH_TYPE_LABELGENERATED = "labelGenerated"
+      NO_LANGUAGE_SUFFIX = "none"
 
       MATCH_TYPE_MAP = {
           "resource_id" => "id",
@@ -355,6 +357,20 @@ module Sinatra
         end
 
         classes_hash
+      end
+
+      def transform_preflabel(params, class_instance)
+        site_label = Goo.main_languages[0]
+
+        unless RequestStore.store[:requested_lang]
+          if class_instance.respond_to?("#{MATCH_TYPE_PREFLABEL}_#{site_label}") && class_instance["#{MATCH_TYPE_PREFLABEL}_#{site_label}"]
+            class_instance[MATCH_TYPE_PREFLABEL] = class_instance["#{MATCH_TYPE_PREFLABEL}_#{site_label}"][0]
+          elsif class_instance.respond_to?("#{MATCH_TYPE_PREFLABEL}_#{NO_LANGUAGE_SUFFIX}") && class_instance["#{MATCH_TYPE_PREFLABEL}_#{NO_LANGUAGE_SUFFIX}"]
+            class_instance[MATCH_TYPE_PREFLABEL] = class_instance["#{MATCH_TYPE_PREFLABEL}_#{NO_LANGUAGE_SUFFIX}"][0]
+          else
+            class_instance[MATCH_TYPE_PREFLABEL] = class_instance[MATCH_TYPE_PREFLABEL][0]
+          end
+        end
       end
 
       def validate_params_solr_population(allowed_includes_params)
