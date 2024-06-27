@@ -221,6 +221,37 @@ module Sinatra
         solr_response["match_types"] = all_matches
       end
 
+      def portal_language
+        Goo.main_languages.first
+      end
+
+      def request_language
+        params['lang'] || params['languages'] || portal_language
+      end
+
+
+      def filter_attrs_by_language(doc)
+        lang_values = {}
+        doc.each do |k, v|
+          attr, lang = k.to_s.split('_')
+
+          next unless lang
+
+          if lang.eql?('none') || request_language.eql?(lang)
+            lang_values[attr.to_sym] ||= []
+            lang_values[attr.to_sym] = lang.eql?('none') ? lang_values[attr.to_sym] + v : v + lang_values[attr.to_sym]
+          end
+        end
+
+        lang_values.each do |k, v|
+          doc[k] = v unless v.empty?
+        end
+
+        doc[:prefLabel] = doc["prefLabel_#{request_language}".to_sym]&.first || doc[:prefLabel]&.first
+        doc
+      end
+
+
       # see https://github.com/rsolr/rsolr/issues/101
       # and https://github.com/projecthydra/active_fedora/commit/75b4afb248ee61d9edb56911b2ef51f30f1ce17f
       #
