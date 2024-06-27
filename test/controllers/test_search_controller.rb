@@ -399,6 +399,50 @@ class TestSearchController < TestCase
     end
   end
 
+  def test_language_attribute_filter
+    get "/search?q=Activit%C3%A9&ontologies=BROSEARCHTEST-0&lang=fr"
+    results =  MultiJson.load(last_response.body)
+    assert last_response.ok?
+    assert_equal 1, results["collection"].size
+    doc = results["collection"][0]
+    pref_label = doc["prefLabel"].kind_of?(Array) ? doc["prefLabel"].first : doc["prefLabel"]
+    assert_equal "Activité", pref_label
+    assert_equal 1, doc["definition"].size
+    assert 1, doc["definition"][0].include?("d’intérêt pouvant")
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=en"
+    results =  MultiJson.load(last_response.body)
+    assert last_response.ok?
+    assert_equal 1, results["collection"].size
+    doc = results["collection"][0]
+    pref_label = doc["prefLabel"].kind_of?(Array) ? doc["prefLabel"].first : doc["prefLabel"]
+    assert_equal "ActivityEnglish", pref_label
+    assert_equal 1, doc["definition"].size
+    assert 1, doc["definition"][0].include?("Activity of interest that may be related to")
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0"
+    results =  MultiJson.load(last_response.body)
+    assert last_response.ok?
+    assert_equal 1, results["collection"].size
+    doc = results["collection"][0]
+    pref_label = doc["prefLabel"].kind_of?(Array) ? doc["prefLabel"].first : doc["prefLabel"]
+    assert_equal "ActivityEnglish", pref_label
+    assert_equal 1, doc["definition"].size
+    assert 1, doc["definition"][0].include?("Activity of interest that may be related to")
+
+    get "/search?q=Activit%C3%A9&ontologies=BROSEARCHTEST-0&lang=all"
+    results =  MultiJson.load(last_response.body)
+    assert last_response.ok?
+    assert_equal 1, results["collection"].size
+    doc = results["collection"][0]
+    assert doc["prefLabel"].kind_of?(Array)
+    assert_equal 3, doc["prefLabel"].size
+    assert doc["synonym"].kind_of?(Array)
+    assert_equal 1, doc["synonym"].size
+    assert doc["definition"].kind_of?(Array)
+    assert_equal 2, doc["definition"].size
+  end
+
   def test_multilingual_search
     get "/search?q=Activity&ontologies=BROSEARCHTEST-0"
     res =  MultiJson.load(last_response.body)
@@ -416,13 +460,10 @@ class TestSearchController < TestCase
     refute_equal 0, res["totalCount"]
     refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
 
-
-
     get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=en"
     res =  MultiJson.load(last_response.body)
     refute_equal 0, res["totalCount"]
     refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
-
 
     get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=fr&require_exact_match=true"
     res =  MultiJson.load(last_response.body)
@@ -439,8 +480,6 @@ class TestSearchController < TestCase
     get "/search?q=Activit%C3%A9&ontologies=BROSEARCHTEST-0&lang=fr&require_exact_match=true"
     res =  MultiJson.load(last_response.body)
     refute_nil res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
-
-
   end
 
 
