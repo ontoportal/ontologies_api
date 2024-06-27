@@ -92,7 +92,7 @@ class TestSearchController < TestCase
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
     doc = results["collection"][0]
-    assert_equal "cell line", doc["prefLabel"].first
+    assert_equal "cell line", doc["prefLabel"]
     assert doc["links"]["ontology"].include? acronym
     results["collection"].each do |doc|
       acr = doc["links"]["ontology"].split('/')[-1]
