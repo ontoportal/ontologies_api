@@ -153,7 +153,7 @@ class TestSearchController < TestCase
                                                                                .join(' ')
                                                                                .include?("Funding Resource")
     end
-    assert_equal "Funding Resource", results["collection"][0]["prefLabel"].first
+    assert_equal "Funding Resource", results["collection"][0]["prefLabel"]
     assert_equal "T028", results["collection"][0]["semanticType"][0]
     assert_equal "X123456", results["collection"][0]["cui"][0]
 
@@ -208,7 +208,7 @@ class TestSearchController < TestCase
     assert_includes [10, 6], results["collection"].length # depending if owlapi import SKOS concepts
     provisional = results["collection"].select {|res| assert_equal ontology_type, res["ontologyType"]; res["provisional"]}
     assert_equal 1, provisional.length
-    assert_equal @@test_pc_root.label, provisional[0]["prefLabel"].first
+    assert_equal @@test_pc_root.label, provisional[0]["prefLabel"]
 
     # subtree root with provisional class test
     get "search?ontology=#{acronym}&subtree_root_id=#{CGI::escape(@@cls_uri.to_s)}&also_search_provisional=true"
@@ -217,7 +217,7 @@ class TestSearchController < TestCase
 
     provisional = results["collection"].select {|res| res["provisional"]}
     assert_equal 1, provisional.length
-    assert_equal @@test_pc_child.label, provisional[0]["prefLabel"].first
+    assert_equal @@test_pc_child.label, provisional[0]["prefLabel"]
   end
 
   def test_multilingual_search
@@ -249,6 +249,28 @@ class TestSearchController < TestCase
     doc = res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
     refute_nil doc
     assert_equal "ActivityEnglish", doc["prefLabel"]
+
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=fr,es"
+    res =  MultiJson.load(last_response.body)
+    assert_equal 0, res["totalCount"]
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=en,es"
+    res =  MultiJson.load(last_response.body)
+    refute_equal 0, res["totalCount"]
+    doc = res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+    refute_nil doc
+    expected_pref_label = {"none"=>["Activity"], "en"=>["ActivityEnglish"]}
+    assert_equal expected_pref_label, doc["prefLabel"]
+
+    get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=all"
+    res =  MultiJson.load(last_response.body)
+    refute_equal 0, res["totalCount"]
+    doc = res["collection"].select{|doc| doc["@id"].eql?('http://bioontology.org/ontologies/Activity.owl#Activity')}.first
+    refute_nil doc
+    expected_pref_label = {"none"=>["Activity"], "en"=>["ActivityEnglish"], "fr"=>["Activité"]}
+    assert_equal expected_pref_label, doc["prefLabel"]
+
 
 
     get "/search?q=ActivityEnglish&ontologies=BROSEARCHTEST-0&lang=fr&require_exact_match=true"
