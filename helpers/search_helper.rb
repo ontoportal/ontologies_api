@@ -19,6 +19,7 @@ module Sinatra
       VALUESET_ROOTS_ONLY_PARAM = "valueset_roots_only"
       VALUESET_EXCLUDE_ROOTS_PARAM = "valueset_exclude_roots"
       ONTOLOGY_TYPES_PARAM = "ontology_types"
+      LANGUAGES_PARAM = "lang"
 
       ALSO_SEARCH_VIEWS = "also_search_views" # NCBO-961
       MATCH_HTML_PRE = "<em>"
@@ -26,8 +27,10 @@ module Sinatra
       MATCH_TYPE_PREFLABEL = "prefLabel"
       MATCH_TYPE_SYNONYM = "synonym"
       MATCH_TYPE_PROPERTY = "property"
+      MATCH_TYPE_DEFINITION = "definition"
       MATCH_TYPE_LABEL = "label"
       MATCH_TYPE_LABELGENERATED = "labelGenerated"
+      NO_LANGUAGE_SUFFIX = "none"
 
       MATCH_TYPE_MAP = {
           "resource_id" => "id",
@@ -110,7 +113,7 @@ module Sinatra
           query = "\"#{solr_escape(text)}\""
           params["qt"] = "/suggest_ncbo"
           params["qf"] = " prefLabelExact#{lang_suffix}^100 prefLabelSuggestEdge#{lang_suffix}^50 synonymSuggestEdge#{lang_suffix}^10 prefLabelSuggestNgram#{lang_suffix} synonymSuggestNgram#{lang_suffix} resource_id #{QUERYLESS_FIELDS_STR}"
-          params["pf"] = "prefLabelSuggest^50"
+          params["pf"] = "prefLabelSuggest#{lang_suffix}^50"
           params["hl.fl"] = "prefLabelExact#{lang_suffix} prefLabelSuggestEdge#{lang_suffix} synonymSuggestEdge#{lang_suffix} prefLabelSuggestNgram#{lang_suffix} synonymSuggestNgram#{lang_suffix} resource_id #{QUERYLESS_FIELDS_STR}"
         else
           if text.strip.empty?
@@ -118,7 +121,7 @@ module Sinatra
           else
             query = solr_escape(text)
           end
-          params["qf"] = "resource_id^100 notation^100 oboId^100 prefLabelExact#{lang_suffix}^90 prefLabel#{lang_suffix}^70 synonymExact#{lang_suffix}^50 synonym^10 #{QUERYLESS_FIELDS_STR_NO_IDS}"
+          params["qf"] = "resource_id^100 notation^100 oboId^100 prefLabelExact#{lang_suffix}^90 prefLabel#{lang_suffix}^70 synonymExact#{lang_suffix}^50 synonym#{lang_suffix}^10 #{QUERYLESS_FIELDS_STR_NO_IDS}"
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
           params["bq"] = "idAcronymMatch:true^80"
           params["hl.fl"] = "resource_id prefLabelExact#{lang_suffix} prefLabel#{lang_suffix} synonymExact#{lang_suffix} synonym#{lang_suffix} #{QUERYLESS_FIELDS_STR}"
@@ -181,6 +184,10 @@ module Sinatra
 
         params["fq"] = filter_query
         params["q"] = query
+
+
+        # binding.pry
+
 
         query
       end
@@ -355,6 +362,33 @@ module Sinatra
         end
 
         classes_hash
+      end
+
+      def filter_language_attribute(params, class_instance, attr, is_single)
+        if class_instance.respond_to?(attr)
+          lang_param = (params["lang"] || params["language"])&.downcase
+          lang_suffix  = lang_param && !lang_param.eql?("all") ? "_#{lang_param}" : ""
+
+          if !lang_suffix.empty? && class_instance.respond_to?("#{attr}#{lang_suffix}")
+            class_instance[attr] = is_single ? class_instance["#{attr}#{lang_suffix}"][0] : class_instance["#{attr}#{lang_suffix}"]
+          elsif !lang_param.eql?("all")
+            site_label = Goo.main_languages[0]
+
+            if class_instance.respond_to?("#{attr}_#{site_label}") && class_instance["#{attr}_#{site_label}"]
+              class_instance[attr] = is_single ? class_instance["#{attr}_#{site_label}"][0] : class_instance["#{attr}_#{site_label}"]
+            elsif class_instance.respond_to?("#{attr}_#{NO_LANGUAGE_SUFFIX}") && class_instance["#{attr}_#{NO_LANGUAGE_SUFFIX}"]
+              class_instance[attr] = is_single ? class_instance["#{attr}_#{NO_LANGUAGE_SUFFIX}"][0] : class_instance["#{attr}_#{NO_LANGUAGE_SUFFIX}"]
+            elsif is_single
+              class_instance[attr] = class_instance[attr][0]
+            end
+          end
+        end
+      end
+
+      def filter_language_attributes(params, class_instance)
+        filter_language_attribute(params, class_instance, MATCH_TYPE_PREFLABEL, true)
+        filter_language_attribute(params, class_instance, MATCH_TYPE_SYNONYM, false)
+        filter_language_attribute(params, class_instance, MATCH_TYPE_DEFINITION, false)
       end
 
       def validate_params_solr_population(allowed_includes_params)
