@@ -1,5 +1,27 @@
 class AgentsController < ApplicationController
 
+  get '/ontologies/:acronym/agents' do
+    ont = Ontology.find(params["acronym"]).first
+    latest = ont.latest_submission(status: :any)
+    latest.bring(*OntologySubmission.agents_attrs)
+    properties_agents= {}
+    OntologySubmission.agents_attrs.each do |attr|
+      properties_agents[attr] = Array(latest.send(attr))
+    end
+
+    agents =  []
+    properties_agents.each do |key, value|
+      agents.concat(value.map{ |agent| agent.bring_remaining})
+    end
+    agents.uniq!
+
+    if includes_param.include?(:all) || includes_param.include?(:usages)
+      LinkedData::Models::Agent.load_agents_usages(agents)
+    end
+
+    reply agents
+  end
+
   namespace "/agents" do
     get do
       check_last_modified_collection(LinkedData::Models::Agent)
@@ -143,6 +165,4 @@ class AgentsController < ApplicationController
     end
 
   end
-
-
 end
