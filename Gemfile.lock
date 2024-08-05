@@ -57,7 +57,7 @@ GIT
 
 GIT
   remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: ca79d5a84a3b6e961118b7e1062f082e7f7b99fc
+  revision: 552fbe5faed5bb195396251066ef0e7b930939a0
   branch: development
   specs:
     ontologies_linked_data (0.0.1)
@@ -114,7 +114,6 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
-    bcrypt_pbkdf (1.1.1-x86_64-darwin)
     bigdecimal (1.4.2)
     builder (3.3.0)
     capistrano (3.19.1)
@@ -212,16 +211,13 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    grpc (1.65.2-x86_64-darwin)
-      google-protobuf (>= 3.25, < 5.0)
-      googleapis-common-protos-types (~> 1.0)
     grpc (1.65.2-x86_64-linux)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
-    hashdiff (1.1.0)
+    hashdiff (1.1.1)
     htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.6)
@@ -410,7 +406,6 @@ GEM
       hashdiff (>= 0.4.0, < 2.0.0)
 
 PLATFORMS
-  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
