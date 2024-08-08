@@ -30,51 +30,51 @@ module Sinatra
       MATCH_TYPE_LABELGENERATED = "labelGenerated"
 
       MATCH_TYPE_MAP = {
-          "resource_id" => "id",
-          MATCH_TYPE_PREFLABEL => MATCH_TYPE_PREFLABEL,
-          "prefLabelExact" => MATCH_TYPE_PREFLABEL,
-          "prefLabelSuggestEdge" => MATCH_TYPE_PREFLABEL,
-          "prefLabelSuggestNgram" => MATCH_TYPE_PREFLABEL,
-          MATCH_TYPE_SYNONYM => MATCH_TYPE_SYNONYM,
-          "synonymExact" => MATCH_TYPE_SYNONYM,
-          "synonymSuggestEdge" => MATCH_TYPE_SYNONYM,
-          "synonymSuggestNgram" => MATCH_TYPE_SYNONYM,
-          MATCH_TYPE_PROPERTY => MATCH_TYPE_PROPERTY,
-          MATCH_TYPE_LABEL => MATCH_TYPE_LABEL,
-          "labelExact" => MATCH_TYPE_LABEL,
-          "labelSuggestEdge" => MATCH_TYPE_LABEL,
-          "labelSuggestNgram" => MATCH_TYPE_LABEL,
-          MATCH_TYPE_LABELGENERATED => MATCH_TYPE_LABELGENERATED,
-          "labelGeneratedExact" => MATCH_TYPE_LABELGENERATED,
-          "labellabelGeneratedSuggestEdge" => MATCH_TYPE_LABELGENERATED,
-          "labellabelGeneratedSuggestNgram" => MATCH_TYPE_LABELGENERATED,
-          "notation" => "notation",
-          "cui" => "cui",
-          "semanticType" => "semanticType"
+        "resource_id" => "id",
+        MATCH_TYPE_PREFLABEL => MATCH_TYPE_PREFLABEL,
+        "prefLabelExact" => MATCH_TYPE_PREFLABEL,
+        "prefLabelSuggestEdge" => MATCH_TYPE_PREFLABEL,
+        "prefLabelSuggestNgram" => MATCH_TYPE_PREFLABEL,
+        MATCH_TYPE_SYNONYM => MATCH_TYPE_SYNONYM,
+        "synonymExact" => MATCH_TYPE_SYNONYM,
+        "synonymSuggestEdge" => MATCH_TYPE_SYNONYM,
+        "synonymSuggestNgram" => MATCH_TYPE_SYNONYM,
+        MATCH_TYPE_PROPERTY => MATCH_TYPE_PROPERTY,
+        MATCH_TYPE_LABEL => MATCH_TYPE_LABEL,
+        "labelExact" => MATCH_TYPE_LABEL,
+        "labelSuggestEdge" => MATCH_TYPE_LABEL,
+        "labelSuggestNgram" => MATCH_TYPE_LABEL,
+        MATCH_TYPE_LABELGENERATED => MATCH_TYPE_LABELGENERATED,
+        "labelGeneratedExact" => MATCH_TYPE_LABELGENERATED,
+        "labellabelGeneratedSuggestEdge" => MATCH_TYPE_LABELGENERATED,
+        "labellabelGeneratedSuggestNgram" => MATCH_TYPE_LABELGENERATED,
+        "notation" => "notation",
+        "cui" => "cui",
+        "semanticType" => "semanticType"
       }
 
       # list of fields that allow empty query text
       QUERYLESS_FIELDS_PARAMS = {
-          "ontologies" => nil,
-          "notation" => "notation",
-          "cui" => "cui",
-          "semantic_types" => "semanticType",
-          ONTOLOGY_TYPES_PARAM => "ontologyType",
-          ALSO_SEARCH_PROVISIONAL_PARAM => nil,
-          SUBTREE_ID_PARAM => nil
+        "ontologies" => nil,
+        "notation" => "notation",
+        "cui" => "cui",
+        "semantic_types" => "semanticType",
+        ONTOLOGY_TYPES_PARAM => "ontologyType",
+        ALSO_SEARCH_PROVISIONAL_PARAM => nil,
+        SUBTREE_ID_PARAM => nil
       }
 
       QUERYLESS_FIELDS_STR = QUERYLESS_FIELDS_PARAMS.values.compact.join(" ")
 
-      def get_term_search_query(text, params={})
+      def get_term_search_query(text, params = {})
         validate_params_solr_population(ALLOWED_INCLUDES_PARAMS)
         sort = params.delete('sort')
         # raise error if text is empty AND (none of the QUERYLESS_FIELDS_PARAMS has been passed
         # OR either an exact match OR suggest search is being executed)
         if text.nil? || text.strip.empty?
-          if !QUERYLESS_FIELDS_PARAMS.keys.any? {|k| params.key?(k)} ||
-              params[EXACT_MATCH_PARAM] == "true" ||
-              params[SUGGEST_PARAM] == "true"
+          if !QUERYLESS_FIELDS_PARAMS.keys.any? { |k| params.key?(k) } ||
+            params[EXACT_MATCH_PARAM] == "true" ||
+            params[SUGGEST_PARAM] == "true"
             raise error 400, "The search query must be provided via /search?q=<query>[&page=<pagenum>&pagesize=<pagesize>]"
           else
             text = ''
@@ -82,10 +82,6 @@ module Sinatra
           end
         end
 
-        lang = params["lang"] || params["language"]
-        lang_suffix  = lang && !lang.eql?("all") ? "_#{lang}" : ""
-
-        query = ""
         params["defType"] = "edismax"
         params["stopwords"] = "true"
         params["lowercaseOperators"] = "true"
@@ -97,19 +93,33 @@ module Sinatra
         params["hl.simple.pre"] = MATCH_HTML_PRE
         params["hl.simple.post"] = MATCH_HTML_POST
 
-        # text.gsub!(/\*+$/, '')
-
         if params[EXACT_MATCH_PARAM] == "true"
           query = "\"#{solr_escape(text)}\""
-          params["qf"] = "resource_id^20 prefLabel#{lang_suffix}^10 synonymExact#{lang_suffix} #{QUERYLESS_FIELDS_STR}"
-          params["hl.fl"] = "resource_id prefLabelExact#{lang_suffix} synonymExact#{lang_suffix} #{QUERYLESS_FIELDS_STR}"
+          params["qf"] = "resource_id^20 #{add_lang_suffix('prefLabel', '^10')} #{add_lang_suffix('synonymExact')} #{QUERYLESS_FIELDS_STR}"
+          params["hl.fl"] = "resource_id #{add_lang_suffix('prefLabelExact')} #{add_lang_suffix('synonymExact')} #{QUERYLESS_FIELDS_STR}"
         elsif params[SUGGEST_PARAM] == "true" || text[-1] == '*'
           text.gsub!(/\*+$/, '')
           query = "\"#{solr_escape(text)}\""
           params["qt"] = "/suggest_ncbo"
-          params["qf"] = " prefLabelExact#{lang_suffix}^100 prefLabelSuggestEdge#{lang_suffix}^50 synonym#{lang_suffix}SuggestEdge^10 prefLabel#{lang_suffix}SuggestNgram synonym#{lang_suffix}SuggestNgram resource_id #{QUERYLESS_FIELDS_STR}"
-          params["pf"] = "prefLabelSuggest^50"
-          params["hl.fl"] = "prefLabelExact#{lang_suffix} prefLabelSuggestEdge#{lang_suffix} synonymSuggestEdge#{lang_suffix} prefLabelSuggestNgram#{lang_suffix} synonymSuggestNgram#{lang_suffix} resource_id #{QUERYLESS_FIELDS_STR}"
+          params["qf"] = [
+            add_lang_suffix('prefLabelExact', '^100'),
+            add_lang_suffix('prefLabelSuggestEdge', '^50'),
+            add_lang_suffix('synonymSuggestEdge', '^10'),
+            add_lang_suffix('prefLabelSuggestNgram'),
+            add_lang_suffix('synonymSuggestNgram'),
+            "resource_id #{QUERYLESS_FIELDS_STR}"
+          ].join(' ')
+
+          params["pf"] = add_lang_suffix('prefLabelSuggest', '^50')
+
+          params["hl.fl"] = [
+            add_lang_suffix('prefLabelExact'),
+            add_lang_suffix('prefLabelSuggestEdge'),
+            add_lang_suffix('synonymSuggestEdge'),
+            add_lang_suffix('prefLabelSuggestNgram'),
+            add_lang_suffix('synonymSuggestNgram'),
+            "resource_id #{QUERYLESS_FIELDS_STR}"
+          ].join(' ')
         else
           if text.strip.empty?
             query = '*'
@@ -117,9 +127,19 @@ module Sinatra
             query = solr_escape(text)
           end
 
-          params["qf"] = "resource_id^100 prefLabelExact#{lang_suffix}^90 prefLabel#{lang_suffix}^70 synonymExact#{lang_suffix}^50 synonym#{lang_suffix }^10 #{QUERYLESS_FIELDS_STR}"
+          params["qf"] = [
+            "resource_id^100",
+            add_lang_suffix('prefLabelExact', '^90'),
+            add_lang_suffix('prefLabel', '^70'),
+            add_lang_suffix('synonymExact', '^50'),
+            add_lang_suffix('synonym', '^10'),
+            QUERYLESS_FIELDS_STR
+          ].join(' ')
+
           params["qf"] << " property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
-          params["hl.fl"] = "resource_id prefLabelExact#{lang_suffix} prefLabel#{lang_suffix } synonymExact#{lang_suffix} synonym#{lang_suffix } #{QUERYLESS_FIELDS_STR}"
+
+          params["hl.fl"] = "resource_id #{add_lang_suffix('prefLabelExact')} #{ add_lang_suffix('prefLabel')} #{add_lang_suffix('synonymExact')} #{add_lang_suffix('synonym')} #{QUERYLESS_FIELDS_STR}"
+
           params["hl.fl"] = "#{params["hl.fl"]} property" if params[INCLUDE_PROPERTIES_PARAM] == "true"
         end
 
@@ -220,6 +240,73 @@ module Sinatra
 
         solr_response["match_types"] = all_matches
       end
+
+      def portal_language
+        Goo.main_languages.first
+      end
+
+      def request_languages
+        lang = params['lang'] || params['languages']
+
+        return [portal_language] if lang.blank?
+
+        lang.split(',')
+      end
+
+      def request_multiple_languages?
+        request_languages.size > 1 || request_all_languages?
+      end
+
+      def request_languages?
+        !(params['lang'] || params['language']).blank?
+      end
+
+      def request_all_languages?
+        request_languages.first.eql?('all')
+      end
+
+      def add_lang_suffix(attr, rank = "")
+        if request_languages? && !request_all_languages?
+          languages = request_languages
+          languages.map { |lang| "#{attr}_#{lang}#{rank} " }.join
+        else
+          "#{attr}#{rank}"
+        end
+      end
+
+      def pref_label_by_language(doc)
+        Array(doc["prefLabel_#{request_languages.first}".to_sym]).first || Array(doc["prefLabel_none".to_sym]).first || Array(doc[:prefLabel]).first
+      end
+
+      def filter_attrs_by_language(doc)
+        lang_values = {}
+        doc.each do |k, v|
+          attr, lang = k.to_s.split('_')
+
+          next if [:ontology_rank, :resource_id, :resource_model].include?(k)
+          next if lang.blank? || attr.blank?
+          next if !(request_languages + %w[none]).include?(lang) && !request_all_languages?
+
+          lang_values[attr.to_sym] ||= {}
+          lang_values[attr.to_sym][lang] ||= []
+          lang_values[attr.to_sym][lang] += v
+        end
+
+        if request_multiple_languages?
+          lang_values.each do |k, lang_vals|
+            doc[k] = lang_vals
+          end
+        else
+          lang_values.each do |k, lang_vals|
+            doc[k] = lang_vals.map { |l, v| l.eql?('none') ? nil : v }.compact.flatten + Array(lang_vals['none'])
+          end
+
+          doc[:prefLabel] =  pref_label_by_language(doc)
+        end
+
+        doc
+      end
+
 
       # see https://github.com/rsolr/rsolr/issues/101
       # and https://github.com/projecthydra/active_fedora/commit/75b4afb248ee61d9edb56911b2ef51f30f1ce17f
@@ -348,7 +435,7 @@ module Sinatra
           doc[:submission] = old_class.submission
           doc[:properties] = MultiJson.load(doc.delete(:propertyRaw)) if include_param_contains?(:properties)
           instance = LinkedData::Models::Class.read_only(doc)
-          instance.prefLabel =  instance.prefLabel.first if instance.prefLabel.is_a?(Array)
+          instance.prefLabel = pref_label_by_language(doc)
           classes_hash[ont_uri_class_uri] = instance
         end
 

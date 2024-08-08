@@ -36,7 +36,6 @@ config/environments/*
 !config/environments/config.rb.sample
 
 #ignore capistrano deployment
-config/deploy/*
 config/*.p12
 
 # Ignore generated test data
