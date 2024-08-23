@@ -4,24 +4,24 @@ class TestPropertiesController < TestCase
 
   def self.before_suite
     count, acronyms, bro = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-                                                                                                  process_submission: true,
-                                                                                                  process_options:{process_rdf: true, extract_metadata: false},
-                                                                                                  acronym: "BROSEARCHTEST",
-                                                                                                  name: "BRO Search Test",
-                                                                                                  file_path: "./test/data/ontology_files/BRO_v3.2.owl",
-                                                                                                  ont_count: 1,
-                                                                                                  submission_count: 1,
-                                                                                                  ontology_type: "VALUE_SET_COLLECTION"
+                                                                                                process_submission: true,
+                                                                                                process_options: { process_rdf: true, extract_metadata: false },
+                                                                                                acronym: "BROSEARCHTEST",
+                                                                                                name: "BRO Search Test",
+                                                                                                file_path: "./test/data/ontology_files/BRO_v3.2.owl",
+                                                                                                ont_count: 1,
+                                                                                                submission_count: 1,
+                                                                                                ontology_type: "VALUE_SET_COLLECTION"
                                                                                               })
 
     count, acronyms, mccl = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
-                                                                                                   process_submission: true,
-                                                                                                   process_options:{process_rdf: true, extract_metadata: true},
-                                                                                                   acronym: "MCCLSEARCHTEST",
-                                                                                                   name: "MCCL Search Test",
-                                                                                                   file_path: "./test/data/ontology_files/CellLine_OWL_BioPortal_v1.0.owl",
-                                                                                                   ont_count: 1,
-                                                                                                   submission_count: 1
+                                                                                                 process_submission: true,
+                                                                                                 process_options: { process_rdf: true, extract_metadata: true },
+                                                                                                 acronym: "MCCLSEARCHTEST",
+                                                                                                 name: "MCCL Search Test",
+                                                                                                 file_path: "./test/data/ontology_files/CellLine_OWL_BioPortal_v1.0.owl",
+                                                                                                 ont_count: 1,
+                                                                                                 submission_count: 1
                                                                                                })
     @@ontologies = bro.concat(mccl)
     @@acronyms = @@ontologies.map { |ont| ont.bring_remaining; ont.acronym }
@@ -47,12 +47,31 @@ class TestPropertiesController < TestCase
     get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fbioontology.org%2Fontologies%2FBiomedicalResourceOntology.owl%23Originator"
     assert last_response.ok?
     results = MultiJson.load(last_response.body)
+
     assert results.is_a?(Hash)
     assert_equal ["Originator"], results["label"]
     assert_equal "http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Originator", results["@id"]
+    assert results.key?('range')
+    assert results.key?('domain')
 
     get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fbioontology.org%2Fontologies%2FBiomedicalResourceOntology.owl%23DummyProp"
     assert_equal 404, last_response.status
+  end
+
+  def test_single_property_all_attributes
+    get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fbioontology.org%2Fontologies%2FBiomedicalResourceOntology.owl%23Originator?display=all"
+    assert last_response.ok?
+    results = MultiJson.load(last_response.body)
+    assert_equal ["Originator"], results["label"]
+    assert results.key?('range')
+    assert results.key?('domain')
+
+    assert_equal results["properties"]["http://www.w3.org/2000/01/rdf-schema#comment"], ["Originator of a class"]
+    assert_equal results["properties"]["http://www.w3.org/2004/02/skos/core#prefLabel"], ["Originator"]
+    assert_equal results["properties"]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"], ["http://www.w3.org/2002/07/owl#DatatypeProperty"]
+    assert_equal results["properties"]["http://www.w3.org/2000/01/rdf-schema#domain"], ["http://bioontology.org/ontologies/BiomedicalResourceOntology.owl#Algorithm"]
+    assert_equal results["properties"]["http://www.w3.org/2000/01/rdf-schema#label"], ["Originator"]
+
   end
 
   def test_property_roots
@@ -66,10 +85,10 @@ class TestPropertiesController < TestCase
     assert_includes [18, 13], opr.length
     # count datatype properties
     dpr = pr.select { |p| p["@type"] == "http://www.w3.org/2002/07/owl#DatatypeProperty" }
-    assert_includes [32,31], dpr.length
+    assert_includes [32, 31], dpr.length
     # count annotation properties
     apr = pr.select { |p| p["@type"] == "http://www.w3.org/2002/07/owl#AnnotationProperty" }
-    assert_includes [12,8], apr.length
+    assert_includes [12, 8], apr.length
     # check for non-root properties
 
     assert_empty pr.select { |p| ["http://www.w3.org/2004/02/skos/core#broaderTransitive",
@@ -174,7 +193,7 @@ class TestPropertiesController < TestCase
     dn = MultiJson.load(last_response.body)
     assert_equal 2, dn.length
     assert_equal ["http://www.semanticweb.org/ontologies/2009/9/12/Ontology1255323704656.owl#overExpress",
-                 "http://www.semanticweb.org/ontologies/2009/9/12/Ontology1255323704656.owl#underExpress"].sort, dn.map { |d| d["@id"] }.sort
+                  "http://www.semanticweb.org/ontologies/2009/9/12/Ontology1255323704656.owl#underExpress"].sort, dn.map { |d| d["@id"] }.sort
   end
 
   def test_property_parents
@@ -207,7 +226,7 @@ class TestPropertiesController < TestCase
     assert_empty ch
 
     get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23semanticRelation"
-    return unless last_response.ok? #depending if owlapi import SKOS
+    return unless last_response.ok? # depending if owlapi import SKOS
 
     get "/ontologies/#{@@acronyms.first}/properties/http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23semanticRelation/children"
     assert last_response.ok?

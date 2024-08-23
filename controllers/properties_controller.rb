@@ -24,7 +24,9 @@ class PropertiesController < ApplicationController
     get '/:property' do
       prop = params[:property]
       ont, submission = get_ontology_and_submission
-      p = ont.property(prop, submission, display_all_attributes: false)
+      bring_unmapped = bring_unmapped?(includes_param)
+
+      p = ont.property(prop, submission, display_all_attributes: bring_unmapped)
       error 404, "Property #{prop} not found in ontology #{ont.id.to_s}" if p.nil?
       reply 200, p
     end
