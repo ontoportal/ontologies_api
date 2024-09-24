@@ -9,6 +9,7 @@ gem 'oj', '~> 3.0'
 gem 'parseconfig'
 gem 'rack'
 gem 'rake', '~> 10.0'
+gem 'rexml' # Investigate why unicorn fails to start under ruby 3 without adding rexml gem to the Gemfile
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-advanced-routes'
 gem 'sinatra-contrib', '~> 1.0'
@@ -77,4 +78,5 @@ group :test do
   gem 'simplecov', require: false
   gem 'simplecov-cobertura' # for codecov.io
   gem 'webmock', '~> 3.19.1'
+  gem 'webrick'
 end
