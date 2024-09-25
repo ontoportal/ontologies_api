@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 70007faf43d0d96292809f89f15a27a757ccaa25
-  branch: develop
+  revision: 2cec53c2d84179171def81d7dc0a18e462e78fc2
+  branch: master
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 2fb892f92f66b876b9793944124f72821f3b3eb8
-  branch: develop
+  revision: 63c986880aa88c9384043e6611a682434a14aba7
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 3bb491139267efc37d3b752888824ca3dd976e85
-  branch: develop
+  revision: 15ccdaa2835be9f35f9c3afdcc4ed5bf5d130999
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f92a42f660635522eb8709e618ff2e641aef0d17
-  branch: develop
+  revision: 013abea4af3b10910ec661dbb358a4b6cae198a4
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: c30887ee907acd39500cae6c12f45edb06fe0802
-  branch: develop
+  revision: a9da0982eef16ea8272002d14d6b8851dc07fb0a
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -76,8 +76,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 1657f0dd69fd4b522d3549a6848670175f5e98cc
-  branch: develop
+  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
+  branch: master
   specs:
     sparql-client (1.0.1)
       json_pure (>= 1.4)
@@ -215,7 +215,7 @@ GEM
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.7.2)
-    jwt (2.9.0)
+    jwt (2.9.1)
       base64
     kgio (2.11.4)
     language_server-protocol (3.17.0.3)
@@ -387,7 +387,7 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webrick (1.8.1)
+    webrick (1.8.2)
 
 PLATFORMS
   aarch64-linux
