@@ -10,10 +10,8 @@ module Sinatra
 
         slice = current_slice()
 
-        if obj.is_a?(Enumerable)
-          if obj.first.is_a?(LinkedData::Models::Ontology)
-            obj.delete_if {|o| !slice.ontology_id_set.include?(o.id.to_s)}
-          end
+        if obj.is_a?(Enumerable) && obj.first.is_a?(LinkedData::Models::Ontology)
+          obj = obj.select { |o| slice.ontology_id_set.include?(o.id.to_s) }
         end
         obj
       end
