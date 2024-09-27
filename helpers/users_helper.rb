@@ -12,7 +12,7 @@ module Sinatra
         user = env["REMOTE_USER"]
 
         if obj.first.is_a?(LinkedData::Models::Ontology)
-          obj.delete_if {|o| !user.custom_ontology_id_set.include?(o.id.to_s)}
+          obj = obj.select {|o| user.custom_ontology_id_set.include?(o.id.to_s)}
         end
 
         obj
