@@ -1,7 +1,8 @@
 require_relative '../test_case'
 
 class TestBatchController < TestCase
-  def self.before_suite
+  def before_suite
+    LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
     @@ontologies = LinkedData::SampleData::Ontology.sample_owl_ontologies(process_submission: true)
   end
 
@@ -25,7 +26,7 @@ class TestBatchController < TestCase
     assert last_response.ok?
     data = MultiJson.load(last_response.body)
     classes = data["http://www.w3.org/2002/07/owl#Class"]
-    assert classes.length == 4
+    assert_equal 4, classes.length
     classes.each do |klass|
       assert_instance_of String, klass["prefLabel"]
       assert_instance_of Array, klass["synonym"]
@@ -75,11 +76,11 @@ class TestBatchController < TestCase
     assert last_response.ok?
     data = MultiJson.load(last_response.body)
     classes = data["http://www.w3.org/2002/07/owl#Class"]
-    assert classes.length == 6
+    assert_equal 6, classes.length
     classes.each do |klass|
       assert_instance_of String, klass["prefLabel"]
-      assert !klass["synonym"]
-      assert klass["prefLabel"] == class_ids[klass["@id"]]
+      refute klass["synonym"]
+      assert_equal klass["prefLabel"], class_ids[klass["@id"]]
     end
   end
 
@@ -87,6 +88,7 @@ class TestBatchController < TestCase
   def test_class_all_bro
     mccl = @@ontologies.select { |y| y.id.to_s.include? "MCCL"}.first
     assert mccl, "mccl is not found to execute batch test."
+    # binding.pry
     classes = LinkedData::Models::Class.in(mccl.latest_submission).include(:prefLabel).page(1,500).read_only.all
     class_ids = {}
     classes.each do |klass|
@@ -101,9 +103,10 @@ class TestBatchController < TestCase
     }
     post "/batch/", call_params
     assert last_response.ok?
+#    refute last_response.ok?
     data = MultiJson.load(last_response.body)
     classes_response = data["http://www.w3.org/2002/07/owl#Class"]
-    assert classes_response.length == classes.length
+    assert_equal classes.length, classes_response.length
     classes_response.each do |klass|
       assert_instance_of String, klass["prefLabel"]
       assert klass["prefLabel"] == class_ids[klass["@id"]]

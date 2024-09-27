@@ -20,9 +20,9 @@ ENV['RACK_ENV'] = 'test'
 
 require_relative 'test_log_file'
 require_relative '../app'
-require 'minitest/unit'
+require 'minitest/autorun'
+require 'minitest/hooks/test'
 require 'webmock/minitest'
-MiniTest::Unit.autorun
 WebMock.allow_net_connect!
 require 'rack/test'
 require 'multi_json'
@@ -62,7 +62,9 @@ unless LinkedData.settings.goo_host.match(safe_hosts) &&
   $stdout.flush
 end
 
-class AppUnit < MiniTest::Unit
+class AppUnit < Minitest::Test
+  include Minitest::Hooks
+
   def count_pattern(pattern)
     q = "SELECT (count(DISTINCT ?s) as ?c) WHERE { #{pattern} }"
     rs = Goo.sparql_query_client.query(q)
@@ -90,22 +92,26 @@ class AppUnit < MiniTest::Unit
     end
   end
 
-  def before_suites
+  def before_suite
     # code to run before the first test (gets inherited in sub-tests)
   end
 
-  def after_suites
+  def after_suite
     # code to run after the last test (gets inherited in sub-tests)
   end
 
-  def _run_suites(suites, type)
-    begin
-      before_suites
-      super(suites, type)
-    ensure
-      after_suites
-    end
+  def before_all
+    super
+    backend_4s_delete
+    before_suite
   end
+
+  def after_all
+    after_suite
+    super
+  end
+
+
 
   def _run_suite(suite, type)
     begin
@@ -124,12 +130,12 @@ class AppUnit < MiniTest::Unit
   end
 end
 
-AppUnit.runner = AppUnit.new
+
 
 # All tests should inherit from this class.
 # Use 'rake test' from the command line to run tests.
 # See http://www.sinatrarb.com/testing.html for testing information
-class TestCase < MiniTest::Unit::TestCase
+class TestCase < AppUnit
   include Rack::Test::Methods
 
 
@@ -220,16 +226,12 @@ class TestCase < MiniTest::Unit::TestCase
   end
 
   def unused_port
-    max_retries = 5
-    retries = 0
-    server_port = Random.rand(55000..65535)
-    while port_in_use?(server_port)
-      retries += 1
-      break if retries >= max_retries
-      server_port = Random.rand(55000..65535)
-    end
-    server_port
+    server = TCPServer.new('127.0.0.1', 0)
+    port = server.addr[1]
+    server.close
+    port
   end
+
   private
   def port_in_use?(port)
     server = TCPServer.new(port)

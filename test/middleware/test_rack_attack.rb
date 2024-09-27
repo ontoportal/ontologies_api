@@ -5,8 +5,8 @@ require_relative '../test_case'
 RACK_CONFIG = File.join([settings.root, "config.ru"])
 
 class TestRackAttack < TestCase
-
-  def self.before_suite
+  
+  def before_suite
     # Store app settings
     @@auth_setting = LinkedData.settings.enable_security
     @@throttling_setting = LinkedData.settings.enable_throttling
@@ -35,7 +35,7 @@ class TestRackAttack < TestCase
     $stderr = File.open("/dev/null", "w")
 
 
-    @@port1 = self.new('').unused_port
+    @@port1 = unused_port
 
     # Fork the process to create two servers. This isolates the Rack::Attack configuration, which makes other tests fail if included.
     @@pid1 = fork do
@@ -47,7 +47,7 @@ class TestRackAttack < TestCase
       Signal.trap("HUP") { Process.exit! }
     end
 
-    @@port2 =  self.new('').unused_port
+    @@port2 = unused_port
     @@pid2 = fork do
       require_relative '../../config/rack_attack'
       Rack::Server.start(
@@ -61,7 +61,7 @@ class TestRackAttack < TestCase
     sleep(5)
   end
 
-  def self.after_suite
+  def after_suite
     # Restore app settings
     LinkedData.settings.enable_security = @@auth_setting
     LinkedData::OntologiesAPI.settings.enable_throttling = @@throttling_setting
