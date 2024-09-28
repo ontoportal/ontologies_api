@@ -3,9 +3,7 @@ require_relative '../test_case'
 # TODO: remove completely after 2025-10-27
 class TestRecommenderV1Controller < TestCase
   def test_recommender_v1_deprecation
-    params = {
-       :text => 'recommender v1 is deprecated'
-    }
+    params = { text: 'recommender v1 is deprecated' }
     get "/recommender_v1", params
     assert_equal 410, last_response.status
   end

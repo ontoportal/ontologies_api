@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 70007faf43d0d96292809f89f15a27a757ccaa25
+  revision: aaa3941b48edbc317ec42ba4ecb44c0defeccef6
   branch: develop
   specs:
     goo (0.0.2)
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 2fb892f92f66b876b9793944124f72821f3b3eb8
+  revision: b2731c98bfef0958fecb440c8648b7755a670895
   branch: develop
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 3bb491139267efc37d3b752888824ca3dd976e85
+  revision: cf66e7d076a94e6d669ffeb09c6bcd988226ece3
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: c30887ee907acd39500cae6c12f45edb06fe0802
+  revision: a22fae3150d8e84e3b6fd19223a5ce2111e8ce94
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -103,9 +103,11 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.22.5)
-      i18n (~> 0.6, >= 0.6.4)
-      multi_json (~> 1.0)
+    activesupport (5.2.8.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     airbrussh (1.5.3)
@@ -116,7 +118,8 @@ GEM
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     bcrypt_pbkdf (1.1.1-arm64-darwin)
-    bigdecimal (1.4.2)
+    bcrypt_pbkdf (1.1.1-x86_64-darwin)
+    bigdecimal (3.1.8)
     builder (3.3.0)
     capistrano (3.19.1)
       airbrussh (>= 1.0.0)
@@ -133,8 +136,7 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
-    crack (1.0.0)
-      bigdecimal
+    crack (0.4.5)
       rexml
     cube-ruby (0.0.3)
     dante (0.2.0)
@@ -154,6 +156,7 @@ GEM
       faraday (~> 2.0)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     gapic-common (0.22.0)
       faraday (>= 1.9, < 3.a)
@@ -179,6 +182,7 @@ GEM
     google-cloud-errors (1.4.0)
     google-protobuf (3.25.5-aarch64-linux)
     google-protobuf (3.25.5-arm64-darwin)
+    google-protobuf (3.25.5-x86_64-darwin)
     google-protobuf (3.25.5-x86_64-linux)
     googleapis-common-protos (1.6.0)
       google-protobuf (>= 3.18, < 5.a)
@@ -199,6 +203,9 @@ GEM
     grpc (1.66.0-arm64-darwin)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
+    grpc (1.66.0-x86_64-darwin)
+      google-protobuf (>= 3.25, < 5.0)
+      googleapis-common-protos-types (~> 1.0)
     grpc (1.66.0-x86_64-linux)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
@@ -209,13 +216,13 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.7)
       domain_name (~> 0.5)
-    i18n (0.9.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     json (2.7.2)
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.7.2)
-    jwt (2.9.0)
+    jwt (2.9.1)
       base64
     kgio (2.11.4)
     language_server-protocol (3.17.0.3)
@@ -233,7 +240,9 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2024.0903)
     mini_mime (1.1.5)
-    minitest (4.7.5)
+    minitest (5.25.1)
+    minitest-hooks (1.5.2)
+      minitest (> 5.3)
     minitest-stub_any_instance (1.0.3)
     mlanett-redis-lock (0.2.7)
       redis
@@ -257,7 +266,9 @@ GEM
     net-ssh (7.2.3)
     netrc (0.11.0)
     newrelic_rpm (9.13.0)
-    oj (3.16.1)
+    oj (3.16.6)
+      bigdecimal (>= 3.0)
+      ostruct (>= 0.2)
     omni_logger (0.1.4)
       logger
     os (1.1.4)
@@ -369,10 +380,11 @@ GEM
       ostruct
     systemu (2.6.5)
     temple (0.10.3)
+    thread_safe (0.3.6)
     tilt (2.4.0)
     timeout (0.4.1)
-    tzinfo (2.0.6)
-      concurrent-ruby (~> 1.0)
+    tzinfo (1.2.11)
+      thread_safe (~> 0.1)
     unicode-display_width (2.6.0)
     unicorn (6.1.0)
       kgio (~> 2.6)
@@ -387,35 +399,38 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webrick (1.8.1)
+    webrick (1.8.2)
 
 PLATFORMS
   aarch64-linux
   arm64-darwin-22
+  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
-  activesupport (~> 3.2)
+  activesupport (~> 5)
   bcrypt_pbkdf (>= 1.0, < 2.0)
-  bigdecimal (= 1.4.2)
+  bigdecimal
   capistrano (~> 3)
   capistrano-bundler
   capistrano-locally
   capistrano-rbenv
+  crack (= 0.4.5)
   cube-ruby
   ed25519 (>= 1.2, < 2.0)
   ffi
   goo!
   haml (~> 5.2.2)
   json-schema (~> 2.0)
-  minitest (~> 4.0)
+  minitest (~> 5.0)
+  minitest-hooks (~> 1.5)
   minitest-stub_any_instance
-  multi_json (~> 1.0)
+  multi_json
   ncbo_annotator!
   ncbo_cron!
   ncbo_ontology_recommender!
   newrelic_rpm
-  oj (~> 3.0)
+  oj
   ontologies_linked_data!
   parseconfig
   rack
