@@ -35,8 +35,8 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          build-args: |
-            RUBY_VERSION=2.7
+          # build-args: |
+          #   RUBY_VERSION=2.7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
