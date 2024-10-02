@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: cf66e7d076a94e6d669ffeb09c6bcd988226ece3
+  revision: 9d1b6ba54019cac2eeeb5c173e452b4eebbeaa3a
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 8572cd25722cab2fbb73813d0fe011b5647d5067
+  revision: 812dd78f02b77c9c6d579b0febf1c2a42d513022
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -154,10 +154,9 @@ GEM
       net-http
     faraday-retry (2.2.1)
       faraday (~> 2.0)
-    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0)
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86_64-darwin)
-    ffi (1.17.0-x86_64-linux-gnu)
     gapic-common (0.22.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
@@ -236,9 +235,10 @@ GEM
       net-pop
       net-smtp
     method_source (1.1.0)
-    mime-types (3.5.2)
+    mime-types (3.6.0)
+      logger
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0903)
+    mime-types-data (3.2024.1001)
     mini_mime (1.1.5)
     minitest (5.25.1)
     minitest-hooks (1.5.2)
@@ -263,7 +263,7 @@ GEM
       net-ssh (>= 5.0.0, < 8.0.0)
     net-smtp (0.5.0)
       net-protocol
-    net-ssh (7.2.3)
+    net-ssh (7.3.0)
     netrc (0.11.0)
     newrelic_rpm (9.14.0)
     oj (3.16.6)
@@ -404,6 +404,7 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin-22
+  arm64-darwin-23
   x86_64-darwin-23
   x86_64-linux
 
@@ -462,4 +463,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.5.19
+   2.5.11
