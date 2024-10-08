@@ -46,14 +46,24 @@ class UsersController < ApplicationController
       params["display"] = User.attributes.join(",") # used to serialize everything via the serializer
       user = LinkedData::Models::User.where(email: email, username: username).include(User.goo_attrs_to_load(includes_param)).first
       error 404, "User not found" unless user
+
+      user.bring(:resetToken)
+      user.bring(:resetTokenExpireTime)
+      user.bring(:passwordHash)
+
       if token.eql?(user.resetToken)
         error 401, "Invalid password reset token" if user.resetTokenExpireTime.nil?
         error 401, "The password reset token expired" if user.resetTokenExpireTime < Time.now.to_i
         user.resetToken = nil
         user.resetTokenExpireTime = nil
-        user.save(override_security: true) if user.valid?
-        user.show_apikey = true
-        reply user
+
+        if user.valid?
+          user.save(override_security: true)
+          user.show_apikey = true
+          reply user
+        else
+          error 422, "Error resetting password"
+        end
       else
         error 401, "Password reset not authorized with this token"
       end

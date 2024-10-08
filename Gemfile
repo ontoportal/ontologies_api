@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
-
-gem 'activesupport', '~> 3.2'
+gem 'activesupport', '~> 5'
 # see https://github.com/ncbo/ontologies_api/issues/69
-gem 'bigdecimal', '1.4.2'
+gem 'bigdecimal'
+# gem 'faraday', '~> 1.9'
 gem 'json-schema', '~> 2.0'
-gem 'multi_json', '~> 1.0'
-gem 'oj', '~> 3.0'
+gem 'multi_json'
+gem 'oj'
 gem 'parseconfig'
 gem 'rack'
 gem 'rake', '~> 10.0'
@@ -43,12 +43,12 @@ gem 'redcarpet'
 
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
-gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'master'
-gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'master'
-gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
-gem 'goo', github: 'ncbo/goo', branch: 'master'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'master'
+gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'develop'
+gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'develop'
+gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'develop'
+gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'develop'
+gem 'goo', github: 'ncbo/goo', branch: 'develop'
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'develop'
 
 
 group :development do
@@ -72,7 +72,9 @@ group :profiling do
 end
 
 group :test do
-  gem 'minitest', '~> 4.0'
+  gem 'crack', '0.4.5'
+  gem 'minitest', '~> 5.0'
+  gem 'minitest-hooks', "~> 1.5"
   gem 'minitest-stub_any_instance'
   gem 'rack-test'
   gem 'simplecov', require: false
