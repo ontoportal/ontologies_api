@@ -20,8 +20,10 @@ ENV['RACK_ENV'] = 'test'
 
 require_relative 'test_log_file'
 require_relative '../app'
-require 'minitest/unit'
-MiniTest::Unit.autorun
+require 'minitest/autorun'
+require 'minitest/hooks/test'
+require 'webmock/minitest'
+WebMock.allow_net_connect!
 require 'rack/test'
 require 'multi_json'
 require 'oj'
@@ -60,7 +62,9 @@ unless LinkedData.settings.goo_host.match(safe_hosts) &&
   $stdout.flush
 end
 
-class AppUnit < MiniTest::Unit
+class AppUnit < Minitest::Test
+  include Minitest::Hooks
+
   def count_pattern(pattern)
     q = "SELECT (count(DISTINCT ?s) as ?c) WHERE { #{pattern} }"
     rs = Goo.sparql_query_client.query(q)
@@ -88,22 +92,26 @@ class AppUnit < MiniTest::Unit
     end
   end
 
-  def before_suites
+  def before_suite
     # code to run before the first test (gets inherited in sub-tests)
   end
 
-  def after_suites
+  def after_suite
     # code to run after the last test (gets inherited in sub-tests)
   end
 
-  def _run_suites(suites, type)
-    begin
-      before_suites
-      super(suites, type)
-    ensure
-      after_suites
-    end
+  def before_all
+    super
+    backend_4s_delete
+    before_suite
   end
+
+  def after_all
+    after_suite
+    super
+  end
+
+
 
   def _run_suite(suite, type)
     begin
@@ -122,12 +130,12 @@ class AppUnit < MiniTest::Unit
   end
 end
 
-AppUnit.runner = AppUnit.new
+
 
 # All tests should inherit from this class.
 # Use 'rake test' from the command line to run tests.
 # See http://www.sinatrarb.com/testing.html for testing information
-class TestCase < MiniTest::Unit::TestCase
+class TestCase < AppUnit
   include Rack::Test::Methods
 
 
@@ -144,6 +152,9 @@ class TestCase < MiniTest::Unit::TestCase
   # @option options [TrueClass, FalseClass] :random_submission_count Use a random number of submissions between 1 and :submission_count
   # @option options [TrueClass, FalseClass] :process_submission Parse the test ontology file
   def create_ontologies_and_submissions(options = {})
+    if options[:process_submission] && options[:process_options].nil?
+      options[:process_options] =  { process_rdf: true, extract_metadata: false, generate_missing_labels: false }
+    end
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions(options)
   end
 
@@ -212,6 +223,22 @@ class TestCase < MiniTest::Unit::TestCase
     user.bring_remaining
     user.role = [LinkedData::Models::Users::Role.find(LinkedData::Models::Users::Role::DEFAULT).first]
     user.save
+  end
+
+  def unused_port
+    server = TCPServer.new('127.0.0.1', 0)
+    port = server.addr[1]
+    server.close
+    port
+  end
+
+  private
+  def port_in_use?(port)
+    server = TCPServer.new(port)
+    server.close
+    false
+  rescue Errno::EADDRINUSE
+    true
   end
 
 end

@@ -2,9 +2,12 @@ require_relative '../test_case'
 
 class TestPropertiesSearchController < TestCase
 
-  def self.before_suite
+  def before_suite
+    self.backend_4s_delete
+
     count, acronyms, bro = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
                                                                                                   process_submission: true,
+                                                                                                  process_options:{process_rdf: true, extract_metadata: false, index_properties: true},
                                                                                                   acronym: "BROSEARCHTEST",
                                                                                                   name: "BRO Search Test",
                                                                                                   file_path: "./test/data/ontology_files/BRO_v3.2.owl",
@@ -15,6 +18,7 @@ class TestPropertiesSearchController < TestCase
 
     count, acronyms, mccl = LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
                                                                                                    process_submission: true,
+                                                                                                   process_options:{process_rdf: true, extract_metadata: false, index_properties: true},
                                                                                                    acronym: "MCCLSEARCHTEST",
                                                                                                    name: "MCCL Search Test",
                                                                                                    file_path: "./test/data/ontology_files/CellLine_OWL_BioPortal_v1.0.owl",
@@ -24,7 +28,7 @@ class TestPropertiesSearchController < TestCase
     @@ontologies = bro.concat(mccl)
   end
 
-  def self.after_suite
+  def after_suite
     LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
     LinkedData::Models::Ontology.indexClear(:property)
     LinkedData::Models::Ontology.indexCommit(nil, :property)

@@ -1,7 +1,7 @@
 require_relative '../test_case'
 
 class TestUsersController < TestCase
-  def self.before_suite
+  def before_suite
     # Create a bunch of test users
     @@usernames = %w(fred goerge henry ben mark matt charlie)
 
@@ -46,6 +46,21 @@ class TestUsersController < TestCase
     assert last_response.ok?
 
     assert_equal "fred", MultiJson.load(last_response.body)["username"]
+  end
+
+  def test_hide_sensitive_data
+    user = @@users[0]
+    reset_token = token(36)
+    user.resetToken = reset_token
+    user.resetTokenExpireTime = Time.now.to_i - 2.hours.to_i
+    user.save
+
+    username = user.username
+    get "/users/#{username}?display=resetToken,resetTokenExpireTime"
+    assert last_response.ok?
+
+    refute_includes MultiJson.load(last_response.body), 'resetToken', "resetToken should NOT be included in the response"
+    refute_includes MultiJson.load(last_response.body), 'resetTokenExpireTime', "resetTokenExpireTime should NOT be included in the response"
   end
 
   def test_create_new_user
@@ -170,6 +185,13 @@ class TestUsersController < TestCase
   end
 
   private
+
+  def token(len)
+    chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
+    token = ""
+    1.upto(len) { |i| token << chars[rand(chars.size-1)] }
+    token
+  end
 
   def _delete_user(username)
     LinkedData::Models::User.find(@@username).first&.delete

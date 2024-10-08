@@ -2,11 +2,11 @@ require 'webrick'
 require_relative '../test_case'
 
 class TestOntologiesController < TestCase
-  def self.before_suite
-    _set_vars
-    _delete
-    _create_user
-    _create_onts
+  def before_suite
+    self.class._set_vars
+    self.class._delete
+    self.class._create_user
+    self.class._create_onts
   end
 
   def teardown
@@ -188,7 +188,9 @@ class TestOntologiesController < TestCase
   end
 
   def test_download_ontology_csv
-    num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1, process_submission: true)
+    num_onts_created, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 1, submission_count: 1,
+                                                                                     process_submission: true,
+                                                                                     process_options:{process_rdf: true, extract_metadata: true, index_search: true})
     ont = onts.first
     acronym = created_ont_acronyms.first
 
@@ -220,13 +222,13 @@ class TestOntologiesController < TestCase
     begin
       allowed_user = User.new({
         username: "allowed",
-        email: "test@example.org",
+        email: "test1@example.org",
         password: "12345"
       })
       allowed_user.save
       blocked_user = User.new({
         username: "blocked",
-        email: "test@example.org",
+        email: "test2@example.org",
         password: "12345"
       })
       blocked_user.save
@@ -262,7 +264,7 @@ class TestOntologiesController < TestCase
     acronym = ont.acronym
     sub = ont.submissions.first
     sub.bring(:pullLocation) if sub.bring?(:pullLocation)
-    assert_equal(nil, sub.pullLocation, msg="Pull location should be nil at this point in the test")
+    assert_nil sub.pullLocation, msg = "Pull location should be nil at this point in the test"
 
     allowed_user = ont.administeredBy.first
     allowed_user.bring(:apikey) if allowed_user.bring?(:apikey)
@@ -294,6 +296,32 @@ class TestOntologiesController < TestCase
       del = User.find("blocked").first
       del.delete if del
     end
+  end
+
+  def test_detach_a_view
+    view = Ontology.find(@@view_acronym).include(:viewOf).first
+    ont =  view.viewOf
+    refute_nil view
+    refute_nil ont
+
+    remove_view_of = {viewOf: ''}
+    patch "/ontologies/#{@@view_acronym}", MultiJson.dump(remove_view_of), "CONTENT_TYPE" => "application/json"
+
+    assert last_response.status == 204
+
+    get "/ontologies/#{@@view_acronym}"
+    onto = MultiJson.load(last_response.body)
+    assert_nil onto["viewOf"]
+
+
+    add_view_of = {viewOf: @@acronym}
+    patch "/ontologies/#{@@view_acronym}", MultiJson.dump(add_view_of), "CONTENT_TYPE" => "application/json"
+
+    assert last_response.status == 204
+
+    get "/ontologies/#{@@view_acronym}?include=all"
+    onto = MultiJson.load(last_response.body)
+    assert_equal onto["viewOf"], ont.id.to_s
   end
 
   private

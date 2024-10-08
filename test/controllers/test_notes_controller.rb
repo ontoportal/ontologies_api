@@ -3,9 +3,9 @@ require_relative '../test_case'
 
 class TestNotesController < TestCase
 
-  def self.before_suite
-    self.new("before_suite").delete_ontologies_and_submissions
-    @@ontology, @@cls = self.new("before_suite")._ontology_and_class
+  def before_suite
+    self.delete_ontologies_and_submissions
+    @@ontology, @@cls = self._ontology_and_class
 
     @@note_user = "test_note_user"
     @@user = LinkedData::Models::User.new(
@@ -41,7 +41,7 @@ class TestNotesController < TestCase
     get '/notes'
     assert last_response.ok?
     notes = MultiJson.load(last_response.body)
-    assert notes.length >= 5
+    assert_operator 5, :<=, notes.length
   end
 
   def test_single_note
@@ -62,21 +62,22 @@ class TestNotesController < TestCase
       relatedOntology: [@@ontology.id.to_s]
     }
     post "/notes", MultiJson.dump(note), "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 201
+    assert_equal 201, last_response.status
 
     new_note = MultiJson.load(last_response.body)
     get new_note["@id"]
     assert last_response.ok?
+    assert_equal 200, last_response.status
 
     note_changes = {body: "New testing body"}
     patch new_note["@id"], MultiJson.dump(note_changes), "CONTENT_TYPE" => "application/json"
-    assert last_response.status == 204
+    assert_equal 204, last_response.status
     get new_note["@id"]
     patched_note = MultiJson.load(last_response.body)
     assert_equal patched_note["body"], note_changes[:body]
 
     delete new_note["@id"]
-    assert last_response.status == 204
+    assert_equal 204, last_response.status
   end
 
   def test_proposal_lifecycle
@@ -97,21 +98,23 @@ class TestNotesController < TestCase
      }
 
      post "/notes", MultiJson.dump(note), "CONTENT_TYPE" => "application/json"
-     assert last_response.status == 201
+     assert_equal 201, last_response.status
 
      new_note = MultiJson.load(last_response.body)
+     # assert_equal 'blah', new_note
      get new_note["@id"]
      assert last_response.ok?
 
      note_changes = {proposal: {label: "New sleed study facility"}}
      patch new_note["@id"], MultiJson.dump(note_changes), "CONTENT_TYPE" => "application/json"
-     assert last_response.status == 204
+     assert_equal 204, last_response.status
      get new_note["@id"]
      patched_note = MultiJson.load(last_response.body)
-     assert_equal patched_note["label"], note_changes[:label]
+     refute_nil patched_note['proposal']['label']
+     assert_equal patched_note['proposal']['label'], note_changes[:proposal][:label]
 
      delete new_note["@id"]
-     assert last_response.status == 204
+     assert_equal 204, last_response.status
   end
 
   def test_notes_for_ontology
@@ -120,8 +123,8 @@ class TestNotesController < TestCase
     get ont["links"]["notes"]
     notes = MultiJson.load(last_response.body)
     test_note = notes.select {|n| n["subject"].eql?("Test subject 1")}
-    assert test_note.length == 1
-    assert notes.length >= 5
+    assert_equal 1, test_note.length
+    assert_operator 5, :<=, notes.length
   end
 
   def test_notes_for_class
@@ -130,7 +133,7 @@ class TestNotesController < TestCase
     get cls["links"]["notes"]
     notes = MultiJson.load(last_response.body)
     test_note = notes.select {|n| n["subject"].eql?("Test subject 1")}
-    assert test_note.length == 1
-    assert notes.length >= 5
+    assert_equal 1, test_note.length
+    assert_operator 5, :<=, notes.length
   end
 end

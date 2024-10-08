@@ -125,10 +125,10 @@ module Sinatra
         check_access(obj) if LinkedData.settings.enable_security
 
         # Slice or set check
-        filter_for_slice(obj) if LinkedData.settings.enable_slices
+        obj = filter_for_slice(obj) if LinkedData.settings.enable_slices
 
         # Check for custom ontologies set by user
-        filter_for_user_onts(obj)
+        obj = filter_for_user_onts(obj)
 
         LinkedData::Serializer.build_response(@env, status: status, ld_object: obj)
       end
@@ -211,8 +211,8 @@ module Sinatra
 
           found_onts = onts.length > 0
 
-          filter_for_slice(onts)
-          filter_for_user_onts(onts)
+          onts = filter_for_slice(onts)
+          onts = filter_for_user_onts(onts)
         end
         onts = filter_access(onts)
 
@@ -396,19 +396,13 @@ module Sinatra
         else
           submission = ont.latest_submission(status: [:RDF])
         end
-        if submission.nil?
-          error 404,  "Ontology #{@params["ontology"]} submission not found."
-        end
+        error 404, "Ontology #{@params["ontology"]} submission not found." if submission.nil?
         if !submission.ready?(status: [:RDF])
-          error(404,
-                "Ontology #{@params["ontology"]} submission i"+
-                "#{submission.submissionId} has not been parsed.")
+          error 404, "Ontology #{@params["ontology"]} submission #{submission.submissionId} has not been parsed."
         end
-        if submission.nil?
-          if submission.nil?
-            error 404, "Ontology #{@params["acronym"]} does not have any submissions"
-          end
-        end
+
+        save_submission_language(submission)
+
         return ont, submission
       end
 
@@ -436,6 +430,22 @@ module Sinatra
         return if object.nil?
         return if Time.now > object[:timeout]
         return object[:object]
+      end
+
+
+      def save_submission_language(submission, language_property = :naturalLanguage)
+        request_lang = RequestStore.store[:requested_lang]
+
+        return if submission.nil? || !request_lang.blank?
+
+        submission.bring(language_property) if submission.bring?(language_property)
+        collection_natural_language = submission.send(language_property) rescue nil
+        return [] if collection_natural_language.blank?
+
+        collection_natural_language = collection_natural_language.values.flatten if collection_natural_language.is_a?(Hash)
+        submissions_language = collection_natural_language.map { |natural_language| natural_language.to_s.split('/').last[0..1] }.compact.first
+
+        RequestStore.store[:requested_lang] =  submissions_language if submissions_language
       end
 
     end

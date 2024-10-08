@@ -1,4 +1,4 @@
-ARG RUBY_VERSION
+ARG RUBY_VERSION=3.0
 ARG DISTRO_NAME=bullseye
 
 FROM ruby:$RUBY_VERSION-$DISTRO_NAME
@@ -14,10 +14,7 @@ COPY Gemfile* /srv/ontoportal/ontologies_api/
 
 WORKDIR /srv/ontoportal/ontologies_api
 
-# set rubygem and bundler to the last version supported by ruby 2.7
-# remove version after ruby v3 upgrade
-RUN gem update --system '3.4.22'
-RUN gem install bundler -v 2.4.22
+RUN gem update --system
 RUN gem install bundler
 ENV BUNDLE_PATH=/srv/ontoportal/bundle
 RUN bundle install
