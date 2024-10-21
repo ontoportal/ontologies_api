@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: d6b84e12d61317dbddc1b86cb1451acb37915369
+  revision: a27d6ca79d47eb045b1bdfe311531827428aa504
   branch: multilingual_preflabels
   specs:
     goo (0.0.2)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 9d1b6ba54019cac2eeeb5c173e452b4eebbeaa3a
+  revision: 17b2f2b8522e6b36baa1d003b5e27cb536c04a03
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f92a42f660635522eb8709e618ff2e641aef0d17
+  revision: 084cfc74a78b1c6334f3b74e228ddbf80d36e30a
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 79eeef6b89726e8d9563fc93ce54a7d5fab9a0e1
+  revision: e7d2124381003283696ff863de5ed0dc4c18ecda
   branch: multilingual_preflabels
   specs:
     ontologies_linked_data (0.0.1)
@@ -118,7 +118,6 @@ GEM
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     bcrypt_pbkdf (1.1.1-arm64-darwin)
-    bcrypt_pbkdf (1.1.1-x86_64-darwin)
     bigdecimal (3.1.8)
     builder (3.3.0)
     capistrano (3.19.1)
@@ -154,9 +153,8 @@ GEM
       net-http
     faraday-retry (2.2.1)
       faraday (~> 2.0)
-    ffi (1.17.0)
+    ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86_64-darwin)
     gapic-common (0.22.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
@@ -181,8 +179,6 @@ GEM
     google-cloud-errors (1.4.0)
     google-protobuf (3.25.5-aarch64-linux)
     google-protobuf (3.25.5-arm64-darwin)
-    google-protobuf (3.25.5-x86_64-darwin)
-    google-protobuf (3.25.5-x86_64-linux)
     googleapis-common-protos (1.6.0)
       google-protobuf (>= 3.18, < 5.a)
       googleapis-common-protos-types (~> 1.7)
@@ -200,12 +196,6 @@ GEM
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     grpc (1.67.0-arm64-darwin)
-      google-protobuf (>= 3.25, < 5.0)
-      googleapis-common-protos-types (~> 1.0)
-    grpc (1.67.0-x86_64-darwin)
-      google-protobuf (>= 3.25, < 5.0)
-      googleapis-common-protos-types (~> 1.0)
-    grpc (1.67.0-x86_64-linux)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     haml (5.2.2)
@@ -404,9 +394,6 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin-22
-  arm64-darwin-23
-  x86_64-darwin-23
-  x86_64-linux
 
 DEPENDENCIES
   activesupport (~> 5)
@@ -463,4 +450,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.5.11
+   2.5.7
