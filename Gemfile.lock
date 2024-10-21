@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: e7d2124381003283696ff863de5ed0dc4c18ecda
-  branch: multilingual_preflabels
+  revision: 02ffe85324271f7cdf3601d57315ebb54d716309
+  branch: develop
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
