@@ -41,7 +41,6 @@ gem 'unicorn-worker-killer'
 gem 'haml', '~> 5.2.2' # pin see https://github.com/ncbo/ontologies_api/pull/107
 gem 'redcarpet'
 
-
 # NCBO gems (can be from a local dev path or from rubygems/git)
 gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'develop'
 gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'develop'
