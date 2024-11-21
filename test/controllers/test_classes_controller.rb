@@ -526,7 +526,7 @@ class TestClassesController < TestCase
     assert page_response["collection"].length == 0
   end
 
-  def test_default_multilingual
+  def test_multilingual
     ont = Ontology.find("TEST-ONT-0").include(:acronym).first
     sub = ont.latest_submission
     sub.bring_remaining
@@ -561,10 +561,54 @@ class TestClassesController < TestCase
     assert last_response.ok?
     page_response = MultiJson.load(last_response.body)
     # show french value as specified in submission naturalLanguage
-    assert_equal 'Biospecimen Management', page_response["prefLabel"]
+    assert_equal 'Gestion des échantillons biologiques', page_response["prefLabel"]
 
     sub.naturalLanguage = []
     sub.save
+
+    # prefLabel NOT present, rdfs:label is defined in multiple languages, default portal language
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Catalog')}?lang=all"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    assert_equal 'Catalog', page_response["prefLabel"]["en"]
+    assert_equal 'Catalogo', page_response["prefLabel"]["it"]
+    assert_equal 'Catalogue', page_response["prefLabel"]["fr"]
+    assert_equal 'Catálogo', page_response["prefLabel"]["es"]
+    assert_equal 'カタログ', page_response["prefLabel"]["ja"]
+
+    # prefLabel NOT present, rdfs:label is defined in multiple languages,
+    # portal language is set to one of the defined languages
+    sub.naturalLanguage = ['ja']
+    sub.save
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Catalog')}"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    # show Japanese value as specified in submission naturalLanguage
+    assert_equal 'カタログ', page_response["prefLabel"]
+
+    sub.naturalLanguage = []
+    sub.save
+
+    # prefLabel NOT present, multiple rdfs:label(s) are defined with no language designation
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Regulatory_Compliance')}"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    assert_equal 'Regulatory Compliance', page_response["prefLabel"]
+
+    # prefLabel is defined in a non-language format as well as in French and Italian - default check with no language requested
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Research_Lab_Management')}"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    assert_equal 'Research Lab Management', page_response["prefLabel"]
+
+    # prefLabel is defined in a non-language format as well as in French and Italian - all languages are requested
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Research_Lab_Management')}?lang=all"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+
+    assert_equal 'Research Lab Management', page_response["prefLabel"]["none"]
+    assert_equal 'Gestion du laboratoire de recherche', page_response["prefLabel"]["fr"]
+    assert_equal 'Gestione del laboratorio di ricerca', page_response["prefLabel"]["it"]
   end
 
 end
