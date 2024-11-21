@@ -9,15 +9,15 @@ class TestMetricsController < TestCase
     end
     OntologySubmission.all.each {|s| s.delete }
     Ontology.all.each {|o| o.delete }
-    @@data = {"classes"=>486,
-              "averageChildCount"=>5,
-              "maxChildCount"=>65,
-              "classesWithOneChild"=>14,
-              "classesWithMoreThan25Children"=>2,
-              "classesWithNoDefinition"=>11,
-              "individuals"=>124,
-              "properties"=>63,
-              "maxDepth"=> 7 }
+    @@data = {"classes" => 487,
+              "averageChildCount" => 5,
+              "maxChildCount" => 65,
+              "classesWithOneChild" => 14,
+              "classesWithMoreThan25Children" => 2,
+              "classesWithNoDefinition" => 11,
+              "individuals" => 124,
+              "properties" => 63,
+              "maxDepth" => 7 }
     @@options = { ont_count: 2,
                   submission_count: 3,
                   submissions_to_process: [1, 2],
@@ -35,8 +35,8 @@ class TestMetricsController < TestCase
     #TODO: improve this test and test for two different ontologies
     #though this is tested in LD
     metrics.each do |m|
-      @@data.each do |k,v|
-        assert_equal(m[k], v)
+      @@data.each do |k, v|
+        assert_equal(v, m[k])
       end
       assert m["@id"] == m["submission"].first + "/metrics"
     end
@@ -49,7 +49,7 @@ class TestMetricsController < TestCase
     metrics = MultiJson.load(last_response.body)
 
     @@data.each do |k,v|
-      assert_equal(metrics[k], v)
+      assert_equal(v, metrics[k])
     end
   end
 
@@ -59,7 +59,7 @@ class TestMetricsController < TestCase
     assert last_response.ok?
     metrics = MultiJson.load(last_response.body)
     @@data.each do |k,v|
-      assert_equal(metrics[k], v)
+      assert_equal(v, metrics[k])
     end
   end
 
@@ -69,7 +69,7 @@ class TestMetricsController < TestCase
     assert last_response.ok?
     metrics = MultiJson.load(last_response.body)
     @@data.each do |k,v|
-      assert_equal(metrics[k], v)
+      assert_equal(v, metrics[k])
     end
   end
 
