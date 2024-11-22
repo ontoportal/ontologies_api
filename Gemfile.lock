@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: a27d6ca79d47eb045b1bdfe311531827428aa504
-  branch: multilingual_preflabels
+  revision: 35721855ba808517698d8b94eb38d4553001c4b6
+  branch: develop
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: a9e8bf81b314b0a5f8a32ed814f1b6943496c1ee
+  revision: 9d1b6ba54019cac2eeeb5c173e452b4eebbeaa3a
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 084cfc74a78b1c6334f3b74e228ddbf80d36e30a
+  revision: f92a42f660635522eb8709e618ff2e641aef0d17
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 3aadf69fa004886b8e08830003788d09e9d550d5
-  branch: develop
+  revision: 0598b9f6e8a37a42938f1db8648ff1b3355be519
+  branch: multilingual_preflabels
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -153,9 +153,8 @@ GEM
       net-http (>= 0.5.0)
     faraday-retry (2.2.1)
       faraday (~> 2.0)
-    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0)
     ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86_64-linux-gnu)
     gapic-common (0.23.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
@@ -235,7 +234,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2024.1105)
     mini_mime (1.1.5)
-    minitest (5.25.1)
+    minitest (5.25.2)
     minitest-hooks (1.5.2)
       minitest (> 5.3)
     minitest-stub_any_instance (1.0.3)
@@ -260,7 +259,7 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     netrc (0.11.0)
-    newrelic_rpm (9.15.0)
+    newrelic_rpm (9.16.0)
     oj (3.16.7)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
@@ -399,6 +398,7 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin-22
+  arm64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
@@ -456,4 +456,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.5.7
+   2.5.11

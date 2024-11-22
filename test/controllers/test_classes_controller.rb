@@ -106,8 +106,7 @@ class TestClassesController < TestCase
       assert last_response.ok?
       count_terms = count_terms + page_response["collection"].length
     end while page_response["nextPage"]
-    #bnodes thing got fixed. changed to 486.
-    assert_equal 486, count_terms
+    assert_equal 487, count_terms
 
     #one more page should bring no results
     call = "/ontologies/#{ont.acronym}/classes"
@@ -295,42 +294,43 @@ class TestClassesController < TestCase
     descendants_data = {}
     descendants_data['http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research'] =[
       "http://bioontology.org/ontologies/ResearchArea.owl#Behavioral_Science",
- "http://bioontology.org/ontologies/ResearchArea.owl#Bioinformatics",
- "http://bioontology.org/ontologies/ResearchArea.owl#Biostatistics",
- "http://bioontology.org/ontologies/ResearchArea.owl#Clinical_Studies",
- "http://bioontology.org/ontologies/ResearchArea.owl#Computational_Biology",
- "http://bioontology.org/ontologies/ResearchArea.owl#Epidemiology",
- "http://bioontology.org/ontologies/ResearchArea.owl#Genomics",
- "http://bioontology.org/ontologies/ResearchArea.owl#Metabolomics",
- "http://bioontology.org/ontologies/ResearchArea.owl#Nursing",
- "http://bioontology.org/ontologies/ResearchArea.owl#Outcomes_Research",
- "http://bioontology.org/ontologies/ResearchArea.owl#Pathology",
- "http://bioontology.org/ontologies/ResearchArea.owl#Pediatrics",
- "http://bioontology.org/ontologies/ResearchArea.owl#Pharmacokinetics_Pharmacodynamics",
- "http://bioontology.org/ontologies/ResearchArea.owl#Physiology",
- "http://bioontology.org/ontologies/ResearchArea.owl#Preclinical",
- "http://bioontology.org/ontologies/ResearchArea.owl#Proteomics",
- "http://bioontology.org/ontologies/ResearchArea.owl#Psychometrics",
- "http://bioontology.org/ontologies/ResearchArea.owl#Research_IT",
- "http://bioontology.org/ontologies/ResearchArea.owl#Toxicology"]
+       "http://bioontology.org/ontologies/ResearchArea.owl#Bioinformatics",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Biostatistics",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Clinical_Studies",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Computational_Biology",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Epidemiology",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Genomics",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Metabolomics",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Nursing",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Outcomes_Research",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Pathology",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Pediatrics",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Pharmacokinetics_Pharmacodynamics",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Physiology",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Preclinical",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Proteomics",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Psychometrics",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Research_IT",
+       "http://bioontology.org/ontologies/ResearchArea.owl#Toxicology"]
 
     descendants_data['http://bioontology.org/ontologies/Activity.owl#Activity'] =
       ["http://bioontology.org/ontologies/Activity.owl#Biospecimen_Management",
- "http://bioontology.org/ontologies/Activity.owl#Community_Engagement",
- "http://bioontology.org/ontologies/Activity.owl#Gene_Therapy",
- "http://bioontology.org/ontologies/Activity.owl#Health_Services",
- "http://bioontology.org/ontologies/Activity.owl#IRB",
- "http://bioontology.org/ontologies/Activity.owl#Medical_Device_Development",
- "http://bioontology.org/ontologies/Activity.owl#Regulatory_Compliance",
- "http://bioontology.org/ontologies/Activity.owl#Research_Funding",
- "http://bioontology.org/ontologies/Activity.owl#Research_Lab_Management",
- "http://bioontology.org/ontologies/Activity.owl#Resource_Inventory",
- "http://bioontology.org/ontologies/Activity.owl#Small_Molecule",
- "http://bioontology.org/ontologies/Activity.owl#Social_Networking",
- "http://bioontology.org/ontologies/Activity.owl#Software_Development",
- "http://bioontology.org/ontologies/Activity.owl#Surgical_Procedure",
- "http://bioontology.org/ontologies/Activity.owl#Therapeutics",
- "http://bioontology.org/ontologies/Activity.owl#Training"]
+       "http://bioontology.org/ontologies/Activity.owl#Catalog",
+       "http://bioontology.org/ontologies/Activity.owl#Community_Engagement",
+       "http://bioontology.org/ontologies/Activity.owl#Gene_Therapy",
+       "http://bioontology.org/ontologies/Activity.owl#Health_Services",
+       "http://bioontology.org/ontologies/Activity.owl#IRB",
+       "http://bioontology.org/ontologies/Activity.owl#Medical_Device_Development",
+       "http://bioontology.org/ontologies/Activity.owl#Regulatory_Compliance",
+       "http://bioontology.org/ontologies/Activity.owl#Research_Funding",
+       "http://bioontology.org/ontologies/Activity.owl#Research_Lab_Management",
+       "http://bioontology.org/ontologies/Activity.owl#Resource_Inventory",
+       "http://bioontology.org/ontologies/Activity.owl#Small_Molecule",
+       "http://bioontology.org/ontologies/Activity.owl#Social_Networking",
+       "http://bioontology.org/ontologies/Activity.owl#Software_Development",
+       "http://bioontology.org/ontologies/Activity.owl#Surgical_Procedure",
+       "http://bioontology.org/ontologies/Activity.owl#Therapeutics",
+       "http://bioontology.org/ontologies/Activity.owl#Training"]
 
     clss_ids = [ 'http://bioontology.org/ontologies/Activity.owl#Activity',
             "http://bioontology.org/ontologies/ResearchArea.owl#Area_of_Research" ]
@@ -514,8 +514,7 @@ class TestClassesController < TestCase
       assert last_response.ok?
       count_terms = count_terms + page_response["collection"].length
     end while page_response["nextPage"]
-    #bnodes thing got fixed. changed to 486.
-    assert_equal 486, count_terms
+    assert_equal 487, count_terms
 
     #one more page should bring no results
     call = "/ontologies/#{ont.acronym}/classes"
@@ -526,7 +525,7 @@ class TestClassesController < TestCase
     assert page_response["collection"].length == 0
   end
 
-  def test_default_multilingual
+  def test_multilingual
     ont = Ontology.find("TEST-ONT-0").include(:acronym).first
     sub = ont.latest_submission
     sub.bring_remaining
@@ -561,10 +560,54 @@ class TestClassesController < TestCase
     assert last_response.ok?
     page_response = MultiJson.load(last_response.body)
     # show french value as specified in submission naturalLanguage
-    assert_equal 'Biospecimen Management', page_response["prefLabel"]
+    assert_equal 'Gestion des échantillons biologiques', page_response["prefLabel"]
 
     sub.naturalLanguage = []
     sub.save
+
+    # prefLabel NOT present, rdfs:label is defined in multiple languages, default portal language
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Catalog')}?lang=all"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    assert_equal 'Catalog', page_response["prefLabel"]["en"]
+    assert_equal 'Catalogo', page_response["prefLabel"]["it"]
+    assert_equal 'Catalogue', page_response["prefLabel"]["fr"]
+    assert_equal 'Catálogo', page_response["prefLabel"]["es"]
+    assert_equal 'カタログ', page_response["prefLabel"]["ja"]
+
+    # prefLabel NOT present, rdfs:label is defined in multiple languages,
+    # portal language is set to one of the defined languages
+    sub.naturalLanguage = ['ja']
+    sub.save
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Catalog')}"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    # show Japanese value as specified in submission naturalLanguage
+    assert_equal 'カタログ', page_response["prefLabel"]
+
+    sub.naturalLanguage = []
+    sub.save
+
+    # prefLabel NOT present, multiple rdfs:label(s) are defined with no language designation
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Regulatory_Compliance')}"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    assert_equal 'Regulatory Compliance', page_response["prefLabel"]
+
+    # prefLabel is defined in a non-language format as well as in French and Italian - default check with no language requested
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Research_Lab_Management')}"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+    assert_equal 'Research Lab Management', page_response["prefLabel"]
+
+    # prefLabel is defined in a non-language format as well as in French and Italian - all languages are requested
+    get "/ontologies/#{ont.acronym}/classes/#{CGI.escape('http://bioontology.org/ontologies/Activity.owl#Research_Lab_Management')}?lang=all"
+    assert last_response.ok?
+    page_response = MultiJson.load(last_response.body)
+
+    assert_equal 'Research Lab Management', page_response["prefLabel"]["none"]
+    assert_equal 'Gestion du laboratoire de recherche', page_response["prefLabel"]["fr"]
+    assert_equal 'Gestione del laboratorio di ricerca', page_response["prefLabel"]["it"]
   end
 
 end
