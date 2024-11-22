@@ -47,7 +47,7 @@ gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'develop'
 gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'develop'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'develop'
 gem 'goo', github: 'ncbo/goo', branch: 'develop'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'multilingual_preflabels'
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'develop'
 
 group :development do
   # bcrypt_pbkdf and ed35519 is required for capistrano deployments when using ed25519 keys; see https://github.com/miloserdow/capistrano-deploy/issues/42

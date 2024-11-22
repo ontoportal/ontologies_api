@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 9d1b6ba54019cac2eeeb5c173e452b4eebbeaa3a
+  revision: 8fa7a03a5a6ca63ebb3675fb9f7b2f1e1f408e2f
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f92a42f660635522eb8709e618ff2e641aef0d17
+  revision: 084cfc74a78b1c6334f3b74e228ddbf80d36e30a
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 0598b9f6e8a37a42938f1db8648ff1b3355be519
-  branch: multilingual_preflabels
+  revision: 6389fa2052e06ff8e21c64fd1be0030beca4c828
+  branch: develop
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -153,8 +153,9 @@ GEM
       net-http (>= 0.5.0)
     faraday-retry (2.2.1)
       faraday (~> 2.0)
-    ffi (1.17.0)
+    ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
     gapic-common (0.23.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
@@ -456,4 +457,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.5.11
+   2.5.7
