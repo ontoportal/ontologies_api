@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 39f67ab7fae7675b6ff417ace0ab923e40ffcbcd
-  branch: master
+  revision: 35721855ba808517698d8b94eb38d4553001c4b6
+  branch: develop
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: b6d50ebb79f114bf81a1cd89d0f8b4d4cbcddda2
-  branch: master
+  revision: 2abcd54c148d0983570d681506002d9d3782d2eb
+  branch: develop
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 095ee0fab70b0fe0f2486655811cc8347b6a63ff
-  branch: master
+  revision: 8fa7a03a5a6ca63ebb3675fb9f7b2f1e1f408e2f
+  branch: develop
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 9dbd4f179e42c52095129d353a5ac584e9bd47f3
-  branch: master
+  revision: 084cfc74a78b1c6334f3b74e228ddbf80d36e30a
+  branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 0ce77f2781ac3353716407c22d8fc16d9bfd2c8f
-  branch: master
+  revision: 6389fa2052e06ff8e21c64fd1be0030beca4c828
+  branch: develop
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -76,8 +76,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
-  branch: master
+  revision: 1657f0dd69fd4b522d3549a6848670175f5e98cc
+  branch: develop
   specs:
     sparql-client (1.0.1)
       json_pure (>= 1.4)
@@ -235,7 +235,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2024.1105)
     mini_mime (1.1.5)
-    minitest (5.25.1)
+    minitest (5.25.2)
     minitest-hooks (1.5.2)
       minitest (> 5.3)
     minitest-stub_any_instance (1.0.3)
@@ -260,7 +260,7 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     netrc (0.11.0)
-    newrelic_rpm (9.15.0)
+    newrelic_rpm (9.16.0)
     oj (3.16.7)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
@@ -456,4 +456,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.5.7
+   2.5.20
