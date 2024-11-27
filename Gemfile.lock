@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 35721855ba808517698d8b94eb38d4553001c4b6
-  branch: develop
+  revision: 39f67ab7fae7675b6ff417ace0ab923e40ffcbcd
+  branch: master
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 2abcd54c148d0983570d681506002d9d3782d2eb
-  branch: develop
+  revision: b6d50ebb79f114bf81a1cd89d0f8b4d4cbcddda2
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 8fa7a03a5a6ca63ebb3675fb9f7b2f1e1f408e2f
-  branch: develop
+  revision: 1e0cb7f5e230e1d19c02f11f3fd76ed9831a3807
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: 084cfc74a78b1c6334f3b74e228ddbf80d36e30a
-  branch: develop
+  revision: 9dbd4f179e42c52095129d353a5ac584e9bd47f3
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 6389fa2052e06ff8e21c64fd1be0030beca4c828
-  branch: develop
+  revision: 536cbe5cef9e23abc299ed44942c0b3966f9c18d
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -76,8 +76,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 1657f0dd69fd4b522d3549a6848670175f5e98cc
-  branch: develop
+  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
+  branch: master
   specs:
     sparql-client (1.0.1)
       json_pure (>= 1.4)
@@ -323,16 +323,16 @@ GEM
     rsolr (2.6.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
-    rubocop (1.68.0)
+    rubocop (1.69.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.4, < 3.0)
-      rubocop-ast (>= 1.32.2, < 2.0)
+      rubocop-ast (>= 1.36.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 2.4.0, < 3.0)
+      unicode-display_width (>= 2.4.0, < 4.0)
     rubocop-ast (1.36.1)
       parser (>= 3.3.1.0)
     ruby-progressbar (1.13.0)
@@ -380,7 +380,9 @@ GEM
     timeout (0.4.2)
     tzinfo (1.2.11)
       thread_safe (~> 0.1)
-    unicode-display_width (2.6.0)
+    unicode-display_width (3.1.2)
+      unicode-emoji (~> 4.0, >= 4.0.4)
+    unicode-emoji (4.0.4)
     unicorn (6.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
@@ -456,4 +458,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.5.20
+   2.5.7
