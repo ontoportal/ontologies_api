@@ -55,19 +55,9 @@ GIT
       redis
 
 GIT
-  remote: https://github.com/ncbo/sparql-client.git
-  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
-  branch: master
-  specs:
-    sparql-client (1.0.1)
-      json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
-      rdf (>= 1.0)
-
-GIT
-  remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
-  revision: 0622986d71175da6eda30da3c222d7dea2fb3b46
-  branch: feature/extract-agroportal-model-to-ontoportal
+  remote: https://github.com/ncbo/ontologies_linked_data.git
+  revision: 4b22f25155eeea44d63a1831c529d02fd9a2bfa0
+  branch: feature/add_MOD_metadata_to_submission_object
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -83,6 +73,16 @@ GIT
       rack-test
       rsolr
       rubyzip
+
+GIT
+  remote: https://github.com/ncbo/sparql-client.git
+  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
+  branch: master
+  specs:
+    sparql-client (1.0.1)
+      json_pure (>= 1.4)
+      net-http-persistent (= 2.9.4)
+      rdf (>= 1.0)
 
 GIT
   remote: https://github.com/palexander/rack-post-body-to-params.git
@@ -154,7 +154,9 @@ GEM
     faraday-retry (2.2.1)
       faraday (~> 2.0)
     ffi (1.17.1)
+    ffi (1.17.1-aarch64-linux-gnu)
     ffi (1.17.1-arm64-darwin)
+    ffi (1.17.1-x86_64-linux-gnu)
     gapic-common (0.25.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
