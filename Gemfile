@@ -13,6 +13,7 @@ gem 'rexml' # Investigate why unicorn fails to start under ruby 3 without adding
 gem 'sinatra', '~> 1.0'
 gem 'sinatra-advanced-routes'
 gem 'sinatra-contrib', '~> 1.0'
+gem 'net-ftp'
 
 # Rack middleware
 gem 'ffi'
