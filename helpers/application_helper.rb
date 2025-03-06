@@ -358,34 +358,6 @@ module Sinatra
         LinkedData::Models::Base.replace_url_prefix_to_id(id)
       end
 
-      def retrieve_latest_submissions(options = {})
-        status = (options[:status] || "RDF").to_s.upcase
-        include_ready = status.eql?("READY") ? true : false
-        status = "RDF" if status.eql?("READY")
-        any = true if status.eql?("ANY")
-        include_views = options[:also_include_views] || false
-        includes = OntologySubmission.goo_attrs_to_load(includes_param)
-        includes << :submissionStatus unless includes.include?(:submissionStatus)
-        submissions_query = if any
-          OntologySubmission.where
-        else
-          OntologySubmission.where(submissionStatus: [ code: status])
-                            end
-
-        submissions_query = submissions_query.filter(Goo::Filter.new(ontology: [:viewOf]).unbound) unless include_views
-        submissions = submissions_query.include(includes).to_a
-
-        # Figure out latest parsed submissions using all submissions
-        latest_submissions = {}
-        submissions.each do |sub|
-          next if include_ready && !sub.ready?
-          next if sub.ontology.nil?
-          latest_submissions[sub.ontology.acronym] ||= sub
-          latest_submissions[sub.ontology.acronym] = sub if sub.submissionId.to_i > latest_submissions[sub.ontology.acronym].submissionId.to_i
-        end
-        return latest_submissions
-      end
-
       def get_ontology_and_submission
         ont = Ontology.find(@params["ontology"])
               .include(:acronym, :administeredBy, :acl, :viewingRestriction)
