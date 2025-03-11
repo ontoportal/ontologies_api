@@ -20,7 +20,7 @@ class TestOntologySubmissionsController < TestCase
       "file" => Rack::Test::UploadedFile.new(@@test_file, ""),
       released: DateTime.now.to_s,
       contact: [{name: "test_name", email: "test3@example.org"}],
-      URI: 'https://test.com/test',
+      uri: 'https://test.com/test',
       status: 'production',
       description: 'ontology description'
     }
@@ -202,47 +202,106 @@ class TestOntologySubmissionsController < TestCase
     end
   end
 
-  def test_ontology_submissions_access_controller
-    count, created_ont_acronyms, onts = create_ontologies_and_submissions(ont_count: 2, submission_count: 1, process_submission: false)
-    # case first submission is private
-    acronym = created_ont_acronyms.first
-    ont = onts.first.bring_remaining
+  def test_submissions_default_includes
+    ontology_count = 5
+    num_onts_created, created_ont_acronyms, ontologies = create_ontologies_and_submissions(ont_count: ontology_count, submission_count: 1, submissions_to_process: [])
 
-    begin
-      allowed_user = User.new({
-                                username: "allowed",
-                                email: "test@example.org",
-                                password: "12345"
-                              })
-      allowed_user.save
-      blocked_user = User.new({
-                                username: "blocked",
-                                email: "test@example.org",
-                                password: "12345"
-                              })
-      blocked_user.save
+    submission_default_attributes = LinkedData::Models::OntologySubmission.hypermedia_settings[:serialize_default].map(&:to_s)
 
-      ont.acl = [allowed_user]
-      ont.viewingRestriction = "private"
-      ont.save
+    get("/submissions?display_links=false&display_context=false&include_status=ANY")
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
 
-      LinkedData.settings.enable_security = true
+    assert_equal ontology_count, submissions.size
+    assert(submissions.all? { |sub| submission_default_attributes.eql?(submission_keys(sub)) })
 
-      get "/submissions?apikey=#{allowed_user.apikey}"
-      assert_equal 200, last_response.status
-      submissions = MultiJson.load(last_response.body)
-      assert_equal 2, submissions.size
+    get("/ontologies/#{created_ont_acronyms.first}/submissions?display_links=false&display_context=false")
 
-      get "/submissions?apikey=#{blocked_user.apikey}"
-      assert_equal 200, last_response.status
-      submissions = MultiJson.load(last_response.body)
-      assert_equal 1, submissions.size
-    ensure
-      LinkedData.settings.enable_security = false
-      del = User.find("allowed").first
-      del.delete if del
-      del = User.find("blocked").first
-      del.delete if del
-    end
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal 1, submissions.size
+    assert(submissions.all? { |sub| submission_default_attributes.eql?(submission_keys(sub)) })
   end
+
+  def test_submissions_all_includes
+    ontology_count = 5
+    num_onts_created, created_ont_acronyms, ontologies = create_ontologies_and_submissions(ont_count: ontology_count, submission_count: 1, submissions_to_process: [])
+    def submission_all_attributes
+      attrs = OntologySubmission.goo_attrs_to_load([:all])
+      embed_attrs = attrs.select { |x| x.is_a?(Hash) }.first
+
+      attrs.delete_if { |x| x.is_a?(Hash) }.map(&:to_s) + embed_attrs.keys.map(&:to_s)
+    end
+    get("/submissions?include=all&display_links=false&display_context=false")
+
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal ontology_count, submissions.size
+
+    assert(submissions.all? { |sub| submission_all_attributes.sort.eql?(submission_keys(sub).sort) })
+    assert(submissions.all? { |sub| sub["contact"] && (sub["contact"].first.nil? || sub["contact"].first.keys.eql?(%w[name email id])) })
+
+    get("/ontologies/#{created_ont_acronyms.first}/submissions?include=all&display_links=false&display_context=false")
+
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal 1, submissions.size
+
+    assert(submissions.all? { |sub| submission_all_attributes.sort.eql?(submission_keys(sub).sort) })
+    assert(submissions.all? { |sub| sub["contact"] && (sub["contact"].first.nil? || sub["contact"].first.keys.eql?(%w[name email id])) })
+
+    get("/ontologies/#{created_ont_acronyms.first}/latest_submission?include=all&display_links=false&display_context=false")
+    assert last_response.ok?
+    sub = MultiJson.load(last_response.body)
+
+    assert(submission_all_attributes.sort.eql?(submission_keys(sub).sort))
+    assert(sub["contact"] && (sub["contact"].first.nil? || sub["contact"].first.keys.eql?(%w[name email id])))
+
+    get("/ontologies/#{created_ont_acronyms.first}/submissions/1?include=all&display_links=false&display_context=false")
+    assert last_response.ok?
+    sub = MultiJson.load(last_response.body)
+
+    assert(submission_all_attributes.sort.eql?(submission_keys(sub).sort))
+    assert(sub["contact"] && (sub["contact"].first.nil? || sub["contact"].first.keys.eql?(%w[name email id])))
+  end
+
+  def test_submissions_custom_includes
+    ontology_count = 5
+    num_onts_created, created_ont_acronyms, ontologies = create_ontologies_and_submissions(ont_count: ontology_count, submission_count: 1, submissions_to_process: [])
+    include = 'ontology,contact,submissionId'
+
+    get("/submissions?include=#{include}&display_links=false&display_context=false")
+
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal ontology_count, submissions.size
+    assert(submissions.all? { |sub| include.split(',').eql?(submission_keys(sub)) })
+    assert(submissions.all? { |sub| sub["contact"] && (sub["contact"].first.nil? || sub["contact"].first.keys.eql?(%w[name email id])) })
+
+    get("/ontologies/#{created_ont_acronyms.first}/submissions?include=#{include}&display_links=false&display_context=false")
+
+    assert last_response.ok?
+    submissions = MultiJson.load(last_response.body)
+    assert_equal 1, submissions.size
+    assert(submissions.all? { |sub| include.split(',').eql?(submission_keys(sub)) })
+    assert(submissions.all? { |sub| sub["contact"] && (sub["contact"].first.nil? || sub["contact"].first.keys.eql?(%w[name email id])) })
+
+    get("/ontologies/#{created_ont_acronyms.first}/latest_submission?include=#{include}&display_links=false&display_context=false")
+    assert last_response.ok?
+    sub = MultiJson.load(last_response.body)
+    assert(include.split(',').eql?(submission_keys(sub)))
+    assert(sub["contact"] && (sub["contact"].first.nil? || sub["contact"].first.keys.eql?(%w[name email id])))
+
+    get("/ontologies/#{created_ont_acronyms.first}/submissions/1?include=#{include}&display_links=false&display_context=false")
+    assert last_response.ok?
+    sub = MultiJson.load(last_response.body)
+    assert(include.split(',').eql?(submission_keys(sub)))
+    assert(sub["contact"] && (sub["contact"].first.nil? || sub["contact"].first.keys.eql?(%w[name email id])))
+  end
+
+  private
+  def submission_keys(sub)
+    sub.to_hash.keys - %w[@id @type id]
+  end
+
 end

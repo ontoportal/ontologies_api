@@ -1,8 +1,7 @@
 class OntologySubmissionsController < ApplicationController
   get "/submissions" do
     check_last_modified_collection(LinkedData::Models::OntologySubmission)
-    #using appplication_helper method
-    options = {also_include_views: params["also_include_views"], status: (params["include_status"] || "ANY")}
+    options = { also_include_views: params["also_include_views"], status: (params["include_status"] || "ANY") }
     reply retrieve_latest_submissions(options).values
   end
 
@@ -23,11 +22,16 @@ class OntologySubmissionsController < ApplicationController
       error 422, "Ontology #{params["acronym"]} does not exist" unless ont
       check_last_modified_segment(LinkedData::Models::OntologySubmission, [ont.acronym])
       check_access(ont)
-      ont.bring(submissions: OntologySubmission.goo_attrs_to_load(includes_param))
-      reply ont.submissions.sort {|a,b| b.submissionId.to_i <=> a.submissionId.to_i }  # descending order of submissionId
+      options = {
+        also_include_views: true,
+        status: (params["include_status"] || "ANY"),
+        ontology: params["acronym"]
+      }
+      subs = retrieve_submissions(options)
+
+      reply subs.sort {|a,b| b.submissionId.to_i <=> a.submissionId.to_i }  # descending order of submissionId
     end
 
-    ##
     # Create a new submission for an existing ontology
     post do
       ont = Ontology.find(params["acronym"]).include(Ontology.attributes).first
@@ -44,7 +48,7 @@ class OntologySubmissionsController < ApplicationController
       ont.bring(:submissions)
       ont_submission = ont.submission(params["ontology_submission_id"])
       error 404, "`submissionId` not found" if ont_submission.nil?
-      ont_submission.bring(*OntologySubmission.goo_attrs_to_load(includes_param))
+      ont_submission.bring(*submission_include_params)
       reply ont_submission
     end
 
@@ -68,7 +72,7 @@ class OntologySubmissionsController < ApplicationController
         submission.save
         if (params.keys & REQUIRES_REPROCESS).length > 0 || request_has_file?
           cron = NcboCron::Models::OntologySubmissionParser.new
-          cron.queue_submission(submission, {all: true})
+          cron.queue_submission(submission, { all: true })
         end
       else
         error 422, submission.errors
@@ -158,6 +162,5 @@ class OntologySubmissionsController < ApplicationController
     end
 
   end
-
 
 end

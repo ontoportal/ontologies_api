@@ -1,6 +1,6 @@
 # config valid only for Capistrano 3
 
-APP_PATH = '/srv/ontoportal'
+APP_PATH = '/opt/ontoportal'
 
 set :author, 'ncbo'
 set :application, 'ontologies_api'
