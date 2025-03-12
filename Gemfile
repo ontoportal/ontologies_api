@@ -50,7 +50,7 @@ gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
 gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'master'
 gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'master'
 # gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'master'
-gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', tag: 'v5.33.4'
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', tag: 'v5.33.5'
 gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
 
 group :development do
