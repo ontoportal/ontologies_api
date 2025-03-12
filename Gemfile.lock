@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 67b7c7dd78c0d983b6a3a66407a4e27d4f997c86
-  branch: master
+  revision: 536cbe5cef9e23abc299ed44942c0b3966f9c18d
+  tag: v5.33.4
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -66,7 +66,6 @@ GIT
       json
       libxml-ruby
       multi_json
-      net-ftp
       oj
       omni_logger
       pony
@@ -441,6 +440,7 @@ DEPENDENCIES
   ncbo_annotator!
   ncbo_cron!
   ncbo_ontology_recommender!
+  net-ftp
   newrelic_rpm
   oj
   ontologies_linked_data!
