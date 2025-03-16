@@ -4,31 +4,10 @@ class MetricsController < ApplicationController
     # Display all metrics
     get do
       check_last_modified_collection(LinkedData::Models::Metric)
-      submissions = retrieve_latest_submissions(params)
-      submissions = submissions.values
-
-      metrics_include = LinkedData::Models::Metric.goo_attrs_to_load(includes_param)
-      LinkedData::Models::OntologySubmission.where.models(submissions)
-                         .include(metrics: metrics_include).all
-
-      #just a fallback or metrics that are not really built.
-      to_remove = []
-      submissions.each do |x|
-        if x.metrics
-          begin
-            x.metrics.submission
-          rescue
-            LOGGER.error("submission with inconsistent metrics #{x.id.to_s}")
-            to_remove << x
-          end
-        end
-      end
-      to_remove.each do |x|
-        submissions.delete x
-      end
-      #end fallback
-
-      reply submissions.select { |s| !s.metrics.nil? }.map { |s| s.metrics }
+      latest_metrics = LinkedData::Models::Metric.where.include(LinkedData::Models::Metric.goo_attrs_to_load(includes_param)).all
+                    .group_by { |x| x.id.split('/')[-4] }
+                    .transform_values { |metrics| metrics.max_by { |x| x.id.split('/')[-2].to_i } }
+      reply latest_metrics.values
     end
 
     #
@@ -84,33 +63,23 @@ class MetricsController < ApplicationController
   # Display metrics for ontology
   get "/ontologies/:ontology/metrics" do
     check_last_modified_collection(LinkedData::Models::Metric)
-    ont, sub = get_ontology_and_submission
+    ont = Ontology.find(params['ontology']).first
     error 404, "Ontology #{params['ontology']} not found" unless ont
-    sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
-    reply sub.metrics || {}
-    # ont_str = ""
-    # LinkedData::Models::Ontology.all.each  do |ont|
-    #   begin
-    #     sub = ont.latest_submission(status: :rdf)
-    #     sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
-    #     if !sub.metrics
-    #       ont_str << "#{ont.acronym},"
-    #       puts ont_str
-    #     end
-    #   rescue Exception => e
-    #     puts "#{ont.acronym}: #{e.message}"
-    #   end
-    # end
-    # puts ont_str
-    # reply {}
+    ontology_metrics = LinkedData::Models::Metric
+                      .where(submission: {ontology: [acronym: params['ontology']]})
+                      .order_by(submission: {submissionId: :desc})
+                      .include(LinkedData::Models::Metric.goo_attrs_to_load(includes_param)).first
+    reply ontology_metrics || {}
   end
 
   get "/ontologies/:ontology/submissions/:ontology_submission_id/metrics" do
     check_last_modified_collection(LinkedData::Models::Metric)
-    ont, sub = get_ontology_and_submission
+    ont = Ontology.find(params['ontology']).first
     error 404, "Ontology #{params['ontology']} not found" unless ont
-    sub.bring(ontology: [:acronym], metrics: LinkedData::Models::Metric.goo_attrs_to_load(includes_param))
-    reply sub.metrics || {}
+    ontology_submission_metrics = LinkedData::Models::Metric
+                      .where(submission: { submissionId: params['ontology_submission_id'].to_i, ontology: [acronym: params['ontology']] })
+                      .include(LinkedData::Models::Metric.goo_attrs_to_load(includes_param)).first
+    reply ontology_submission_metrics || {}
   end
 
 
