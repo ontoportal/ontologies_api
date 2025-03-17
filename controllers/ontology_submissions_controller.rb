@@ -63,6 +63,24 @@ class OntologySubmissionsController < ApplicationController
       error 422, "You must provide an existing `submissionId` to patch" if submission.nil?
 
       submission.bring(*OntologySubmission.attributes)
+
+      # code to deal with incompatibilities between the old and new metadata constraints
+      submission.uri = create_rdf_uri(submission.uri)
+      submission.documentation = create_rdf_uri(submission.documentation)
+      submission.homepage = create_rdf_uri(submission.homepage)
+      pub_param = params.delete("publication")
+      publications = transform_publications(pub_param ? pub_param : submission.publication)
+      submission.publication = publications
+
+      # code to test the issue with moving from old to new metadata model
+      # submission.uri = RDF::Literal.new(submission.uri.to_s)
+      # submission.documentation = RDF::Literal.new('http://www.nbc.com')
+      # submission.publication = RDF::Literal.new('http://www.cnn.com')
+      # submission.save
+      # submission.uri = submission.uri.to_s
+      # submission.documentation = 'http://www.nbc.com'
+      # submission.publication = 'http://www.cnn.com'
+
       params.delete("uploadFilePath")
       params.delete("diffFilePath")
       populate_from_params(submission, params)
@@ -159,6 +177,13 @@ class OntologySubmissionsController < ApplicationController
         sub = LinkedData::Models::OntologySubmission.find(RDF::URI.new("http://data.bioontology.org/ontologies/MS/submissions/#{i}")).first
         sub.delete if sub
       end
+    end
+
+    def transform_publications(publication)
+      publications = []
+      Array(publication).each { |pub|
+        pub_uri = create_rdf_uri(pub); publications << pub_uri unless pub_uri.nil? }
+      publications
     end
 
   end

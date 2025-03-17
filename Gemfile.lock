@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 6671099a39fffa8b98f21db7593cef35dd296b65
+  revision: 2abcd54c148d0983570d681506002d9d3782d2eb
   branch: develop
   specs:
     ncbo_annotator (0.0.1)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 05515ff4d0e4e9cb1b02774cae01906891875094
+  revision: 9d1b6ba54019cac2eeeb5c173e452b4eebbeaa3a
   branch: develop
   specs:
     ncbo_cron (0.0.1)
@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: c508796d80764bf748b51e9f1c33e57ea9f14a1d
+  revision: f92a42f660635522eb8709e618ff2e641aef0d17
   branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: c1bd3950d3aaad6f4602577e2f57bc3a8b8e8eec
+  revision: 7554d01d96891e2464b981793c6b26b0dcc7dbc3
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -218,7 +218,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    json (2.10.1)
+    json (2.10.2)
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.8.1)
@@ -242,7 +242,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2025.0304)
     mini_mime (1.1.5)
-    minitest (5.25.4)
+    minitest (5.25.5)
     minitest-hooks (1.5.2)
       minitest (> 5.3)
     minitest-stub_any_instance (1.0.3)
