@@ -65,22 +65,9 @@ class OntologySubmissionsController < ApplicationController
       submission.bring(*OntologySubmission.attributes)
 
       # code to deal with incompatibilities between the old and new metadata constraints
-      submission.uri = create_rdf_uri(submission.uri)
-      submission.documentation = create_rdf_uri(submission.documentation)
-      submission.homepage = create_rdf_uri(submission.homepage)
       pub_param = params.delete("publication")
-      publications = transform_publications(pub_param ? pub_param : submission.publication, submission)
+      publications = transform_publications(pub_param ? pub_param : submission.publication)
       submission.publication = publications
-
-      # code to test the issue with moving from old to new metadata model
-      # submission.uri = RDF::Literal.new(submission.uri.to_s)
-      # submission.documentation = RDF::Literal.new('http://www.nbc.com')
-      # submission.publication = RDF::Literal.new('http://www.cnn.com')
-      # submission.save
-      # submission.uri = submission.uri.to_s
-      # submission.documentation = 'http://www.nbc.com'
-      # submission.publication = 'http://www.cnn.com'
-      # submission.save
 
       params.delete("uploadFilePath")
       params.delete("diffFilePath")
@@ -180,7 +167,7 @@ class OntologySubmissionsController < ApplicationController
       end
     end
 
-    def transform_publications(publication, submission)
+    def transform_publications(publication)
       publications = []
 
       Array(publication).each do |pub|
