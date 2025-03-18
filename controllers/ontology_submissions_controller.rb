@@ -69,7 +69,7 @@ class OntologySubmissionsController < ApplicationController
       submission.documentation = create_rdf_uri(submission.documentation)
       submission.homepage = create_rdf_uri(submission.homepage)
       pub_param = params.delete("publication")
-      publications = transform_publications(pub_param ? pub_param : submission.publication)
+      publications = transform_publications(pub_param ? pub_param : submission.publication, submission)
       submission.publication = publications
 
       # code to test the issue with moving from old to new metadata model
@@ -80,13 +80,14 @@ class OntologySubmissionsController < ApplicationController
       # submission.uri = submission.uri.to_s
       # submission.documentation = 'http://www.nbc.com'
       # submission.publication = 'http://www.cnn.com'
+      # submission.save
 
       params.delete("uploadFilePath")
       params.delete("diffFilePath")
       populate_from_params(submission, params)
       add_file_to_submission(ont, submission)
 
-      if submission.valid?
+      if submission.valid? && submission.errors.empty?
         submission.save
         if (params.keys & REQUIRES_REPROCESS).length > 0 || request_has_file?
           cron = NcboCron::Models::OntologySubmissionParser.new
@@ -179,10 +180,19 @@ class OntologySubmissionsController < ApplicationController
       end
     end
 
-    def transform_publications(publication)
+    def transform_publications(publication, submission)
       publications = []
-      Array(publication).each { |pub|
-        pub_uri = create_rdf_uri(pub); publications << pub_uri unless pub_uri.nil? }
+
+      Array(publication).each do |pub|
+        next if pub.nil? || pub.empty?
+        pub_uri = create_rdf_uri(pub)
+
+        if pub_uri.nil?
+          error 422, {publication: "Attribute `publication` with the value `#{pub}` must be `RDF::URI`"}
+        else
+          publications << pub_uri
+        end
+      end
       publications
     end
 
