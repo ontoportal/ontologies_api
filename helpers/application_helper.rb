@@ -91,7 +91,7 @@ module Sinatra
             value
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri) && attribute_settings[:enforce].include?(:list)
             # in case its a list of URI, convert all value to IRI
-            value = value.map { |v| RDF::IRI.new(v) }
+            value = Array(value).map { |v| RDF::IRI.new(v) }
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
             unless value.nil?
