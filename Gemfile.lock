@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 9757cca17129401183562c02274648b1a1a3180b
+  revision: eb6d356faf98cdd9d053cd35919d5013d4884688
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -113,7 +113,7 @@ GEM
       public_suffix (>= 2.0.2, < 7.0)
     airbrussh (1.5.3)
       sshkit (>= 1.6.1, != 1.7.0)
-    ast (2.4.2)
+    ast (2.4.3)
     backports (3.25.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
@@ -187,11 +187,11 @@ GEM
     google-protobuf (3.25.6-aarch64-linux)
     google-protobuf (3.25.6-arm64-darwin)
     google-protobuf (3.25.6-x86_64-linux)
-    googleapis-common-protos (1.6.0)
+    googleapis-common-protos (1.7.0)
       google-protobuf (>= 3.18, < 5.a)
       googleapis-common-protos-types (~> 1.7)
       grpc (~> 1.41)
-    googleapis-common-protos-types (1.18.0)
+    googleapis-common-protos-types (1.19.0)
       google-protobuf (>= 3.18, < 5.a)
     googleauth (1.14.0)
       faraday (>= 1.0, < 3.a)
@@ -241,7 +241,7 @@ GEM
     mime-types (3.6.1)
       logger
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2025.0304)
+    mime-types-data (3.2025.0318)
     mini_mime (1.1.5)
     minitest (5.25.5)
     minitest-hooks (1.5.2)
@@ -281,7 +281,7 @@ GEM
     ostruct (0.6.1)
     parallel (1.26.3)
     parseconfig (1.1.2)
-    parser (3.3.7.1)
+    parser (3.3.7.2)
       ast (~> 2.4.1)
       racc
     pony (1.13.1)
@@ -345,8 +345,8 @@ GEM
       rubocop-ast (>= 1.38.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.39.0)
-      parser (>= 3.3.1.0)
+    rubocop-ast (1.41.0)
+      parser (>= 3.3.7.2)
     ruby-progressbar (1.13.0)
     ruby-xxHash (0.4.0.2)
     rubyzip (2.4.1)
