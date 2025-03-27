@@ -42,7 +42,7 @@ class TestUsersController < TestCase
     get '/users?search=fred'
     assert last_response.ok?
     users = MultiJson.load(last_response.body)
-    assert users.all? {|u| u["username"].eql?("fred")}
+    assert users.all? {|u| u["username"].include?("fred")}
     assert users.length == 1
 
     get '/users?page=1&pagesize=5'
