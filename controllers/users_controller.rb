@@ -124,7 +124,7 @@ class UsersController < ApplicationController
       token
     end
 
-    def create_user(send_notifications: true)
+    def create_user
       params ||= @params
       user = User.find(params["username"]).first
       error 409, "User with username `#{params["username"]}` already exists" unless user.nil?
