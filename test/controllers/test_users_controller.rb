@@ -38,6 +38,18 @@ class TestUsersController < TestCase
     users = MultiJson.load(last_response.body)
     assert users.any? {|u| u["username"].eql?("fred")}
     assert users.length >= @@usernames.length
+
+    get '/users?search=fred'
+    assert last_response.ok?
+    users = MultiJson.load(last_response.body)
+    assert users.all? {|u| u["username"].eql?("fred")}
+    assert users.length == 1
+
+    get '/users?page=1&pagesize=5'
+    assert last_response.ok?
+    users = MultiJson.load(last_response.body)
+    assert_equal 5, users["collection"].length
+    assert users["totalCount"] >= @@usernames.length
   end
 
   def test_single_user
