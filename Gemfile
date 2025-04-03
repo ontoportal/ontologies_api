@@ -81,5 +81,3 @@ group :test do
   gem 'webmock', '~> 3.19.1'
   gem 'webrick'
 end
-
-gem 'net-ftp'
