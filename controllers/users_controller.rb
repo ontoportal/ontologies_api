@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     # to click and login to the UI. The token can then be provided to
     # the /reset_password endpoint to actually reset the password.
     post "/create_reset_password_token" do
-      email    = params["email"]
+      email = params["email"]
       username = params["username"]
       user = LinkedData::Models::User.where(email: email, username: username).include(LinkedData::Models::User.attributes).first
       error 404, "User not found" unless user
@@ -40,9 +40,10 @@ class UsersController < ApplicationController
     # can be used to log a user in. This will allow them to change their
     # password and update the user object.
     post "/reset_password" do
-      email             = params["email"] || ""
-      username          = params["username"] || ""
-      token             = params["token"] || ""
+      email = params["email"] || ""
+      username = params["username"] || ""
+      token = params["token"] || ""
+
       params["display"] = User.attributes.join(",") # used to serialize everything via the serializer
       user = LinkedData::Models::User.where(email: email, username: username).include(User.goo_attrs_to_load(includes_param)).first
       error 404, "User not found" unless user
@@ -72,7 +73,7 @@ class UsersController < ApplicationController
     # Display all users
     get do
       check_last_modified_collection(User)
-      reply User.where.include(User.goo_attrs_to_load(includes_param)).to_a
+      reply get_users
     end
 
     # Display a single user
