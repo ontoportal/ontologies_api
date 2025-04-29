@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+
 gem 'activesupport', '~> 5'
 # see https://github.com/ncbo/ontologies_api/issues/69
 gem 'bigdecimal'
