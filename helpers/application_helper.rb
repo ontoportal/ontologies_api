@@ -1,5 +1,7 @@
 require 'sinatra/base'
 require 'date'
+require 'rdf'
+require 'uri'
 
 module Sinatra
   module Helpers
@@ -89,7 +91,7 @@ module Sinatra
             value
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri) && attribute_settings[:enforce].include?(:list)
             # in case its a list of URI, convert all value to IRI
-            value = value.map { |v| RDF::IRI.new(v) }
+            value = Array(value).map { |v| RDF::IRI.new(v) }
           elsif attribute_settings && attribute_settings[:enforce] && attribute_settings[:enforce].include?(:uri)
             # TODO: Remove this awful hack when obj.class.model_settings[:range][attribute] contains RDF::IRI class
             unless value.nil?
@@ -349,6 +351,25 @@ module Sinatra
         id = replace_url_prefix(id)
         uri = RDF::URI.new(id)
         uri.valid? ? uri : id
+      end
+
+      def create_rdf_uri(uri)
+        return uri if uri.class == RDF::URI
+
+        # Attempt to parse the URI string
+        parsed_uri = URI.parse(uri)
+
+        # Check if the parsed URI has a valid scheme (e.g., http, https)
+        if parsed_uri.scheme && parsed_uri.host
+          # Return a new RDF::URI object if the URI is valid
+          RDF::URI.new(uri)
+        else
+          # Return nil if there is no valid scheme or host
+          nil
+        end
+      rescue URI::InvalidURIError
+        # Return nil if the URI is not valid
+        nil
       end
 
       ##
