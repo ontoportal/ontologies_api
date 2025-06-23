@@ -55,9 +55,19 @@ GIT
       redis
 
 GIT
-  remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: f614b4feb4361eaa4fb13289139fd029a2622872
+  remote: https://github.com/ncbo/sparql-client.git
+  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
   branch: master
+  specs:
+    sparql-client (1.0.1)
+      json_pure (>= 1.4)
+      net-http-persistent (= 2.9.4)
+      rdf (>= 1.0)
+
+GIT
+  remote: https://github.com/ontoportal-lirmm/ontologies_linked_data.git
+  revision: 891cbac4950955fcb88ba1675521173948c73c03
+  branch: pr/feature/better-skos
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -74,16 +84,6 @@ GIT
       rack-test
       rsolr
       rubyzip
-
-GIT
-  remote: https://github.com/ncbo/sparql-client.git
-  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
-  branch: master
-  specs:
-    sparql-client (1.0.1)
-      json_pure (>= 1.4)
-      net-http-persistent (= 2.9.4)
-      rdf (>= 1.0)
 
 GIT
   remote: https://github.com/palexander/rack-post-body-to-params.git

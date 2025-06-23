@@ -2,7 +2,7 @@ require_relative '../test_case'
 
 class TestSkosXlLabelController < TestCase
 
-  def self.before_suite
+  def before_suite
     LinkedData::SampleData::Ontology.create_ontologies_and_submissions({
       process_submission: true,
       acronym: 'INRAETHES',
@@ -18,7 +18,7 @@ class TestSkosXlLabelController < TestCase
     sub.save
   end
 
-  def self.after_suite
+  def after_suite
     LinkedData::SampleData::Ontology.delete_ontologies_and_submissions
   end
 
