@@ -8,15 +8,22 @@ class ClassesController < ApplicationController
       ont, submission = get_ontology_and_submission
       cls_count = submission.class_count(LOGGER)
       error 403, "Unable to display classes due to missing metrics for #{submission.id.to_s}. Please contact the administrator." if cls_count < 0
-      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
-      page, size = page_params
-      ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
-      unmapped = ld.delete(:properties)
-      page_data = LinkedData::Models::Class.in(submission).include(ld).page(page,size).page_count_set(cls_count).all
 
-      if unmapped && page_data.length > 0
-        LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
+      attributes, page, size, filter_by_label, order_by_hash, bring_unmapped_needed  =  settings_params(LinkedData::Models::Class)
+      check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
+
+      index = LinkedData::Models::Class.in(submission)
+      if order_by_hash
+        index = index.order_by(order_by_hash)
+        cls_count = nil
+        # Add index here when, indexing fixed
+        # index_name = 'classes_sort_by_date'
+        # index = index.index_as(index_name)
+        # index = index.with_index(index_name)
       end
+
+      page_data = index
+      page_data = page_data.include(attributes).page(page,size).page_count_set(cls_count).all
       reply page_data
     end
 
@@ -28,7 +35,8 @@ class ClassesController < ApplicationController
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
       page, size = page_params
-      roots = submission.roots(load_attrs, page, size)
+
+      roots = submission.roots(load_attrs, page, size, concept_schemes: concept_schemes, concept_collections: concept_collections)
 
       if unmapped && roots.length > 0
         LinkedData::Models::Class.in(submission).models(roots).include(:unmapped).all
@@ -44,13 +52,17 @@ class ClassesController < ApplicationController
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       load_attrs = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = load_attrs.delete(:properties)
+      load_attrs += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
+
+      request_display(load_attrs.join(','))
+
       sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
       roots = nil
 
       if sort
-        roots = submission.roots_sorted(load_attrs)
+        roots = submission.roots_sorted(load_attrs, concept_schemes: concept_schemes, concept_collections: concept_collections)
       else
-        roots = submission.roots(load_attrs)
+        roots = submission.roots(load_attrs, concept_schemes: concept_schemes, concept_collections: concept_collections)
       end
 
       if unmapped && roots.length > 0
@@ -66,7 +78,7 @@ class ClassesController < ApplicationController
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
 
       load_children = ld.delete :children
-      if !load_children
+      unless load_children
         load_children = ld.select { |x| x.instance_of?(Hash) && x.include?(:children) }
         if load_children
           ld = ld.select { |x| !(x.instance_of?(Hash) && x.include?(:children)) }
@@ -75,6 +87,9 @@ class ClassesController < ApplicationController
 
       unmapped = ld.delete(:properties) ||
           (includes_param && includes_param.include?(:all))
+
+      ld << :memberOf if includes_param.include?(:all)
+
       cls = get_class(submission, ld)
       if unmapped
         LinkedData::Models::Class.in(submission)
@@ -110,29 +125,21 @@ class ClassesController < ApplicationController
       includes_param_check
       sort = params["sort"].eql?('true') || params["sort"].eql?('1')  # default = false
       # We override include values other than the following, user-provided include ignored
-      display_attrs = "prefLabel,hasChildren,children,obsolete,subClassOf"
-      params["display"] = display_attrs
-      params["serialize_nested"] = true # Override safety check and cause children to serialize
-
-      # Make sure Rack gets updated
-      req = Rack::Request.new(env)
-      req.update_param("display", display_attrs)
-      req.update_param("serialize_nested", true)
-
       ont, submission = get_ontology_and_submission
       check_last_modified_segment(LinkedData::Models::Class, [ont.acronym])
       cls = get_class(submission)
-      root_tree = nil
-      roots = nil
-
+      display_attrs = [:prefLabel, :hasChildren, :children, :obsolete, :subClassOf]
+      display_attrs += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
+      request_display(display_attrs.join(','))
+      extra_include = [:hasChildren, :isInActiveScheme, :isInActiveScheme]
       if sort
-        root_tree = cls.tree_sorted
+        roots = submission.roots_sorted(extra_include, concept_schemes: concept_schemes, concept_collections: concept_collections)
+        root_tree = cls.tree_sorted(concept_schemes: concept_schemes, concept_collections: concept_collections, roots: roots)
         #add the other roots to the response
-        roots = submission.roots_sorted(extra_include=[:hasChildren])
       else
-        root_tree = cls.tree
+        roots = submission.roots(extra_include, concept_schemes: concept_schemes, concept_collections: concept_collections)
+        root_tree = cls.tree(concept_schemes: concept_schemes, concept_collections: concept_collections, roots: roots)
         #add the other roots to the response
-        roots = submission.roots(extra_include=[:hasChildren])
       end
 
       # if this path' root does not get returned by the submission.roots call, manually add it
@@ -193,6 +200,9 @@ class ClassesController < ApplicationController
       error 404 if cls.nil?
       ld = LinkedData::Models::Class.goo_attrs_to_load(includes_param)
       unmapped = ld.delete(:properties)
+      ld += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
+
+      request_display(ld.join(','))
       aggregates = LinkedData::Models::Class.goo_aggregates_to_load(ld)
       page_data_query = LinkedData::Models::Class.where(parents: cls).in(submission).include(ld)
       page_data_query.aggregate(*aggregates) unless aggregates.empty?
@@ -201,11 +211,13 @@ class ClassesController < ApplicationController
         LinkedData::Models::Class.in(submission).models(page_data).include(:unmapped).all
       end
       page_data.delete_if { |x| x.id.to_s == cls.id.to_s }
-      if ld.include?(:hasChildren)
+      if ld.include?(:hasChildren) || ld.include?(:isInActiveScheme) || ld.include?(:isInActiveCollection)
         page_data.each do |c|
-          c.load_has_children
+          c.load_computed_attributes(to_load: ld,
+                                     options: { schemes: concept_schemes, collections: concept_collections })
         end
       end
+
       reply page_data
     end
 
@@ -235,7 +247,10 @@ class ClassesController < ApplicationController
       reply cls.parents.select { |x| !x.id.to_s["owl#Thing"] }
     end
 
+
+
     private
+
     def includes_param_check
       if includes_param
         if includes_param.include?(:all)
@@ -248,5 +263,23 @@ class ClassesController < ApplicationController
       end
     end
 
+    def concept_schemes
+      params["concept_schemes"]&.split(',') || []
+    end
+
+    def concept_collections
+      params["concept_collections"]&.split(',') || []
+    end
+
+    def request_display(attrs)
+
+      params["display"] = attrs
+      params["serialize_nested"] = true # Override safety check and cause children to serialize
+
+      # Make sure Rack gets updated
+      req = Rack::Request.new(env)
+      req.update_param("display", attrs)
+      req.update_param("serialize_nested", true)
+    end
   end
 end
