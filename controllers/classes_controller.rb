@@ -130,7 +130,7 @@ class ClassesController < ApplicationController
       display_attrs = [:prefLabel, :hasChildren, :children, :obsolete, :subClassOf]
       display_attrs += LinkedData::Models::Class.concept_is_in_attributes if submission.skos?
       request_display(display_attrs.join(','))
-      extra_include = [:hasChildren, :isInActiveScheme, :isInActiveScheme]
+      extra_include = [:hasChildren, :isInActiveScheme, :isInActiveCollection]
       if sort
         roots = submission.roots_sorted(extra_include, concept_schemes: concept_schemes, concept_collections: concept_collections)
         root_tree = cls.tree_sorted(concept_schemes: concept_schemes, concept_collections: concept_collections, roots: roots)

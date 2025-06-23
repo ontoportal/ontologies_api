@@ -13,7 +13,7 @@ module Sinatra
         collection_uri = RDF::URI.new(params[:collection])
 
         unless collection_uri.valid?
-          error 400, "The input class id '#{params[:collection]}' is not a valid IRI"
+          error 400, "The input collection id '#{params[:collection]}' is not a valid IRI"
         end
         collection_uri
       end

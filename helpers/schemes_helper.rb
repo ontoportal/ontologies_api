@@ -13,7 +13,7 @@ module Sinatra
         scheme_uri = RDF::URI.new(params[:scheme])
 
         unless scheme_uri.valid?
-          error 400, "The input class id '#{params[:scheme]}' is not a valid IRI"
+          error 400, "The input scheme id '#{params[:scheme]}' is not a valid IRI"
         end
         scheme_uri
       end
