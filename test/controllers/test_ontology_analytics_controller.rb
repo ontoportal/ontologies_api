@@ -5,9 +5,14 @@ class TestOntologyAnalyticsController < TestCase
     File.read(File.expand_path('../data/ontology_analytics_data.json', __dir__))
   )
 
+  class << self
+    attr_accessor :redis, :onts, :user
+  end
+
   def before_suite
-    @@redis = Redis.new(host: Annotator.settings.annotator_redis_host, port: Annotator.settings.annotator_redis_port)
-    db_size = @@redis.dbsize
+    self.class.redis = Redis.new(host: Annotator.settings.annotator_redis_host,
+                                 port: Annotator.settings.annotator_redis_port)
+    db_size = self.class.redis.dbsize
     if db_size > MAX_TEST_REDIS_SIZE
       puts(
         "This test cannot be run because there are #{db_size} Redis entries " \
@@ -15,8 +20,8 @@ class TestOntologyAnalyticsController < TestCase
       )
       return
     end
-    @@redis.set(LinkedData::Models::Ontology::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(ANALYTICS_DATA))
-    @@onts = {
+    self.class.redis.set(LinkedData::Models::Ontology::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(ANALYTICS_DATA))
+    self.class.onts = {
       'NCIT' => 'NCIT Ontology', 'ONTOMA' => 'ONTOMA Ontology', 'CMPO' => 'CMPO Ontology', 'AEO' => 'AEO Ontology',
       'SNOMEDCT' => 'SNOMEDCT Ontology', 'TST' => 'TST Ontology'
     }
@@ -32,20 +37,28 @@ class TestOntologyAnalyticsController < TestCase
 
   def self._create_user
     username = 'tim'
-    test_user = LinkedData::Models::User.new(username: username, email: "#{username}@example.org", password: 'password')
+    test_user = LinkedData::Models::User.new(
+      username: username,
+      email: "#{username}@example.org",
+      password: 'password'
+    )
     test_user.save if test_user.valid?
-    @@user = test_user.valid? ? test_user : LinkedData::Models::User.find(username).first
+    self.user = test_user.valid? ? test_user : LinkedData::Models::User.find(username).first
   end
 
   def self._create_onts
-    @@onts.each do |acronym, name|
-      ont = LinkedData::Models::Ontology.new(acronym: acronym, name: name, administeredBy: [@@user])
+    onts.each do |acronym, name|
+      ont = LinkedData::Models::Ontology.new(
+        acronym: acronym,
+        name: name,
+        administeredBy: [user]
+      )
       ont.save
     end
   end
 
   def self._delete_onts
-    @@onts.each_key do |acronym|
+    onts.each_key do |acronym|
       ont = LinkedData::Models::Ontology.find(acronym).first
       ont&.delete
     end
