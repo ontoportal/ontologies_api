@@ -20,7 +20,7 @@ class TestOntologyAnalyticsController < TestCase
       )
       return
     end
-    self.class.redis.set(LinkedData::Models::Ontology::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(ANALYTICS_DATA))
+    self.class.redis.set(LinkedData.settings.ontology_analytics_redis_field, Marshal.dump(ANALYTICS_DATA))
     self.class.onts = {
       'NCIT' => 'NCIT Ontology', 'ONTOMA' => 'ONTOMA Ontology', 'CMPO' => 'CMPO Ontology', 'AEO' => 'AEO Ontology',
       'SNOMEDCT' => 'SNOMEDCT Ontology', 'TST' => 'TST Ontology'
@@ -31,6 +31,7 @@ class TestOntologyAnalyticsController < TestCase
   end
 
   def after_all
+    self.class.redis&.del(LinkedData.settings.ontology_analytics_redis_field)
     self.class._delete
     super
   end
