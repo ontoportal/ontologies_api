@@ -25,9 +25,9 @@ class TestOntologyAnalyticsController < TestCase
     self.class._create_onts
   end
 
-  def teardown
-    self.class._delete_onts
-    self.class._create_onts
+  def after_all
+    self.class._delete
+    super
   end
 
   def self._create_user
@@ -57,23 +57,29 @@ class TestOntologyAnalyticsController < TestCase
     test_user&.delete
   end
 
-  def test_ontology_analytics
+  def test_invalid_query_params
     get '/analytics?year=2014&month=14'
     assert_equal(400, last_response.status, get_errors(last_response))
 
     get '/analytics?year=20142&month=3'
     assert_equal(400, last_response.status, get_errors(last_response))
+  end
 
+  def test_ontology_filtering
     get '/analytics?ontologies=NCIT,ONTOMA'
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
     assert_equal 2, analytics.length
+  end
 
+  def test_month_filtering
     get '/analytics?ontologies=NCIT,ONTOMA&month=2'
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
     analytics.each_key { |k| assert_equal 10, analytics[k].length }
+  end
 
+  def test_specific_month_and_year
     get '/analytics?year=2014&month=04'
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
@@ -87,23 +93,31 @@ class TestOntologyAnalyticsController < TestCase
       assert_equal '2014', v.keys[0]
       assert_equal '4', v[v.keys[0]].keys[0]
     end
+  end
 
+  def test_analytics_index
     get '/analytics'
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
     assert_equal 6, analytics.length
     analytics.each_key { |k| assert_equal 10, analytics[k].length }
+  end
 
+  def test_missing_ontology
     get '/ontologies/NON_EXISTENT/analytics'
     assert_equal(404, last_response.status, get_errors(last_response))
+  end
 
+  def test_single_ontology
     get '/ontologies/TST/analytics'
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
     assert_equal 1, analytics.length
     assert_equal 10, analytics[analytics.keys[0]].length
     assert_equal 2000, analytics['TST']['2015']['1']
+  end
 
+  def test_ontology_csv
     get '/ontologies/TST/analytics?format=csv'
     assert last_response.ok?
     headers = last_response.headers
