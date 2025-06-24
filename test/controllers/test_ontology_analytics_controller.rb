@@ -6,20 +6,19 @@ class TestOntologyAnalyticsController < TestCase
   )
 
   def before_suite
-    @@redis = Redis.new(:host => Annotator.settings.annotator_redis_host, :port => Annotator.settings.annotator_redis_port)
+    @@redis = Redis.new(host: Annotator.settings.annotator_redis_host, port: Annotator.settings.annotator_redis_port)
     db_size = @@redis.dbsize
     if db_size > MAX_TEST_REDIS_SIZE
-      puts "   This test cannot be run because there #{db_size} redis entries (max #{MAX_TEST_REDIS_SIZE}). You are probably pointing to the wrong redis backend. "
+      puts(
+        "This test cannot be run because there are #{db_size} Redis entries " \
+        "(max #{MAX_TEST_REDIS_SIZE}). You are probably pointing to the wrong Redis backend."
+      )
       return
     end
     @@redis.set(LinkedData::Models::Ontology::ONTOLOGY_ANALYTICS_REDIS_FIELD, Marshal.dump(ANALYTICS_DATA))
     @@onts = {
-        'NCIT' => 'NCIT Ontology',
-        'ONTOMA' => 'ONTOMA Ontology',
-        'CMPO' => 'CMPO Ontology',
-        'AEO' => 'AEO Ontology',
-        'SNOMEDCT' => 'SNOMEDCT Ontology',
-        'TST' => 'TST Ontology'
+      'NCIT' => 'NCIT Ontology', 'ONTOMA' => 'ONTOMA Ontology', 'CMPO' => 'CMPO Ontology', 'AEO' => 'AEO Ontology',
+      'SNOMEDCT' => 'SNOMEDCT Ontology', 'TST' => 'TST Ontology'
     }
     self.class._delete
     self.class._create_user
@@ -46,24 +45,24 @@ class TestOntologyAnalyticsController < TestCase
   end
 
   def self._delete_onts
-    @@onts.each do |acronym, _|
+    @@onts.each_key do |acronym|
       ont = LinkedData::Models::Ontology.find(acronym).first
-      ont.delete unless ont.nil?
+      ont&.delete
     end
   end
 
   def self._delete
     _delete_onts
     test_user = LinkedData::Models::User.find('tim').first
-    test_user.delete unless test_user.nil?
+    test_user&.delete
   end
 
   def test_ontology_analytics
     get '/analytics?year=2014&month=14'
-    assert_equal(400, last_response.status, msg=get_errors(last_response))
+    assert_equal(400, last_response.status, get_errors(last_response))
 
     get '/analytics?year=20142&month=3'
-    assert_equal(400, last_response.status, msg=get_errors(last_response))
+    assert_equal(400, last_response.status, get_errors(last_response))
 
     get '/analytics?ontologies=NCIT,ONTOMA'
     assert last_response.ok?
@@ -73,26 +72,30 @@ class TestOntologyAnalyticsController < TestCase
     get '/analytics?ontologies=NCIT,ONTOMA&month=2'
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
-    analytics.each { |k, _| assert_equal 10, analytics[k].length }
+    analytics.each_key { |k| assert_equal 10, analytics[k].length }
 
     get '/analytics?year=2014&month=04'
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
 
     assert_equal 6, analytics.length
-    assert_equal 20376, analytics['SNOMEDCT']['2014']['4']
+    assert_equal 20_376, analytics['SNOMEDCT']['2014']['4']
     assert_equal 1, analytics['SNOMEDCT'].length
     assert_equal 12, analytics['CMPO']['2014']['4']
-    analytics.values.each { |v| assert_equal 1, v.length; assert_equal '2014', v.keys[0]; assert_equal '4', v[v.keys[0]].keys[0] }
+    analytics.each_value do |v|
+      assert_equal 1, v.length
+      assert_equal '2014', v.keys[0]
+      assert_equal '4', v[v.keys[0]].keys[0]
+    end
 
     get '/analytics'
     assert last_response.ok?
     analytics = MultiJson.load(last_response.body)
     assert_equal 6, analytics.length
-    analytics.each { |k, _| assert_equal 10, analytics[k].length }
+    analytics.each_key { |k| assert_equal 10, analytics[k].length }
 
     get '/ontologies/NON_EXISTENT/analytics'
-    assert_equal(404, last_response.status, msg=get_errors(last_response))
+    assert_equal(404, last_response.status, get_errors(last_response))
 
     get '/ontologies/TST/analytics'
     assert last_response.ok?
@@ -107,5 +110,4 @@ class TestOntologyAnalyticsController < TestCase
     assert_equal 'text/csv;charset=utf-8', headers['Content-Type']
     assert_equal 'attachment; filename="analytics-TST.csv"', headers['Content-Disposition']
   end
-
 end
