@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: b9019ad9e1eb78c74105fc6c6a879085066da17d
-  branch: master
+  revision: c3f9a7f789bf2f52ed31f0272d2725117d3ac04e
+  branch: develop
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 4fb9114b80b99f0a654c7f70aaa96839c74fc615
-  branch: master
+  revision: 6671099a39fffa8b98f21db7593cef35dd296b65
+  branch: develop
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: e20cc68d2c4e5ab1c6087679b3537a5fa7c7c04e
-  branch: master
+  revision: 4ecc9cfe998b1df5cf4367f58dd77bffe1f2ac1a
+  branch: develop
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: c6a18eb7700b23a1a4f1e32ebc94003bf75efe93
-  branch: master
+  revision: c508796d80764bf748b51e9f1c33e57ea9f14a1d
+  branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 93e0844e19c3632bbd613a3e33869e267a6f2e25
-  branch: master
+  revision: b28f3503db7393d99da6dab455b4a95473789944
+  branch: develop
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -77,8 +77,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
-  branch: master
+  revision: 1657f0dd69fd4b522d3549a6848670175f5e98cc
+  branch: develop
   specs:
     sparql-client (1.0.1)
       json_pure (>= 1.4)
