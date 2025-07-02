@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: c3f9a7f789bf2f52ed31f0272d2725117d3ac04e
-  branch: develop
+  revision: b9019ad9e1eb78c74105fc6c6a879085066da17d
+  branch: master
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 6671099a39fffa8b98f21db7593cef35dd296b65
-  branch: develop
+  revision: 4fb9114b80b99f0a654c7f70aaa96839c74fc615
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: edabffd3c0199b7c56c376b46bd4d15ec2077f69
-  branch: develop
+  revision: e20cc68d2c4e5ab1c6087679b3537a5fa7c7c04e
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: c508796d80764bf748b51e9f1c33e57ea9f14a1d
-  branch: develop
+  revision: c6a18eb7700b23a1a4f1e32ebc94003bf75efe93
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 67169f3264aaa73c6619a599907a3c724535a69f
-  branch: develop
+  revision: 93e0844e19c3632bbd613a3e33869e267a6f2e25
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -77,8 +77,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
-  revision: 1657f0dd69fd4b522d3549a6848670175f5e98cc
-  branch: develop
+  revision: e89c26aa96f184dbe9b52d51e04fb3d9ba998dbc
+  branch: master
   specs:
     sparql-client (1.0.1)
       json_pure (>= 1.4)
@@ -157,7 +157,7 @@ GEM
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
-    gapic-common (0.25.0)
+    gapic-common (0.26.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
@@ -169,28 +169,28 @@ GEM
       grpc (~> 1.66)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
-    google-analytics-data (0.7.0)
+    google-analytics-data (0.7.1)
       google-analytics-data-v1beta (>= 0.11, < 2.a)
       google-cloud-core (~> 1.6)
-    google-analytics-data-v1beta (0.16.0)
+    google-analytics-data-v1beta (0.16.1)
       gapic-common (>= 0.25.0, < 2.a)
       google-cloud-errors (~> 1.0)
     google-cloud-core (1.8.0)
       google-cloud-env (>= 1.0, < 3.a)
       google-cloud-errors (~> 1.0)
-    google-cloud-env (2.2.2)
+    google-cloud-env (2.3.0)
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.5.0)
-    google-logging-utils (0.1.0)
+    google-logging-utils (0.2.0)
     google-protobuf (3.25.7-aarch64-linux)
     google-protobuf (3.25.7-arm64-darwin)
     google-protobuf (3.25.7-x86_64-linux)
-    googleapis-common-protos (1.7.0)
+    googleapis-common-protos (1.8.0)
       google-protobuf (>= 3.18, < 5.a)
-      googleapis-common-protos-types (~> 1.7)
+      googleapis-common-protos-types (~> 1.20)
       grpc (~> 1.41)
-    googleapis-common-protos-types (1.19.0)
+    googleapis-common-protos-types (1.20.0)
       google-protobuf (>= 3.18, < 5.a)
     googleauth (1.14.0)
       faraday (>= 1.0, < 3.a)
@@ -240,7 +240,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0624)
+    mime-types-data (3.2025.0701)
     mini_mime (1.1.5)
     minitest (5.25.5)
     minitest-hooks (1.5.2)
@@ -353,7 +353,7 @@ GEM
     rubyzip (2.4.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
-    signet (0.19.0)
+    signet (0.20.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
