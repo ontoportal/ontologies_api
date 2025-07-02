@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: bf575f8dddb28719e8ae64855f9dd9ffc301f046
+  revision: b28f3503db7393d99da6dab455b4a95473789944
   branch: develop
   specs:
     ontologies_linked_data (0.0.1)
@@ -226,7 +226,7 @@ GEM
       base64
     kgio (2.11.4)
     language_server-protocol (3.17.0.4)
-    libxml-ruby (5.0.3)
+    libxml-ruby (5.0.4)
     lint_roller (1.1.0)
     logger (1.7.0)
     macaddr (1.7.2)
@@ -255,7 +255,7 @@ GEM
     net-http (0.6.0)
       uri
     net-http-persistent (2.9.4)
-    net-imap (0.5.8)
+    net-imap (0.5.9)
       date
       net-protocol
     net-pop (0.1.2)
