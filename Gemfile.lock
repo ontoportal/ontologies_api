@@ -121,6 +121,7 @@ GEM
     bcrypt_pbkdf (1.1.1-arm64-darwin)
     bigdecimal (3.1.9)
     builder (3.3.0)
+    byebug (12.0.0)
     capistrano (3.19.2)
       airbrussh (>= 1.0.0)
       i18n
@@ -425,6 +426,7 @@ DEPENDENCIES
   activesupport (~> 5)
   bcrypt_pbkdf (>= 1.0, < 2.0)
   bigdecimal
+  byebug (~> 12.0)
   capistrano (~> 3)
   capistrano-bundler
   capistrano-locally

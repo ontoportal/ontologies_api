@@ -71,6 +71,7 @@ group :profiling do
 end
 
 group :test do
+  gem 'byebug', '~> 12.0'
   gem 'crack', '0.4.5'
   gem 'minitest', '~> 5.0'
   gem 'minitest-hooks', "~> 1.5"
