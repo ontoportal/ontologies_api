@@ -10,8 +10,8 @@ class TestOntologyAnalyticsController < TestCase
   end
 
   def before_suite
-    self.class.redis = Redis.new(host: Annotator.settings.annotator_redis_host,
-                                 port: Annotator.settings.annotator_redis_port)
+    self.class.redis = Redis.new(host: LinkedData.settings.ontology_analytics_redis_host,
+                                 port: LinkedData.settings.annotator_analytics_redis_port)
     db_size = self.class.redis.dbsize
     if db_size > MAX_TEST_REDIS_SIZE
       puts(
