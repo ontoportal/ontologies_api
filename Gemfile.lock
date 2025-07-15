@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: b9019ad9e1eb78c74105fc6c6a879085066da17d
+  revision: 26c0a69e67ac59778a46caf51202ebd38ccac767
   branch: master
   specs:
     goo (0.0.2)
@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 9e0ccb79e3cd00c9b75ec0f8d6a2494366a92ec6
+  revision: 098c1e1b00a04a5b0f3c9eb335f95e12bc7e7829
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -316,7 +316,7 @@ GEM
     redcarpet (3.6.1)
     redis (5.4.0)
       redis-client (>= 0.22.0)
-    redis-client (0.25.0)
+    redis-client (0.25.1)
       connection_pool
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
