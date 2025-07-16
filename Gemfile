@@ -43,12 +43,12 @@ gem 'haml', '~> 5.2.2' # pin see https://github.com/ncbo/ontologies_api/pull/107
 gem 'redcarpet'
 
 # NCBO gems (can be from a local dev path or from rubygems/git)
-gem 'goo', github: 'ncbo/goo', branch: 'master'
-gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'master'
-gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'master'
-gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'master'
-gem 'ontologies_linked_data', github: 'ontoportal-lirmm/ontologies_linked_data', branch: 'pr/feature/better-skos'
-gem 'sparql-client', github: 'ncbo/sparql-client', branch: 'master'
+gem 'goo', github: 'ncbo/goo', branch: 'develop'
+gem 'ncbo_annotator', github: 'ncbo/ncbo_annotator', branch: 'develop'
+gem 'ncbo_cron', github: 'ncbo/ncbo_cron', branch: 'fix/gemspec_exec_files'
+gem 'ncbo_ontology_recommender', github: 'ncbo/ncbo_ontology_recommender', branch: 'develop'
+gem 'ontologies_linked_data', github: 'ncbo/ontologies_linked_data', branch: 'develop'
+gem 'sparql-client', github: 'ncbo/sparql-client', tag: 'v6.3.0'
 
 group :development do
   # bcrypt_pbkdf and ed35519 is required for capistrano deployments when using ed25519 keys; see https://github.com/miloserdow/capistrano-deploy/issues/42
@@ -71,6 +71,7 @@ group :profiling do
 end
 
 group :test do
+  gem 'byebug', '~> 12.0'
   gem 'crack', '0.4.5'
   gem 'minitest', '~> 5.0'
   gem 'minitest-hooks', "~> 1.5"
