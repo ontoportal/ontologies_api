@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 26c0a69e67ac59778a46caf51202ebd38ccac767
-  branch: master
+  revision: 87a21a76bc61392d0629a19c8a18593f606b52e5
+  branch: develop
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 4fb9114b80b99f0a654c7f70aaa96839c74fc615
-  branch: master
+  revision: 2abcd54c148d0983570d681506002d9d3782d2eb
+  branch: develop
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 6118e8275ea771e9e4de4132eccca293e8c8b739
-  branch: master
+  revision: 48770b7861110cabc20607939d18f336ae7ce41c
+  branch: develop
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: c6a18eb7700b23a1a4f1e32ebc94003bf75efe93
-  branch: master
+  revision: f92a42f660635522eb8709e618ff2e641aef0d17
+  branch: develop
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 098c1e1b00a04a5b0f3c9eb335f95e12bc7e7829
-  branch: master
+  revision: 1a7e1972e8f9a9fd32e09fa7ccb6d2b4228be447
+  branch: develop
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -119,6 +119,7 @@ GEM
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     bcrypt_pbkdf (1.1.1-arm64-darwin)
+    bcrypt_pbkdf (1.1.1-x86_64-darwin)
     bigdecimal (3.2.2)
     builder (3.3.0)
     byebug (12.0.0)
@@ -144,7 +145,7 @@ GEM
     date (3.4.1)
     docile (1.4.1)
     domain_name (0.6.20240107)
-    ed25519 (1.3.0)
+    ed25519 (1.4.0)
     faraday (2.13.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -155,9 +156,17 @@ GEM
       net-http (>= 0.5.0)
     faraday-retry (2.3.2)
       faraday (~> 2.0)
+    ffi (1.17.2)
     ffi (1.17.2-aarch64-linux-gnu)
+    ffi (1.17.2-aarch64-linux-musl)
+    ffi (1.17.2-arm-linux-gnu)
+    ffi (1.17.2-arm-linux-musl)
     ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86-linux-gnu)
+    ffi (1.17.2-x86-linux-musl)
+    ffi (1.17.2-x86_64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
+    ffi (1.17.2-x86_64-linux-musl)
     gapic-common (1.0.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
@@ -184,8 +193,11 @@ GEM
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.5.0)
     google-logging-utils (0.2.0)
+    google-protobuf (3.25.8)
     google-protobuf (3.25.8-aarch64-linux)
     google-protobuf (3.25.8-arm64-darwin)
+    google-protobuf (3.25.8-x86-linux)
+    google-protobuf (3.25.8-x86_64-darwin)
     google-protobuf (3.25.8-x86_64-linux)
     googleapis-common-protos (1.8.0)
       google-protobuf (>= 3.18, < 5.a)
@@ -201,10 +213,19 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
+    grpc (1.73.0)
+      google-protobuf (>= 3.25, < 5.0)
+      googleapis-common-protos-types (~> 1.0)
     grpc (1.73.0-aarch64-linux)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     grpc (1.73.0-arm64-darwin)
+      google-protobuf (>= 3.25, < 5.0)
+      googleapis-common-protos-types (~> 1.0)
+    grpc (1.73.0-x86-linux)
+      google-protobuf (>= 3.25, < 5.0)
+      googleapis-common-protos-types (~> 1.0)
+    grpc (1.73.0-x86_64-darwin)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     grpc (1.73.0-x86_64-linux)
@@ -213,7 +234,7 @@ GEM
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
-    hashdiff (1.1.2)
+    hashdiff (1.2.0)
     http-accept (1.7.0)
     http-cookie (1.0.8)
       domain_name (~> 0.5)
@@ -226,7 +247,7 @@ GEM
     jwt (2.10.2)
       base64
     kgio (2.11.4)
-    language_server-protocol (3.17.0.4)
+    language_server-protocol (3.17.0.5)
     libxml-ruby (5.0.4)
     lint_roller (1.1.0)
     logger (1.7.0)
@@ -271,7 +292,7 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     netrc (0.11.0)
-    newrelic_rpm (9.18.0)
+    newrelic_rpm (9.19.0)
     oj (3.16.11)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
@@ -301,7 +322,7 @@ GEM
       rack (>= 0.4)
     rack-cors (1.0.6)
       rack (>= 1.6.0)
-    rack-mini-profiler (3.3.1)
+    rack-mini-profiler (4.0.0)
       rack (>= 1.2.0)
     rack-protection (1.5.5)
       rack
@@ -335,7 +356,7 @@ GEM
     rsolr (2.6.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
-    rubocop (1.75.4)
+    rubocop (1.78.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -343,10 +364,10 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.44.0, < 2.0)
+      rubocop-ast (>= 1.45.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.44.1)
+    rubocop-ast (1.45.1)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     ruby-progressbar (1.13.0)
@@ -363,7 +384,7 @@ GEM
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
-    simplecov-cobertura (2.1.0)
+    simplecov-cobertura (3.0.0)
       rexml
       simplecov (~> 0.19)
     simplecov-html (0.13.1)
@@ -391,7 +412,7 @@ GEM
     systemu (2.6.5)
     temple (0.10.3)
     thread_safe (0.3.6)
-    tilt (2.6.0)
+    tilt (2.6.1)
     time (0.4.1)
       date
     timeout (0.4.3)
@@ -417,10 +438,19 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm64-darwin-22
-  arm64-darwin-23
-  arm64-darwin-24
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux-gnu
+  arm-linux-musl
+  arm64-darwin
+  ruby
+  x86-linux
+  x86-linux-gnu
+  x86-linux-musl
+  x86_64-darwin
   x86_64-linux
+  x86_64-linux-gnu
+  x86_64-linux-musl
 
 DEPENDENCIES
   activesupport (~> 5)
