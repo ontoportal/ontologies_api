@@ -12,7 +12,7 @@ module Sinatra
       def h(text)
         Rack::Utils.escape_html(text)
       end
-      
+
       ##
       # Populate +obj+ using values from +params+
       # Will also try to find related objects using a Goo lookup.
