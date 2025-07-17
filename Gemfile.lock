@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ncbo/goo.git
-  revision: 87a21a76bc61392d0629a19c8a18593f606b52e5
-  branch: develop
+  revision: 26c0a69e67ac59778a46caf51202ebd38ccac767
+  branch: master
   specs:
     goo (0.0.2)
       addressable (~> 2.8)
@@ -16,8 +16,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_annotator.git
-  revision: 2abcd54c148d0983570d681506002d9d3782d2eb
-  branch: develop
+  revision: 4fb9114b80b99f0a654c7f70aaa96839c74fc615
+  branch: master
   specs:
     ncbo_annotator (0.0.1)
       goo
@@ -27,8 +27,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: 48770b7861110cabc20607939d18f336ae7ce41c
-  branch: develop
+  revision: ffd62d61f36b9c58fef65afa082d200747a33893
+  branch: master
   specs:
     ncbo_cron (0.0.1)
       dante
@@ -45,8 +45,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_ontology_recommender.git
-  revision: f92a42f660635522eb8709e618ff2e641aef0d17
-  branch: develop
+  revision: c6a18eb7700b23a1a4f1e32ebc94003bf75efe93
+  branch: master
   specs:
     ncbo_ontology_recommender (0.0.1)
       goo
@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: d55bddd1a06eeec7353525b7d7ceba095cc756a1
-  branch: develop
+  revision: 098c1e1b00a04a5b0f3c9eb335f95e12bc7e7829
+  branch: master
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -240,7 +240,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    json (2.12.2)
+    json (2.13.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.8.1)
@@ -262,7 +262,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0708)
+    mime-types-data (3.2025.0715)
     mini_mime (1.1.5)
     minitest (5.25.5)
     minitest-hooks (1.5.2)
@@ -299,7 +299,7 @@ GEM
     omni_logger (0.1.4)
       logger
     os (1.1.4)
-    ostruct (0.6.2)
+    ostruct (0.6.3)
     parallel (1.27.0)
     parseconfig (1.1.2)
     parser (3.3.8.0)
@@ -335,7 +335,7 @@ GEM
     rdf (1.0.8)
       addressable (>= 2.2)
     redcarpet (3.6.1)
-    redis (5.4.0)
+    redis (5.4.1)
       redis-client (>= 0.22.0)
     redis-client (0.25.1)
       connection_pool
