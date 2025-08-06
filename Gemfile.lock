@@ -56,8 +56,8 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: dcfc31bf30ca98ee2b1590e3585d01a209d74794
-  branch: feature/system-controlled-attributes
+  revision: 159a282bc083c9852f68c6cf6813b73ab0fc7d87
+  branch: develop
   specs:
     ontologies_linked_data (0.0.1)
       activesupport
@@ -262,7 +262,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0729)
+    mime-types-data (3.2025.0805)
     mini_mime (1.1.5)
     minitest (5.25.5)
     minitest-hooks (1.5.2)
