@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 2f22b1b19bd749c5625af798e2ad132f833309cb
+  revision: 5a4f4d39aeb3ec567038b88ea962b796b2715915
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -73,7 +73,7 @@ GIT
       rack
       rack-test
       rsolr
-      rubyzip
+      rubyzip (~> 3.0)
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
@@ -271,7 +271,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0805)
+    mime-types-data (3.2025.0819)
     mini_mime (1.1.5)
     minitest (5.25.5)
     minitest-hooks (1.5.2)
@@ -346,7 +346,7 @@ GEM
     redcarpet (3.6.1)
     redis (5.4.1)
       redis-client (>= 0.22.0)
-    redis-client (0.25.1)
+    redis-client (0.25.2)
       connection_pool
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
@@ -381,7 +381,7 @@ GEM
       prism (~> 1.4)
     ruby-progressbar (1.13.0)
     ruby-xxHash (0.4.0.2)
-    rubyzip (3.0.0)
+    rubyzip (3.0.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     signet (0.20.0)
