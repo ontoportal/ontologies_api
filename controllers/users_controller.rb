@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   namespace "/users" do
+
     post "/authenticate" do
       user_id       = params["user"]
       user_password = params["password"]

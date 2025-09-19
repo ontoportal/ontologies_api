@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ncbo_cron.git
-  revision: ffd62d61f36b9c58fef65afa082d200747a33893
+  revision: 8d67188e7f21014234359b71bb93a9d1256c320c
   branch: master
   specs:
     ncbo_cron (0.0.1)
@@ -56,7 +56,7 @@ GIT
 
 GIT
   remote: https://github.com/ncbo/ontologies_linked_data.git
-  revision: 098c1e1b00a04a5b0f3c9eb335f95e12bc7e7829
+  revision: 5a4f4d39aeb3ec567038b88ea962b796b2715915
   branch: master
   specs:
     ontologies_linked_data (0.0.1)
@@ -73,7 +73,7 @@ GIT
       rack
       rack-test
       rsolr
-      rubyzip
+      rubyzip (~> 3.0)
 
 GIT
   remote: https://github.com/ncbo/sparql-client.git
@@ -146,7 +146,7 @@ GEM
     docile (1.4.1)
     domain_name (0.6.20240107)
     ed25519 (1.4.0)
-    faraday (2.13.2)
+    faraday (2.13.4)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -167,7 +167,7 @@ GEM
     ffi (1.17.2-x86_64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     ffi (1.17.2-x86_64-linux-musl)
-    gapic-common (1.0.0)
+    gapic-common (1.0.1)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
@@ -213,22 +213,31 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    grpc (1.73.0)
+    grpc (1.74.0)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.73.0-aarch64-linux)
+    grpc (1.74.0-aarch64-linux-gnu)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.73.0-arm64-darwin)
+    grpc (1.74.0-aarch64-linux-musl)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.73.0-x86-linux)
+    grpc (1.74.0-arm64-darwin)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.73.0-x86_64-darwin)
+    grpc (1.74.0-x86-linux-gnu)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.73.0-x86_64-linux)
+    grpc (1.74.0-x86-linux-musl)
+      google-protobuf (>= 3.25, < 5.0)
+      googleapis-common-protos-types (~> 1.0)
+    grpc (1.74.0-x86_64-darwin)
+      google-protobuf (>= 3.25, < 5.0)
+      googleapis-common-protos-types (~> 1.0)
+    grpc (1.74.0-x86_64-linux-gnu)
+      google-protobuf (>= 3.25, < 5.0)
+      googleapis-common-protos-types (~> 1.0)
+    grpc (1.74.0-x86_64-linux-musl)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     haml (5.2.2)
@@ -240,7 +249,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    json (2.13.0)
+    json (2.13.2)
     json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.8.1)
@@ -248,7 +257,7 @@ GEM
       base64
     kgio (2.11.4)
     language_server-protocol (3.17.0.5)
-    libxml-ruby (5.0.4)
+    libxml-ruby (5.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
     macaddr (1.7.2)
@@ -262,7 +271,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0715)
+    mime-types-data (3.2025.0819)
     mini_mime (1.1.5)
     minitest (5.25.5)
     minitest-hooks (1.5.2)
@@ -270,7 +279,7 @@ GEM
     minitest-stub_any_instance (1.0.3)
     mlanett-redis-lock (0.2.7)
       redis
-    multi_json (1.15.0)
+    multi_json (1.17.0)
     net-ftp (0.3.8)
       net-protocol
       time
@@ -337,7 +346,7 @@ GEM
     redcarpet (3.6.1)
     redis (5.4.1)
       redis-client (>= 0.22.0)
-    redis-client (0.25.1)
+    redis-client (0.25.2)
       connection_pool
     redis-rack-cache (2.2.1)
       rack-cache (>= 1.10, < 2)
@@ -367,12 +376,12 @@ GEM
       rubocop-ast (>= 1.45.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.45.1)
+    rubocop-ast (1.46.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     ruby-progressbar (1.13.0)
     ruby-xxHash (0.4.0.2)
-    rubyzip (2.4.1)
+    rubyzip (3.0.1)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     signet (0.20.0)
@@ -387,7 +396,7 @@ GEM
     simplecov-cobertura (3.0.0)
       rexml
       simplecov (~> 0.19)
-    simplecov-html (0.13.1)
+    simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
     sinatra (1.4.8)
       rack (~> 1.5)

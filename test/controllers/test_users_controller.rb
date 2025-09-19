@@ -21,6 +21,48 @@ class TestUsersController < TestCase
     end
   end
 
+  def test_rejects_restricted_user_attributes_on_post_and_patch
+    username = "restricted_test_user"
+    email = "restricted@example.org"
+    password = "testpass"
+
+    # Create baseline user
+    post "/users", {
+      username: username,
+      email: email,
+      password: password
+    }
+    assert_equal 201, last_response.status
+
+    # POST attempt with restricted attributes
+    post "/users", {
+      username: "new-user",
+      email: "new@example.org",
+      password: "newpass",
+      created: DateTime.now + 1.year,
+      resetToken: "invalid",
+      resetTokenExpireTime: DateTime.now
+    }
+    assert_equal 201, last_response.status
+    user = User.find('new-user').include(User.attributes).first
+    assert_nil user.resetToken
+    assert_nil user.resetTokenExpireTime
+    assert_operator Time.now.to_time.to_i, :>=, user.created.to_time.to_i
+
+    # PATCH attempt with restricted attributes
+    patch "/users/#{username}", {
+      created: DateTime.now + 1.year,
+      resetToken: "still-invalid",
+      resetTokenExpireTime: DateTime.now
+    }
+    assert_equal 204, last_response.status
+    user = User.find('new-user').include(User.attributes).first
+    assert_nil user.resetToken
+    assert_nil user.resetTokenExpireTime
+    assert_operator Time.at(Time.now.to_i), :>=, user.created.to_time
+
+  end
+
   def test_admin_creation
     existent_user = @@users.first #no admin
 
