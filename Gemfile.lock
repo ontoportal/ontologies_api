@@ -281,14 +281,15 @@ GEM
       concurrent-ruby (~> 1.0)
     io-console (0.8.2)
     json (2.19.5)
-    json-canonicalization (0.4.0)
-    json-ld (3.2.5)
+    json-canonicalization (1.0.0)
+    json-ld (3.3.2)
       htmlentities (~> 4.3)
-      json-canonicalization (~> 0.3, >= 0.3.2)
+      json-canonicalization (~> 1.0)
       link_header (~> 0.0, >= 0.0.8)
       multi_json (~> 1.15)
       rack (>= 2.2, < 4)
-      rdf (~> 3.2, >= 3.2.10)
+      rdf (~> 3.3)
+      rexml (~> 3.2)
     json-schema (6.2.0)
       addressable (~> 2.8)
       bigdecimal (>= 3.1, < 5)
@@ -561,7 +562,7 @@ DEPENDENCIES
   google-protobuf (= 3.25.3)
   grpc (= 1.70.1)
   haml (~> 5.2.2)
-  json-ld (~> 3.2.0)
+  json-ld (~> 3.3.2)
   json-schema
   minitest
   minitest-fail-fast
