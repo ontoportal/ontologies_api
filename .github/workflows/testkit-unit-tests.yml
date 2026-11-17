@@ -22,7 +22,7 @@ jobs:
     outputs:
       backends: ${{ steps.cfg.outputs.backends }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - id: cfg
         name: Read backend matrix from .ontoportal-testkit.yml
@@ -40,7 +40,7 @@ jobs:
         backend: ${{ fromJson(needs.prepare.outputs.backends) }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
