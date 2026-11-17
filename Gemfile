@@ -18,7 +18,7 @@ end
 
 gem 'request_store'
 gem 'parallel'
-gem 'google-protobuf', '3.25.3'
+gem 'google-protobuf', '4.36.2'
 gem 'grpc', '1.70.1'
 gem 'net-ftp'
 gem 'json-ld', '~> 3.2.0'
