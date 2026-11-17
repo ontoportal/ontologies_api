@@ -109,7 +109,7 @@ GIT
 
 GIT
   remote: https://github.com/sinatra/sinatra.git
-  revision: 5236d3459b8b9015e5ce21ddd0c6beb0db4081d4
+  revision: 055fa776fc4f041aa0477edf9e5cbb31b94ffb83
   specs:
     rack-protection (4.2.1)
       base64 (>= 0.1.0)
@@ -512,7 +512,7 @@ GEM
       zeitwerk
     systemu (2.6.5)
     temple (0.10.4)
-    tilt (2.7.0)
+    tilt (2.9.0)
     time (0.4.2)
       date
     timeout (0.6.1)
